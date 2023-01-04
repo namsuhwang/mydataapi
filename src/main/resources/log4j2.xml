@@ -1,0 +1,15 @@
+<Loggers>
+    <!-- jdbc.sql Loggers -->
+    <Logger name="jdbc.connection"      level="OFF" additivity="false"><AppenderRef ref="console" /></Logger>
+    <Logger name="jdbc.audit"           level="WARN" additivity="false"><AppenderRef ref="console" /></Logger>
+    <Logger name="jdbc.sqlonly"         level="OFF" additivity="false"><AppenderRef ref="console" /></Logger>
+    <Logger name="jdbc.sqltiming"       level="DEBUG" additivity="false"><AppenderRef ref="console" /></Logger>
+    <Logger name="jdbc.resultset"       level="OFF" additivity="false"><AppenderRef ref="console" /></Logger>
+    <Logger name="jdbc.resultsettable"  level="DEBUG" additivity="false"><AppenderRef ref="console" /></Logger>
+
+    <!-- FATAL, ERROR, WARN, INFO, DEBUG, TRACE -->
+    <Root level="INFO">
+        <AppenderRef ref="console" />
+        <AppenderRef ref="RollingFile" />
+    </Root>
+</Loggers>

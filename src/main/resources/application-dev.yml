@@ -1,0 +1,24 @@
+server:
+  port: 8091
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  main:
+    allow-circular-references: true
+
+  datasource:
+    jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521:XE
+    username: mydataadmin
+    password: dba001
+    driver-class-name: oracle.jdbc.OracleDriver
+
+
+## JWT Custom
+jwt:
+  secret:
+    signature: "idlelife+dev"
+
+
+
+

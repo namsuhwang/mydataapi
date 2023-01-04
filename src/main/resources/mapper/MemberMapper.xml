@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.repository.MemberMapper">
+
+    <select id="createMemberId" resultType="String">
+        SELECT NVL(MAX(MEMBER_ID), 0) + 1 AS member_id
+        FROM MEMBER
+    </select>
+
+    <insert id="insertMember" parameterType="MemberEntity">
+            INSERT INTO MEMBER
+            (
+                 MEMBER_ID
+                 ,MEMBER_NAME
+                 ,USER_TOKEN
+            ) VALUES
+            (
+                ${memberId}
+                ,#{memberName}
+                ,#{userToken}
+            )
+    </insert>
+
+    <update id="updateMember" parameterType="MemberEntity">
+            UPDATE MEMBER
+               SET
+                  MEMBER_NAME   = #{memberName}
+                 ,USER_TOKEN    = #{userToken}
+            WHERE MEMBER_ID = ${memberId}
+    </update>
+
+    <select id="selectMember" parameterType="String" resultType="MemberEntity">
+            SELECT
+                MEMBER_ID
+                 ,MEMBER_NAME
+                 ,USER_TOKEN
+            FROM MEMBER
+            WHERE MEMBER_ID = #{memberId}
+    </select>
+
+
+    <select id="selectMemberList" parameterType="MemberSearch" resultType="MemberEntity">
+        SELECT
+            MEMBER_ID
+             ,MEMBER_NAME
+             ,USER_TOKEN
+        FROM MEMBER
+        WHERE 1 = 1
+        <if test = 'memberId != null and memberId !=""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'memberId != null and memberId !=""'>
+            AND MEMBER_Name LIKE CONCAT('%', #{memberName}, '%')
+        </if>
+    </select>
+
+</mapper>
