@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.models.common.form;
+package com.kpcnc.mydataapi.api.member.models.common.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.sql.Timestamp;
+
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommonCodeForm {
+public class CommonCodeDto {
   private String divCode;
   private String code;
   private String codeName;

@@ -1,6 +1,6 @@
 package com.kpcnc.mydataapi.common;
 
-import com.kpcnc.mydataapi.models.common.ErrorCode;
+import com.kpcnc.mydataapi.api.member.models.common.ErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 

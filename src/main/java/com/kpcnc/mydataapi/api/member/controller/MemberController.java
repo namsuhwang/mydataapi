@@ -1,10 +1,10 @@
-package com.kpcnc.mydataapi.controller;
+package com.kpcnc.mydataapi.api.member.controller;
 
 
-import com.kpcnc.mydataapi.models.member.MemberSearch;
-import com.kpcnc.mydataapi.models.member.entity.MemberEntity;
-import com.kpcnc.mydataapi.models.member.form.MemberForm;
-import com.kpcnc.mydataapi.service.MemberService;
+import com.kpcnc.mydataapi.api.member.models.member.MemberSearch;
+import com.kpcnc.mydataapi.api.member.models.member.entity.MemberEntity;
+import com.kpcnc.mydataapi.api.member.models.member.form.MemberForm;
+import com.kpcnc.mydataapi.api.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
-import java.util.Map;
 
 //@Api(tags = "[ 나의 자산 ]")
 @Slf4j

@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.models.member.form;
+package com.kpcnc.mydataapi.api.member.models.member.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -10,8 +10,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberForm {
+public class MemberDto {
     private String memberId;
     private String memberName;
     private String userToken;
+
 }

@@ -1,10 +1,10 @@
-package com.kpcnc.mydataapi.service.impl;
+package com.kpcnc.mydataapi.api.member.service.impl;
 
-import com.kpcnc.mydataapi.models.member.MemberSearch;
-import com.kpcnc.mydataapi.models.member.entity.MemberEntity;
-import com.kpcnc.mydataapi.models.member.form.MemberForm;
-import com.kpcnc.mydataapi.repository.MemberMapper;
-import com.kpcnc.mydataapi.service.MemberService;
+import com.kpcnc.mydataapi.api.member.models.member.entity.MemberEntity;
+import com.kpcnc.mydataapi.api.member.repository.MemberMapper;
+import com.kpcnc.mydataapi.api.member.models.member.MemberSearch;
+import com.kpcnc.mydataapi.api.member.models.member.form.MemberForm;
+import com.kpcnc.mydataapi.api.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

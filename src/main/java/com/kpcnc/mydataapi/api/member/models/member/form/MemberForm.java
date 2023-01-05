@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.models.member;
+package com.kpcnc.mydataapi.api.member.models.member.form;
 
 
 import lombok.AllArgsConstructor;
@@ -8,16 +8,10 @@ import lombok.ToString;
 
 @Data
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
-public class MemberSearch {
+public class MemberForm {
     private String memberId;
     private String memberName;
     private String userToken;
-
-    public MemberSearch() {
-    }
-
-    public MemberSearch(String memberId) {
-        this.memberId = memberId;
-    }
 }

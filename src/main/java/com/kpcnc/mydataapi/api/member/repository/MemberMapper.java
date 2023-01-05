@@ -1,13 +1,13 @@
-package com.kpcnc.mydataapi.repository;
+package com.kpcnc.mydataapi.api.member.repository;
 
-import com.kpcnc.mydataapi.models.member.MemberSearch;
-import com.kpcnc.mydataapi.models.member.dto.MemberDto;
-import com.kpcnc.mydataapi.models.member.entity.MemberEntity;
+import com.kpcnc.mydataapi.api.member.models.member.MemberSearch;
+import com.kpcnc.mydataapi.api.member.models.member.entity.MemberEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper
+@Component
 public interface MemberMapper {
 
     String createMemberId();

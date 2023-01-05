@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 //@MapperScan(basePackages = {"com.idlelife.myasset.repository"}, annotationClass = org.apache.ibatis.annotations.Mapper.class)
-@MapperScan(value = {"com.kpcnc.mydataapi.repository"})
+@MapperScan(value = {"com.kpcnc.mydataapi.api.*.repository"})
 public class DataSourceConfig {
 
     @Autowired
@@ -47,7 +47,7 @@ public class DataSourceConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mapper/*.xml"));
         sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis-config.xml"));
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.kpcnc.mydataapi.models");
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.kpcnc.mydataapi");
         sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
 
         return sqlSessionFactoryBean.getObject();

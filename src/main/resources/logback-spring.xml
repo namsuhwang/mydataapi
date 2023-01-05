@@ -38,7 +38,7 @@
 
 
     <springProfile name="default, local, dev">
-        <logger name="com.mydataapi" level="DEBUG"/>
+        <logger name="com.kpcnc.mydataapi" level="DEBUG"/>
         <logger name="jdbc.audit" level="OFF"/>
         <logger name="jdbc.resultset" level="ON"/>
         <root level="INFO">
@@ -47,7 +47,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <logger name="com.mydataapi" level="DEBUG"/>
+        <logger name="com.kpcnc.mydataapi" level="DEBUG"/>
         <logger name="jdbc.audit" level="OFF"/>
         <logger name="jdbc.resultset" level="OFF"/>
 
@@ -56,7 +56,7 @@
         </root>
     </springProfile>
     <springProfile name="alp">
-        <logger name="com.mydataapi" level="DEBUG"/>
+        <logger name="com.kpcnc.mydataapi" level="DEBUG"/>
         <logger name="jdbc.audit" level="ON"/>
         <logger name="jdbc.resultset" level="OFF"/>
 
@@ -65,7 +65,7 @@
         </root>
     </springProfile>
     <springProfile name="opr">
-        <logger name="com.mydataapi" level="DEBUG"/>
+        <logger name="com.kpcnc.mydataapi" level="DEBUG"/>
         <logger name="jdbc.audit" level="OFF"/>
         <logger name="jdbc.resultset" level="ON"/>
 

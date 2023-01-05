@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.models.common;
+package com.kpcnc.mydataapi.api.member.models.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

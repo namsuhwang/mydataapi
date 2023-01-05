@@ -1,7 +1,6 @@
 package com.kpcnc.mydataapi.common.exception;
 
 import com.kpcnc.mydataapi.common.ErrorResponse;
-import com.kpcnc.mydataapi.models.common.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
