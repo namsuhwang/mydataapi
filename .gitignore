@@ -1,8 +1,12 @@
 HELP.md
 target/
+!logs/app.log
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+# Log file
+*.log
 
 ### STS ###
 .apt_generated
@@ -18,7 +22,6 @@ target/
 *.iws
 *.iml
 *.ipr
-*.log
 
 ### NetBeans ###
 /nbproject/private/

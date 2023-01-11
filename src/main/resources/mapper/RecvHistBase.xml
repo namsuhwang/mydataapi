@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.common.recv.repository.RecvHistBaseMapper">
+
+    <insert id="insertRecvHistBase" parameterType="RecvHistBaseEntity">
+        INSERT INTO RECV_HIST_BASE
+        (
+            RECV_ID
+            ,MEMBER_ID
+            ,ORG_CD
+            ,API_ID
+            ,RECV_START_DT
+            ,RECV_END_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES
+        (
+            #{recvId, jdbcType=VARCHAR}
+            ,#{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{apiId, jdbcType=VARCHAR}
+            ,#{recvStartDt, jdbcType=VARCHAR}
+            ,#{recvEndDt, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        )
+    </insert>
+
+    <update id="updateRecvHistBase" parameterType="RecvHistBaseEntity">
+        UPDATE RECV_HIST_BASE
+        SET
+            RECV_ID = #{recvId, jdbcType=VARCHAR}
+          ,MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+          ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+          ,API_ID = #{apiId, jdbcType=VARCHAR}
+          ,RECV_START_DT = #{recvStartDt, jdbcType=VARCHAR}
+          ,RECV_END_DT = #{recvEndDt, jdbcType=VARCHAR}
+          ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+          ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        WHERE
+            RECV_ID = #{recvId}
+          AND MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND API_ID = #{apiId}
+    </update>
+
+    <delete id="deleteRecvHistBase" parameterType="RecvHistBaseEntity">
+        DELETE FROM RECV_HIST_BASE
+        WHERE
+            RECV_ID = #{recvId}
+          AND MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND API_ID = #{apiId}
+    </delete>
+
+    <select id="selectRecvHistBase" parameterType="RecvHistBaseSearch"  resultType="RecvHistBaseEntity">
+        SELECT
+            RECV_ID
+             ,MEMBER_ID
+             ,ORG_CD
+             ,API_ID
+             ,RECV_START_DT
+             ,RECV_END_DT
+             ,REG_USER_ID
+             ,REG_DT
+             ,CHG_USER_ID
+             ,CHG_DT
+        FROM RECV_HIST_BASE
+        WHERE
+            RECV_ID = #{recvId}
+          AND MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND API_ID = #{apiId}
+    </select>
+
+    <select id="selectRecvHistBaseListTotalCnt" parameterType="RecvHistBaseSearch"  resultType="Long">
+        SELECT
+        COUNT(*)
+        FROM RECV_HIST_BASE
+        WHERE 1 = 1
+        <if test = 'recvId  != null and recvId != ""'>
+            AND RECV_ID = #{recvId}
+        </if>
+        <if test = 'memberId  != null and memberId != ""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'apiId  != null and apiId != ""'>
+            AND API_ID = #{apiId}
+        </if>
+    </select>
+
+    <select id="selectRecvHistBaseList" parameterType="RecvHistBaseSearch"  resultType="RecvHistBaseEntity">
+        SELECT
+        T.ROW_NUM AS ROW_NUM
+        ,T.*
+        FROM
+        (
+        SELECT
+            ROW_NUMBER() OVER(ORDER BY RECV_ID, MEMBER_ID, ORG_CD, API_ID) ROW_NUM
+            ,RECV_ID
+            ,MEMBER_ID
+            ,ORG_CD
+            ,API_ID
+            ,RECV_START_DT
+            ,RECV_END_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        FROM RECV_HIST_BASE
+        WHERE 1 = 1
+        <if test = 'recvId  != null and recvId != ""'>
+            AND RECV_ID = #{recvId}
+        </if>
+        <if test = 'memberId  != null and memberId != ""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'apiId  != null and apiId != ""'>
+            AND API_ID = #{apiId}
+        </if>
+        ORDER BY RECV_ID, MEMBER_ID, ORG_CD, API_ID
+        ) T
+        <if test = 'startIndex != null and endIndex != null '>
+            WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}
+        </if>
+    </select>
+</mapper>

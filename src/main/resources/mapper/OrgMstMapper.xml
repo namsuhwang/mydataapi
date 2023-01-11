@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.common.org.repository.OrgMstMapper">
+
+    <insert id="insertOrgMst" parameterType="OrgMstEntity">
+        INSERT INTO ORG_MST
+        (
+            ORG_CD
+            ,ORG_TYPE
+            ,IDST_TYPE
+            ,ORG_NM
+            ,ORG_SHORT_NM
+            ,ORG_STATUS
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES
+        (
+            #{orgCd, jdbcType=VARCHAR}
+            ,#{orgType, jdbcType=VARCHAR}
+            ,#{idstType, jdbcType=VARCHAR}
+            ,#{orgNm, jdbcType=VARCHAR}
+            ,#{orgShortNm, jdbcType=VARCHAR}
+            ,#{orgStatus, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        )
+    </insert>
+
+    <update id="updateOrgMst" parameterType="OrgMstEntity">
+        UPDATE ORG_MST
+        SET
+            ORG_CD = #{orgCd, jdbcType=VARCHAR}
+          ,ORG_TYPE = #{orgType, jdbcType=VARCHAR}
+          ,IDST_TYPE = #{idstType, jdbcType=VARCHAR}
+          ,ORG_NM = #{orgNm, jdbcType=VARCHAR}
+          ,ORG_SHORT_NM = #{orgShortNm, jdbcType=VARCHAR}
+          ,ORG_STATUS = #{orgStatus, jdbcType=VARCHAR}
+          ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+          ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        WHERE
+            ORG_CD = #{orgCd}
+          AND ORG_TYPE = #{orgType}
+          AND IDST_TYPE = #{idstType}
+    </update>
+
+    <delete id="deleteOrgMst" parameterType="OrgMstEntity">
+        DELETE FROM ORG_MST
+        WHERE
+            ORG_CD = #{orgCd}
+          AND ORG_TYPE = #{orgType}
+          AND IDST_TYPE = #{idstType}
+    </delete>
+
+    <select id="selectOrgMst" parameterType="OrgMstSearch"  resultType="OrgMstEntity">
+        SELECT
+            ORG_CD
+             ,ORG_TYPE
+             ,IDST_TYPE
+             ,ORG_NM
+             ,ORG_SHORT_NM
+             ,ORG_STATUS
+             ,REG_USER_ID
+             ,REG_DT
+             ,CHG_USER_ID
+             ,CHG_DT
+        FROM ORG_MST
+        WHERE
+            ORG_CD = #{orgCd}
+          AND ORG_TYPE = #{orgType}
+          AND IDST_TYPE = #{idstType}
+    </select>
+
+    <select id="selectOrgMstListTotalCnt" parameterType="OrgMstSearch"  resultType="Long">
+        SELECT
+        COUNT(*)
+        FROM ORG_MST
+        WHERE 1 = 1
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'orgType  != null and orgType != ""'>
+            AND ORG_TYPE = #{orgType}
+        </if>
+        <if test = 'idstType  != null and idstType != ""'>
+            AND IDST_TYPE = #{idstType}
+        </if>
+    </select>
+
+    <select id="selectOrgMstList" parameterType="OrgMstSearch"  resultType="OrgMstEntity">
+        SELECT
+        T.ROW_NUM AS ROW_NUM
+        ,T.*
+        FROM
+        (
+        SELECT
+            ROW_NUMBER() OVER(ORDER BY ORG_CD, ORG_TYPE, IDST_TYPE) ROW_NUM
+            ,ORG_CD
+            ,ORG_TYPE
+            ,IDST_TYPE
+            ,ORG_NM
+            ,ORG_SHORT_NM
+            ,ORG_STATUS
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        FROM ORG_MST
+        WHERE 1 = 1
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'orgType  != null and orgType != ""'>
+            AND ORG_TYPE = #{orgType}
+        </if>
+        <if test = 'idstType  != null and idstType != ""'>
+            AND IDST_TYPE = #{idstType}
+        </if>
+        ORDER BY ORG_CD, ORG_TYPE, IDST_TYPE
+        ) T
+        <if test = 'startIndex != null and endIndex != null '>
+            WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}
+        </if>
+    </select>
+</mapper>

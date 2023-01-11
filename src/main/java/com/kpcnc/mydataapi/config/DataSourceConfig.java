@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 //@MapperScan(basePackages = {"com.idlelife.myasset.repository"}, annotationClass = org.apache.ibatis.annotations.Mapper.class)
-@MapperScan(value = {"com.kpcnc.mydataapi.api.*.repository"})
+@MapperScan(value = {"com.kpcnc.mydataapi.api.*.*.repository"})
 public class DataSourceConfig {
 
     @Autowired

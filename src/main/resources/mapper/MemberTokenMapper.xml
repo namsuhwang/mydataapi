@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.common.member.repository.MemberTokenMapper">
+
+    <insert id="insertMemberToken" parameterType="MemberTokenEntity">
+        INSERT INTO MEMBER_TOKEN
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,SEND_REQ_SEQ
+            ,SCOPE_LIST
+            ,RQUEST_TYPE
+            ,FP_SEND_REQ_YN
+            ,FP_SEND_REQ_DT
+            ,FP_SEND_REQ_START_DAY
+            ,FP_SEND_REQ_END_DAY
+            ,FP_CYCL
+            ,ACCESS_TOKEN
+            ,ACCESS_TOKEN_EXPIRE_IN
+            ,ACCESS_TOKEN_ISSUE_DT
+            ,ACCESS_TOKEN_DUE_DT
+            ,ACCESS_TOKEN_EXPIRE_YN
+            ,ACCESS_TOKEN_EXPIRE_DT
+            ,REPRESH_TOKEN
+            ,REPRESH_TOKEN_EXPIRE_IN
+            ,REPRESH_TOKEN_ISSUE_DT
+            ,REPRESH_TOKEN_DUE_DT
+            ,REPRESH_TOKEN_EXPIRE_YN
+            ,REPRESH_TOKEN_EXPIRE_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{sendReqSeq, jdbcType=NUMERIC}
+            ,#{scopeList, jdbcType=VARCHAR}
+            ,#{rquestType, jdbcType=VARCHAR}
+            ,#{fpSendReqYn, jdbcType=VARCHAR}
+            ,#{fpSendReqDt, jdbcType=VARCHAR}
+            ,#{fpSendReqStartDay, jdbcType=VARCHAR}
+            ,#{fpSendReqEndDay, jdbcType=VARCHAR}
+            ,#{fpCycl, jdbcType=VARCHAR}
+            ,#{accessToken, jdbcType=VARCHAR}
+            ,#{accessTokenExpireIn, jdbcType=NUMERIC}
+            ,#{accessTokenIssueDt, jdbcType=VARCHAR}
+            ,#{accessTokenDueDt, jdbcType=VARCHAR}
+            ,#{accessTokenExpireYn, jdbcType=VARCHAR}
+            ,#{accessTokenExpireDt, jdbcType=VARCHAR}
+            ,#{represhToken, jdbcType=VARCHAR}
+            ,#{represhTokenExpireIn, jdbcType=NUMERIC}
+            ,#{represhTokenIssueDt, jdbcType=VARCHAR}
+            ,#{represhTokenDueDt, jdbcType=VARCHAR}
+            ,#{represhTokenExpireYn, jdbcType=VARCHAR}
+            ,#{represhTokenExpireDt, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        )
+    </insert>
+
+    <update id="updateMemberToken" parameterType="MemberTokenEntity">
+        UPDATE MEMBER_TOKEN
+        SET
+            MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+          ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+          ,SEND_REQ_SEQ = #{sendReqSeq, jdbcType=NUMERIC}
+          ,SCOPE_LIST = #{scopeList, jdbcType=VARCHAR}
+          ,RQUEST_TYPE = #{rquestType, jdbcType=VARCHAR}
+          ,FP_SEND_REQ_YN = #{fpSendReqYn, jdbcType=VARCHAR}
+          ,FP_SEND_REQ_DT = #{fpSendReqDt, jdbcType=VARCHAR}
+          ,FP_SEND_REQ_START_DAY = #{fpSendReqStartDay, jdbcType=VARCHAR}
+          ,FP_SEND_REQ_END_DAY = #{fpSendReqEndDay, jdbcType=VARCHAR}
+          ,FP_CYCL = #{fpCycl, jdbcType=VARCHAR}
+          ,ACCESS_TOKEN = #{accessToken, jdbcType=VARCHAR}
+          ,ACCESS_TOKEN_EXPIRE_IN = #{accessTokenExpireIn, jdbcType=NUMERIC}
+          ,ACCESS_TOKEN_ISSUE_DT = #{accessTokenIssueDt, jdbcType=VARCHAR}
+          ,ACCESS_TOKEN_DUE_DT = #{accessTokenDueDt, jdbcType=VARCHAR}
+          ,ACCESS_TOKEN_EXPIRE_YN = #{accessTokenExpireYn, jdbcType=VARCHAR}
+          ,ACCESS_TOKEN_EXPIRE_DT = #{accessTokenExpireDt, jdbcType=VARCHAR}
+          ,REPRESH_TOKEN = #{represhToken, jdbcType=VARCHAR}
+          ,REPRESH_TOKEN_EXPIRE_IN = #{represhTokenExpireIn, jdbcType=NUMERIC}
+          ,REPRESH_TOKEN_ISSUE_DT = #{represhTokenIssueDt, jdbcType=VARCHAR}
+          ,REPRESH_TOKEN_DUE_DT = #{represhTokenDueDt, jdbcType=VARCHAR}
+          ,REPRESH_TOKEN_EXPIRE_YN = #{represhTokenExpireYn, jdbcType=VARCHAR}
+          ,REPRESH_TOKEN_EXPIRE_DT = #{represhTokenExpireDt, jdbcType=VARCHAR}
+          ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+          ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND SEND_REQ_SEQ = #{sendReqSeq}
+    </update>
+
+    <delete id="deleteMemberToken" parameterType="MemberTokenEntity">
+        DELETE FROM MEMBER_TOKEN
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND SEND_REQ_SEQ = #{sendReqSeq}
+    </delete>
+
+    <select id="selectMemberToken" parameterType="MemberTokenSearch"  resultType="MemberTokenEntity">
+        SELECT
+            MEMBER_ID
+             ,ORG_CD
+             ,SEND_REQ_SEQ
+             ,SCOPE_LIST
+             ,RQUEST_TYPE
+             ,FP_SEND_REQ_YN
+             ,FP_SEND_REQ_DT
+             ,FP_SEND_REQ_START_DAY
+             ,FP_SEND_REQ_END_DAY
+             ,FP_CYCL
+             ,ACCESS_TOKEN
+             ,ACCESS_TOKEN_EXPIRE_IN
+             ,ACCESS_TOKEN_ISSUE_DT
+             ,ACCESS_TOKEN_DUE_DT
+             ,ACCESS_TOKEN_EXPIRE_YN
+             ,ACCESS_TOKEN_EXPIRE_DT
+             ,REPRESH_TOKEN
+             ,REPRESH_TOKEN_EXPIRE_IN
+             ,REPRESH_TOKEN_ISSUE_DT
+             ,REPRESH_TOKEN_DUE_DT
+             ,REPRESH_TOKEN_EXPIRE_YN
+             ,REPRESH_TOKEN_EXPIRE_DT
+             ,REG_USER_ID
+             ,REG_DT
+             ,CHG_USER_ID
+             ,CHG_DT
+        FROM MEMBER_TOKEN
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND SEND_REQ_SEQ = #{sendReqSeq}
+    </select>
+
+    <select id="selectMemberTokenListTotalCnt" parameterType="MemberTokenSearch"  resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM MEMBER_TOKEN
+        WHERE 1 = 1
+        <if test = 'memberId  != null and memberId != ""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'sendReqSeq  != null and sendReqSeq != ""'>
+            AND SEND_REQ_SEQ = #{sendReqSeq}
+        </if>
+    </select>
+
+    <select id="selectMemberTokenList" parameterType="MemberTokenSearch"  resultType="MemberTokenEntity">
+        SELECT
+            T.ROW_NUM AS ROW_NUM
+            ,T.*
+        FROM
+        (
+        SELECT
+            ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, SEND_REQ_SEQ) ROW_NUM
+            ,MEMBER_ID
+            ,ORG_CD
+            ,SEND_REQ_SEQ
+            ,SCOPE_LIST
+            ,RQUEST_TYPE
+            ,FP_SEND_REQ_YN
+            ,FP_SEND_REQ_DT
+            ,FP_SEND_REQ_START_DAY
+            ,FP_SEND_REQ_END_DAY
+            ,FP_CYCL
+            ,ACCESS_TOKEN
+            ,ACCESS_TOKEN_EXPIRE_IN
+            ,ACCESS_TOKEN_ISSUE_DT
+            ,ACCESS_TOKEN_DUE_DT
+            ,ACCESS_TOKEN_EXPIRE_YN
+            ,ACCESS_TOKEN_EXPIRE_DT
+            ,REPRESH_TOKEN
+            ,REPRESH_TOKEN_EXPIRE_IN
+            ,REPRESH_TOKEN_ISSUE_DT
+            ,REPRESH_TOKEN_DUE_DT
+            ,REPRESH_TOKEN_EXPIRE_YN
+            ,REPRESH_TOKEN_EXPIRE_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        FROM MEMBER_TOKEN
+        WHERE 1 = 1
+        <if test = 'memberId  != null and memberId != ""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'sendReqSeq  != null and sendReqSeq != ""'>
+            AND SEND_REQ_SEQ = #{sendReqSeq}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, SEND_REQ_SEQ
+        ) T
+        <if test = 'startIndex != null and endIndex != null '>
+            WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}
+        </if>
+    </select>
+</mapper>

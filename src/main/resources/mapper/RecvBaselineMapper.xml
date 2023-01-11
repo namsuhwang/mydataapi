@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.common.recv.repository.RecvBaselineMapper">
+
+    <insert id="insertRecvBaseline" parameterType="RecvBaselineEntity">
+        INSERT INTO RECV_BASELINE
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,API_ID
+            ,LAST_RECV_DATA
+            ,LAST_RECV_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{apiId, jdbcType=VARCHAR}
+            ,#{lastRecvData, jdbcType=VARCHAR}
+            ,#{lastRecvDt, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        )
+    </insert>
+
+    <update id="updateRecvBaseline" parameterType="RecvBaselineEntity">
+        UPDATE RECV_BASELINE
+        SET
+            MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+           ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+           ,API_ID = #{apiId, jdbcType=VARCHAR}
+           ,LAST_RECV_DATA = #{lastRecvData, jdbcType=VARCHAR}
+           ,LAST_RECV_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+           ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+           ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND API_ID = #{apiId}
+    </update>
+
+    <delete id="deleteRecvBaseline" parameterType="RecvBaselineEntity">
+        DELETE FROM RECV_BASELINE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND API_ID = #{apiId}
+    </delete>
+
+    <select id="selectRecvBaseline" parameterType="RecvBaselineSearch"  resultType="RecvBaselineEntity">
+        SELECT
+            MEMBER_ID
+             ,ORG_CD
+             ,API_ID
+             ,LAST_RECV_DATA
+             ,LAST_RECV_DT
+             ,REG_USER_ID
+             ,REG_DT
+             ,CHG_USER_ID
+             ,CHG_DT
+        FROM RECV_BASELINE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          AND API_ID = #{apiId}
+    </select>
+
+    <select id="selectRecvBaselineListTotalCnt" parameterType="RecvBaselineSearch"  resultType="Long">
+        SELECT
+        COUNT(*)
+        FROM RECV_BASELINE
+        WHERE 1 = 1
+        <if test = 'memberId  != null and memberId != ""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'apiId  != null and apiId != ""'>
+            AND API_ID = #{apiId}
+        </if>
+    </select>
+
+    <select id="selectRecvBaselineList" parameterType="RecvBaselineSearch"  resultType="RecvBaselineEntity">
+        SELECT
+        T.ROW_NUM AS ROW_NUM
+        ,T.*
+        FROM
+        (
+        SELECT
+            MEMBER_ID
+            ,ORG_CD
+            ,API_ID
+            ,LAST_RECV_DATA
+            ,LAST_RECV_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        FROM RECV_BASELINE
+        WHERE 1 = 1
+        <if test = 'memberId  != null and memberId != ""'>
+            AND MEMBER_ID = #{memberId}
+        </if>
+        <if test = 'orgCd  != null and orgCd != ""'>
+            AND ORG_CD = #{orgCd}
+        </if>
+        <if test = 'apiId  != null and apiId != ""'>
+            AND API_ID = #{apiId}
+        </if>
+        ) T
+        <if test = 'startIndex != null and endIndex != null '>
+            WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.common.api.repository.ApiMstMapper">
+
+    <insert id="insertApiMst" parameterType="ApiMstEntity">
+        INSERT INTO API_MST
+        (
+            API_TYPE
+            ,API_ID
+            ,IDST_TYPE
+            ,SCOPE
+            ,RQUEST_TYPE
+            ,IDST_BM
+            ,API_NM
+            ,API_CONTENT
+            ,API_URL_RESOURCE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES
+        (
+            #{apiType, jdbcType=VARCHAR}
+            ,#{apiId, jdbcType=VARCHAR}
+            ,#{idstType, jdbcType=VARCHAR}
+            ,#{scope, jdbcType=VARCHAR}
+            ,#{rquestType, jdbcType=VARCHAR}
+            ,#{idstBm, jdbcType=VARCHAR}
+            ,#{apiNm, jdbcType=VARCHAR}
+            ,#{apiContent, jdbcType=VARCHAR}
+            ,#{apiUrlResource, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,#{regDt, jdbcType=VARCHAR}
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,#{chgDt, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateApiMst" parameterType="ApiMstEntity">
+        UPDATE API_MST
+        SET
+            API_TYPE = #{apiType, jdbcType=VARCHAR}
+          ,API_ID = #{apiId, jdbcType=VARCHAR}
+          ,IDST_TYPE = #{idstType, jdbcType=VARCHAR}
+          ,SCOPE = #{scope, jdbcType=VARCHAR}
+          ,RQUEST_TYPE = #{rquestType, jdbcType=VARCHAR}
+          ,IDST_BM = #{idstBm, jdbcType=VARCHAR}
+          ,API_NM = #{apiNm, jdbcType=VARCHAR}
+          ,API_CONTENT = #{apiContent, jdbcType=VARCHAR}
+          ,API_URL_RESOURCE = #{apiUrlResource, jdbcType=VARCHAR}
+          ,REG_USER_ID = #{regUserId, jdbcType=VARCHAR}
+          ,REG_DT = #{regDt, jdbcType=VARCHAR}
+          ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+          ,CHG_DT = #{chgDt, jdbcType=VARCHAR}
+        WHERE
+            API_TYPE = #{apiType}
+          AND API_ID = #{apiId}
+          AND IDST_TYPE = #{idstType}
+    </update>
+
+    <delete id="deleteApiMst" parameterType="ApiMstEntity">
+        DELETE FROM API_MST
+        WHERE
+            API_TYPE = #{apiType}
+          AND API_ID = #{apiId}
+          AND IDST_TYPE = #{idstType}
+    </delete>
+
+    <select id="selectApiMst" parameterType="ApiMstSearch"  resultType="ApiMstEntity">
+        SELECT
+            API_TYPE
+             ,API_ID
+             ,IDST_TYPE
+             ,SCOPE
+             ,RQUEST_TYPE
+             ,IDST_BM
+             ,API_NM
+             ,API_CONTENT
+             ,API_URL_RESOURCE
+             ,REG_USER_ID
+             ,REG_DT
+             ,CHG_USER_ID
+             ,CHG_DT
+        FROM API_MST
+        WHERE
+            API_TYPE = #{apiType}
+          AND API_ID = #{apiId}
+          AND IDST_TYPE = #{idstType}
+    </select>
+
+    <select id="selectApiMstListTotalCnt" parameterType="ApiMstSearch"  resultType="Long">
+        SELECT
+        COUNT(*)
+        FROM API_MST
+        WHERE 1 = 1
+        <if test = 'apiType  != null and apiType != ""'>
+            AND API_TYPE = #{apiType}
+        </if>
+        <if test = 'apiId  != null and apiId != ""'>
+            AND API_ID = #{apiId}
+        </if>
+        <if test = 'idstType  != null and idstType != ""'>
+            AND IDST_TYPE = #{idstType}
+        </if>
+    </select>
+
+    <select id="selectApiMstList" parameterType="ApiMstSearch"  resultType="ApiMstEntity">
+        SELECT
+        T.ROW_NUM AS ROW_NUM
+        ,T.*
+        FROM
+        (
+        SELECT
+            ROW_NUMBER() OVER(ORDER BY API_TYPE, API_ID, IDST_TYPE) ROW_NUM
+            ,API_TYPE
+            ,API_ID
+            ,IDST_TYPE
+            ,SCOPE
+            ,RQUEST_TYPE
+            ,IDST_BM
+            ,API_NM
+            ,API_CONTENT
+            ,API_URL_RESOURCE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        FROM API_MST
+        WHERE 1 = 1
+        <if test = 'apiType  != null and apiType != ""'>
+            AND API_TYPE = #{apiType}
+        </if>
+        <if test = 'apiId  != null and apiId != ""'>
+            AND API_ID = #{apiId}
+        </if>
+        <if test = 'idstType  != null and idstType != ""'>
+            AND IDST_TYPE = #{idstType}
+        </if>
+        ORDER BY API_TYPE, API_ID, IDST_TYPE
+        ) T
+        <if test = 'startIndex != null and endIndex != null '>
+            WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}
+        </if>
+    </select>
+</mapper>
