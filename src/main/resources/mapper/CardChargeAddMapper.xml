@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardChargeAddMapper">
+
+    <insert id="insertCardChargeAdd" parameterType="CardChargeAddEntity">
+        INSERT INTO CARD_CHARGE_ADD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,SEQNO
+            ,CHARGE_MONTH
+            ,CARD_ID
+            ,PAID_DTIME
+            ,TRANS_NO
+            ,PAID_AMT
+            ,CURRENCY_CODE
+            ,MERCHANT_NAME
+            ,MERCHANT_REGNO
+            ,CREDIT_FEE_AMT
+            ,TOTAL_INSTALL_CNT
+            ,CUR_INSTALL_CNT
+            ,BALANCE_AMT
+            ,PROD_TYPE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{chargeMonth, jdbcType=VARCHAR}
+            ,#{cardId, jdbcType=VARCHAR}
+            ,#{paidDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{paidAmt, jdbcType=NUMERIC}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{merchantRegno, jdbcType=VARCHAR}
+            ,#{creditFeeAmt, jdbcType=NUMERIC}
+            ,#{totalInstallCnt, jdbcType=NUMERIC}
+            ,#{curInstallCnt, jdbcType=NUMERIC}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{prodType, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardChargeAdd" parameterType="CardChargeAddEntity">
+        UPDATE CARD_CHARGE_ADD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,CHARGE_MONTH = #{chargeMonth, jdbcType=VARCHAR}
+               ,CARD_ID = #{cardId, jdbcType=VARCHAR}
+               ,PAID_DTIME = #{paidDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,PAID_AMT = #{paidAmt, jdbcType=NUMERIC}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,MERCHANT_REGNO = #{merchantRegno, jdbcType=VARCHAR}
+               ,CREDIT_FEE_AMT = #{creditFeeAmt, jdbcType=NUMERIC}
+               ,TOTAL_INSTALL_CNT = #{totalInstallCnt, jdbcType=NUMERIC}
+               ,CUR_INSTALL_CNT = #{curInstallCnt, jdbcType=NUMERIC}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,PROD_TYPE = #{prodType, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SEQNO = #{seqno}
+           AND CHARGE_MONTH = #{chargeMonth}
+           AND CARD_ID = #{cardId}
+           AND PAID_DTIME = #{paidDtime}
+           AND TRANS_NO = #{transNo}
+    </update>
+
+    <delete id="deleteCardChargeAdd" parameterType="CardChargeAddEntity">
+        DELETE FROM CARD_CHARGE_ADD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SEQNO = #{seqno}
+           AND CHARGE_MONTH = #{chargeMonth}
+           AND CARD_ID = #{cardId}
+           AND PAID_DTIME = #{paidDtime}
+           AND TRANS_NO = #{transNo}
+    </delete>
+
+    <select id="selectCardChargeAdd" parameterType="CardChargeAddSearch"  resultType="CardChargeAddEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,SEQNO
+               ,CHARGE_MONTH
+               ,CARD_ID
+               ,PAID_DTIME
+               ,TRANS_NO
+               ,PAID_AMT
+               ,CURRENCY_CODE
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,CREDIT_FEE_AMT
+               ,TOTAL_INSTALL_CNT
+               ,CUR_INSTALL_CNT
+               ,BALANCE_AMT
+               ,PROD_TYPE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_CHARGE_ADD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SEQNO = #{seqno}
+           AND CHARGE_MONTH = #{chargeMonth}
+           AND CARD_ID = #{cardId}
+           AND PAID_DTIME = #{paidDtime}
+           AND TRANS_NO = #{transNo}
+    </select>
+
+    <select id="selectCardChargeAddListTotalCnt" parameterType="CardChargeAddSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_CHARGE_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'chargeMonth  != null and chargeMonth != ""'>
+           AND CHARGE_MONTH = #{chargeMonth}
+       </if>
+       <if test = 'cardId  != null and cardId != ""'>
+           AND CARD_ID = #{cardId}
+       </if>
+       <if test = 'paidDtime  != null and paidDtime != ""'>
+           AND PAID_DTIME = #{paidDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+    </select>
+
+    <select id="selectCardChargeAddList" parameterType="CardChargeAddSearch"  resultType="CardChargeAddEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, SEQNO, CHARGE_MONTH, CARD_ID, PAID_DTIME, TRANS_NO) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,SEQNO
+               ,CHARGE_MONTH
+               ,CARD_ID
+               ,PAID_DTIME
+               ,TRANS_NO
+               ,PAID_AMT
+               ,CURRENCY_CODE
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,CREDIT_FEE_AMT
+               ,TOTAL_INSTALL_CNT
+               ,CUR_INSTALL_CNT
+               ,BALANCE_AMT
+               ,PROD_TYPE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_CHARGE_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'chargeMonth  != null and chargeMonth != ""'>
+           AND CHARGE_MONTH = #{chargeMonth}
+       </if>
+       <if test = 'cardId  != null and cardId != ""'>
+           AND CARD_ID = #{cardId}
+       </if>
+       <if test = 'paidDtime  != null and paidDtime != ""'>
+           AND PAID_DTIME = #{paidDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, SEQNO, CHARGE_MONTH, CARD_ID, PAID_DTIME, TRANS_NO
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

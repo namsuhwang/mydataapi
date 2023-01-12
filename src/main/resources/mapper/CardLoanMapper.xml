@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardLoanMapper">
+
+    <insert id="insertCardLoan" parameterType="CardLoanEntity">
+        INSERT INTO CARD_LOAN
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,IS_LOAN_SHORT_TERM
+            ,IS_LOAN_LONG_TERM
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{isLoanShortTerm, jdbcType=VARCHAR}
+            ,#{isLoanLongTerm, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardLoan" parameterType="CardLoanEntity">
+        UPDATE CARD_LOAN
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,IS_LOAN_SHORT_TERM = #{isLoanShortTerm, jdbcType=VARCHAR}
+               ,IS_LOAN_LONG_TERM = #{isLoanLongTerm, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND IS_LOAN_SHORT_TERM = #{isLoanShortTerm}
+           AND IS_LOAN_LONG_TERM = #{isLoanLongTerm}
+    </update>
+
+    <delete id="deleteCardLoan" parameterType="CardLoanEntity">
+        DELETE FROM CARD_LOAN
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND IS_LOAN_SHORT_TERM = #{isLoanShortTerm}
+           AND IS_LOAN_LONG_TERM = #{isLoanLongTerm}
+    </delete>
+
+    <select id="selectCardLoan" parameterType="CardLoanSearch"  resultType="CardLoanEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,IS_LOAN_SHORT_TERM
+               ,IS_LOAN_LONG_TERM
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_LOAN
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND IS_LOAN_SHORT_TERM = #{isLoanShortTerm}
+           AND IS_LOAN_LONG_TERM = #{isLoanLongTerm}
+    </select>
+
+    <select id="selectCardLoanListTotalCnt" parameterType="CardLoanSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_LOAN
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'isLoanShortTerm  != null and isLoanShortTerm != ""'>
+           AND IS_LOAN_SHORT_TERM = #{isLoanShortTerm}
+       </if>
+       <if test = 'isLoanLongTerm  != null and isLoanLongTerm != ""'>
+           AND IS_LOAN_LONG_TERM = #{isLoanLongTerm}
+       </if>
+    </select>
+
+    <select id="selectCardLoanList" parameterType="CardLoanSearch"  resultType="CardLoanEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, IS_LOAN_SHORT_TERM, IS_LOAN_LONG_TERM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,IS_LOAN_SHORT_TERM
+               ,IS_LOAN_LONG_TERM
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_LOAN
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'isLoanShortTerm  != null and isLoanShortTerm != ""'>
+           AND IS_LOAN_SHORT_TERM = #{isLoanShortTerm}
+       </if>
+       <if test = 'isLoanLongTerm  != null and isLoanLongTerm != ""'>
+           AND IS_LOAN_LONG_TERM = #{isLoanLongTerm}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, IS_LOAN_SHORT_TERM, IS_LOAN_LONG_TERM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

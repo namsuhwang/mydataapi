@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.bank.repository.BankAccMapper">
+
+    <insert id="insertBankAcc" parameterType="BankAccEntity">
+        INSERT INTO BANK_ACC
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,IS_CONSENT
+            ,SEQNO
+            ,IS_FOREIGN_DEPOSIT
+            ,PROD_NAME
+            ,IS_MINUS
+            ,ACCOUNT_TYPE
+            ,ACCOUNT_STATUS
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{isConsent, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{isForeignDeposit, jdbcType=VARCHAR}
+            ,#{prodName, jdbcType=VARCHAR}
+            ,#{isMinus, jdbcType=VARCHAR}
+            ,#{accountType, jdbcType=VARCHAR}
+            ,#{accountStatus, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateBankAcc" parameterType="BankAccEntity">
+        UPDATE BANK_ACC
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,IS_FOREIGN_DEPOSIT = #{isForeignDeposit, jdbcType=VARCHAR}
+               ,PROD_NAME = #{prodName, jdbcType=VARCHAR}
+               ,IS_MINUS = #{isMinus, jdbcType=VARCHAR}
+               ,ACCOUNT_TYPE = #{accountType, jdbcType=VARCHAR}
+               ,ACCOUNT_STATUS = #{accountStatus, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </update>
+
+    <delete id="deleteBankAcc" parameterType="BankAccEntity">
+        DELETE FROM BANK_ACC
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectBankAcc" parameterType="BankAccSearch"  resultType="BankAccEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,IS_CONSENT
+               ,SEQNO
+               ,IS_FOREIGN_DEPOSIT
+               ,PROD_NAME
+               ,IS_MINUS
+               ,ACCOUNT_TYPE
+               ,ACCOUNT_STATUS
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </select>
+
+    <select id="selectBankAccListTotalCnt" parameterType="BankAccSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM BANK_ACC
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+    </select>
+
+    <select id="selectBankAccList" parameterType="BankAccSearch"  resultType="BankAccEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,IS_CONSENT
+               ,SEQNO
+               ,IS_FOREIGN_DEPOSIT
+               ,PROD_NAME
+               ,IS_MINUS
+               ,ACCOUNT_TYPE
+               ,ACCOUNT_STATUS
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

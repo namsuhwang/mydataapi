@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPayMethodMapper">
+
+    <insert id="insertElecPayMethod" parameterType="ElecPayMethodEntity">
+        INSERT INTO ELEC_PAY_METHOD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,SUB_KEY
+            ,PAY_ORG_CODE
+            ,PAY_TYPE
+            ,PAY_ID
+            ,IS_PRIMARY
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{subKey, jdbcType=VARCHAR}
+            ,#{payOrgCode, jdbcType=VARCHAR}
+            ,#{payType, jdbcType=VARCHAR}
+            ,#{payId, jdbcType=VARCHAR}
+            ,#{isPrimary, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPayMethod" parameterType="ElecPayMethodEntity">
+        UPDATE ELEC_PAY_METHOD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,SUB_KEY = #{subKey, jdbcType=VARCHAR}
+               ,PAY_ORG_CODE = #{payOrgCode, jdbcType=VARCHAR}
+               ,PAY_TYPE = #{payType, jdbcType=VARCHAR}
+               ,PAY_ID = #{payId, jdbcType=VARCHAR}
+               ,IS_PRIMARY = #{isPrimary, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND PAY_ORG_CODE = #{payOrgCode}
+    </update>
+
+    <delete id="deleteElecPayMethod" parameterType="ElecPayMethodEntity">
+        DELETE FROM ELEC_PAY_METHOD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND PAY_ORG_CODE = #{payOrgCode}
+    </delete>
+
+    <select id="selectElecPayMethod" parameterType="ElecPayMethodSearch"  resultType="ElecPayMethodEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,SUB_KEY
+               ,PAY_ORG_CODE
+               ,PAY_TYPE
+               ,PAY_ID
+               ,IS_PRIMARY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PAY_METHOD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND PAY_ORG_CODE = #{payOrgCode}
+    </select>
+
+    <select id="selectElecPayMethodListTotalCnt" parameterType="ElecPayMethodSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PAY_METHOD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'subKey  != null and subKey != ""'>
+           AND SUB_KEY = #{subKey}
+       </if>
+       <if test = 'payOrgCode  != null and payOrgCode != ""'>
+           AND PAY_ORG_CODE = #{payOrgCode}
+       </if>
+    </select>
+
+    <select id="selectElecPayMethodList" parameterType="ElecPayMethodSearch"  resultType="ElecPayMethodEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, PAY_ORG_CODE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,SUB_KEY
+               ,PAY_ORG_CODE
+               ,PAY_TYPE
+               ,PAY_ID
+               ,IS_PRIMARY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PAY_METHOD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'subKey  != null and subKey != ""'>
+           AND SUB_KEY = #{subKey}
+       </if>
+       <if test = 'payOrgCode  != null and payOrgCode != ""'>
+           AND PAY_ORG_CODE = #{payOrgCode}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, PAY_ORG_CODE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

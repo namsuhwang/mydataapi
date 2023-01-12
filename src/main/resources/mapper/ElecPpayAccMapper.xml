@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPpayAccMapper">
+
+    <insert id="insertElecPpayAcc" parameterType="ElecPpayAccEntity">
+        INSERT INTO ELEC_PPAY_ACC
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,FOB_ID
+            ,ACCOUNT_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{fobId, jdbcType=VARCHAR}
+            ,#{accountId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPpayAcc" parameterType="ElecPpayAccEntity">
+        UPDATE ELEC_PPAY_ACC
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,FOB_ID = #{fobId, jdbcType=VARCHAR}
+               ,ACCOUNT_ID = #{accountId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+    </update>
+
+    <delete id="deleteElecPpayAcc" parameterType="ElecPpayAccEntity">
+        DELETE FROM ELEC_PPAY_ACC
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+    </delete>
+
+    <select id="selectElecPpayAcc" parameterType="ElecPpayAccSearch"  resultType="ElecPpayAccEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_ACC
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+    </select>
+
+    <select id="selectElecPpayAccListTotalCnt" parameterType="ElecPpayAccSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PPAY_ACC
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+    </select>
+
+    <select id="selectElecPpayAccList" parameterType="ElecPpayAccSearch"  resultType="ElecPpayAccEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_ACC
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

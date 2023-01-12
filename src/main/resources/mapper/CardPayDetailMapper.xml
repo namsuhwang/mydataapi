@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardPayDetailMapper">
+
+    <insert id="insertCardPayDetail" parameterType="CardPayDetailEntity">
+        INSERT INTO CARD_PAY_DETAIL
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,SEQNO
+            ,PAY_DUE_DATE
+            ,PAY_AMT
+            ,LUMP_SUM_AMT
+            ,MONTHLY_AMT
+            ,LOAN_SHORT_AMT
+            ,REVOLVING_AMT
+            ,LOAN_LONG_AMT
+            ,ETC_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{payDueDate, jdbcType=VARCHAR}
+            ,#{payAmt, jdbcType=NUMERIC}
+            ,#{lumpSumAmt, jdbcType=VARCHAR}
+            ,#{monthlyAmt, jdbcType=VARCHAR}
+            ,#{loanShortAmt, jdbcType=VARCHAR}
+            ,#{revolvingAmt, jdbcType=VARCHAR}
+            ,#{loanLongAmt, jdbcType=VARCHAR}
+            ,#{etcAmt, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardPayDetail" parameterType="CardPayDetailEntity">
+        UPDATE CARD_PAY_DETAIL
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,PAY_DUE_DATE = #{payDueDate, jdbcType=VARCHAR}
+               ,PAY_AMT = #{payAmt, jdbcType=NUMERIC}
+               ,LUMP_SUM_AMT = #{lumpSumAmt, jdbcType=VARCHAR}
+               ,MONTHLY_AMT = #{monthlyAmt, jdbcType=VARCHAR}
+               ,LOAN_SHORT_AMT = #{loanShortAmt, jdbcType=VARCHAR}
+               ,REVOLVING_AMT = #{revolvingAmt, jdbcType=VARCHAR}
+               ,LOAN_LONG_AMT = #{loanLongAmt, jdbcType=VARCHAR}
+               ,ETC_AMT = #{etcAmt, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SEQNO = #{seqno}
+           AND PAY_DUE_DATE = #{payDueDate}
+    </update>
+
+    <delete id="deleteCardPayDetail" parameterType="CardPayDetailEntity">
+        DELETE FROM CARD_PAY_DETAIL
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SEQNO = #{seqno}
+           AND PAY_DUE_DATE = #{payDueDate}
+    </delete>
+
+    <select id="selectCardPayDetail" parameterType="CardPayDetailSearch"  resultType="CardPayDetailEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,SEQNO
+               ,PAY_DUE_DATE
+               ,PAY_AMT
+               ,LUMP_SUM_AMT
+               ,MONTHLY_AMT
+               ,LOAN_SHORT_AMT
+               ,REVOLVING_AMT
+               ,LOAN_LONG_AMT
+               ,ETC_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_PAY_DETAIL
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SEQNO = #{seqno}
+           AND PAY_DUE_DATE = #{payDueDate}
+    </select>
+
+    <select id="selectCardPayDetailListTotalCnt" parameterType="CardPayDetailSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_PAY_DETAIL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'payDueDate  != null and payDueDate != ""'>
+           AND PAY_DUE_DATE = #{payDueDate}
+       </if>
+    </select>
+
+    <select id="selectCardPayDetailList" parameterType="CardPayDetailSearch"  resultType="CardPayDetailEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, SEQNO, PAY_DUE_DATE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,SEQNO
+               ,PAY_DUE_DATE
+               ,PAY_AMT
+               ,LUMP_SUM_AMT
+               ,MONTHLY_AMT
+               ,LOAN_SHORT_AMT
+               ,REVOLVING_AMT
+               ,LOAN_LONG_AMT
+               ,ETC_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_PAY_DETAIL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'payDueDate  != null and payDueDate != ""'>
+           AND PAY_DUE_DATE = #{payDueDate}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, SEQNO, PAY_DUE_DATE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

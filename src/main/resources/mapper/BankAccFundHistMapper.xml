@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.bank.repository.BankAccFundHistMapper">
+
+    <insert id="insertBankAccFundHist" parameterType="BankAccFundHistEntity">
+        INSERT INTO BANK_ACC_FUND_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,SEQNO
+            ,TRANS_DTIME
+            ,TRANS_NO
+            ,TRANS_TYPE
+            ,CURRENCY_CODE
+            ,BASE_AMT
+            ,TRANS_FUND_NUM
+            ,TRANS_AMT
+            ,BALANCE_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{baseAmt, jdbcType=NUMERIC}
+            ,#{transFundNum, jdbcType=NUMERIC}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateBankAccFundHist" parameterType="BankAccFundHistEntity">
+        UPDATE BANK_ACC_FUND_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,BASE_AMT = #{baseAmt, jdbcType=NUMERIC}
+               ,TRANS_FUND_NUM = #{transFundNum, jdbcType=NUMERIC}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+    </update>
+
+    <delete id="deleteBankAccFundHist" parameterType="BankAccFundHistEntity">
+        DELETE FROM BANK_ACC_FUND_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+    </delete>
+
+    <select id="selectBankAccFundHist" parameterType="BankAccFundHistSearch"  resultType="BankAccFundHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,CURRENCY_CODE
+               ,BASE_AMT
+               ,TRANS_FUND_NUM
+               ,TRANS_AMT
+               ,BALANCE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC_FUND_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+    </select>
+
+    <select id="selectBankAccFundHistListTotalCnt" parameterType="BankAccFundHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM BANK_ACC_FUND_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+    </select>
+
+    <select id="selectBankAccFundHistList" parameterType="BankAccFundHistSearch"  resultType="BankAccFundHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,CURRENCY_CODE
+               ,BASE_AMT
+               ,TRANS_FUND_NUM
+               ,TRANS_AMT
+               ,BALANCE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC_FUND_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

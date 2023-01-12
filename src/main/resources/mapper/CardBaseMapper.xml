@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardBaseMapper">
+
+    <insert id="insertCardBase" parameterType="CardBaseEntity">
+        INSERT INTO CARD_BASE
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,CARD_ID
+            ,IS_TRANS_PAYABLE
+            ,IS_CASH_CARD
+            ,LINKED_BANK_CODE
+            ,ACCOUNT_NUM
+            ,CARD_BRAND
+            ,ANNUAL_FEE
+            ,ISSUE_DATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{cardId, jdbcType=VARCHAR}
+            ,#{isTransPayable, jdbcType=VARCHAR}
+            ,#{isCashCard, jdbcType=VARCHAR}
+            ,#{linkedBankCode, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{cardBrand, jdbcType=VARCHAR}
+            ,#{annualFee, jdbcType=NUMERIC}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardBase" parameterType="CardBaseEntity">
+        UPDATE CARD_BASE
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,CARD_ID = #{cardId, jdbcType=VARCHAR}
+               ,IS_TRANS_PAYABLE = #{isTransPayable, jdbcType=VARCHAR}
+               ,IS_CASH_CARD = #{isCashCard, jdbcType=VARCHAR}
+               ,LINKED_BANK_CODE = #{linkedBankCode, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,CARD_BRAND = #{cardBrand, jdbcType=VARCHAR}
+               ,ANNUAL_FEE = #{annualFee, jdbcType=NUMERIC}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND CARD_ID = #{cardId}
+    </update>
+
+    <delete id="deleteCardBase" parameterType="CardBaseEntity">
+        DELETE FROM CARD_BASE
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND CARD_ID = #{cardId}
+    </delete>
+
+    <select id="selectCardBase" parameterType="CardBaseSearch"  resultType="CardBaseEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,CARD_ID
+               ,IS_TRANS_PAYABLE
+               ,IS_CASH_CARD
+               ,LINKED_BANK_CODE
+               ,ACCOUNT_NUM
+               ,CARD_BRAND
+               ,ANNUAL_FEE
+               ,ISSUE_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_BASE
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND CARD_ID = #{cardId}
+    </select>
+
+    <select id="selectCardBaseListTotalCnt" parameterType="CardBaseSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'cardId  != null and cardId != ""'>
+           AND CARD_ID = #{cardId}
+       </if>
+    </select>
+
+    <select id="selectCardBaseList" parameterType="CardBaseSearch"  resultType="CardBaseEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, CARD_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,CARD_ID
+               ,IS_TRANS_PAYABLE
+               ,IS_CASH_CARD
+               ,LINKED_BANK_CODE
+               ,ACCOUNT_NUM
+               ,CARD_BRAND
+               ,ANNUAL_FEE
+               ,ISSUE_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'cardId  != null and cardId != ""'>
+           AND CARD_ID = #{cardId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, CARD_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

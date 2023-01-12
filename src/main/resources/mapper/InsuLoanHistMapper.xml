@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuLoanHistMapper">
+
+    <insert id="insertInsuLoanHist" parameterType="InsuLoanHistEntity">
+        INSERT INTO INSU_LOAN_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,TRANS_NO
+            ,TRANS_DTIME
+            ,CURRENCY_CODE
+            ,LOAN_PAID_AMT
+            ,INT_PAID_AMT
+            ,INT_CNT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{loanPaidAmt, jdbcType=NUMERIC}
+            ,#{intPaidAmt, jdbcType=NUMERIC}
+            ,#{intCnt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuLoanHist" parameterType="InsuLoanHistEntity">
+        UPDATE INSU_LOAN_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,LOAN_PAID_AMT = #{loanPaidAmt, jdbcType=NUMERIC}
+               ,INT_PAID_AMT = #{intPaidAmt, jdbcType=NUMERIC}
+               ,INT_CNT = #{intCnt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </update>
+
+    <delete id="deleteInsuLoanHist" parameterType="InsuLoanHistEntity">
+        DELETE FROM INSU_LOAN_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectInsuLoanHist" parameterType="InsuLoanHistSearch"  resultType="InsuLoanHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,TRANS_NO
+               ,TRANS_DTIME
+               ,CURRENCY_CODE
+               ,LOAN_PAID_AMT
+               ,INT_PAID_AMT
+               ,INT_CNT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_LOAN_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </select>
+
+    <select id="selectInsuLoanHistListTotalCnt" parameterType="InsuLoanHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_LOAN_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+    </select>
+
+    <select id="selectInsuLoanHistList" parameterType="InsuLoanHistSearch"  resultType="InsuLoanHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,TRANS_NO
+               ,TRANS_DTIME
+               ,CURRENCY_CODE
+               ,LOAN_PAID_AMT
+               ,INT_PAID_AMT
+               ,INT_CNT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_LOAN_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuBaseInsdMapper">
+
+    <insert id="insertInsuBaseInsd" parameterType="InsuBaseInsdEntity">
+        INSERT INTO INSU_BASE_INSD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,INSU_NUM
+            ,INSURED_NO
+            ,INSURED_NAME
+            ,IS_PRIMARY
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{insuredNo, jdbcType=VARCHAR}
+            ,#{insuredName, jdbcType=VARCHAR}
+            ,#{isPrimary, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuBaseInsd" parameterType="InsuBaseInsdEntity">
+        UPDATE INSU_BASE_INSD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,INSURED_NO = #{insuredNo, jdbcType=VARCHAR}
+               ,INSURED_NAME = #{insuredName, jdbcType=VARCHAR}
+               ,IS_PRIMARY = #{isPrimary, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND INSURED_NO = #{insuredNo}
+    </update>
+
+    <delete id="deleteInsuBaseInsd" parameterType="InsuBaseInsdEntity">
+        DELETE FROM INSU_BASE_INSD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND INSURED_NO = #{insuredNo}
+    </delete>
+
+    <select id="selectInsuBaseInsd" parameterType="InsuBaseInsdSearch"  resultType="InsuBaseInsdEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,INSURED_NO
+               ,INSURED_NAME
+               ,IS_PRIMARY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_BASE_INSD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND INSURED_NO = #{insuredNo}
+    </select>
+
+    <select id="selectInsuBaseInsdListTotalCnt" parameterType="InsuBaseInsdSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_BASE_INSD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'insuredNo  != null and insuredNo != ""'>
+           AND INSURED_NO = #{insuredNo}
+       </if>
+    </select>
+
+    <select id="selectInsuBaseInsdList" parameterType="InsuBaseInsdSearch"  resultType="InsuBaseInsdEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, INSURED_NO) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,INSURED_NO
+               ,INSURED_NAME
+               ,IS_PRIMARY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_BASE_INSD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'insuredNo  != null and insuredNo != ""'>
+           AND INSURED_NO = #{insuredNo}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, INSURED_NO
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.bond.repository.BondBalMapper">
+
+    <insert id="insertBondBal" parameterType="BondBalEntity">
+        INSERT INTO BOND_BAL
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,BOND_NUM
+            ,PREV_ORG_CODE
+            ,IS_DEBT_MGMT
+            ,REPAY_METHOD
+            ,BALANCE_AMT
+            ,BOND_PRINCIPAL
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{bondNum, jdbcType=VARCHAR}
+            ,#{prevOrgCode, jdbcType=VARCHAR}
+            ,#{isDebtMgmt, jdbcType=VARCHAR}
+            ,#{repayMethod, jdbcType=VARCHAR}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{bondPrincipal, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateBondBal" parameterType="BondBalEntity">
+        UPDATE BOND_BAL
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,BOND_NUM = #{bondNum, jdbcType=VARCHAR}
+               ,PREV_ORG_CODE = #{prevOrgCode, jdbcType=VARCHAR}
+               ,IS_DEBT_MGMT = #{isDebtMgmt, jdbcType=VARCHAR}
+               ,REPAY_METHOD = #{repayMethod, jdbcType=VARCHAR}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,BOND_PRINCIPAL = #{bondPrincipal, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND BOND_NUM = #{bondNum}
+    </update>
+
+    <delete id="deleteBondBal" parameterType="BondBalEntity">
+        DELETE FROM BOND_BAL
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND BOND_NUM = #{bondNum}
+    </delete>
+
+    <select id="selectBondBal" parameterType="BondBalSearch"  resultType="BondBalEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,BOND_NUM
+               ,PREV_ORG_CODE
+               ,IS_DEBT_MGMT
+               ,REPAY_METHOD
+               ,BALANCE_AMT
+               ,BOND_PRINCIPAL
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BOND_BAL
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND BOND_NUM = #{bondNum}
+    </select>
+
+    <select id="selectBondBalListTotalCnt" parameterType="BondBalSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM BOND_BAL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'bondNum  != null and bondNum != ""'>
+           AND BOND_NUM = #{bondNum}
+       </if>
+    </select>
+
+    <select id="selectBondBalList" parameterType="BondBalSearch"  resultType="BondBalEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, BOND_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,BOND_NUM
+               ,PREV_ORG_CODE
+               ,IS_DEBT_MGMT
+               ,REPAY_METHOD
+               ,BALANCE_AMT
+               ,BOND_PRINCIPAL
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BOND_BAL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'bondNum  != null and bondNum != ""'>
+           AND BOND_NUM = #{bondNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, BOND_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

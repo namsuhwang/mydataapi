@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPpayHistMapper">
+
+    <insert id="insertElecPpayHist" parameterType="ElecPpayHistEntity">
+        INSERT INTO ELEC_PPAY_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,FOB_ID
+            ,ACCOUNT_ID
+            ,TRANS_DTIME
+            ,TRANS_NO
+            ,TRANS_TYPE
+            ,TRANS_AMT
+            ,BALANCE_AMT
+            ,TRANS_ORG_CODE
+            ,TRANS_ID
+            ,TRANS_NUM
+            ,TRANS_MEMO
+            ,MERCHANT_NAME
+            ,MERCHANT_REGNO
+            ,TRANS_TITLE
+            ,TRANS_CATEGORY
+            ,PAY_METHOD
+            ,IS_SCHEDULED
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{fobId, jdbcType=VARCHAR}
+            ,#{accountId, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{transOrgCode, jdbcType=VARCHAR}
+            ,#{transId, jdbcType=VARCHAR}
+            ,#{transNum, jdbcType=VARCHAR}
+            ,#{transMemo, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{merchantRegno, jdbcType=VARCHAR}
+            ,#{transTitle, jdbcType=VARCHAR}
+            ,#{transCategory, jdbcType=VARCHAR}
+            ,#{payMethod, jdbcType=VARCHAR}
+            ,#{isScheduled, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPpayHist" parameterType="ElecPpayHistEntity">
+        UPDATE ELEC_PPAY_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,FOB_ID = #{fobId, jdbcType=VARCHAR}
+               ,ACCOUNT_ID = #{accountId, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,TRANS_ORG_CODE = #{transOrgCode, jdbcType=VARCHAR}
+               ,TRANS_ID = #{transId, jdbcType=VARCHAR}
+               ,TRANS_NUM = #{transNum, jdbcType=VARCHAR}
+               ,TRANS_MEMO = #{transMemo, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,MERCHANT_REGNO = #{merchantRegno, jdbcType=VARCHAR}
+               ,TRANS_TITLE = #{transTitle, jdbcType=VARCHAR}
+               ,TRANS_CATEGORY = #{transCategory, jdbcType=VARCHAR}
+               ,PAY_METHOD = #{payMethod, jdbcType=VARCHAR}
+               ,IS_SCHEDULED = #{isScheduled, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+    </update>
+
+    <delete id="deleteElecPpayHist" parameterType="ElecPpayHistEntity">
+        DELETE FROM ELEC_PPAY_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+    </delete>
+
+    <select id="selectElecPpayHist" parameterType="ElecPpayHistSearch"  resultType="ElecPpayHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,TRANS_AMT
+               ,BALANCE_AMT
+               ,TRANS_ORG_CODE
+               ,TRANS_ID
+               ,TRANS_NUM
+               ,TRANS_MEMO
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,TRANS_TITLE
+               ,TRANS_CATEGORY
+               ,PAY_METHOD
+               ,IS_SCHEDULED
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+    </select>
+
+    <select id="selectElecPpayHistListTotalCnt" parameterType="ElecPpayHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PPAY_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+    </select>
+
+    <select id="selectElecPpayHistList" parameterType="ElecPpayHistSearch"  resultType="ElecPpayHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, TRANS_DTIME, TRANS_NO, TRANS_TYPE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,TRANS_AMT
+               ,BALANCE_AMT
+               ,TRANS_ORG_CODE
+               ,TRANS_ID
+               ,TRANS_NUM
+               ,TRANS_MEMO
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,TRANS_TITLE
+               ,TRANS_CATEGORY
+               ,PAY_METHOD
+               ,IS_SCHEDULED
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, TRANS_DTIME, TRANS_NO, TRANS_TYPE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

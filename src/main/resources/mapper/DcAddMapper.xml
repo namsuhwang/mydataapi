@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.dc.repository.DcAddMapper">
+
+    <insert id="insertDcAdd" parameterType="DcAddEntity">
+        INSERT INTO DC_ADD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,DC_NUM
+            ,PROD_NAME
+            ,PROD_NUM
+            ,PROD_TYPE
+            ,EVAL_AMT
+            ,PRINCIPAL_AMT
+            ,HOLDING_NUM
+            ,ISSUE_DATE
+            ,EXP_DATE
+            ,INT_RATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{dcNum, jdbcType=VARCHAR}
+            ,#{prodName, jdbcType=VARCHAR}
+            ,#{prodNum, jdbcType=VARCHAR}
+            ,#{prodType, jdbcType=VARCHAR}
+            ,#{evalAmt, jdbcType=NUMERIC}
+            ,#{principalAmt, jdbcType=NUMERIC}
+            ,#{holdingNum, jdbcType=NUMERIC}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{expDate, jdbcType=VARCHAR}
+            ,#{intRate, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateDcAdd" parameterType="DcAddEntity">
+        UPDATE DC_ADD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,DC_NUM = #{dcNum, jdbcType=VARCHAR}
+               ,PROD_NAME = #{prodName, jdbcType=VARCHAR}
+               ,PROD_NUM = #{prodNum, jdbcType=VARCHAR}
+               ,PROD_TYPE = #{prodType, jdbcType=VARCHAR}
+               ,EVAL_AMT = #{evalAmt, jdbcType=NUMERIC}
+               ,PRINCIPAL_AMT = #{principalAmt, jdbcType=NUMERIC}
+               ,HOLDING_NUM = #{holdingNum, jdbcType=NUMERIC}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+           AND PROD_NAME = #{prodName}
+    </update>
+
+    <delete id="deleteDcAdd" parameterType="DcAddEntity">
+        DELETE FROM DC_ADD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+           AND PROD_NAME = #{prodName}
+    </delete>
+
+    <select id="selectDcAdd" parameterType="DcAddSearch"  resultType="DcAddEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,DC_NUM
+               ,PROD_NAME
+               ,PROD_NUM
+               ,PROD_TYPE
+               ,EVAL_AMT
+               ,PRINCIPAL_AMT
+               ,HOLDING_NUM
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,INT_RATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM DC_ADD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+           AND PROD_NAME = #{prodName}
+    </select>
+
+    <select id="selectDcAddListTotalCnt" parameterType="DcAddSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM DC_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'dcNum  != null and dcNum != ""'>
+           AND DC_NUM = #{dcNum}
+       </if>
+       <if test = 'prodName  != null and prodName != ""'>
+           AND PROD_NAME = #{prodName}
+       </if>
+    </select>
+
+    <select id="selectDcAddList" parameterType="DcAddSearch"  resultType="DcAddEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,DC_NUM
+               ,PROD_NAME
+               ,PROD_NUM
+               ,PROD_TYPE
+               ,EVAL_AMT
+               ,PRINCIPAL_AMT
+               ,HOLDING_NUM
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,INT_RATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM DC_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'dcNum  != null and dcNum != ""'>
+           AND DC_NUM = #{dcNum}
+       </if>
+       <if test = 'prodName  != null and prodName != ""'>
+           AND PROD_NAME = #{prodName}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

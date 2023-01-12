@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.bank.repository.BankAccProdMapper">
+
+    <insert id="insertBankAccProd" parameterType="BankAccProdEntity">
+        INSERT INTO BANK_ACC_PROD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,CURRENCY_CODE
+            ,BALANCE_AMT
+            ,EVAL_AMT
+            ,ISSUE_DATE
+            ,EXP_DATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{evalAmt, jdbcType=NUMERIC}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{expDate, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateBankAccProd" parameterType="BankAccProdEntity">
+        UPDATE BANK_ACC_PROD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,EVAL_AMT = #{evalAmt, jdbcType=NUMERIC}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </update>
+
+    <delete id="deleteBankAccProd" parameterType="BankAccProdEntity">
+        DELETE FROM BANK_ACC_PROD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectBankAccProd" parameterType="BankAccProdSearch"  resultType="BankAccProdEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,CURRENCY_CODE
+               ,BALANCE_AMT
+               ,EVAL_AMT
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC_PROD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </select>
+
+    <select id="selectBankAccProdListTotalCnt" parameterType="BankAccProdSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM BANK_ACC_PROD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+    </select>
+
+    <select id="selectBankAccProdList" parameterType="BankAccProdSearch"  resultType="BankAccProdEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,CURRENCY_CODE
+               ,BALANCE_AMT
+               ,EVAL_AMT
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC_PROD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

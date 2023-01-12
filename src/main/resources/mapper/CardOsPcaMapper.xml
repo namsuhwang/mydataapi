@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardOsPcaMapper">
+
+    <insert id="insertCardOsPca" parameterType="CardOsPcaEntity">
+        INSERT INTO CARD_OS_PCA
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,CARD_ID
+            ,PURCHASE_NUM
+            ,PURCHASE_DATE
+            ,SALES_DATE
+            ,PRI_APPROVED_NUM
+            ,PRI_APPROVED_DTIME
+            ,PRI_APPROVED_AMT
+            ,PRI_KRW_AMT
+            ,PRI_CURRENCY_CODE
+            ,PAY_TYPE
+            ,MERCHANT_NAME
+            ,APPROVED_AMT
+            ,COUNTRY_CODE
+            ,CURRENCY_CODE
+            ,KRW_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{cardId, jdbcType=VARCHAR}
+            ,#{purchaseNum, jdbcType=VARCHAR}
+            ,#{purchaseDate, jdbcType=VARCHAR}
+            ,#{salesDate, jdbcType=VARCHAR}
+            ,#{priApprovedNum, jdbcType=VARCHAR}
+            ,#{priApprovedDtime, jdbcType=VARCHAR}
+            ,#{priApprovedAmt, jdbcType=NUMERIC}
+            ,#{priKrwAmt, jdbcType=NUMERIC}
+            ,#{priCurrencyCode, jdbcType=VARCHAR}
+            ,#{payType, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{approvedAmt, jdbcType=NUMERIC}
+            ,#{countryCode, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{krwAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardOsPca" parameterType="CardOsPcaEntity">
+        UPDATE CARD_OS_PCA
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,CARD_ID = #{cardId, jdbcType=VARCHAR}
+               ,PURCHASE_NUM = #{purchaseNum, jdbcType=VARCHAR}
+               ,PURCHASE_DATE = #{purchaseDate, jdbcType=VARCHAR}
+               ,SALES_DATE = #{salesDate, jdbcType=VARCHAR}
+               ,PRI_APPROVED_NUM = #{priApprovedNum, jdbcType=VARCHAR}
+               ,PRI_APPROVED_DTIME = #{priApprovedDtime, jdbcType=VARCHAR}
+               ,PRI_APPROVED_AMT = #{priApprovedAmt, jdbcType=NUMERIC}
+               ,PRI_KRW_AMT = #{priKrwAmt, jdbcType=NUMERIC}
+               ,PRI_CURRENCY_CODE = #{priCurrencyCode, jdbcType=VARCHAR}
+               ,PAY_TYPE = #{payType, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,APPROVED_AMT = #{approvedAmt, jdbcType=NUMERIC}
+               ,COUNTRY_CODE = #{countryCode, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,KRW_AMT = #{krwAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND CARD_ID = #{cardId}
+           AND PURCHASE_NUM = #{purchaseNum}
+    </update>
+
+    <delete id="deleteCardOsPca" parameterType="CardOsPcaEntity">
+        DELETE FROM CARD_OS_PCA
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND CARD_ID = #{cardId}
+           AND PURCHASE_NUM = #{purchaseNum}
+    </delete>
+
+    <select id="selectCardOsPca" parameterType="CardOsPcaSearch"  resultType="CardOsPcaEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,CARD_ID
+               ,PURCHASE_NUM
+               ,PURCHASE_DATE
+               ,SALES_DATE
+               ,PRI_APPROVED_NUM
+               ,PRI_APPROVED_DTIME
+               ,PRI_APPROVED_AMT
+               ,PRI_KRW_AMT
+               ,PRI_CURRENCY_CODE
+               ,PAY_TYPE
+               ,MERCHANT_NAME
+               ,APPROVED_AMT
+               ,COUNTRY_CODE
+               ,CURRENCY_CODE
+               ,KRW_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_OS_PCA
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND CARD_ID = #{cardId}
+           AND PURCHASE_NUM = #{purchaseNum}
+    </select>
+
+    <select id="selectCardOsPcaListTotalCnt" parameterType="CardOsPcaSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_OS_PCA
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'cardId  != null and cardId != ""'>
+           AND CARD_ID = #{cardId}
+       </if>
+       <if test = 'purchaseNum  != null and purchaseNum != ""'>
+           AND PURCHASE_NUM = #{purchaseNum}
+       </if>
+    </select>
+
+    <select id="selectCardOsPcaList" parameterType="CardOsPcaSearch"  resultType="CardOsPcaEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, CARD_ID, PURCHASE_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,CARD_ID
+               ,PURCHASE_NUM
+               ,PURCHASE_DATE
+               ,SALES_DATE
+               ,PRI_APPROVED_NUM
+               ,PRI_APPROVED_DTIME
+               ,PRI_APPROVED_AMT
+               ,PRI_KRW_AMT
+               ,PRI_CURRENCY_CODE
+               ,PAY_TYPE
+               ,MERCHANT_NAME
+               ,APPROVED_AMT
+               ,COUNTRY_CODE
+               ,CURRENCY_CODE
+               ,KRW_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_OS_PCA
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'cardId  != null and cardId != ""'>
+           AND CARD_ID = #{cardId}
+       </if>
+       <if test = 'purchaseNum  != null and purchaseNum != ""'>
+           AND PURCHASE_NUM = #{purchaseNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, CARD_ID, PURCHASE_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

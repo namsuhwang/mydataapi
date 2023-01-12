@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPpayMapper">
+
+    <insert id="insertElecPpay" parameterType="ElecPpayEntity">
+        INSERT INTO ELEC_PPAY
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,FOB_ID
+            ,FOB_NAME
+            ,IS_CONSENT
+            ,REG_DATE
+            ,LIMIT_AMT
+            ,IS_CHARGE
+            ,IS_WITHDRAWABLE
+            ,CURRENCY_CODE
+            ,ACCOUNT_CNT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{fobId, jdbcType=VARCHAR}
+            ,#{fobName, jdbcType=VARCHAR}
+            ,#{isConsent, jdbcType=VARCHAR}
+            ,#{regDate, jdbcType=VARCHAR}
+            ,#{limitAmt, jdbcType=NUMERIC}
+            ,#{isCharge, jdbcType=VARCHAR}
+            ,#{isWithdrawable, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=NUMERIC}
+            ,#{accountCnt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPpay" parameterType="ElecPpayEntity">
+        UPDATE ELEC_PPAY
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,FOB_ID = #{fobId, jdbcType=VARCHAR}
+               ,FOB_NAME = #{fobName, jdbcType=VARCHAR}
+               ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,REG_DATE = #{regDate, jdbcType=VARCHAR}
+               ,LIMIT_AMT = #{limitAmt, jdbcType=NUMERIC}
+               ,IS_CHARGE = #{isCharge, jdbcType=VARCHAR}
+               ,IS_WITHDRAWABLE = #{isWithdrawable, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=NUMERIC}
+               ,ACCOUNT_CNT = #{accountCnt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+    </update>
+
+    <delete id="deleteElecPpay" parameterType="ElecPpayEntity">
+        DELETE FROM ELEC_PPAY
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+    </delete>
+
+    <select id="selectElecPpay" parameterType="ElecPpaySearch"  resultType="ElecPpayEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,FOB_NAME
+               ,IS_CONSENT
+               ,REG_DATE
+               ,LIMIT_AMT
+               ,IS_CHARGE
+               ,IS_WITHDRAWABLE
+               ,CURRENCY_CODE
+               ,ACCOUNT_CNT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+    </select>
+
+    <select id="selectElecPpayListTotalCnt" parameterType="ElecPpaySearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PPAY
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+    </select>
+
+    <select id="selectElecPpayList" parameterType="ElecPpaySearch"  resultType="ElecPpayEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, FOB_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,FOB_NAME
+               ,IS_CONSENT
+               ,REG_DATE
+               ,LIMIT_AMT
+               ,IS_CHARGE
+               ,IS_WITHDRAWABLE
+               ,CURRENCY_CODE
+               ,ACCOUNT_CNT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, FOB_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

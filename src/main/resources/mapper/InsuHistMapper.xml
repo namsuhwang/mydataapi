@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuHistMapper">
+
+    <insert id="insertInsuHist" parameterType="InsuHistEntity">
+        INSERT INTO INSU_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,INSU_NUM
+            ,TRANS_DATE
+            ,TRANS_APPLIED_MONTH
+            ,PAID_IN_CNT
+            ,PAID_AMT
+            ,CURRENCY_CODE
+            ,PAY_METHOD
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{transDate, jdbcType=VARCHAR}
+            ,#{transAppliedMonth, jdbcType=NUMERIC}
+            ,#{paidInCnt, jdbcType=NUMERIC}
+            ,#{paidAmt, jdbcType=NUMERIC}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{payMethod, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuHist" parameterType="InsuHistEntity">
+        UPDATE INSU_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,TRANS_DATE = #{transDate, jdbcType=VARCHAR}
+               ,TRANS_APPLIED_MONTH = #{transAppliedMonth, jdbcType=NUMERIC}
+               ,PAID_IN_CNT = #{paidInCnt, jdbcType=NUMERIC}
+               ,PAID_AMT = #{paidAmt, jdbcType=NUMERIC}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,PAY_METHOD = #{payMethod, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND TRANS_DATE = #{transDate}
+           AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
+           AND PAID_IN_CNT = #{paidInCnt}
+    </update>
+
+    <delete id="deleteInsuHist" parameterType="InsuHistEntity">
+        DELETE FROM INSU_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND TRANS_DATE = #{transDate}
+           AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
+           AND PAID_IN_CNT = #{paidInCnt}
+    </delete>
+
+    <select id="selectInsuHist" parameterType="InsuHistSearch"  resultType="InsuHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,TRANS_DATE
+               ,TRANS_APPLIED_MONTH
+               ,PAID_IN_CNT
+               ,PAID_AMT
+               ,CURRENCY_CODE
+               ,PAY_METHOD
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND TRANS_DATE = #{transDate}
+           AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
+           AND PAID_IN_CNT = #{paidInCnt}
+    </select>
+
+    <select id="selectInsuHistListTotalCnt" parameterType="InsuHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'transDate  != null and transDate != ""'>
+           AND TRANS_DATE = #{transDate}
+       </if>
+       <if test = 'transAppliedMonth  != null and transAppliedMonth != ""'>
+           AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
+       </if>
+       <if test = 'paidInCnt  != null and paidInCnt != ""'>
+           AND PAID_IN_CNT = #{paidInCnt}
+       </if>
+    </select>
+
+    <select id="selectInsuHistList" parameterType="InsuHistSearch"  resultType="InsuHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, TRANS_DATE, TRANS_APPLIED_MONTH, PAID_IN_CNT) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,TRANS_DATE
+               ,TRANS_APPLIED_MONTH
+               ,PAID_IN_CNT
+               ,PAID_AMT
+               ,CURRENCY_CODE
+               ,PAY_METHOD
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'transDate  != null and transDate != ""'>
+           AND TRANS_DATE = #{transDate}
+       </if>
+       <if test = 'transAppliedMonth  != null and transAppliedMonth != ""'>
+           AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
+       </if>
+       <if test = 'paidInCnt  != null and paidInCnt != ""'>
+           AND PAID_IN_CNT = #{paidInCnt}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, TRANS_DATE, TRANS_APPLIED_MONTH, PAID_IN_CNT
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

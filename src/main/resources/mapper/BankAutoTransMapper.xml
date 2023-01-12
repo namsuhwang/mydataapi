@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.bank.repository.BankAutoTransMapper">
+
+    <insert id="insertBankAutoTrans" parameterType="BankAutoTransEntity">
+        INSERT INTO BANK_AUTO_TRANS
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,SCHEDULED_ORG_CODE
+            ,SCHEDULED_ACCOUNT_NUM
+            ,SCHEDULED_AMT
+            ,SCHEDULED_CYCLE
+            ,SCHEDULED_DATE
+            ,TRANS_MEMO
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{scheduledOrgCode, jdbcType=VARCHAR}
+            ,#{scheduledAccountNum, jdbcType=VARCHAR}
+            ,#{scheduledAmt, jdbcType=NUMERIC}
+            ,#{scheduledCycle, jdbcType=VARCHAR}
+            ,#{scheduledDate, jdbcType=VARCHAR}
+            ,#{transMemo, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateBankAutoTrans" parameterType="BankAutoTransEntity">
+        UPDATE BANK_AUTO_TRANS
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,SCHEDULED_ORG_CODE = #{scheduledOrgCode, jdbcType=VARCHAR}
+               ,SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum, jdbcType=VARCHAR}
+               ,SCHEDULED_AMT = #{scheduledAmt, jdbcType=NUMERIC}
+               ,SCHEDULED_CYCLE = #{scheduledCycle, jdbcType=VARCHAR}
+               ,SCHEDULED_DATE = #{scheduledDate, jdbcType=VARCHAR}
+               ,TRANS_MEMO = #{transMemo, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+           AND SCHEDULED_AMT = #{scheduledAmt}
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+           AND SCHEDULED_DATE = #{scheduledDate}
+    </update>
+
+    <delete id="deleteBankAutoTrans" parameterType="BankAutoTransEntity">
+        DELETE FROM BANK_AUTO_TRANS
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+           AND SCHEDULED_AMT = #{scheduledAmt}
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+           AND SCHEDULED_DATE = #{scheduledDate}
+    </delete>
+
+    <select id="selectBankAutoTrans" parameterType="BankAutoTransSearch"  resultType="BankAutoTransEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SCHEDULED_ORG_CODE
+               ,SCHEDULED_ACCOUNT_NUM
+               ,SCHEDULED_AMT
+               ,SCHEDULED_CYCLE
+               ,SCHEDULED_DATE
+               ,TRANS_MEMO
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_AUTO_TRANS
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+           AND SCHEDULED_AMT = #{scheduledAmt}
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+           AND SCHEDULED_DATE = #{scheduledDate}
+    </select>
+
+    <select id="selectBankAutoTransListTotalCnt" parameterType="BankAutoTransSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM BANK_AUTO_TRANS
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'scheduledOrgCode  != null and scheduledOrgCode != ""'>
+           AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+       </if>
+       <if test = 'scheduledAccountNum  != null and scheduledAccountNum != ""'>
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+       </if>
+       <if test = 'scheduledAmt  != null and scheduledAmt != ""'>
+           AND SCHEDULED_AMT = #{scheduledAmt}
+       </if>
+       <if test = 'scheduledCycle  != null and scheduledCycle != ""'>
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+       </if>
+       <if test = 'scheduledDate  != null and scheduledDate != ""'>
+           AND SCHEDULED_DATE = #{scheduledDate}
+       </if>
+    </select>
+
+    <select id="selectBankAutoTransList" parameterType="BankAutoTransSearch"  resultType="BankAutoTransEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SCHEDULED_ORG_CODE, SCHEDULED_ACCOUNT_NUM, SCHEDULED_AMT, SCHEDULED_CYCLE, SCHEDULED_DATE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SCHEDULED_ORG_CODE
+               ,SCHEDULED_ACCOUNT_NUM
+               ,SCHEDULED_AMT
+               ,SCHEDULED_CYCLE
+               ,SCHEDULED_DATE
+               ,TRANS_MEMO
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_AUTO_TRANS
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'scheduledOrgCode  != null and scheduledOrgCode != ""'>
+           AND SCHEDULED_ORG_CO DE = #{scheduledOrgCode}
+       </if>
+       <if test = 'scheduledAccountNum  != null and scheduledAccountNum != ""'>
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+       </if>
+       <if test = 'scheduledAmt  != null and scheduledAmt != ""'>
+           AND SCHEDULED_AMT = #{scheduledAmt}
+       </if>
+       <if test = 'scheduledCycle  != null and scheduledCycle != ""'>
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+       </if>
+       <if test = 'scheduledDate  != null and scheduledDate != ""'>
+           AND SCHEDULED_DATE = #{scheduledDate}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SCHEDULED_ORG_CODE, SCHEDULED_ACCOUNT_NUM, SCHEDULED_AMT, SCHEDULED_CYCLE, SCHEDULED_DATE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

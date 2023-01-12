@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardAprOsHistMapper">
+
+    <insert id="insertCardAprOsHist" parameterType="CardAprOsHistEntity">
+        INSERT INTO CARD_APR_OS_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,APPROVED_DTIME
+            ,APPROVED_NUM
+            ,STATUS
+            ,PAY_TYPE
+            ,TRANS_DTIME
+            ,MERCHANT_NAME
+            ,APPROVED_AMT
+            ,MODIFIED_AMT
+            ,COUNTRY_CODE
+            ,CURRENCY_CODE
+            ,KRW_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{approvedDtime, jdbcType=VARCHAR}
+            ,#{approvedNum, jdbcType=VARCHAR}
+            ,#{status, jdbcType=VARCHAR}
+            ,#{payType, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{approvedAmt, jdbcType=NUMERIC}
+            ,#{modifiedAmt, jdbcType=NUMERIC}
+            ,#{countryCode, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{krwAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardAprOsHist" parameterType="CardAprOsHistEntity">
+        UPDATE CARD_APR_OS_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,APPROVED_DTIME = #{approvedDtime, jdbcType=VARCHAR}
+               ,APPROVED_NUM = #{approvedNum, jdbcType=VARCHAR}
+               ,STATUS = #{status, jdbcType=VARCHAR}
+               ,PAY_TYPE = #{payType, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,APPROVED_AMT = #{approvedAmt, jdbcType=NUMERIC}
+               ,MODIFIED_AMT = #{modifiedAmt, jdbcType=NUMERIC}
+               ,COUNTRY_CODE = #{countryCode, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,KRW_AMT = #{krwAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND APPROVED_DTIME = #{approvedDtime}
+           AND APPROVED_NUM = #{approvedNum}
+           AND STATUS = #{status}
+    </update>
+
+    <delete id="deleteCardAprOsHist" parameterType="CardAprOsHistEntity">
+        DELETE FROM CARD_APR_OS_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND APPROVED_DTIME = #{approvedDtime}
+           AND APPROVED_NUM = #{approvedNum}
+           AND STATUS = #{status}
+    </delete>
+
+    <select id="selectCardAprOsHist" parameterType="CardAprOsHistSearch"  resultType="CardAprOsHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,APPROVED_DTIME
+               ,APPROVED_NUM
+               ,STATUS
+               ,PAY_TYPE
+               ,TRANS_DTIME
+               ,MERCHANT_NAME
+               ,APPROVED_AMT
+               ,MODIFIED_AMT
+               ,COUNTRY_CODE
+               ,CURRENCY_CODE
+               ,KRW_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_APR_OS_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND APPROVED_DTIME = #{approvedDtime}
+           AND APPROVED_NUM = #{approvedNum}
+           AND STATUS = #{status}
+    </select>
+
+    <select id="selectCardAprOsHistListTotalCnt" parameterType="CardAprOsHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_APR_OS_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'approvedDtime  != null and approvedDtime != ""'>
+           AND APPROVED_DTIME = #{approvedDtime}
+       </if>
+       <if test = 'approvedNum  != null and approvedNum != ""'>
+           AND APPROVED_NUM = #{approvedNum}
+       </if>
+       <if test = 'status  != null and status != ""'>
+           AND STATUS = #{status}
+       </if>
+    </select>
+
+    <select id="selectCardAprOsHistList" parameterType="CardAprOsHistSearch"  resultType="CardAprOsHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, APPROVED_DTIME, APPROVED_NUM, STATUS) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,APPROVED_DTIME
+               ,APPROVED_NUM
+               ,STATUS
+               ,PAY_TYPE
+               ,TRANS_DTIME
+               ,MERCHANT_NAME
+               ,APPROVED_AMT
+               ,MODIFIED_AMT
+               ,COUNTRY_CODE
+               ,CURRENCY_CODE
+               ,KRW_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_APR_OS_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'approvedDtime  != null and approvedDtime != ""'>
+           AND APPROVED_DTIME = #{approvedDtime}
+       </if>
+       <if test = 'approvedNum  != null and approvedNum != ""'>
+           AND APPROVED_NUM = #{approvedNum}
+       </if>
+       <if test = 'status  != null and status != ""'>
+           AND STATUS = #{status}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, APPROVED_DTIME, APPROVED_NUM, STATUS
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+package com.kpcnc.mydataapi.api.load.bond.repository;
+
+import com.kpcnc.mydataapi.api.load.bond.models.BondSearch;
+import com.kpcnc.mydataapi.api.load.bond.models.entity.BondEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public interface BondMapper{
+    int insertBond(BondEntity dom);
+
+    int updateBond(BondEntity dom);
+
+    int deleteBond(BondEntity dom);
+
+    BondEntity selectBond(BondSearch dom);
+
+    Long selectBondListTotalCnt(BondSearch dom);
+
+    List<BondEntity> selectBondList(BondSearch dom);
+}

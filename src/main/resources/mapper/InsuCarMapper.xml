@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuCarMapper">
+
+    <insert id="insertInsuCar" parameterType="InsuCarEntity">
+        INSERT INTO INSU_CAR
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,INSU_NUM
+            ,CAR_NUMBER
+            ,CAR_INSU_TYPE
+            ,CAR_NAME
+            ,START_DATE
+            ,END_DATE
+            ,CONTRACT_AGE
+            ,CONTRACT_DRIVER
+            ,IS_OWN_DMG_COVERAGE
+            ,SELF_PAY_RATE
+            ,SELF_PAY_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{carNumber, jdbcType=VARCHAR}
+            ,#{carInsuType, jdbcType=VARCHAR}
+            ,#{carName, jdbcType=VARCHAR}
+            ,#{startDate, jdbcType=VARCHAR}
+            ,#{endDate, jdbcType=VARCHAR}
+            ,#{contractAge, jdbcType=VARCHAR}
+            ,#{contractDriver, jdbcType=VARCHAR}
+            ,#{isOwnDmgCoverage, jdbcType=VARCHAR}
+            ,#{selfPayRate, jdbcType=VARCHAR}
+            ,#{selfPayAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuCar" parameterType="InsuCarEntity">
+        UPDATE INSU_CAR
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,CAR_NUMBER = #{carNumber, jdbcType=VARCHAR}
+               ,CAR_INSU_TYPE = #{carInsuType, jdbcType=VARCHAR}
+               ,CAR_NAME = #{carName, jdbcType=VARCHAR}
+               ,START_DATE = #{startDate, jdbcType=VARCHAR}
+               ,END_DATE = #{endDate, jdbcType=VARCHAR}
+               ,CONTRACT_AGE = #{contractAge, jdbcType=VARCHAR}
+               ,CONTRACT_DRIVER = #{contractDriver, jdbcType=VARCHAR}
+               ,IS_OWN_DMG_COVERAGE = #{isOwnDmgCoverage, jdbcType=VARCHAR}
+               ,SELF_PAY_RATE = #{selfPayRate, jdbcType=VARCHAR}
+               ,SELF_PAY_AMT = #{selfPayAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND CAR_NUMBER = #{carNumber}
+           AND CAR_INSU_TYPE = #{carInsuType}
+    </update>
+
+    <delete id="deleteInsuCar" parameterType="InsuCarEntity">
+        DELETE FROM INSU_CAR
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND CAR_NUMBER = #{carNumber}
+           AND CAR_INSU_TYPE = #{carInsuType}
+    </delete>
+
+    <select id="selectInsuCar" parameterType="InsuCarSearch"  resultType="InsuCarEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,CAR_NUMBER
+               ,CAR_INSU_TYPE
+               ,CAR_NAME
+               ,START_DATE
+               ,END_DATE
+               ,CONTRACT_AGE
+               ,CONTRACT_DRIVER
+               ,IS_OWN_DMG_COVERAGE
+               ,SELF_PAY_RATE
+               ,SELF_PAY_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_CAR
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND CAR_NUMBER = #{carNumber}
+           AND CAR_INSU_TYPE = #{carInsuType}
+    </select>
+
+    <select id="selectInsuCarListTotalCnt" parameterType="InsuCarSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_CAR
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'carNumber  != null and carNumber != ""'>
+           AND CAR_NUMBER = #{carNumber}
+       </if>
+       <if test = 'carInsuType  != null and carInsuType != ""'>
+           AND CAR_INSU_TYPE = #{carInsuType}
+       </if>
+    </select>
+
+    <select id="selectInsuCarList" parameterType="InsuCarSearch"  resultType="InsuCarEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CAR_NUMBER, CAR_INSU_TYPE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,CAR_NUMBER
+               ,CAR_INSU_TYPE
+               ,CAR_NAME
+               ,START_DATE
+               ,END_DATE
+               ,CONTRACT_AGE
+               ,CONTRACT_DRIVER
+               ,IS_OWN_DMG_COVERAGE
+               ,SELF_PAY_RATE
+               ,SELF_PAY_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_CAR
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'carNumber  != null and carNumber != ""'>
+           AND CAR_NUMBER = #{carNumber}
+       </if>
+       <if test = 'carInsuType  != null and carInsuType != ""'>
+           AND CAR_INSU_TYPE = #{carInsuType}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CAR_NUMBER, CAR_INSU_TYPE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

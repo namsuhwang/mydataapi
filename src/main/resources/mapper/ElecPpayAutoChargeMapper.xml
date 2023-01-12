@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPpayAutoChargeMapper">
+
+    <insert id="insertElecPpayAutoCharge" parameterType="ElecPpayAutoChargeEntity">
+        INSERT INTO ELEC_PPAY_AUTO_CHARGE
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,FOB_ID
+            ,ACCOUNT_ID
+            ,AUTO_CHARGE_SEQ
+            ,CHARGE_ORG_CODE
+            ,CHARGE_ACCOUNT_NUM
+            ,CHARGE_OPTION
+            ,CHARGE_DAY
+            ,CHARGE_BASE_AMT
+            ,CHARGE_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{fobId, jdbcType=VARCHAR}
+            ,#{accountId, jdbcType=VARCHAR}
+            ,#{autoChargeSeq, jdbcType=NUMERIC}
+            ,#{chargeOrgCode, jdbcType=VARCHAR}
+            ,#{chargeAccountNum, jdbcType=VARCHAR}
+            ,#{chargeOption, jdbcType=VARCHAR}
+            ,#{chargeDay, jdbcType=VARCHAR}
+            ,#{chargeBaseAmt, jdbcType=NUMERIC}
+            ,#{chargeAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPpayAutoCharge" parameterType="ElecPpayAutoChargeEntity">
+        UPDATE ELEC_PPAY_AUTO_CHARGE
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,FOB_ID = #{fobId, jdbcType=VARCHAR}
+               ,ACCOUNT_ID = #{accountId, jdbcType=VARCHAR}
+               ,AUTO_CHARGE_SEQ = #{autoChargeSeq, jdbcType=NUMERIC}
+               ,CHARGE_ORG_CODE = #{chargeOrgCode, jdbcType=VARCHAR}
+               ,CHARGE_ACCOUNT_NUM = #{chargeAccountNum, jdbcType=VARCHAR}
+               ,CHARGE_OPTION = #{chargeOption, jdbcType=VARCHAR}
+               ,CHARGE_DAY = #{chargeDay, jdbcType=VARCHAR}
+               ,CHARGE_BASE_AMT = #{chargeBaseAmt, jdbcType=NUMERIC}
+               ,CHARGE_AMT = #{chargeAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+           AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
+           AND CHARGE_ORG_CODE = #{chargeOrgCode}
+    </update>
+
+    <delete id="deleteElecPpayAutoCharge" parameterType="ElecPpayAutoChargeEntity">
+        DELETE FROM ELEC_PPAY_AUTO_CHARGE
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+           AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
+           AND CHARGE_ORG_CODE = #{chargeOrgCode}
+    </delete>
+
+    <select id="selectElecPpayAutoCharge" parameterType="ElecPpayAutoChargeSearch"  resultType="ElecPpayAutoChargeEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,AUTO_CHARGE_SEQ
+               ,CHARGE_ORG_CODE
+               ,CHARGE_ACCOUNT_NUM
+               ,CHARGE_OPTION
+               ,CHARGE_DAY
+               ,CHARGE_BASE_AMT
+               ,CHARGE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_AUTO_CHARGE
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+           AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
+           AND CHARGE_ORG_CODE = #{chargeOrgCode}
+    </select>
+
+    <select id="selectElecPpayAutoChargeListTotalCnt" parameterType="ElecPpayAutoChargeSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PPAY_AUTO_CHARGE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+       <if test = 'autoChargeSeq  != null and autoChargeSeq != ""'>
+           AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
+       </if>
+       <if test = 'chargeOrgCode  != null and chargeOrgCode != ""'>
+           AND CHARGE_ORG_CODE = #{chargeOrgCode}
+       </if>
+    </select>
+
+    <select id="selectElecPpayAutoChargeList" parameterType="ElecPpayAutoChargeSearch"  resultType="ElecPpayAutoChargeEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, AUTO_CHARGE_SEQ, CHARGE_ORG_CODE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,AUTO_CHARGE_SEQ
+               ,CHARGE_ORG_CODE
+               ,CHARGE_ACCOUNT_NUM
+               ,CHARGE_OPTION
+               ,CHARGE_DAY
+               ,CHARGE_BASE_AMT
+               ,CHARGE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_AUTO_CHARGE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+       <if test = 'autoChargeSeq  != null and autoChargeSeq != ""'>
+           AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
+       </if>
+       <if test = 'chargeOrgCode  != null and chargeOrgCode != ""'>
+           AND CHARGE_ORG_CODE = #{chargeOrgCode}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, AUTO_CHARGE_SEQ, CHARGE_ORG_CODE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

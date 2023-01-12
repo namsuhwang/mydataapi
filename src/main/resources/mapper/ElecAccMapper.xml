@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecAccMapper">
+
+    <insert id="insertElecAcc" parameterType="ElecAccEntity">
+        INSERT INTO ELEC_ACC
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,SUB_KEY
+            ,ACCOUNT_ID
+            ,IS_CONSENT
+            ,REG_DATE
+            ,IS_PAY
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{subKey, jdbcType=VARCHAR}
+            ,#{accountId, jdbcType=VARCHAR}
+            ,#{isConsent, jdbcType=VARCHAR}
+            ,#{regDate, jdbcType=VARCHAR}
+            ,#{isPay, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecAcc" parameterType="ElecAccEntity">
+        UPDATE ELEC_ACC
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,SUB_KEY = #{subKey, jdbcType=VARCHAR}
+               ,ACCOUNT_ID = #{accountId, jdbcType=VARCHAR}
+               ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,REG_DATE = #{regDate, jdbcType=VARCHAR}
+               ,IS_PAY = #{isPay, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND ACCOUNT_ID = #{accountId}
+    </update>
+
+    <delete id="deleteElecAcc" parameterType="ElecAccEntity">
+        DELETE FROM ELEC_ACC
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND ACCOUNT_ID = #{accountId}
+    </delete>
+
+    <select id="selectElecAcc" parameterType="ElecAccSearch"  resultType="ElecAccEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,SUB_KEY
+               ,ACCOUNT_ID
+               ,IS_CONSENT
+               ,REG_DATE
+               ,IS_PAY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_ACC
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND ACCOUNT_ID = #{accountId}
+    </select>
+
+    <select id="selectElecAccListTotalCnt" parameterType="ElecAccSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_ACC
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'subKey  != null and subKey != ""'>
+           AND SUB_KEY = #{subKey}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+    </select>
+
+    <select id="selectElecAccList" parameterType="ElecAccSearch"  resultType="ElecAccEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, ACCOUNT_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,SUB_KEY
+               ,ACCOUNT_ID
+               ,IS_CONSENT
+               ,REG_DATE
+               ,IS_PAY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_ACC
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'subKey  != null and subKey != ""'>
+           AND SUB_KEY = #{subKey}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, ACCOUNT_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

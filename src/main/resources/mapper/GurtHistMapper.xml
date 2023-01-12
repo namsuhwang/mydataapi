@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.gurt.repository.GurtHistMapper">
+
+    <insert id="insertGurtHist" parameterType="GurtHistEntity">
+        INSERT INTO GURT_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,INSU_NUM
+            ,PAID_IN_CNT
+            ,TRANS_DATE
+            ,PAID_AMT
+            ,PAY_METHOD
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{paidInCnt, jdbcType=NUMERIC}
+            ,#{transDate, jdbcType=VARCHAR}
+            ,#{paidAmt, jdbcType=NUMERIC}
+            ,#{payMethod, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateGurtHist" parameterType="GurtHistEntity">
+        UPDATE GURT_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,PAID_IN_CNT = #{paidInCnt, jdbcType=NUMERIC}
+               ,TRANS_DATE = #{transDate, jdbcType=VARCHAR}
+               ,PAID_AMT = #{paidAmt, jdbcType=NUMERIC}
+               ,PAY_METHOD = #{payMethod, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND PAID_IN_CNT = #{paidInCnt}
+           AND TRANS_DATE = #{transDate}
+    </update>
+
+    <delete id="deleteGurtHist" parameterType="GurtHistEntity">
+        DELETE FROM GURT_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND PAID_IN_CNT = #{paidInCnt}
+           AND TRANS_DATE = #{transDate}
+    </delete>
+
+    <select id="selectGurtHist" parameterType="GurtHistSearch"  resultType="GurtHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,PAID_IN_CNT
+               ,TRANS_DATE
+               ,PAID_AMT
+               ,PAY_METHOD
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM GURT_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND PAID_IN_CNT = #{paidInCnt}
+           AND TRANS_DATE = #{transDate}
+    </select>
+
+    <select id="selectGurtHistListTotalCnt" parameterType="GurtHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM GURT_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'paidInCnt  != null and paidInCnt != ""'>
+           AND PAID_IN_CNT = #{paidInCnt}
+       </if>
+       <if test = 'transDate  != null and transDate != ""'>
+           AND TRANS_DATE = #{transDate}
+       </if>
+    </select>
+
+    <select id="selectGurtHistList" parameterType="GurtHistSearch"  resultType="GurtHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, PAID_IN_CNT, TRANS_DATE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,PAID_IN_CNT
+               ,TRANS_DATE
+               ,PAID_AMT
+               ,PAY_METHOD
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM GURT_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'paidInCnt  != null and paidInCnt != ""'>
+           AND PAID_IN_CNT = #{paidInCnt}
+       </if>
+       <if test = 'transDate  != null and transDate != ""'>
+           AND TRANS_DATE = #{transDate}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, PAID_IN_CNT, TRANS_DATE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

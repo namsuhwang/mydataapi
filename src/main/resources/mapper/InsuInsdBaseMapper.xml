@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuInsdBaseMapper">
+
+    <insert id="insertInsuInsdBase" parameterType="InsuInsdBaseEntity">
+        INSERT INTO INSU_INSD_BASE
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,INSU_NUM
+            ,IS_RENEWABLE
+            ,ISSUE_DATE
+            ,EXP_DATE
+            ,FACE_AMT
+            ,CURRENCY_CODE
+            ,IS_VARIABLE
+            ,IS_UNIVERSAL
+            ,ISSUER_NAME
+            ,IS_PRIMARY
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{isRenewable, jdbcType=VARCHAR}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{expDate, jdbcType=VARCHAR}
+            ,#{faceAmt, jdbcType=NUMERIC}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{isVariable, jdbcType=VARCHAR}
+            ,#{isUniversal, jdbcType=VARCHAR}
+            ,#{issuerName, jdbcType=VARCHAR}
+            ,#{isPrimary, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuInsdBase" parameterType="InsuInsdBaseEntity">
+        UPDATE INSU_INSD_BASE
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,IS_RENEWABLE = #{isRenewable, jdbcType=VARCHAR}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,FACE_AMT = #{faceAmt, jdbcType=NUMERIC}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,IS_VARIABLE = #{isVariable, jdbcType=VARCHAR}
+               ,IS_UNIVERSAL = #{isUniversal, jdbcType=VARCHAR}
+               ,ISSUER_NAME = #{issuerName, jdbcType=VARCHAR}
+               ,IS_PRIMARY = #{isPrimary, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </update>
+
+    <delete id="deleteInsuInsdBase" parameterType="InsuInsdBaseEntity">
+        DELETE FROM INSU_INSD_BASE
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </delete>
+
+    <select id="selectInsuInsdBase" parameterType="InsuInsdBaseSearch"  resultType="InsuInsdBaseEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,IS_RENEWABLE
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,FACE_AMT
+               ,CURRENCY_CODE
+               ,IS_VARIABLE
+               ,IS_UNIVERSAL
+               ,ISSUER_NAME
+               ,IS_PRIMARY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_INSD_BASE
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </select>
+
+    <select id="selectInsuInsdBaseListTotalCnt" parameterType="InsuInsdBaseSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_INSD_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+    </select>
+
+    <select id="selectInsuInsdBaseList" parameterType="InsuInsdBaseSearch"  resultType="InsuInsdBaseEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,IS_RENEWABLE
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,FACE_AMT
+               ,CURRENCY_CODE
+               ,IS_VARIABLE
+               ,IS_UNIVERSAL
+               ,ISSUER_NAME
+               ,IS_PRIMARY
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_INSD_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

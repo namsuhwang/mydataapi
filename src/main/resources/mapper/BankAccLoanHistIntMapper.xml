@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.bank.repository.BankAccLoanHistIntMapper">
+
+    <insert id="insertBankAccLoanHistInt" parameterType="BankAccLoanHistIntEntity">
+        INSERT INTO BANK_ACC_LOAN_HIST_INT
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,SEQNO
+            ,TRANS_DTIME
+            ,TRANS_NO
+            ,TRANS_TYPE
+            ,INT_START_DATE
+            ,INT_END_DATE
+            ,INT_RATE
+            ,APPLIED_INT_AMT
+            ,INT_TYPE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{intStartDate, jdbcType=VARCHAR}
+            ,#{intEndDate, jdbcType=VARCHAR}
+            ,#{intRate, jdbcType=NUMERIC}
+            ,#{appliedIntAmt, jdbcType=NUMERIC}
+            ,#{intType, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateBankAccLoanHistInt" parameterType="BankAccLoanHistIntEntity">
+        UPDATE BANK_ACC_LOAN_HIST_INT
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,INT_START_DATE = #{intStartDate, jdbcType=VARCHAR}
+               ,INT_END_DATE = #{intEndDate, jdbcType=VARCHAR}
+               ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,APPLIED_INT_AMT = #{appliedIntAmt, jdbcType=NUMERIC}
+               ,INT_TYPE = #{intType, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+           AND INT_START_DATE = #{intStartDate}
+           AND INT_END_DATE = #{intEndDate}
+    </update>
+
+    <delete id="deleteBankAccLoanHistInt" parameterType="BankAccLoanHistIntEntity">
+        DELETE FROM BANK_ACC_LOAN_HIST_INT
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+           AND INT_START_DATE = #{intStartDate}
+           AND INT_END_DATE = #{intEndDate}
+    </delete>
+
+    <select id="selectBankAccLoanHistInt" parameterType="BankAccLoanHistIntSearch"  resultType="BankAccLoanHistIntEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,INT_START_DATE
+               ,INT_END_DATE
+               ,INT_RATE
+               ,APPLIED_INT_AMT
+               ,INT_TYPE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC_LOAN_HIST_INT
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_TYPE = #{transType}
+           AND INT_START_DATE = #{intStartDate}
+           AND INT_END_DATE = #{intEndDate}
+    </select>
+
+    <select id="selectBankAccLoanHistIntListTotalCnt" parameterType="BankAccLoanHistIntSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM BANK_ACC_LOAN_HIST_INT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+       <if test = 'intStartDate  != null and intStartDate != ""'>
+           AND INT_START_DATE = #{intStartDate}
+       </if>
+       <if test = 'intEndDate  != null and intEndDate != ""'>
+           AND INT_END_DATE = #{intEndDate}
+       </if>
+    </select>
+
+    <select id="selectBankAccLoanHistIntList" parameterType="BankAccLoanHistIntSearch"  resultType="BankAccLoanHistIntEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE, INT_START_DATE, INT_END_DATE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,INT_START_DATE
+               ,INT_END_DATE
+               ,INT_RATE
+               ,APPLIED_INT_AMT
+               ,INT_TYPE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM BANK_ACC_LOAN_HIST_INT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+       <if test = 'intStartDate  != null and intStartDate != ""'>
+           AND INT_START_DATE = #{intStartDate}
+       </if>
+       <if test = 'intEndDate  != null and intEndDate != ""'>
+           AND INT_END_DATE = #{intEndDate}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE, INT_START_DATE, INT_END_DATE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

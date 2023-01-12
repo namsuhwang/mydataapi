@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuLoanBaseMapper">
+
+    <insert id="insertInsuLoanBase" parameterType="InsuLoanBaseEntity">
+        INSERT INTO INSU_LOAN_BASE
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,LOAN_START_DATE
+            ,LOAN_EXP_DATE
+            ,REPAY_METHOD
+            ,INSU_NUM
+            ,REPAY_ORG_CODE
+            ,REPAY_ACCOUNT_NUM
+            ,REPAY_DATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{loanStartDate, jdbcType=VARCHAR}
+            ,#{loanExpDate, jdbcType=VARCHAR}
+            ,#{repayMethod, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{repayOrgCode, jdbcType=VARCHAR}
+            ,#{repayAccountNum, jdbcType=VARCHAR}
+            ,#{repayDate, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuLoanBase" parameterType="InsuLoanBaseEntity">
+        UPDATE INSU_LOAN_BASE
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,LOAN_START_DATE = #{loanStartDate, jdbcType=VARCHAR}
+               ,LOAN_EXP_DATE = #{loanExpDate, jdbcType=VARCHAR}
+               ,REPAY_METHOD = #{repayMethod, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,REPAY_ORG_CODE = #{repayOrgCode, jdbcType=VARCHAR}
+               ,REPAY_ACCOUNT_NUM = #{repayAccountNum, jdbcType=VARCHAR}
+               ,REPAY_DATE = #{repayDate, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </update>
+
+    <delete id="deleteInsuLoanBase" parameterType="InsuLoanBaseEntity">
+        DELETE FROM INSU_LOAN_BASE
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectInsuLoanBase" parameterType="InsuLoanBaseSearch"  resultType="InsuLoanBaseEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,LOAN_START_DATE
+               ,LOAN_EXP_DATE
+               ,REPAY_METHOD
+               ,INSU_NUM
+               ,REPAY_ORG_CODE
+               ,REPAY_ACCOUNT_NUM
+               ,REPAY_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_LOAN_BASE
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </select>
+
+    <select id="selectInsuLoanBaseListTotalCnt" parameterType="InsuLoanBaseSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_LOAN_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+    </select>
+
+    <select id="selectInsuLoanBaseList" parameterType="InsuLoanBaseSearch"  resultType="InsuLoanBaseEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,LOAN_START_DATE
+               ,LOAN_EXP_DATE
+               ,REPAY_METHOD
+               ,INSU_NUM
+               ,REPAY_ORG_CODE
+               ,REPAY_ACCOUNT_NUM
+               ,REPAY_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_LOAN_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

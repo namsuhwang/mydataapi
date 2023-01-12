@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.dc.repository.DcHistMapper">
+
+    <insert id="insertDcHist" parameterType="DcHistEntity">
+        INSERT INTO DC_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,DC_NUM
+            ,TRANS_DTIME
+            ,TRANS_NO
+            ,TRANS_TYPE
+            ,TRANS_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{dcNum, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateDcHist" parameterType="DcHistEntity">
+        UPDATE DC_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,DC_NUM = #{dcNum, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+           AND TRANS_DTIME = #{transDtime}
+    </update>
+
+    <delete id="deleteDcHist" parameterType="DcHistEntity">
+        DELETE FROM DC_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+           AND TRANS_DTIME = #{transDtime}
+    </delete>
+
+    <select id="selectDcHist" parameterType="DcHistSearch"  resultType="DcHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,DC_NUM
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,TRANS_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM DC_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+           AND TRANS_DTIME = #{transDtime}
+    </select>
+
+    <select id="selectDcHistListTotalCnt" parameterType="DcHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM DC_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'dcNum  != null and dcNum != ""'>
+           AND DC_NUM = #{dcNum}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+    </select>
+
+    <select id="selectDcHistList" parameterType="DcHistSearch"  resultType="DcHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, DC_NUM, TRANS_DTIME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,DC_NUM
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,TRANS_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM DC_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'dcNum  != null and dcNum != ""'>
+           AND DC_NUM = #{dcNum}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, DC_NUM, TRANS_DTIME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

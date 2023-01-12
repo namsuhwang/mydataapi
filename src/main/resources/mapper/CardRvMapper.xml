@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardRvMapper">
+
+    <insert id="insertCardRv" parameterType="CardRvEntity">
+        INSERT INTO CARD_RV
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,REQ_DATE
+            ,END_DATE
+            ,CLOSE_DATE
+            ,MIN_PAY_RATE
+            ,MIN_PAY_AMT
+            ,AGREED_PAY_RATE
+            ,AGREED_PAY_AMT
+            ,REMAINED_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{reqDate, jdbcType=VARCHAR}
+            ,#{endDate, jdbcType=VARCHAR}
+            ,#{closeDate, jdbcType=VARCHAR}
+            ,#{minPayRate, jdbcType=NUMERIC}
+            ,#{minPayAmt, jdbcType=NUMERIC}
+            ,#{agreedPayRate, jdbcType=NUMERIC}
+            ,#{agreedPayAmt, jdbcType=NUMERIC}
+            ,#{remainedAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardRv" parameterType="CardRvEntity">
+        UPDATE CARD_RV
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,REQ_DATE = #{reqDate, jdbcType=VARCHAR}
+               ,END_DATE = #{endDate, jdbcType=VARCHAR}
+               ,CLOSE_DATE = #{closeDate, jdbcType=VARCHAR}
+               ,MIN_PAY_RATE = #{minPayRate, jdbcType=NUMERIC}
+               ,MIN_PAY_AMT = #{minPayAmt, jdbcType=NUMERIC}
+               ,AGREED_PAY_RATE = #{agreedPayRate, jdbcType=NUMERIC}
+               ,AGREED_PAY_AMT = #{agreedPayAmt, jdbcType=NUMERIC}
+               ,REMAINED_AMT = #{remainedAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND REQ_DATE = #{reqDate}
+           AND END_DATE = #{endDate}
+    </update>
+
+    <delete id="deleteCardRv" parameterType="CardRvEntity">
+        DELETE FROM CARD_RV
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND REQ_DATE = #{reqDate}
+           AND END_DATE = #{endDate}
+    </delete>
+
+    <select id="selectCardRv" parameterType="CardRvSearch"  resultType="CardRvEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,REQ_DATE
+               ,END_DATE
+               ,CLOSE_DATE
+               ,MIN_PAY_RATE
+               ,MIN_PAY_AMT
+               ,AGREED_PAY_RATE
+               ,AGREED_PAY_AMT
+               ,REMAINED_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_RV
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND REQ_DATE = #{reqDate}
+           AND END_DATE = #{endDate}
+    </select>
+
+    <select id="selectCardRvListTotalCnt" parameterType="CardRvSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_RV
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'reqDate  != null and reqDate != ""'>
+           AND REQ_DATE = #{reqDate}
+       </if>
+       <if test = 'endDate  != null and endDate != ""'>
+           AND END_DATE = #{endDate}
+       </if>
+    </select>
+
+    <select id="selectCardRvList" parameterType="CardRvSearch"  resultType="CardRvEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, REQ_DATE, END_DATE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,REQ_DATE
+               ,END_DATE
+               ,CLOSE_DATE
+               ,MIN_PAY_RATE
+               ,MIN_PAY_AMT
+               ,AGREED_PAY_RATE
+               ,AGREED_PAY_AMT
+               ,REMAINED_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_RV
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'reqDate  != null and reqDate != ""'>
+           AND REQ_DATE = #{reqDate}
+       </if>
+       <if test = 'endDate  != null and endDate != ""'>
+           AND END_DATE = #{endDate}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, REQ_DATE, END_DATE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

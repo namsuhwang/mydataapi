@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.insu.repository.InsuInsdSccontMapper">
+
+    <insert id="insertInsuInsdSccont" parameterType="InsuInsdSccontEntity">
+        INSERT INTO INSU_INSD_SCCONT
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,INSU_NUM
+            ,CONTRACT_NAME
+            ,CONTRACT_STATUS
+            ,CONTRACT_EXP_DATE
+            ,CONTRACT_FACE_AMT
+            ,CURRENCY_CODE
+            ,IS_REQUIRED
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{insuNum, jdbcType=VARCHAR}
+            ,#{contractName, jdbcType=VARCHAR}
+            ,#{contractStatus, jdbcType=VARCHAR}
+            ,#{contractExpDate, jdbcType=VARCHAR}
+            ,#{contractFaceAmt, jdbcType=NUMERIC}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{isRequired, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInsuInsdSccont" parameterType="InsuInsdSccontEntity">
+        UPDATE INSU_INSD_SCCONT
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
+               ,CONTRACT_NAME = #{contractName, jdbcType=VARCHAR}
+               ,CONTRACT_STATUS = #{contractStatus, jdbcType=VARCHAR}
+               ,CONTRACT_EXP_DATE = #{contractExpDate, jdbcType=VARCHAR}
+               ,CONTRACT_FACE_AMT = #{contractFaceAmt, jdbcType=NUMERIC}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,IS_REQUIRED = #{isRequired, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND CONTRACT_NAME = #{contractName}
+    </update>
+
+    <delete id="deleteInsuInsdSccont" parameterType="InsuInsdSccontEntity">
+        DELETE FROM INSU_INSD_SCCONT
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND CONTRACT_NAME = #{contractName}
+    </delete>
+
+    <select id="selectInsuInsdSccont" parameterType="InsuInsdSccontSearch"  resultType="InsuInsdSccontEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,CONTRACT_NAME
+               ,CONTRACT_STATUS
+               ,CONTRACT_EXP_DATE
+               ,CONTRACT_FACE_AMT
+               ,CURRENCY_CODE
+               ,IS_REQUIRED
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_INSD_SCCONT
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND CONTRACT_NAME = #{contractName}
+    </select>
+
+    <select id="selectInsuInsdSccontListTotalCnt" parameterType="InsuInsdSccontSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INSU_INSD_SCCONT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'contractName  != null and contractName != ""'>
+           AND CONTRACT_NAME = #{contractName}
+       </if>
+    </select>
+
+    <select id="selectInsuInsdSccontList" parameterType="InsuInsdSccontSearch"  resultType="InsuInsdSccontEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CONTRACT_NAME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,INSU_NUM
+               ,CONTRACT_NAME
+               ,CONTRACT_STATUS
+               ,CONTRACT_EXP_DATE
+               ,CONTRACT_FACE_AMT
+               ,CURRENCY_CODE
+               ,IS_REQUIRED
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INSU_INSD_SCCONT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'insuNum  != null and insuNum != ""'>
+           AND INSU_NUM = #{insuNum}
+       </if>
+       <if test = 'contractName  != null and contractName != ""'>
+           AND CONTRACT_NAME = #{contractName}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CONTRACT_NAME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

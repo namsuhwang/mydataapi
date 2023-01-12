@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPpayBalMapper">
+
+    <insert id="insertElecPpayBal" parameterType="ElecPpayBalEntity">
+        INSERT INTO ELEC_PPAY_BAL
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,FOB_ID
+            ,ACCOUNT_ID
+            ,TOTAL_BALANCE_AMT
+            ,CHARGE_BALANCE_AMT
+            ,RESERVE_BALANCE_AMT
+            ,WITHDRAWABLE_AMT
+            ,RESERVE_DUE_AMT
+            ,EXP_DUE_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{fobId, jdbcType=VARCHAR}
+            ,#{accountId, jdbcType=VARCHAR}
+            ,#{totalBalanceAmt, jdbcType=NUMERIC}
+            ,#{chargeBalanceAmt, jdbcType=NUMERIC}
+            ,#{reserveBalanceAmt, jdbcType=NUMERIC}
+            ,#{withdrawableAmt, jdbcType=NUMERIC}
+            ,#{reserveDueAmt, jdbcType=NUMERIC}
+            ,#{expDueAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPpayBal" parameterType="ElecPpayBalEntity">
+        UPDATE ELEC_PPAY_BAL
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,FOB_ID = #{fobId, jdbcType=VARCHAR}
+               ,ACCOUNT_ID = #{accountId, jdbcType=VARCHAR}
+               ,TOTAL_BALANCE_AMT = #{totalBalanceAmt, jdbcType=NUMERIC}
+               ,CHARGE_BALANCE_AMT = #{chargeBalanceAmt, jdbcType=NUMERIC}
+               ,RESERVE_BALANCE_AMT = #{reserveBalanceAmt, jdbcType=NUMERIC}
+               ,WITHDRAWABLE_AMT = #{withdrawableAmt, jdbcType=NUMERIC}
+               ,RESERVE_DUE_AMT = #{reserveDueAmt, jdbcType=NUMERIC}
+               ,EXP_DUE_AMT = #{expDueAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+    </update>
+
+    <delete id="deleteElecPpayBal" parameterType="ElecPpayBalEntity">
+        DELETE FROM ELEC_PPAY_BAL
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+    </delete>
+
+    <select id="selectElecPpayBal" parameterType="ElecPpayBalSearch"  resultType="ElecPpayBalEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,TOTAL_BALANCE_AMT
+               ,CHARGE_BALANCE_AMT
+               ,RESERVE_BALANCE_AMT
+               ,WITHDRAWABLE_AMT
+               ,RESERVE_DUE_AMT
+               ,EXP_DUE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_BAL
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND FOB_ID = #{fobId}
+           AND ACCOUNT_ID = #{accountId}
+    </select>
+
+    <select id="selectElecPpayBalListTotalCnt" parameterType="ElecPpayBalSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PPAY_BAL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+    </select>
+
+    <select id="selectElecPpayBalList" parameterType="ElecPpayBalSearch"  resultType="ElecPpayBalEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,FOB_ID
+               ,ACCOUNT_ID
+               ,TOTAL_BALANCE_AMT
+               ,CHARGE_BALANCE_AMT
+               ,RESERVE_BALANCE_AMT
+               ,WITHDRAWABLE_AMT
+               ,RESERVE_DUE_AMT
+               ,EXP_DUE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PPAY_BAL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'fobId  != null and fobId != ""'>
+           AND FOB_ID = #{fobId}
+       </if>
+       <if test = 'accountId  != null and accountId != ""'>
+           AND ACCOUNT_ID = #{accountId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

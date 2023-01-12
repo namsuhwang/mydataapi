@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardLoanLgMapper">
+
+    <insert id="insertCardLoanLg" parameterType="CardLoanLgEntity">
+        INSERT INTO CARD_LOAN_LG
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,LOAN_NUM
+            ,LOAN_DTIME
+            ,LOAN_CNT
+            ,LOAN_TYPE
+            ,LOAN_NAME
+            ,LOAN_AMT
+            ,INT_RATE
+            ,EXP_DATE
+            ,BALANCE_AMT
+            ,REPAY_METHOD
+            ,INT_AMT
+            ,REPAY_ORG_CODE
+            ,REPAY_ACCOUNT_NUM
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{loanNum, jdbcType=VARCHAR}
+            ,#{loanDtime, jdbcType=VARCHAR}
+            ,#{loanCnt, jdbcType=NUMERIC}
+            ,#{loanType, jdbcType=VARCHAR}
+            ,#{loanName, jdbcType=VARCHAR}
+            ,#{loanAmt, jdbcType=NUMERIC}
+            ,#{intRate, jdbcType=NUMERIC}
+            ,#{expDate, jdbcType=VARCHAR}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{repayMethod, jdbcType=VARCHAR}
+            ,#{intAmt, jdbcType=NUMERIC}
+            ,#{repayOrgCode, jdbcType=VARCHAR}
+            ,#{repayAccountNum, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardLoanLg" parameterType="CardLoanLgEntity">
+        UPDATE CARD_LOAN_LG
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,LOAN_NUM = #{loanNum, jdbcType=VARCHAR}
+               ,LOAN_DTIME = #{loanDtime, jdbcType=VARCHAR}
+               ,LOAN_CNT = #{loanCnt, jdbcType=NUMERIC}
+               ,LOAN_TYPE = #{loanType, jdbcType=VARCHAR}
+               ,LOAN_NAME = #{loanName, jdbcType=VARCHAR}
+               ,LOAN_AMT = #{loanAmt, jdbcType=NUMERIC}
+               ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,REPAY_METHOD = #{repayMethod, jdbcType=VARCHAR}
+               ,INT_AMT = #{intAmt, jdbcType=NUMERIC}
+               ,REPAY_ORG_CODE = #{repayOrgCode, jdbcType=VARCHAR}
+               ,REPAY_ACCOUNT_NUM = #{repayAccountNum, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LOAN_NUM = #{loanNum}
+           AND LOAN_DTIME = #{loanDtime}
+           AND LOAN_CNT = #{loanCnt}
+    </update>
+
+    <delete id="deleteCardLoanLg" parameterType="CardLoanLgEntity">
+        DELETE FROM CARD_LOAN_LG
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LOAN_NUM = #{loanNum}
+           AND LOAN_DTIME = #{loanDtime}
+           AND LOAN_CNT = #{loanCnt}
+    </delete>
+
+    <select id="selectCardLoanLg" parameterType="CardLoanLgSearch"  resultType="CardLoanLgEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,LOAN_NUM
+               ,LOAN_DTIME
+               ,LOAN_CNT
+               ,LOAN_TYPE
+               ,LOAN_NAME
+               ,LOAN_AMT
+               ,INT_RATE
+               ,EXP_DATE
+               ,BALANCE_AMT
+               ,REPAY_METHOD
+               ,INT_AMT
+               ,REPAY_ORG_CODE
+               ,REPAY_ACCOUNT_NUM
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_LOAN_LG
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LOAN_NUM = #{loanNum}
+           AND LOAN_DTIME = #{loanDtime}
+           AND LOAN_CNT = #{loanCnt}
+    </select>
+
+    <select id="selectCardLoanLgListTotalCnt" parameterType="CardLoanLgSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_LOAN_LG
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'loanNum  != null and loanNum != ""'>
+           AND LOAN_NUM = #{loanNum}
+       </if>
+       <if test = 'loanDtime  != null and loanDtime != ""'>
+           AND LOAN_DTIME = #{loanDtime}
+       </if>
+       <if test = 'loanCnt  != null and loanCnt != ""'>
+           AND LOAN_CNT = #{loanCnt}
+       </if>
+    </select>
+
+    <select id="selectCardLoanLgList" parameterType="CardLoanLgSearch"  resultType="CardLoanLgEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, LOAN_NUM, LOAN_DTIME, LOAN_CNT) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,LOAN_NUM
+               ,LOAN_DTIME
+               ,LOAN_CNT
+               ,LOAN_TYPE
+               ,LOAN_NAME
+               ,LOAN_AMT
+               ,INT_RATE
+               ,EXP_DATE
+               ,BALANCE_AMT
+               ,REPAY_METHOD
+               ,INT_AMT
+               ,REPAY_ORG_CODE
+               ,REPAY_ACCOUNT_NUM
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_LOAN_LG
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'loanNum  != null and loanNum != ""'>
+           AND LOAN_NUM = #{loanNum}
+       </if>
+       <if test = 'loanDtime  != null and loanDtime != ""'>
+           AND LOAN_DTIME = #{loanDtime}
+       </if>
+       <if test = 'loanCnt  != null and loanCnt != ""'>
+           AND LOAN_CNT = #{loanCnt}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, LOAN_NUM, LOAN_DTIME, LOAN_CNT
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>
