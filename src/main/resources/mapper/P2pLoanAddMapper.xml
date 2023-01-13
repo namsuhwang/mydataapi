@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.p2p.repository.P2pLoanAddMapper">
+
+    <insert id="insertP2pLoanAdd" parameterType="P2pLoanAddEntity">
+        INSERT INTO P2P_LOAN_ADD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,LENDING_ID
+            ,BALANCE_AMT
+            ,NEXT_REPAY_CNT
+            ,NEXT_REPAY_DATE
+            ,PRINCIPAL_AMT
+            ,INT_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{lendingId, jdbcType=VARCHAR}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{nextRepayCnt, jdbcType=NUMERIC}
+            ,#{nextRepayDate, jdbcType=VARCHAR}
+            ,#{principalAmt, jdbcType=NUMERIC}
+            ,#{intAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateP2pLoanAdd" parameterType="P2pLoanAddEntity">
+        UPDATE P2P_LOAN_ADD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,LENDING_ID = #{lendingId, jdbcType=VARCHAR}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,NEXT_REPAY_CNT = #{nextRepayCnt, jdbcType=NUMERIC}
+               ,NEXT_REPAY_DATE = #{nextRepayDate, jdbcType=VARCHAR}
+               ,PRINCIPAL_AMT = #{principalAmt, jdbcType=NUMERIC}
+               ,INT_AMT = #{intAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LENDING_ID = #{lendingId}
+    </update>
+
+    <delete id="deleteP2pLoanAdd" parameterType="P2pLoanAddEntity">
+        DELETE FROM P2P_LOAN_ADD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LENDING_ID = #{lendingId}
+    </delete>
+
+    <select id="selectP2pLoanAdd" parameterType="P2pLoanAddSearch"  resultType="P2pLoanAddEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,LENDING_ID
+               ,BALANCE_AMT
+               ,NEXT_REPAY_CNT
+               ,NEXT_REPAY_DATE
+               ,PRINCIPAL_AMT
+               ,INT_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM P2P_LOAN_ADD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LENDING_ID = #{lendingId}
+    </select>
+
+    <select id="selectP2pLoanAddListTotalCnt" parameterType="P2pLoanAddSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM P2P_LOAN_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'lendingId  != null and lendingId != ""'>
+           AND LENDING_ID = #{lendingId}
+       </if>
+    </select>
+
+    <select id="selectP2pLoanAddList" parameterType="P2pLoanAddSearch"  resultType="P2pLoanAddEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, LENDING_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,LENDING_ID
+               ,BALANCE_AMT
+               ,NEXT_REPAY_CNT
+               ,NEXT_REPAY_DATE
+               ,PRINCIPAL_AMT
+               ,INT_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM P2P_LOAN_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'lendingId  != null and lendingId != ""'>
+           AND LENDING_ID = #{lendingId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, LENDING_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.p2p.repository.P2pLoanMapper">
+
+    <insert id="insertP2pLoan" parameterType="P2pLoanEntity">
+        INSERT INTO P2P_LOAN
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,LENDING_ID
+            ,IS_CONSENT
+            ,TYPE
+            ,LENDING_AMT
+            ,ISSUE_DATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{lendingId, jdbcType=VARCHAR}
+            ,#{isConsent, jdbcType=VARCHAR}
+            ,#{type, jdbcType=VARCHAR}
+            ,#{lendingAmt, jdbcType=NUMERIC}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateP2pLoan" parameterType="P2pLoanEntity">
+        UPDATE P2P_LOAN
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,LENDING_ID = #{lendingId, jdbcType=VARCHAR}
+               ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,TYPE = #{type, jdbcType=VARCHAR}
+               ,LENDING_AMT = #{lendingAmt, jdbcType=NUMERIC}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LENDING_ID = #{lendingId}
+    </update>
+
+    <delete id="deleteP2pLoan" parameterType="P2pLoanEntity">
+        DELETE FROM P2P_LOAN
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LENDING_ID = #{lendingId}
+    </delete>
+
+    <select id="selectP2pLoan" parameterType="P2pLoanSearch"  resultType="P2pLoanEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,LENDING_ID
+               ,IS_CONSENT
+               ,TYPE
+               ,LENDING_AMT
+               ,ISSUE_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM P2P_LOAN
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND LENDING_ID = #{lendingId}
+    </select>
+
+    <select id="selectP2pLoanListTotalCnt" parameterType="P2pLoanSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM P2P_LOAN
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'lendingId  != null and lendingId != ""'>
+           AND LENDING_ID = #{lendingId}
+       </if>
+    </select>
+
+    <select id="selectP2pLoanList" parameterType="P2pLoanSearch"  resultType="P2pLoanEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, LENDING_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,LENDING_ID
+               ,IS_CONSENT
+               ,TYPE
+               ,LENDING_AMT
+               ,ISSUE_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM P2P_LOAN
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'lendingId  != null and lendingId != ""'>
+           AND LENDING_ID = #{lendingId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, LENDING_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.itfn.repository.ItfnLoanMapper">
+
+    <insert id="insertItfnLoan" parameterType="ItfnLoanEntity">
+        INSERT INTO ITFN_LOAN
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,SEQNO
+            ,ISSUE_DATE
+            ,EXP_DATE
+            ,LAST_OFFERED_RATE
+            ,REPAY_DATE
+            ,REPAY_METHOD
+            ,REPAY_ORG_CODE
+            ,REPAY_ACCOUNT_NUM
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{expDate, jdbcType=VARCHAR}
+            ,#{lastOfferedRate, jdbcType=NUMERIC}
+            ,#{repayDate, jdbcType=VARCHAR}
+            ,#{repayMethod, jdbcType=VARCHAR}
+            ,#{repayOrgCode, jdbcType=VARCHAR}
+            ,#{repayAccountNum, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateItfnLoan" parameterType="ItfnLoanEntity">
+        UPDATE ITFN_LOAN
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,LAST_OFFERED_RATE = #{lastOfferedRate, jdbcType=NUMERIC}
+               ,REPAY_DATE = #{repayDate, jdbcType=VARCHAR}
+               ,REPAY_METHOD = #{repayMethod, jdbcType=VARCHAR}
+               ,REPAY_ORG_CODE = #{repayOrgCode, jdbcType=VARCHAR}
+               ,REPAY_ACCOUNT_NUM = #{repayAccountNum, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+    </update>
+
+    <delete id="deleteItfnLoan" parameterType="ItfnLoanEntity">
+        DELETE FROM ITFN_LOAN
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+    </delete>
+
+    <select id="selectItfnLoan" parameterType="ItfnLoanSearch"  resultType="ItfnLoanEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,LAST_OFFERED_RATE
+               ,REPAY_DATE
+               ,REPAY_METHOD
+               ,REPAY_ORG_CODE
+               ,REPAY_ACCOUNT_NUM
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ITFN_LOAN
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+    </select>
+
+    <select id="selectItfnLoanListTotalCnt" parameterType="ItfnLoanSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ITFN_LOAN
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+    </select>
+
+    <select id="selectItfnLoanList" parameterType="ItfnLoanSearch"  resultType="ItfnLoanEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,ISSUE_DATE
+               ,EXP_DATE
+               ,LAST_OFFERED_RATE
+               ,REPAY_DATE
+               ,REPAY_METHOD
+               ,REPAY_ORG_CODE
+               ,REPAY_ACCOUNT_NUM
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ITFN_LOAN
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

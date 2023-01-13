@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.tele.repository.TeleContMapper">
+
+    <insert id="insertTeleCont" parameterType="TeleContEntity">
+        INSERT INTO TELE_CONT
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,MGMT_ID
+            ,IS_CONSENT
+            ,TELECOM_NUM
+            ,TYPE
+            ,STATUS
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{mgmtId, jdbcType=VARCHAR}
+            ,#{isConsent, jdbcType=VARCHAR}
+            ,#{telecomNum, jdbcType=VARCHAR}
+            ,#{type, jdbcType=VARCHAR}
+            ,#{status, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateTeleCont" parameterType="TeleContEntity">
+        UPDATE TELE_CONT
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,MGMT_ID = #{mgmtId, jdbcType=VARCHAR}
+               ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,TELECOM_NUM = #{telecomNum, jdbcType=VARCHAR}
+               ,TYPE = #{type, jdbcType=VARCHAR}
+               ,STATUS = #{status, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND MGMT_ID = #{mgmtId}
+    </update>
+
+    <delete id="deleteTeleCont" parameterType="TeleContEntity">
+        DELETE FROM TELE_CONT
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND MGMT_ID = #{mgmtId}
+    </delete>
+
+    <select id="selectTeleCont" parameterType="TeleContSearch"  resultType="TeleContEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,MGMT_ID
+               ,IS_CONSENT
+               ,TELECOM_NUM
+               ,TYPE
+               ,STATUS
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM TELE_CONT
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND MGMT_ID = #{mgmtId}
+    </select>
+
+    <select id="selectTeleContListTotalCnt" parameterType="TeleContSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM TELE_CONT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'mgmtId  != null and mgmtId != ""'>
+           AND MGMT_ID = #{mgmtId}
+       </if>
+    </select>
+
+    <select id="selectTeleContList" parameterType="TeleContSearch"  resultType="TeleContEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, MGMT_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,MGMT_ID
+               ,IS_CONSENT
+               ,TELECOM_NUM
+               ,TYPE
+               ,STATUS
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM TELE_CONT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'mgmtId  != null and mgmtId != ""'>
+           AND MGMT_ID = #{mgmtId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

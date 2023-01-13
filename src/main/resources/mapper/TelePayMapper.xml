@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.tele.repository.TelePayMapper">
+
+    <insert id="insertTelePay" parameterType="TelePayEntity">
+        INSERT INTO TELE_PAY
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,MGMT_ID
+            ,TRANS_DATE
+            ,TRANS_AMT
+            ,ORG_REGNO
+            ,MERCHANT_NAME
+            ,TRANS_TITLE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{mgmtId, jdbcType=VARCHAR}
+            ,#{transDate, jdbcType=VARCHAR}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{orgRegno, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{transTitle, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateTelePay" parameterType="TelePayEntity">
+        UPDATE TELE_PAY
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,MGMT_ID = #{mgmtId, jdbcType=VARCHAR}
+               ,TRANS_DATE = #{transDate, jdbcType=VARCHAR}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,ORG_REGNO = #{orgRegno, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,TRANS_TITLE = #{transTitle, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND MGMT_ID = #{mgmtId}
+    </update>
+
+    <delete id="deleteTelePay" parameterType="TelePayEntity">
+        DELETE FROM TELE_PAY
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND MGMT_ID = #{mgmtId}
+    </delete>
+
+    <select id="selectTelePay" parameterType="TelePaySearch"  resultType="TelePayEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,MGMT_ID
+               ,TRANS_DATE
+               ,TRANS_AMT
+               ,ORG_REGNO
+               ,MERCHANT_NAME
+               ,TRANS_TITLE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM TELE_PAY
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND MGMT_ID = #{mgmtId}
+    </select>
+
+    <select id="selectTelePayListTotalCnt" parameterType="TelePaySearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM TELE_PAY
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'mgmtId  != null and mgmtId != ""'>
+           AND MGMT_ID = #{mgmtId}
+       </if>
+    </select>
+
+    <select id="selectTelePayList" parameterType="TelePaySearch"  resultType="TelePayEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, MGMT_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,MGMT_ID
+               ,TRANS_DATE
+               ,TRANS_AMT
+               ,ORG_REGNO
+               ,MERCHANT_NAME
+               ,TRANS_TITLE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM TELE_PAY
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'mgmtId  != null and mgmtId != ""'>
+           AND MGMT_ID = #{mgmtId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>
