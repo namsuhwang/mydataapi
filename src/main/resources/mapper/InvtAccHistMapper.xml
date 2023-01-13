@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.invt.repository.InvtAccHistMapper">
+
+    <insert id="insertInvtAccHist" parameterType="InvtAccHistEntity">
+        INSERT INTO INVT_ACC_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,TRANS_DTIME
+            ,PROD_NAME
+            ,PROD_CODE
+            ,TRANS_NO
+            ,TRANS_TYPE
+            ,TRANS_TYPE_DETAIL
+            ,TRANS_NUM
+            ,TRANS_UNIT
+            ,BASE_AMT
+            ,TRANS_AMT
+            ,SETTLE_AMT
+            ,BALANCE_AMT
+            ,CURRENCY_CODE
+            ,TRANS_MEMO
+            ,EX_CODE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{prodName, jdbcType=VARCHAR}
+            ,#{prodCode, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{transTypeDetail, jdbcType=VARCHAR}
+            ,#{transNum, jdbcType=NUMERIC}
+            ,#{transUnit, jdbcType=VARCHAR}
+            ,#{baseAmt, jdbcType=NUMERIC}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{settleAmt, jdbcType=NUMERIC}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{transMemo, jdbcType=VARCHAR}
+            ,#{exCode, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInvtAccHist" parameterType="InvtAccHistEntity">
+        UPDATE INVT_ACC_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,PROD_NAME = #{prodName, jdbcType=VARCHAR}
+               ,PROD_CODE = #{prodCode, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,TRANS_TYPE_DETAIL = #{transTypeDetail, jdbcType=VARCHAR}
+               ,TRANS_NUM = #{transNum, jdbcType=NUMERIC}
+               ,TRANS_UNIT = #{transUnit, jdbcType=VARCHAR}
+               ,BASE_AMT = #{baseAmt, jdbcType=NUMERIC}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,SETTLE_AMT = #{settleAmt, jdbcType=NUMERIC}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,TRANS_MEMO = #{transMemo, jdbcType=VARCHAR}
+               ,EX_CODE = #{exCode, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND TRANS_DTIME = #{transDtime}
+    </update>
+
+    <delete id="deleteInvtAccHist" parameterType="InvtAccHistEntity">
+        DELETE FROM INVT_ACC_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND TRANS_DTIME = #{transDtime}
+    </delete>
+
+    <select id="selectInvtAccHist" parameterType="InvtAccHistSearch"  resultType="InvtAccHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,TRANS_DTIME
+               ,PROD_NAME
+               ,PROD_CODE
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,TRANS_TYPE_DETAIL
+               ,TRANS_NUM
+               ,TRANS_UNIT
+               ,BASE_AMT
+               ,TRANS_AMT
+               ,SETTLE_AMT
+               ,BALANCE_AMT
+               ,CURRENCY_CODE
+               ,TRANS_MEMO
+               ,EX_CODE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INVT_ACC_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND TRANS_DTIME = #{transDtime}
+    </select>
+
+    <select id="selectInvtAccHistListTotalCnt" parameterType="InvtAccHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INVT_ACC_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+    </select>
+
+    <select id="selectInvtAccHistList" parameterType="InvtAccHistSearch"  resultType="InvtAccHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_DTIME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,TRANS_DTIME
+               ,PROD_NAME
+               ,PROD_CODE
+               ,TRANS_NO
+               ,TRANS_TYPE
+               ,TRANS_TYPE_DETAIL
+               ,TRANS_NUM
+               ,TRANS_UNIT
+               ,BASE_AMT
+               ,TRANS_AMT
+               ,SETTLE_AMT
+               ,BALANCE_AMT
+               ,CURRENCY_CODE
+               ,TRANS_MEMO
+               ,EX_CODE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INVT_ACC_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_DTIME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

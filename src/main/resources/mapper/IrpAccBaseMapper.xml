@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.irp.repository.IrpAccBaseMapper">
+
+    <insert id="insertIrpAccBase" parameterType="IrpAccBaseEntity">
+        INSERT INTO IRP_ACC_BASE
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,ACCUM_AMT
+            ,EVAL_AMT
+            ,EMPLOYER_AMT
+            ,EMPLOYEE_AMT
+            ,ISSUE_DATE
+            ,FIRST_DEPOSIT_DATE
+            ,REG_DATE
+            ,RCV_START_DATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{accumAmt, jdbcType=NUMERIC}
+            ,#{evalAmt, jdbcType=NUMERIC}
+            ,#{employerAmt, jdbcType=NUMERIC}
+            ,#{employeeAmt, jdbcType=NUMERIC}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{firstDepositDate, jdbcType=VARCHAR}
+            ,#{regDate, jdbcType=VARCHAR}
+            ,#{rcvStartDate, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateIrpAccBase" parameterType="IrpAccBaseEntity">
+        UPDATE IRP_ACC_BASE
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,ACCUM_AMT = #{accumAmt, jdbcType=NUMERIC}
+               ,EVAL_AMT = #{evalAmt, jdbcType=NUMERIC}
+               ,EMPLOYER_AMT = #{employerAmt, jdbcType=NUMERIC}
+               ,EMPLOYEE_AMT = #{employeeAmt, jdbcType=NUMERIC}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,FIRST_DEPOSIT_DATE = #{firstDepositDate, jdbcType=VARCHAR}
+               ,REG_DATE = #{regDate, jdbcType=VARCHAR}
+               ,RCV_START_DATE = #{rcvStartDate, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </update>
+
+    <delete id="deleteIrpAccBase" parameterType="IrpAccBaseEntity">
+        DELETE FROM IRP_ACC_BASE
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectIrpAccBase" parameterType="IrpAccBaseSearch"  resultType="IrpAccBaseEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,ACCUM_AMT
+               ,EVAL_AMT
+               ,EMPLOYER_AMT
+               ,EMPLOYEE_AMT
+               ,ISSUE_DATE
+               ,FIRST_DEPOSIT_DATE
+               ,REG_DATE
+               ,RCV_START_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM IRP_ACC_BASE
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </select>
+
+    <select id="selectIrpAccBaseListTotalCnt" parameterType="IrpAccBaseSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM IRP_ACC_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+    </select>
+
+    <select id="selectIrpAccBaseList" parameterType="IrpAccBaseSearch"  resultType="IrpAccBaseEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,ACCUM_AMT
+               ,EVAL_AMT
+               ,EMPLOYER_AMT
+               ,EMPLOYEE_AMT
+               ,ISSUE_DATE
+               ,FIRST_DEPOSIT_DATE
+               ,REG_DATE
+               ,RCV_START_DATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM IRP_ACC_BASE
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

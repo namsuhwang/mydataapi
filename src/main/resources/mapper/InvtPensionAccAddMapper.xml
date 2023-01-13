@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.invt.repository.InvtPensionAccAddMapper">
+
+    <insert id="insertInvtPensionAccAdd" parameterType="InvtPensionAccAddEntity">
+        INSERT INTO INVT_PENSION_ACC_ADD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,PROD_TYPE
+            ,PROD_TYPE_DETAIL
+            ,PROD_CODE
+            ,EX_CODE
+            ,PROD_NAME
+            ,POS_TYPE
+            ,CREDIT_TYPE
+            ,IS_TAX_BENEFITS
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{prodType, jdbcType=VARCHAR}
+            ,#{prodTypeDetail, jdbcType=NUMERIC}
+            ,#{prodCode, jdbcType=NUMERIC}
+            ,#{exCode, jdbcType=VARCHAR}
+            ,#{prodName, jdbcType=NUMERIC}
+            ,#{posType, jdbcType=VARCHAR}
+            ,#{creditType, jdbcType=NUMERIC}
+            ,#{isTaxBenefits, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInvtPensionAccAdd" parameterType="InvtPensionAccAddEntity">
+        UPDATE INVT_PENSION_ACC_ADD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,PROD_TYPE = #{prodType, jdbcType=VARCHAR}
+               ,PROD_TYPE_DETAIL = #{prodTypeDetail, jdbcType=NUMERIC}
+               ,PROD_CODE = #{prodCode, jdbcType=NUMERIC}
+               ,EX_CODE = #{exCode, jdbcType=VARCHAR}
+               ,PROD_NAME = #{prodName, jdbcType=NUMERIC}
+               ,POS_TYPE = #{posType, jdbcType=VARCHAR}
+               ,CREDIT_TYPE = #{creditType, jdbcType=NUMERIC}
+               ,IS_TAX_BENEFITS = #{isTaxBenefits, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </update>
+
+    <delete id="deleteInvtPensionAccAdd" parameterType="InvtPensionAccAddEntity">
+        DELETE FROM INVT_PENSION_ACC_ADD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectInvtPensionAccAdd" parameterType="InvtPensionAccAddSearch"  resultType="InvtPensionAccAddEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,PROD_TYPE
+               ,PROD_TYPE_DETAIL
+               ,PROD_CODE
+               ,EX_CODE
+               ,PROD_NAME
+               ,POS_TYPE
+               ,CREDIT_TYPE
+               ,IS_TAX_BENEFITS
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INVT_PENSION_ACC_ADD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </select>
+
+    <select id="selectInvtPensionAccAddListTotalCnt" parameterType="InvtPensionAccAddSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INVT_PENSION_ACC_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+    </select>
+
+    <select id="selectInvtPensionAccAddList" parameterType="InvtPensionAccAddSearch"  resultType="InvtPensionAccAddEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,PROD_TYPE
+               ,PROD_TYPE_DETAIL
+               ,PROD_CODE
+               ,EX_CODE
+               ,PROD_NAME
+               ,POS_TYPE
+               ,CREDIT_TYPE
+               ,IS_TAX_BENEFITS
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INVT_PENSION_ACC_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.load.irp.repository.IrpAccAddMapper">
+
+    <insert id="insertIrpAccAdd" parameterType="IrpAccAddEntity">
+        INSERT INTO IRP_ACC_ADD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,IRP_NAME
+            ,IRP_NO
+            ,IRP_TYPE
+            ,EVAL_AMT
+            ,INV_PRINCIPAL
+            ,FUND_NUM
+            ,OPEN_DATE
+            ,EXP_DATE
+            ,INT_RATE
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{irpName, jdbcType=VARCHAR}
+            ,#{irpNo, jdbcType=VARCHAR}
+            ,#{irpType, jdbcType=VARCHAR}
+            ,#{evalAmt, jdbcType=NUMERIC}
+            ,#{invPrincipal, jdbcType=NUMERIC}
+            ,#{fundNum, jdbcType=NUMERIC}
+            ,#{openDate, jdbcType=VARCHAR}
+            ,#{expDate, jdbcType=VARCHAR}
+            ,#{intRate, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateIrpAccAdd" parameterType="IrpAccAddEntity">
+        UPDATE IRP_ACC_ADD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,IRP_NAME = #{irpName, jdbcType=VARCHAR}
+               ,IRP_NO = #{irpNo, jdbcType=VARCHAR}
+               ,IRP_TYPE = #{irpType, jdbcType=VARCHAR}
+               ,EVAL_AMT = #{evalAmt, jdbcType=NUMERIC}
+               ,INV_PRINCIPAL = #{invPrincipal, jdbcType=NUMERIC}
+               ,FUND_NUM = #{fundNum, jdbcType=NUMERIC}
+               ,OPEN_DATE = #{openDate, jdbcType=VARCHAR}
+               ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND IRP_NAME = #{irpName}
+    </update>
+
+    <delete id="deleteIrpAccAdd" parameterType="IrpAccAddEntity">
+        DELETE FROM IRP_ACC_ADD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND IRP_NAME = #{irpName}
+    </delete>
+
+    <select id="selectIrpAccAdd" parameterType="IrpAccAddSearch"  resultType="IrpAccAddEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,IRP_NAME
+               ,IRP_NO
+               ,IRP_TYPE
+               ,EVAL_AMT
+               ,INV_PRINCIPAL
+               ,FUND_NUM
+               ,OPEN_DATE
+               ,EXP_DATE
+               ,INT_RATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM IRP_ACC_ADD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND IRP_NAME = #{irpName}
+    </select>
+
+    <select id="selectIrpAccAddListTotalCnt" parameterType="IrpAccAddSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM IRP_ACC_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'irpName  != null and irpName != ""'>
+           AND IRP_NAME = #{irpName}
+       </if>
+    </select>
+
+    <select id="selectIrpAccAddList" parameterType="IrpAccAddSearch"  resultType="IrpAccAddEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, IRP_NAME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,IRP_NAME
+               ,IRP_NO
+               ,IRP_TYPE
+               ,EVAL_AMT
+               ,INV_PRINCIPAL
+               ,FUND_NUM
+               ,OPEN_DATE
+               ,EXP_DATE
+               ,INT_RATE
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM IRP_ACC_ADD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'irpName  != null and irpName != ""'>
+           AND IRP_NAME = #{irpName}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, IRP_NAME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>
