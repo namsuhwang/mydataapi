@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kpcnc.mydataapi.api.load.card.repository.CardDmPcaMapper">
+<mapper namespace="com.kpcnc.mydataapi.api.base.card.repository.CardDmPcaMapper">
 
     <insert id="insertCardDmPca" parameterType="CardDmPcaEntity">
         INSERT INTO CARD_DM_PCA

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kpcnc.mydataapi.api.load.elec.repository.ElecPpayAutoChargeMapper">
+<mapper namespace="com.kpcnc.mydataapi.api.base.elec.repository.ElecPpayAutoChargeMapper">
 
     <insert id="insertElecPpayAutoCharge" parameterType="ElecPpayAutoChargeEntity">
         INSERT INTO ELEC_PPAY_AUTO_CHARGE
