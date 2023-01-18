@@ -31,7 +31,8 @@ public class RecvHistBaseController {
     public ResponseEntity<ResponseDto<RecvHistBaseEntity>> regRecvHistBase(
         @RequestBody RecvHistBaseForm dom
     ){
-        RecvHistBaseEntity result = recvHistBaseService.regRecvHistBase(dom);
+        recvHistBaseService.regRecvHistBase(dom);
+        RecvHistBaseEntity result = recvHistBaseService.getRecvHistBase(new RecvHistBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -39,7 +40,8 @@ public class RecvHistBaseController {
     public ResponseEntity<ResponseDto<RecvHistBaseEntity>> modRecvHistBase(
         @RequestBody RecvHistBaseForm dom
     ){
-        RecvHistBaseEntity result = recvHistBaseService.modRecvHistBase(dom);
+        recvHistBaseService.modRecvHistBase(dom);
+        RecvHistBaseEntity result = recvHistBaseService.getRecvHistBase(new RecvHistBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

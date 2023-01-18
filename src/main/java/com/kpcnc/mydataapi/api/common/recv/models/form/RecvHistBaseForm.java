@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecvHistBaseForm{
-    private String recvId;    // 수신 ID
+    private String recvSeq;    // 수신 일련번호. RecvStatus.recvSeq와 동일.
     private String memberId;    // 회원ID
     private String orgCd;    // 기관코드
     private String apiId;    // API ID
@@ -24,7 +24,7 @@ public class RecvHistBaseForm{
 
     public RecvHistBaseEntity getEntity(){
         RecvHistBaseEntity entity = new RecvHistBaseEntity();
-        entity.setRecvId(recvId);
+        entity.setRecvSeq(recvSeq);
         entity.setMemberId(memberId);
         entity.setOrgCd(orgCd);
         entity.setApiId(apiId);

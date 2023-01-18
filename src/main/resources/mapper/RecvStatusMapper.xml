@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.common.recv.repository.RecvStatusMapper">
+
+    <select id="createRecvSeq" parameterType="RecvStatusEntity"  resultType="String">
+        SELECT
+            recvDay || LPAD(SEQUENCE_RECV_SEQ.NEXTVAL, 12, '0')
+        FROM DUAL
+    </select>
+
+    <insert id="insertRecvStatus" parameterType="RecvStatusEntity">
+        INSERT INTO RECV_STATUS
+        (
+            MEMBER_ID
+            ,RECV_DAY
+            ,RECV_SEQ
+            ,TARGET_ORG_CNT
+            ,COMPLETE_ORG_CNT
+            ,RECV_STATUS
+            ,RECV_START_DT
+            ,RECV_END_DT
+            ,LAST_RECV_ORG_CD
+            ,LAST_RECV_DT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{recvDay, jdbcType=VARCHAR}
+            ,#{recvSeq, jdbcType=VARCHAR}
+            ,#{targetOrgCnt, jdbcType=NUMERIC}
+            ,#{completeOrgCnt, jdbcType=NUMERIC}
+            ,#{recvStatus, jdbcType=VARCHAR}
+            ,#{recvStartDt, jdbcType=VARCHAR}
+            ,#{recvEndDt, jdbcType=VARCHAR}
+            ,#{lastRecvOrgCd, jdbcType=VARCHAR}
+            ,#{lastRecvDt, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateRecvStatus" parameterType="RecvStatusEntity">
+        UPDATE RECV_STATUS
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,RECV_DAY = #{recvDay, jdbcType=VARCHAR}
+               ,RECV_SEQ = #{recvSeq, jdbcType=VARCHAR}
+               ,TARGET_ORG_CNT = #{targetOrgCnt, jdbcType=NUMERIC}
+               ,COMPLETE_ORG_CNT = #{completeOrgCnt, jdbcType=NUMERIC}
+               ,RECV_STATUS = #{recvStatus, jdbcType=VARCHAR}
+               ,RECV_START_DT = #{recvStartDt, jdbcType=VARCHAR}
+               ,RECV_END_DT = #{recvEndDt, jdbcType=VARCHAR}
+               ,LAST_RECV_ORG_CD = #{lastRecvOrgCd, jdbcType=VARCHAR}
+               ,LAST_RECV_DT = #{lastRecvDt, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND RECV_DAY = #{recvDay}
+           AND RECV_SEQ = #{recvSeq}
+    </update>
+
+    <delete id="deleteRecvStatus" parameterType="RecvStatusEntity">
+        DELETE FROM RECV_STATUS
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND RECV_DAY = #{recvDay}
+           AND RECV_SEQ = #{recvSeq}
+    </delete>
+
+    <select id="selectRecvStatus" parameterType="RecvStatusSearch"  resultType="RecvStatusEntity">
+         SELECT 
+               MEMBER_ID
+               ,RECV_DAY
+               ,RECV_SEQ
+               ,TARGET_ORG_CNT
+               ,COMPLETE_ORG_CNT
+               ,RECV_STATUS
+               ,RECV_START_DT
+               ,RECV_END_DT
+               ,LAST_RECV_ORG_CD
+               ,LAST_RECV_DT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM RECV_STATUS
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND RECV_DAY = #{recvDay}
+           AND RECV_SEQ = #{recvSeq}
+    </select>
+
+    <select id="selectRecvStatusListTotalCnt" parameterType="RecvStatusSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM RECV_STATUS
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'recvDay  != null and recvDay != ""'>
+           AND RECV_DAY = #{recvDay}
+       </if>
+       <if test = 'recvSeq  != null and recvSeq != ""'>
+           AND RECV_SEQ = #{recvSeq}
+       </if>
+    </select>
+
+    <select id="selectRecvStatusList" parameterType="RecvStatusSearch"  resultType="RecvStatusEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, RECV_DAY DESC, RECV_SEQ DESC) ROW_NUM
+               ,MEMBER_ID
+               ,RECV_DAY
+               ,RECV_SEQ
+               ,TARGET_ORG_CNT
+               ,COMPLETE_ORG_CNT
+               ,RECV_STATUS
+               ,RECV_START_DT
+               ,RECV_END_DT
+               ,LAST_RECV_ORG_CD
+               ,LAST_RECV_DT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM RECV_STATUS
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'recvDay  != null and recvDay != ""'>
+           AND RECV_DAY = #{recvDay}
+       </if>
+       <if test = 'recvSeq  != null and recvSeq != ""'>
+           AND RECV_SEQ = #{recvSeq}
+       </if>
+        ORDER BY MEMBER_ID, RECV_DAY DESC, RECV_SEQ DESC
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

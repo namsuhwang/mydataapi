@@ -8,9 +8,13 @@ import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 import java.util.List;
 
 public interface RecvHistDetailService{
-    public RecvHistDetailEntity regRecvHistDetail(RecvHistDetailForm dom);
+    public Long createRecvDetailSeq();
 
-    public RecvHistDetailEntity modRecvHistDetail(RecvHistDetailForm dom);
+    public void regRecvHistDetail(RecvHistDetailForm dom);
+
+    public void updRecvHistDetail(RecvHistDetailForm dom);
+
+    public void modRecvHistDetail(RecvHistDetailForm dom);
 
     public void  delRecvHistDetail(RecvHistDetailForm dom);
 

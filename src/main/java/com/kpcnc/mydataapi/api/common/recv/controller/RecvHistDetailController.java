@@ -31,7 +31,8 @@ public class RecvHistDetailController {
     public ResponseEntity<ResponseDto<RecvHistDetailEntity>> regRecvHistDetail(
         @RequestBody RecvHistDetailForm dom
     ){
-        RecvHistDetailEntity result = recvHistDetailService.regRecvHistDetail(dom);
+        recvHistDetailService.regRecvHistDetail(dom);
+        RecvHistDetailEntity result = recvHistDetailService.getRecvHistDetail(new RecvHistDetailSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -39,7 +40,8 @@ public class RecvHistDetailController {
     public ResponseEntity<ResponseDto<RecvHistDetailEntity>> modRecvHistDetail(
         @RequestBody RecvHistDetailForm dom
     ){
-        RecvHistDetailEntity result = recvHistDetailService.modRecvHistDetail(dom);
+        recvHistDetailService.modRecvHistDetail(dom);
+        RecvHistDetailEntity result = recvHistDetailService.getRecvHistDetail(new RecvHistDetailSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

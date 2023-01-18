@@ -2,12 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kpcnc.mydataapi.api.common.recv.repository.RecvHistDetailMapper">
+    <select id="createRecvDetailSeq" resultType="Long">
+        SELECT
+            SEQUENCE_RECV_DETAIL_SEQ.NEXTVAL
+        FROM DUAL
+    </select>
 
     <insert id="insertRecvHistDetail" parameterType="RecvHistDetailEntity">
         INSERT INTO RECV_HIST_DETAIL
         (
-            RECV_ID
-            ,RECV_SEQ
+             RECV_SEQ
+            ,RECV_DETAIL_SEQ
             ,RECV_DATA
             ,REG_USER_ID
             ,REG_DT
@@ -15,8 +20,8 @@
             ,CHG_DT
         ) VALUES
         (
-            #{recvId, jdbcType=VARCHAR}
-            ,#{recvSeq, jdbcType=NUMERIC}
+            #{recvSeq, jdbcType=VARCHAR}
+            ,#{recvDetailSeq, jdbcType=NUMERIC}
             ,#{recvData, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,#{regDt, jdbcType=VARCHAR}
@@ -28,29 +33,29 @@
     <update id="updateRecvHistDetail" parameterType="RecvHistDetailEntity">
         UPDATE RECV_HIST_DETAIL
         SET
-            RECV_ID = #{recvId, jdbcType=VARCHAR}
-          ,RECV_SEQ = #{recvSeq, jdbcType=NUMERIC}
+            RECV_SEQ = #{recvSeq, jdbcType=VARCHAR}
+          ,RECV_DETAIL_SEQ = #{recvDetailSeq, jdbcType=NUMERIC}
           ,RECV_DATA = #{recvData, jdbcType=VARCHAR}
           ,REG_USER_ID = #{regUserId, jdbcType=VARCHAR}
           ,REG_DT = #{regDt, jdbcType=VARCHAR}
           ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
           ,CHG_DT = #{chgDt, jdbcType=VARCHAR}
         WHERE
-            RECV_ID = #{recvId}
-          AND RECV_SEQ = #{recvSeq}
+            RECV_SEQ = #{recvSeq}
+          AND RECV_DETAIL_SEQ = #{recvDetailSeq}
     </update>
 
     <delete id="deleteRecvHistDetail" parameterType="RecvHistDetailEntity">
         DELETE FROM RECV_HIST_DETAIL
         WHERE
-            RECV_ID = #{recvId}
-          AND RECV_SEQ = #{recvSeq}
+            RECV_SEQ = #{recvSeq}
+          AND RECV_DETAIL_SEQ = #{recvDetailSeq}
     </delete>
 
     <select id="selectRecvHistDetail" parameterType="RecvHistDetailSearch"  resultType="RecvHistDetailEntity">
         SELECT
-            RECV_ID
-             ,RECV_SEQ
+            RECV_SEQ
+             ,RECV_DETAIL_SEQ
              ,RECV_DATA
              ,REG_USER_ID
              ,REG_DT
@@ -58,8 +63,8 @@
              ,CHG_DT
         FROM RECV_HIST_DETAIL
         WHERE
-            RECV_ID = #{recvId}
-          AND RECV_SEQ = #{recvSeq}
+            RECV_SEQ = #{recvSeq}
+          AND RECV_DETAIL_SEQ = #{recvDetailSeq}
     </select>
 
     <select id="selectRecvHistDetailListTotalCnt" parameterType="RecvHistDetailSearch"  resultType="Long">
@@ -67,11 +72,11 @@
         COUNT(*)
         FROM RECV_HIST_DETAIL
         WHERE 1 = 1
-        <if test = 'recvId  != null and recvId != ""'>
-            AND RECV_ID = #{recvId}
-        </if>
         <if test = 'recvSeq  != null and recvSeq != ""'>
             AND RECV_SEQ = #{recvSeq}
+        </if>
+        <if test = 'recvDetailSeq  != null and recvDetailSeq != ""'>
+            AND RECV_DETAIL_SEQ = #{recvDetailSeq}
         </if>
     </select>
 
@@ -82,9 +87,9 @@
         FROM
         (
         SELECT
-            ROW_NUMBER() OVER(ORDER BY RECV_ID, RECV_SEQ) ROW_NUM
-            ,RECV_ID
+            ROW_NUMBER() OVER(ORDER BY RECV_SEQ, RECV_DETAIL_SEQ) ROW_NUM
             ,RECV_SEQ
+            ,RECV_DETAIL_SEQ
             ,RECV_DATA
             ,REG_USER_ID
             ,REG_DT
@@ -92,13 +97,13 @@
             ,CHG_DT
         FROM RECV_HIST_DETAIL
         WHERE 1 = 1
-        <if test = 'recvId  != null and recvId != ""'>
-            AND RECV_ID = #{recvId}
-        </if>
         <if test = 'recvSeq  != null and recvSeq != ""'>
             AND RECV_SEQ = #{recvSeq}
         </if>
-        ORDER BY RECV_ID, RECV_SEQ
+        <if test = 'recvDetailSeq  != null and recvDetailSeq != ""'>
+            AND RECV_DETAIL_SEQ = #{recvDetailSeq}
+        </if>
+        ORDER BY RECV_SEQ, RECV_DETAIL_SEQ
         ) T
         <if test = 'startIndex != null and endIndex != null '>
             WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}

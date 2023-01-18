@@ -2,10 +2,6 @@ package com.kpcnc.mydataapi.api.collect.pull.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kpcnc.mydataapi.api.base.bank.models.BankAccSearch;
-import com.kpcnc.mydataapi.api.base.bank.models.BankCustSearch;
-import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEntity;
-import com.kpcnc.mydataapi.api.base.bank.models.entity.BankCustEntity;
 import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccForm;
 import com.kpcnc.mydataapi.api.base.bank.models.form.BankCustForm;
 import com.kpcnc.mydataapi.api.base.bank.service.BankAccService;
@@ -26,9 +22,10 @@ import com.kpcnc.mydataapi.api.common.member.models.member.entity.MemberEntity;
 import com.kpcnc.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
 import com.kpcnc.mydataapi.api.common.member.service.MemberService;
 import com.kpcnc.mydataapi.api.common.member.service.MemberTokenService;
-import com.kpcnc.mydataapi.api.common.recv.service.LedgerBankService;
-import com.kpcnc.mydataapi.api.common.recv.service.RecvBaselineService;
-import com.kpcnc.mydataapi.api.common.recv.service.RequestParamsSetService;
+import com.kpcnc.mydataapi.api.common.recv.models.form.RecvHistBaseForm;
+import com.kpcnc.mydataapi.api.common.recv.models.form.RecvHistDetailForm;
+import com.kpcnc.mydataapi.api.common.recv.models.form.RecvStatusForm;
+import com.kpcnc.mydataapi.api.common.recv.service.*;
 import com.kpcnc.mydataapi.common.CommUtil;
 import com.kpcnc.mydataapi.common.exception.MyDataApiException;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +61,13 @@ public class PullServiceImpl implements PullService {
 
     @Autowired
     RequestParamsSetService reqParamsSetService;
+    @Autowired
+    RecvStatusService recvStatusService;
+    @Autowired
+    RecvHistBaseService recvHistBaseService;
 
+    @Autowired
+    RecvHistDetailService recvHistDetailService;
 
     /*
         Async로 기관별로 조회 호출.
@@ -89,13 +92,28 @@ public class PullServiceImpl implements PullService {
             throw new MyDataApiException(MYDATA_ERROR_1002, "유효한 전송요구 내역이 없습니다.");
         }
 
+        RecvStatusForm recvStatusForm = new RecvStatusForm();
+        recvStatusForm.setMemberId(form.getMemberId());
+        String recvDay = CommUtil.getCurrentDate8();
+        recvStatusForm.setRecvDay(recvDay);
+        recvStatusForm.setTargetOrgCnt(tokenList.size());
+        recvStatusForm.setRecvStartDt(CommUtil.getCurrentDateTime14());
+        recvStatusForm.setRecvStatus("0");
+        recvStatusForm.setCompleteOrgCnt(0);
+        recvStatusForm.setRegUserId("user01");
+        recvStatusForm.setChgUserId("user01");
+        String recvSeq = recvStatusService.createRecvSeq(recvStatusForm);
+        recvStatusForm.setRecvSeq(recvSeq);
+        recvStatusService.regRecvStatus(recvStatusForm);
+
+
         // 전송요구 등록된 기관별로 전송요청함
         for(MemberTokenEntity token : tokenList){
             // 고객선택자산 정보 요청. sendRequestType = 1.
             // 0(자산목록 요청)의 경우는 통합인증하면서 고객이 전송요구 등록할 때에 사용함
             if(token.getSendRequestType().equals("1")) {
                 try {
-                    pullPersonalInfoRun(member, token);
+                    pullPersonalInfoRun(member, token, recvStatusForm);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
@@ -111,7 +129,7 @@ public class PullServiceImpl implements PullService {
         기관별 전송요구등록건별 조회 처리
      */
     @Async("pullPersonalInfoExecutor")
-    public CompletableFuture<List<String>> pullPersonalInfoRun(MemberEntity member, MemberTokenEntity memberToken) throws JsonProcessingException {
+    public CompletableFuture<List<String>> pullPersonalInfoRun(MemberEntity member, MemberTokenEntity memberToken, RecvStatusForm recvStatusForm) throws JsonProcessingException {
         List<String> targetList = new ArrayList<>();
         ApiMstEntity targetApiInfo = null;
         HashMap<String, Object> paramsMap = null;
@@ -140,15 +158,40 @@ public class PullServiceImpl implements PullService {
         reqInfo.setRequestApiId(apiMst.getApiId());
         reqInfo.setRequestUrl(apiMst.getApiUrlResource());
 
+        // 수신 상태 업데이트
+        recvStatusForm.setIncOrgCnt(1);
+        recvStatusForm.setLastRecvOrgCd(reqInfo.getOrgCd());
+        recvStatusService.updRecvStatus(recvStatusForm);
+
+        // 수신 시작 정보 생성
+        RecvHistBaseForm recvHistBaseForm = new RecvHistBaseForm();
+        recvHistBaseForm.setOrgCd(reqInfo.getOrgCd());
+        recvHistBaseForm.setApiId(reqInfo.getRequestApiId());
+        recvHistBaseForm.setRecvSeq(recvStatusForm.getRecvSeq());
+        recvHistBaseForm.setRecvStartDt(CommUtil.getCurrentDateTime14());
+        recvHistBaseForm.setRegUserId("user01");
+        recvHistBaseForm.setChgUserId("user01");
+        recvHistBaseService.regRecvHistBase(recvHistBaseForm);
+
+        RecvHistDetailForm regHistDetailFrom = new RecvHistDetailForm(recvHistBaseForm);
+
         while(true){
             reqInfo.setRequestParameterJson(new ObjectMapper().writeValueAsString(reqParamMap));
+
+            // 게이트웨이 call
             ApiCallResponseInfoDto resInfo = callMyDataGatewayService.callMyDataApi(reqInfo);
+
+            // 수신한 내용을 먼저 RECV_HIST_DETAIL 인서트
+            regHistDetailFrom.setRecvDetailSeq(recvHistDetailService.createRecvDetailSeq());
+            regHistDetailFrom.setRecvData(resInfo.getResultJson());
+            recvHistDetailService.regRecvHistDetail(regHistDetailFrom);
+
             if(CommUtil.isNullEmpty(resInfo.getNextPage())){
                 break;
-            }else{
-                reqParamMap.put("search_timestamp", resInfo.getSearchTimeStamp());
-                reqParamMap.put("next_page", resInfo.getNextPage());
             }
+
+            reqParamMap.put("search_timestamp", resInfo.getSearchTimeStamp());
+            reqParamMap.put("next_page", resInfo.getNextPage());
 
             // 수신한 결과를 테이블에 인서트
             Bank001InDto bank001InDto = (Bank001InDto) resInfo.getData();
@@ -172,7 +215,8 @@ public class PullServiceImpl implements PullService {
             }
         }
 
-
+        recvHistBaseForm.setRecvEndDt(CommUtil.getCurrentDateTime14());
+        recvHistBaseService.updRecvHistBase(recvHistBaseForm);
 
         for(String scopeTmp : scopeList){
 //            List<String> apiIdList = getApiIdByScope(scopeTmp);

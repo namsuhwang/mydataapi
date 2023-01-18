@@ -8,6 +8,8 @@ import java.util.List;
 
 @Component
 public interface RecvHistDetailMapper{
+    long createRecvDetailSeq();
+
     int insertRecvHistDetail(RecvHistDetailEntity dom);
 
     int updateRecvHistDetail(RecvHistDetailEntity dom);

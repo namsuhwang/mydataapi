@@ -8,9 +8,11 @@ import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 import java.util.List;
 
 public interface RecvHistBaseService{
-    public RecvHistBaseEntity regRecvHistBase(RecvHistBaseForm dom);
+    public void regRecvHistBase(RecvHistBaseForm dom);
 
-    public RecvHistBaseEntity modRecvHistBase(RecvHistBaseForm dom);
+    public void updRecvHistBase(RecvHistBaseForm dom);
+
+    public void modRecvHistBase(RecvHistBaseForm dom);
 
     public void  delRecvHistBase(RecvHistBaseForm dom);
 

@@ -23,15 +23,30 @@ public class RecvHistDetailServiceImpl implements RecvHistDetailService {
     RecvHistDetailMapper recvHistDetailMapper;
 
     @Override
-    public RecvHistDetailEntity regRecvHistDetail(RecvHistDetailForm dom) {
-        recvHistDetailMapper.insertRecvHistDetail(dom.getEntity());
-        return recvHistDetailMapper.selectRecvHistDetail(new RecvHistDetailSearch(dom));
+    public Long createRecvDetailSeq(){
+        return recvHistDetailMapper.createRecvDetailSeq();
     }
 
     @Override
-    public RecvHistDetailEntity modRecvHistDetail(RecvHistDetailForm dom) {
+    public void regRecvHistDetail(RecvHistDetailForm dom) {
+        recvHistDetailMapper.insertRecvHistDetail(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void updRecvHistDetail(RecvHistDetailForm dom) {
         recvHistDetailMapper.updateRecvHistDetail(dom.getEntity());
-        return recvHistDetailMapper.selectRecvHistDetail(new RecvHistDetailSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modRecvHistDetail(RecvHistDetailForm dom) {
+        if(getRecvHistDetail(new RecvHistDetailSearch(dom)) == null){
+            regRecvHistDetail(dom);
+        }else{
+            updRecvHistDetail(dom);
+        }
+        return;
     }
 
     @Override

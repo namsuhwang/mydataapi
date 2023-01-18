@@ -23,15 +23,25 @@ public class RecvHistBaseServiceImpl implements RecvHistBaseService {
     RecvHistBaseMapper recvHistBaseMapper;
 
     @Override
-    public RecvHistBaseEntity regRecvHistBase(RecvHistBaseForm dom) {
+    public void regRecvHistBase(RecvHistBaseForm dom) {
         recvHistBaseMapper.insertRecvHistBase(dom.getEntity());
-        return recvHistBaseMapper.selectRecvHistBase(new RecvHistBaseSearch(dom));
+        return;
     }
 
     @Override
-    public RecvHistBaseEntity modRecvHistBase(RecvHistBaseForm dom) {
+    public void updRecvHistBase(RecvHistBaseForm dom) {
         recvHistBaseMapper.updateRecvHistBase(dom.getEntity());
-        return recvHistBaseMapper.selectRecvHistBase(new RecvHistBaseSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modRecvHistBase(RecvHistBaseForm dom) {
+        if(getRecvHistBase(new RecvHistBaseSearch(dom)) == null){
+            regRecvHistBase(dom);
+        }else{
+            updRecvHistBase(dom);
+        }
+        return;
     }
 
     @Override

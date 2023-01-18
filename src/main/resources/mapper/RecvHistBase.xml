@@ -6,7 +6,7 @@
     <insert id="insertRecvHistBase" parameterType="RecvHistBaseEntity">
         INSERT INTO RECV_HIST_BASE
         (
-            RECV_ID
+            RECV_SEQ
             ,MEMBER_ID
             ,ORG_CD
             ,API_ID
@@ -18,7 +18,7 @@
             ,CHG_DT
         ) VALUES
         (
-            #{recvId, jdbcType=VARCHAR}
+            #{recvSeq, jdbcType=VARCHAR}
             ,#{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{apiId, jdbcType=VARCHAR}
@@ -34,7 +34,7 @@
     <update id="updateRecvHistBase" parameterType="RecvHistBaseEntity">
         UPDATE RECV_HIST_BASE
         SET
-            RECV_ID = #{recvId, jdbcType=VARCHAR}
+            RECV_SEQ = #{recvSeq, jdbcType=VARCHAR}
           ,MEMBER_ID = #{memberId, jdbcType=VARCHAR}
           ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
           ,API_ID = #{apiId, jdbcType=VARCHAR}
@@ -43,7 +43,7 @@
           ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
           ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
         WHERE
-            RECV_ID = #{recvId}
+            RECV_SEQ = #{recvSeq}
           AND MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
           AND API_ID = #{apiId}
@@ -52,7 +52,7 @@
     <delete id="deleteRecvHistBase" parameterType="RecvHistBaseEntity">
         DELETE FROM RECV_HIST_BASE
         WHERE
-            RECV_ID = #{recvId}
+            RECV_SEQ = #{recvSeq}
           AND MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
           AND API_ID = #{apiId}
@@ -60,7 +60,7 @@
 
     <select id="selectRecvHistBase" parameterType="RecvHistBaseSearch"  resultType="RecvHistBaseEntity">
         SELECT
-            RECV_ID
+            RECV_SEQ
              ,MEMBER_ID
              ,ORG_CD
              ,API_ID
@@ -72,7 +72,7 @@
              ,CHG_DT
         FROM RECV_HIST_BASE
         WHERE
-            RECV_ID = #{recvId}
+            RECV_SEQ = #{recvSeq}
           AND MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
           AND API_ID = #{apiId}
@@ -83,8 +83,8 @@
         COUNT(*)
         FROM RECV_HIST_BASE
         WHERE 1 = 1
-        <if test = 'recvId  != null and recvId != ""'>
-            AND RECV_ID = #{recvId}
+        <if test = 'recvSeq  != null and recvSeq != ""'>
+            AND RECV_SEQ = #{recvSeq}
         </if>
         <if test = 'memberId  != null and memberId != ""'>
             AND MEMBER_ID = #{memberId}
@@ -104,8 +104,8 @@
         FROM
         (
         SELECT
-            ROW_NUMBER() OVER(ORDER BY RECV_ID, MEMBER_ID, ORG_CD, API_ID) ROW_NUM
-            ,RECV_ID
+            ROW_NUMBER() OVER(ORDER BY RECV_SEQ, MEMBER_ID, ORG_CD, API_ID) ROW_NUM
+            ,RECV_SEQ
             ,MEMBER_ID
             ,ORG_CD
             ,API_ID
@@ -117,8 +117,8 @@
             ,CHG_DT
         FROM RECV_HIST_BASE
         WHERE 1 = 1
-        <if test = 'recvId  != null and recvId != ""'>
-            AND RECV_ID = #{recvId}
+        <if test = 'recvSeq  != null and recvSeq != ""'>
+            AND RECV_SEQ = #{recvSeq}
         </if>
         <if test = 'memberId  != null and memberId != ""'>
             AND MEMBER_ID = #{memberId}
@@ -129,7 +129,7 @@
         <if test = 'apiId  != null and apiId != ""'>
             AND API_ID = #{apiId}
         </if>
-        ORDER BY RECV_ID, MEMBER_ID, ORG_CD, API_ID
+        ORDER BY RECV_SEQ, MEMBER_ID, ORG_CD, API_ID
         ) T
         <if test = 'startIndex != null and endIndex != null '>
             WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex}

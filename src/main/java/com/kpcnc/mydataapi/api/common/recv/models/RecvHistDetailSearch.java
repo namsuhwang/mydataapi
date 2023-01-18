@@ -11,21 +11,21 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class RecvHistDetailSearch extends SearchDto {
-    private String recvId;    // 수신 ID
-    private Long recvSeq;    // 수신 일련번호
+    private String recvSeq;    // 수신 일련번호
+    private Long recvDetailSeq;    // 수신 상세 일련번호
 
-    public RecvHistDetailSearch(String recvId, Long recvSeq) {
-        this.recvId = recvId;
+    public RecvHistDetailSearch(String recvSeq, Long recvDetailSeq) {
         this.recvSeq = recvSeq;
+        this.recvDetailSeq = recvDetailSeq;
     }
 
     public RecvHistDetailSearch(RecvHistDetailEntity entity) {
-        this.recvId = entity.getRecvId();
         this.recvSeq = entity.getRecvSeq();
+        this.recvDetailSeq = entity.getRecvDetailSeq();
     }
 
     public RecvHistDetailSearch(RecvHistDetailForm form) {
-        this.recvId = form.getRecvId();
         this.recvSeq = form.getRecvSeq();
+        this.recvDetailSeq = form.getRecvDetailSeq();
     }
 }
