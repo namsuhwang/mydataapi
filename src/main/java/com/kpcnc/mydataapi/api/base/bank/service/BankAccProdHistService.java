@@ -14,5 +14,7 @@ public interface BankAccProdHistService{
 
     public BankAccProdHistEntity getBankAccProdHist(BankAccProdHistSearch dom);
 
+    public BankAccProdHistEntity getBankAccProdHistLast(BankAccProdHistSearch dom);
+
     public ResultListDto<BankAccProdHistEntity> getBankAccProdHistList(BankAccProdHistSearch dom);
 }

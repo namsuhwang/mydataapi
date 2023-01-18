@@ -16,6 +16,8 @@
             ,IS_MINUS
             ,ACCOUNT_TYPE
             ,ACCOUNT_STATUS
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -32,6 +34,8 @@
             ,#{isMinus, jdbcType=VARCHAR}
             ,#{accountType, jdbcType=VARCHAR}
             ,#{accountStatus, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -52,12 +56,17 @@
                ,IS_MINUS = #{isMinus, jdbcType=VARCHAR}
                ,ACCOUNT_TYPE = #{accountType, jdbcType=VARCHAR}
                ,ACCOUNT_STATUS = #{accountStatus, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </update>
 
     <delete id="deleteBankAcc" parameterType="BankAccEntity">
@@ -66,29 +75,44 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
+    </delete>
+
+    <delete id="deleteAllBankAcc" parameterType="BankAccEntity">
+        DELETE FROM BANK_ACC
+        WHERE
+        MEMBER_ID = #{memberId}
+        AND ORG_CD = #{orgCd}
     </delete>
 
     <select id="selectBankAcc" parameterType="BankAccSearch"  resultType="BankAccEntity">
-         SELECT 
-               MEMBER_ID
-               ,ORG_CD
-               ,ACCOUNT_NUM
-               ,IS_CONSENT
-               ,SEQNO
-               ,IS_FOREIGN_DEPOSIT
-               ,PROD_NAME
-               ,IS_MINUS
-               ,ACCOUNT_TYPE
-               ,ACCOUNT_STATUS
-               ,REG_USER_ID
-               ,REG_DT
-               ,CHG_USER_ID
-               ,CHG_DT
-        FROM BANK_ACC
-       WHERE 
+         SELECT
+            MEMBER_ID
+             ,ORG_CD
+             ,ACCOUNT_NUM
+             ,IS_CONSENT
+             ,SEQNO
+             ,IS_FOREIGN_DEPOSIT
+             ,PROD_NAME
+             ,IS_MINUS
+             ,ACCOUNT_TYPE
+             ,ACCOUNT_STATUS
+             ,API_TRAN_DAY
+             ,API_TRAN_ID
+             ,REG_USER_ID
+             ,REG_DT
+             ,CHG_USER_ID
+             ,CHG_DT
+         FROM BANK_ACC
+         WHERE
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </select>
 
     <select id="selectBankAccListTotalCnt" parameterType="BankAccSearch"  resultType="Long">
@@ -105,6 +129,9 @@
        <if test = 'accountNum  != null and accountNum != ""'>
            AND ACCOUNT_NUM = #{accountNum}
        </if>
+        <if test = 'seqno  != null and seqno != ""'>
+            AND SEQNO = #{seqno}
+        </if>
     </select>
 
     <select id="selectBankAccList" parameterType="BankAccSearch"  resultType="BankAccEntity">
@@ -114,7 +141,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
@@ -125,6 +152,8 @@
                ,IS_MINUS
                ,ACCOUNT_TYPE
                ,ACCOUNT_STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -140,7 +169,10 @@
        <if test = 'accountNum  != null and accountNum != ""'>
            AND ACCOUNT_NUM = #{accountNum}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+        <if test = 'seqno  != null and seqno != ""'>
+            AND SEQNO = #{seqno}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

@@ -1,0 +1,36 @@
+package com.kpcnc.mydataapi.api.common.gateway.models.form;
+
+import com.kpcnc.mydataapi.api.base.bank.models.entity.BankCustEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class FormBase {
+    private String memberId;    // 회원ID
+    private String orgCd;    // 기관코드
+    private String apiTranDay;
+    private String apiTranId;
+    private String regUserId;    // 등록자
+    private String regDt;    // 등록일시
+    private String chgUserId;    // 수정자
+    private String chgDt;    // 수정일시
+
+    public EntityBase getEntityBase(){
+        EntityBase entity = new EntityBase();
+        entity.setMemberId(memberId);
+        entity.setOrgCd(orgCd);
+        entity.setApiTranDay(apiTranDay);
+        entity.setApiTranId(apiTranId);
+        entity.setRegUserId(regUserId);
+        entity.setRegDt(regDt);
+        entity.setChgUserId(chgUserId);
+        entity.setChgDt(chgDt);
+        return entity;
+    }
+}

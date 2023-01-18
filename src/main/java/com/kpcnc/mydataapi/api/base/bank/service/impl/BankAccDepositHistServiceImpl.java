@@ -46,6 +46,11 @@ public class BankAccDepositHistServiceImpl implements BankAccDepositHistService 
     }
 
     @Override
+    public BankAccDepositHistEntity getBankAccDepositHistLast(BankAccDepositHistSearch dom) {
+        return bankAccDepositHistMapper.selectBankAccDepositHistMax(dom);
+    }
+
+    @Override
     public ResultListDto<BankAccDepositHistEntity> getBankAccDepositHistList(BankAccDepositHistSearch dom) {
         ResultListDto<BankAccDepositHistEntity> result = new ResultListDto<>();
         Long totalCnt = bankAccDepositHistMapper.selectBankAccDepositHistListTotalCnt(dom);

@@ -19,6 +19,8 @@
             ,ISSUE_DATE
             ,EXP_DATE
             ,INT_RATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -38,6 +40,8 @@
             ,#{issueDate, jdbcType=VARCHAR}
             ,#{expDate, jdbcType=VARCHAR}
             ,#{intRate, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -61,6 +65,8 @@
                ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
                ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
                ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -96,6 +102,8 @@
                ,ISSUE_DATE
                ,EXP_DATE
                ,INT_RATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -152,6 +160,8 @@
                ,ISSUE_DATE
                ,EXP_DATE
                ,INT_RATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

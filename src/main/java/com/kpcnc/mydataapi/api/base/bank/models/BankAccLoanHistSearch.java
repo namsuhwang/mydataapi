@@ -19,6 +19,23 @@ public class BankAccLoanHistSearch extends SearchDto {
     private String transNo;    // 거래번호
     private String transType;    // 거래유형
 
+    public BankAccLoanHistSearch(String memberId, String orgCd, String accountNum, String seqno) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.accountNum = accountNum;
+        this.seqno = seqno;
+    }
+
+
+    public BankAccLoanHistSearch(String memberId, String orgCd, String accountNum, String seqno, String transDtime, String transNo) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.accountNum = accountNum;
+        this.seqno = seqno;
+        this.transDtime = transDtime;
+        this.transNo = transNo;
+    }
+
     public BankAccLoanHistSearch(String memberId, String orgCd, String accountNum, String seqno, String transDtime, String transNo, String transType) {
         this.memberId = memberId;
         this.orgCd = orgCd;

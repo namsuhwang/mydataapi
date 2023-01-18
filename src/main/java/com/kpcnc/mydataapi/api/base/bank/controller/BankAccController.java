@@ -1,5 +1,7 @@
 package com.kpcnc.mydataapi.api.base.bank.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kpcnc.mydataapi.api.base.bank.models.BankAccSearch;
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEntity;
 import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccForm;
@@ -29,7 +31,8 @@ public class BankAccController {
     public ResponseEntity<ResponseDto<BankAccEntity>> regBankAcc(
         @RequestBody BankAccForm dom
     ){
-        BankAccEntity result = bankAccService.regBankAcc(dom);
+        bankAccService.regBankAcc(dom);
+        BankAccEntity result = bankAccService.getBankAcc(new BankAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +40,8 @@ public class BankAccController {
     public ResponseEntity<ResponseDto<BankAccEntity>> modBankAcc(
         @RequestBody BankAccForm dom
     ){
-        BankAccEntity result = bankAccService.modBankAcc(dom);
+        bankAccService.modBankAcc(dom);
+        BankAccEntity result = bankAccService.getBankAcc(new BankAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

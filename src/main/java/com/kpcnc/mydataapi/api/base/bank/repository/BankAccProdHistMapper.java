@@ -16,6 +16,8 @@ public interface BankAccProdHistMapper{
 
     BankAccProdHistEntity selectBankAccProdHist(BankAccProdHistSearch dom);
 
+    BankAccProdHistEntity selectBankAccProdHistLast(BankAccProdHistSearch dom);
+
     Long selectBankAccProdHistListTotalCnt(BankAccProdHistSearch dom);
 
     List<BankAccProdHistEntity> selectBankAccProdHistList(BankAccProdHistSearch dom);

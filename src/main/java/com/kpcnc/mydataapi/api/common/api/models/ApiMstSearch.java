@@ -14,6 +14,7 @@ public class ApiMstSearch extends SearchDto {
     private String apiType;    // API 유형
     private String apiId;    // API ID
     private String idstType;    // 업권 유형
+    private String scope;    // scope
 
     public ApiMstSearch(String apiType, String apiId, String idstType) {
         this.apiType = apiType;
@@ -31,5 +32,9 @@ public class ApiMstSearch extends SearchDto {
         this.apiType = form.getApiType();
         this.apiId = form.getApiId();
         this.idstType = form.getIdstType();
+    }
+
+    public ApiMstSearch(String scope){
+        this.scope = scope;
     }
 }

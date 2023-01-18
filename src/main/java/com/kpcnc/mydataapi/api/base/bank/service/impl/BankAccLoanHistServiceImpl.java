@@ -46,6 +46,11 @@ public class BankAccLoanHistServiceImpl implements BankAccLoanHistService {
     }
 
     @Override
+    public BankAccLoanHistEntity getBankAccLoanHistLast(BankAccLoanHistSearch dom) {
+        return bankAccLoanHistMapper.selectBankAccLoanHistLast(dom);
+    }
+
+    @Override
     public ResultListDto<BankAccLoanHistEntity> getBankAccLoanHistList(BankAccLoanHistSearch dom) {
         ResultListDto<BankAccLoanHistEntity> result = new ResultListDto<>();
         Long totalCnt = bankAccLoanHistMapper.selectBankAccLoanHistListTotalCnt(dom);

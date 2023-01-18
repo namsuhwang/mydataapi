@@ -16,6 +16,8 @@
             ,EXP_DATE
             ,COMMIT_AMT
             ,MONTHLY_PAID_IN_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -32,6 +34,8 @@
             ,#{expDate, jdbcType=VARCHAR}
             ,#{commitAmt, jdbcType=NUMERIC}
             ,#{monthlyPaidInAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -52,13 +56,17 @@
                ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
                ,COMMIT_AMT = #{commitAmt, jdbcType=NUMERIC}
                ,MONTHLY_PAID_IN_AMT = #{monthlyPaidInAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </update>
 
     <delete id="deleteBankAccDeposit" parameterType="BankAccDepositEntity">
@@ -67,7 +75,9 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </delete>
 
     <select id="selectBankAccDeposit" parameterType="BankAccDepositSearch"  resultType="BankAccDepositEntity">
@@ -82,6 +92,8 @@
                ,EXP_DATE
                ,COMMIT_AMT
                ,MONTHLY_PAID_IN_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -91,7 +103,9 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </select>
 
     <select id="selectBankAccDepositListTotalCnt" parameterType="BankAccDepositSearch"  resultType="Long">
@@ -131,6 +145,8 @@
                ,EXP_DATE
                ,COMMIT_AMT
                ,MONTHLY_PAID_IN_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

@@ -16,6 +16,8 @@ public interface BankAccDepositHistMapper{
 
     BankAccDepositHistEntity selectBankAccDepositHist(BankAccDepositHistSearch dom);
 
+    BankAccDepositHistEntity selectBankAccDepositHistMax(BankAccDepositHistSearch dom);
+
     Long selectBankAccDepositHistListTotalCnt(BankAccDepositHistSearch dom);
 
     List<BankAccDepositHistEntity> selectBankAccDepositHistList(BankAccDepositHistSearch dom);

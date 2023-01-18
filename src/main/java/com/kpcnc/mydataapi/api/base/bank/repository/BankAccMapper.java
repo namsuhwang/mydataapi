@@ -14,6 +14,9 @@ public interface BankAccMapper{
 
     int deleteBankAcc(BankAccEntity dom);
 
+    int deleteAllBankAcc(BankAccEntity dom);
+
+
     BankAccEntity selectBankAcc(BankAccSearch dom);
 
     Long selectBankAccListTotalCnt(BankAccSearch dom);

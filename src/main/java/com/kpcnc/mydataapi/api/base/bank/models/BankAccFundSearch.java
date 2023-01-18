@@ -18,6 +18,14 @@ public class BankAccFundSearch extends SearchDto {
     private String standardFundCode;    // 표준펀드코드
     private String paidInType;    // 납입유형 (코드)
 
+
+    public BankAccFundSearch(String memberId, String orgCd, String accountNum, String seqno) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.accountNum = accountNum;
+        this.seqno = seqno;
+    }
+
     public BankAccFundSearch(String memberId, String orgCd, String accountNum, String seqno, String standardFundCode, String paidInType) {
         this.memberId = memberId;
         this.orgCd = orgCd;

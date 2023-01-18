@@ -46,6 +46,11 @@ public class BankAccFundHistServiceImpl implements BankAccFundHistService {
     }
 
     @Override
+    public BankAccFundHistEntity getBankAccFundHistLast(BankAccFundHistSearch dom) {
+        return bankAccFundHistMapper.selectBankAccFundHistLast(dom);
+    }
+
+    @Override
     public ResultListDto<BankAccFundHistEntity> getBankAccFundHistList(BankAccFundHistSearch dom) {
         ResultListDto<BankAccFundHistEntity> result = new ResultListDto<>();
         Long totalCnt = bankAccFundHistMapper.selectBankAccFundHistListTotalCnt(dom);

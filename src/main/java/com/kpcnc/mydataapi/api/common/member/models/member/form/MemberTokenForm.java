@@ -15,7 +15,7 @@ public class MemberTokenForm{
     private String orgCd;    // 기관코드
     private Integer sendReqSeq;    // 전송요구 일련번호
     private String scopeList;    // 권한범위 목록
-    private String rquestType;    // 전송요청 유형
+    private String sendRequestType;    // 전송요청 유형
     private String fpSendReqYn;    // 정기전송 요청 여부
     private String fpSendReqDt;    // 정기전송 요구 일시
     private String fpSendReqStartDay;    // 정기전송 요구 시작일자
@@ -44,7 +44,7 @@ public class MemberTokenForm{
         entity.setOrgCd(orgCd);
         entity.setSendReqSeq(sendReqSeq);
         entity.setScopeList(scopeList);
-        entity.setRquestType(rquestType);
+        entity.setSendRequestType(sendRequestType);
         entity.setFpSendReqYn(fpSendReqYn);
         entity.setFpSendReqDt(fpSendReqDt);
         entity.setFpSendReqStartDay(fpSendReqStartDay);

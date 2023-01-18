@@ -9,7 +9,10 @@
             MEMBER_ID
             ,ORG_CD
             ,API_ID
-            ,LAST_RECV_DATA
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,SEARCH_TIME_STAMP
+            ,NEXT_PAGE
             ,LAST_RECV_DT
             ,REG_USER_ID
             ,REG_DT
@@ -20,7 +23,10 @@
             #{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{apiId, jdbcType=VARCHAR}
-            ,#{lastRecvData, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+            ,#{searchTimeStamp, jdbcType=VARCHAR}
+            ,#{nextPage, jdbcType=VARCHAR}
             ,#{lastRecvDt, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
@@ -35,7 +41,10 @@
             MEMBER_ID = #{memberId, jdbcType=VARCHAR}
            ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
            ,API_ID = #{apiId, jdbcType=VARCHAR}
-           ,LAST_RECV_DATA = #{lastRecvData, jdbcType=VARCHAR}
+           ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+           ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+           ,SEARCH_TIME_STAMP = #{searchTimeStamp, jdbcType=VARCHAR}
+           ,NEXT_PAGE = #{nextPage, jdbcType=VARCHAR}
            ,LAST_RECV_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
            ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
@@ -51,6 +60,8 @@
             MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
           AND API_ID = #{apiId}
+          AND API_TRAN_DAY = #{apiTranDay}
+          AND API_TRAN_ID = #{apiTranId}
     </delete>
 
     <select id="selectRecvBaseline" parameterType="RecvBaselineSearch"  resultType="RecvBaselineEntity">
@@ -58,7 +69,10 @@
             MEMBER_ID
              ,ORG_CD
              ,API_ID
-             ,LAST_RECV_DATA
+             ,API_TRAN_DAY
+             ,API_TRAN_ID
+             ,SEARCH_TIME_STAMP
+             ,NEXT_PAGE
              ,LAST_RECV_DT
              ,REG_USER_ID
              ,REG_DT
@@ -69,11 +83,17 @@
             MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
           AND API_ID = #{apiId}
+            <if test = 'apiTranDay  != null and apiTranDay != ""'>
+                AND API_TRAN_DAY = #{apiTranDay}
+            </if>
+            <if test = 'apiTranId  != null and apiTranId != ""'>
+                AND API_TRAN_ID = #{apiTranId}
+            </if>
     </select>
 
     <select id="selectRecvBaselineListTotalCnt" parameterType="RecvBaselineSearch"  resultType="Long">
         SELECT
-        COUNT(*)
+            COUNT(*)
         FROM RECV_BASELINE
         WHERE 1 = 1
         <if test = 'memberId  != null and memberId != ""'>
@@ -84,6 +104,12 @@
         </if>
         <if test = 'apiId  != null and apiId != ""'>
             AND API_ID = #{apiId}
+        </if>
+        <if test = 'apiTranDay  != null and apiTranDay != ""'>
+            AND API_TRAN_DAY = #{apiTranDay}
+        </if>
+        <if test = 'apiTranId  != null and apiTranId != ""'>
+            AND API_TRAN_ID = #{apiTranId}
         </if>
     </select>
 
@@ -97,7 +123,10 @@
             MEMBER_ID
             ,ORG_CD
             ,API_ID
-            ,LAST_RECV_DATA
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,SEARCH_TIME_STAMP
+            ,NEXT_PAGE
             ,LAST_RECV_DT
             ,REG_USER_ID
             ,REG_DT
@@ -113,6 +142,12 @@
         </if>
         <if test = 'apiId  != null and apiId != ""'>
             AND API_ID = #{apiId}
+        </if>
+        <if test = 'apiTranDay  != null and apiTranDay != ""'>
+            AND API_TRAN_DAY = #{apiTranDay}
+        </if>
+        <if test = 'apiTranId  != null and apiTranId != ""'>
+            AND API_TRAN_ID = #{apiTranId}
         </if>
         ) T
         <if test = 'startIndex != null and endIndex != null '>

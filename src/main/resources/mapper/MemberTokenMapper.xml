@@ -10,7 +10,7 @@
             ,ORG_CD
             ,SEND_REQ_SEQ
             ,SCOPE_LIST
-            ,RQUEST_TYPE
+            ,SEND_REQUEST_TYPE
             ,FP_SEND_REQ_YN
             ,FP_SEND_REQ_DT
             ,FP_SEND_REQ_START_DAY
@@ -38,7 +38,7 @@
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{sendReqSeq, jdbcType=NUMERIC}
             ,#{scopeList, jdbcType=VARCHAR}
-            ,#{rquestType, jdbcType=VARCHAR}
+            ,#{sendRequestType, jdbcType=VARCHAR}
             ,#{fpSendReqYn, jdbcType=VARCHAR}
             ,#{fpSendReqDt, jdbcType=VARCHAR}
             ,#{fpSendReqStartDay, jdbcType=VARCHAR}
@@ -70,7 +70,7 @@
           ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
           ,SEND_REQ_SEQ = #{sendReqSeq, jdbcType=NUMERIC}
           ,SCOPE_LIST = #{scopeList, jdbcType=VARCHAR}
-          ,RQUEST_TYPE = #{rquestType, jdbcType=VARCHAR}
+          ,SEND_REQUEST_TYPE = #{sendRequestType, jdbcType=VARCHAR}
           ,FP_SEND_REQ_YN = #{fpSendReqYn, jdbcType=VARCHAR}
           ,FP_SEND_REQ_DT = #{fpSendReqDt, jdbcType=VARCHAR}
           ,FP_SEND_REQ_START_DAY = #{fpSendReqStartDay, jdbcType=VARCHAR}
@@ -110,7 +110,7 @@
              ,ORG_CD
              ,SEND_REQ_SEQ
              ,SCOPE_LIST
-             ,RQUEST_TYPE
+             ,SEND_REQUEST_TYPE
              ,FP_SEND_REQ_YN
              ,FP_SEND_REQ_DT
              ,FP_SEND_REQ_START_DAY
@@ -167,7 +167,7 @@
             ,ORG_CD
             ,SEND_REQ_SEQ
             ,SCOPE_LIST
-            ,RQUEST_TYPE
+            ,SEND_REQUEST_TYPE
             ,FP_SEND_REQ_YN
             ,FP_SEND_REQ_DT
             ,FP_SEND_REQ_START_DAY
@@ -199,6 +199,16 @@
         </if>
         <if test = 'sendReqSeq  != null and sendReqSeq != ""'>
             AND SEND_REQ_SEQ = #{sendReqSeq}
+        </if>
+        <if test = 'currentDt  != null and currentDt != ""'>
+            AND ACCESS_TOKEN_DUE_DT <![CDATA[<=]]> #{currentDt}
+        </if>
+        <if test = 'fpSendReqYn  != null and fpSendReqYn != "" and currentDay  != null and currentDay != ""'>
+            AND FP_SEND_REQ_YN = #{fpSendReqYn}
+            AND (
+                     FP_SEND_REQ_START_DAY <![CDATA[>=]]> #{currentDay}
+                 AND FP_SEND_REQ_END_DAY <![CDATA[<=]]> #{currentDay}
+                )
         </if>
         ORDER BY MEMBER_ID, ORG_CD, SEND_REQ_SEQ
         ) T

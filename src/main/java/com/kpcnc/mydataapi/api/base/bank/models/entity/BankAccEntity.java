@@ -1,5 +1,8 @@
 package com.kpcnc.mydataapi.api.base.bank.models.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +12,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+public class BankAccEntity extends EntityBase {
     private String accountNum;    // 계좌번호
     private String isConsent;    // 전송요구 여부
     private String seqno;    // 회차번호
@@ -21,8 +22,4 @@ public class BankAccEntity{
     private String isMinus;    // 마이너스약정 여부
     private String accountType;    // 계좌구분 (코드)
     private String accountStatus;    // 계좌상태 (코드)
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

@@ -45,6 +45,12 @@ public class BankAccProdHistServiceImpl implements BankAccProdHistService {
         return bankAccProdHistMapper.selectBankAccProdHist(dom);
     }
 
+
+    @Override
+    public BankAccProdHistEntity getBankAccProdHistLast(BankAccProdHistSearch dom) {
+        return bankAccProdHistMapper.selectBankAccProdHistLast(dom);
+    }
+
     @Override
     public ResultListDto<BankAccProdHistEntity> getBankAccProdHistList(BankAccProdHistSearch dom) {
         ResultListDto<BankAccProdHistEntity> result = new ResultListDto<>();

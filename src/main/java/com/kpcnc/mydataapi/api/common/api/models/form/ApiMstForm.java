@@ -15,7 +15,7 @@ public class ApiMstForm{
     private String apiId;    // API ID
     private String idstType;    // 업권 유형
     private String scope;    // SCOPE
-    private String rquestType;    // 요청 유형
+    private String requestType;    // 요청 유형
     private String idstBm;    // 업권명
     private String apiNm;    // API명
     private String apiContent;    // API 내용
@@ -31,7 +31,7 @@ public class ApiMstForm{
         entity.setApiId(apiId);
         entity.setIdstType(idstType);
         entity.setScope(scope);
-        entity.setRquestType(rquestType);
+        entity.setRequestType(requestType);
         entity.setIdstBm(idstBm);
         entity.setApiNm(apiNm);
         entity.setApiContent(apiContent);

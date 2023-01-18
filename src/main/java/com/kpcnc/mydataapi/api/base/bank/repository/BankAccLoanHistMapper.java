@@ -16,6 +16,8 @@ public interface BankAccLoanHistMapper{
 
     BankAccLoanHistEntity selectBankAccLoanHist(BankAccLoanHistSearch dom);
 
+    BankAccLoanHistEntity selectBankAccLoanHistLast(BankAccLoanHistSearch dom);
+
     Long selectBankAccLoanHistListTotalCnt(BankAccLoanHistSearch dom);
 
     List<BankAccLoanHistEntity> selectBankAccLoanHistList(BankAccLoanHistSearch dom);

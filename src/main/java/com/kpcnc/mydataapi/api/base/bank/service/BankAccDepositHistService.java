@@ -14,5 +14,7 @@ public interface BankAccDepositHistService{
 
     public BankAccDepositHistEntity getBankAccDepositHist(BankAccDepositHistSearch dom);
 
+    public BankAccDepositHistEntity getBankAccDepositHistLast(BankAccDepositHistSearch dom);
+
     public ResultListDto<BankAccDepositHistEntity> getBankAccDepositHistList(BankAccDepositHistSearch dom);
 }

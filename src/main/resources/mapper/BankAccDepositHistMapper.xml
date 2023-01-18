@@ -19,6 +19,8 @@
             ,BALANCE_AMT
             ,PAID_IN_CNT
             ,TRANS_MEMO
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -38,6 +40,8 @@
             ,#{balanceAmt, jdbcType=NUMERIC}
             ,#{paidInCnt, jdbcType=VARCHAR}
             ,#{transMemo, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -61,16 +65,22 @@
                ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
                ,PAID_IN_CNT = #{paidInCnt, jdbcType=VARCHAR}
                ,TRANS_MEMO = #{transMemo, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+           <if test = 'seqno  != null and seqno != ""'>
+               AND SEQNO = #{seqno}
+           </if>
            AND TRANS_DTIME = #{transDtime}
            AND TRANS_NO = #{transNo}
-           AND TRANS_TYPE = #{transType}
+            <if test = 'transType  != null and transType != ""'>
+                AND TRANS_TYPE = #{transType}
+            </if>
     </update>
 
     <delete id="deleteBankAccDepositHist" parameterType="BankAccDepositHistEntity">
@@ -79,10 +89,14 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
            AND TRANS_DTIME = #{transDtime}
            AND TRANS_NO = #{transNo}
-           AND TRANS_TYPE = #{transType}
+            <if test = 'transType  != null and transType != ""'>
+                AND TRANS_TYPE = #{transType}
+            </if>
     </delete>
 
     <select id="selectBankAccDepositHist" parameterType="BankAccDepositHistSearch"  resultType="BankAccDepositHistEntity">
@@ -100,6 +114,8 @@
                ,BALANCE_AMT
                ,PAID_IN_CNT
                ,TRANS_MEMO
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -109,10 +125,62 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
            AND TRANS_DTIME = #{transDtime}
            AND TRANS_NO = #{transNo}
-           AND TRANS_TYPE = #{transType}
+            <if test = 'transType  != null and transType != ""'>
+                AND TRANS_TYPE = #{transType}
+            </if>
+    </select>
+
+    <select id="selectBankAccDepositHistLast" parameterType="BankAccDepositHistSearch"  resultType="BankAccDepositHistEntity">
+        SELECT
+            H1.MEMBER_ID
+            ,H1.ORG_CD
+            ,H1.ACCOUNT_NUM
+            ,H1.SEQNO
+            ,H1.TRANS_DTIME
+            ,H1.TRANS_NO
+            ,H1.TRANS_TYPE
+            ,H1.TRANS_CLASS
+            ,H1.CURRENCY_CODE
+            ,H1.TRANS_AMT
+            ,H1.BALANCE_AMT
+            ,H1.PAID_IN_CNT
+            ,H1.TRANS_MEMO
+            ,H1.API_TRAN_DAY
+            ,H1.API_TRAN_ID
+            ,H1.REG_USER_ID
+            ,H1.REG_DT
+            ,H1.CHG_USER_ID
+            ,H1.CHG_DT
+        FROM BANK_ACC_DEPOSIT_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME , TRANS_NO
+                        FROM BANK_ACC_DEPOSIT_HIST badh
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+        WHERE H1.MEMBER_ID = H2.MEMBER_ID
+        AND H1.ORG_CD = H2.ORG_CD
+        AND H1.ACCOUNT_NUM = H2.ACCOUNT_NUM
+        AND H1.SEQNO = H2.SEQNO
+        AND H1.TRANS_DTIME = H2.TRANS_DTIME
+        AND H1.TRANS_NO = H2.TRANS_NO
     </select>
 
     <select id="selectBankAccDepositHistListTotalCnt" parameterType="BankAccDepositHistSearch"  resultType="Long">
@@ -150,7 +218,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
@@ -164,6 +232,8 @@
                ,BALANCE_AMT
                ,PAID_IN_CNT
                ,TRANS_MEMO
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -191,7 +261,7 @@
        <if test = 'transType  != null and transType != ""'>
            AND TRANS_TYPE = #{transType}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

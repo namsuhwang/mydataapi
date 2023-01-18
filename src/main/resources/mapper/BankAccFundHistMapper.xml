@@ -18,6 +18,8 @@
             ,TRANS_FUND_NUM
             ,TRANS_AMT
             ,BALANCE_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -36,6 +38,8 @@
             ,#{transFundNum, jdbcType=NUMERIC}
             ,#{transAmt, jdbcType=NUMERIC}
             ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -58,6 +62,8 @@
                ,TRANS_FUND_NUM = #{transFundNum, jdbcType=NUMERIC}
                ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
                ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -67,7 +73,6 @@
            AND SEQNO = #{seqno}
            AND TRANS_DTIME = #{transDtime}
            AND TRANS_NO = #{transNo}
-           AND TRANS_TYPE = #{transType}
     </update>
 
     <delete id="deleteBankAccFundHist" parameterType="BankAccFundHistEntity">
@@ -79,7 +84,6 @@
            AND SEQNO = #{seqno}
            AND TRANS_DTIME = #{transDtime}
            AND TRANS_NO = #{transNo}
-           AND TRANS_TYPE = #{transType}
     </delete>
 
     <select id="selectBankAccFundHist" parameterType="BankAccFundHistSearch"  resultType="BankAccFundHistEntity">
@@ -96,6 +100,8 @@
                ,TRANS_FUND_NUM
                ,TRANS_AMT
                ,BALANCE_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -108,7 +114,54 @@
            AND SEQNO = #{seqno}
            AND TRANS_DTIME = #{transDtime}
            AND TRANS_NO = #{transNo}
-           AND TRANS_TYPE = #{transType}
+    </select>
+
+
+    <select id="selectBankAccFundHistLast" parameterType="BankAccFundHistSearch"  resultType="BankAccFundHistEntity">
+        SELECT
+            H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.ACCOUNT_NUM
+             ,H1.SEQNO
+             ,H1.TRANS_DTIME
+             ,H1.TRANS_NO
+             ,H1.TRANS_TYPE
+             ,H1.CURRENCY_CODE
+             ,H1.BASE_AMT
+             ,H1.TRANS_FUND_NUM
+             ,H1.TRANS_AMT
+             ,H1.BALANCE_AMT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+        FROM BANK_ACC_FUND_HIST H1,
+            (
+                SELECT *
+                FROM
+                (
+                    SELECT
+                        MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME , TRANS_NO
+                    FROM BANK_ACC_FUND_HIST
+                    WHERE
+                        MEMBER_ID = #{memberId}
+                      AND ORG_CD = #{orgCd}
+                      AND ACCOUNT_NUM = #{accountNum}
+                      AND SEQNO = #{seqno}
+                      AND TRANS_DTIME = #{transDtime}
+                      AND TRANS_NO = #{transNo}
+                    ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
+                )
+                WHERE rownum = 1
+            ) H2
+        WHERE H1.MEMBER_ID = H2.MEMBER_ID
+        AND H1.ORG_CD = H2.ORG_CD
+        AND H1.ACCOUNT_NUM = H2.ACCOUNT_NUM
+        AND H1.SEQNO = H2.SEQNO
+        AND H1.TRANS_DTIME = H2.TRANS_DTIME
+        AND H1.TRANS_NO = H2.TRANS_NO
     </select>
 
     <select id="selectBankAccFundHistListTotalCnt" parameterType="BankAccFundHistSearch"  resultType="Long">
@@ -146,7 +199,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
@@ -159,6 +212,8 @@
                ,TRANS_FUND_NUM
                ,TRANS_AMT
                ,BALANCE_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -186,7 +241,7 @@
        <if test = 'transType  != null and transType != ""'>
            AND TRANS_TYPE = #{transType}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, TRANS_TYPE
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

@@ -10,7 +10,7 @@
             ,API_ID
             ,IDST_TYPE
             ,SCOPE
-            ,RQUEST_TYPE
+            ,REQUEST_TYPE
             ,IDST_BM
             ,API_NM
             ,API_CONTENT
@@ -25,7 +25,7 @@
             ,#{apiId, jdbcType=VARCHAR}
             ,#{idstType, jdbcType=VARCHAR}
             ,#{scope, jdbcType=VARCHAR}
-            ,#{rquestType, jdbcType=VARCHAR}
+            ,#{requestType, jdbcType=VARCHAR}
             ,#{idstBm, jdbcType=VARCHAR}
             ,#{apiNm, jdbcType=VARCHAR}
             ,#{apiContent, jdbcType=VARCHAR}
@@ -44,7 +44,7 @@
           ,API_ID = #{apiId, jdbcType=VARCHAR}
           ,IDST_TYPE = #{idstType, jdbcType=VARCHAR}
           ,SCOPE = #{scope, jdbcType=VARCHAR}
-          ,RQUEST_TYPE = #{rquestType, jdbcType=VARCHAR}
+          ,REQUEST_TYPE = #{requestType, jdbcType=VARCHAR}
           ,IDST_BM = #{idstBm, jdbcType=VARCHAR}
           ,API_NM = #{apiNm, jdbcType=VARCHAR}
           ,API_CONTENT = #{apiContent, jdbcType=VARCHAR}
@@ -73,7 +73,7 @@
              ,API_ID
              ,IDST_TYPE
              ,SCOPE
-             ,RQUEST_TYPE
+             ,REQUEST_TYPE
              ,IDST_BM
              ,API_NM
              ,API_CONTENT
@@ -117,7 +117,7 @@
             ,API_ID
             ,IDST_TYPE
             ,SCOPE
-            ,RQUEST_TYPE
+            ,REQUEST_TYPE
             ,IDST_BM
             ,API_NM
             ,API_CONTENT
@@ -136,6 +136,9 @@
         </if>
         <if test = 'idstType  != null and idstType != ""'>
             AND IDST_TYPE = #{idstType}
+        </if>
+        <if test = 'scope  != null and scope != ""'>
+            AND SCOPE = #{scope}
         </if>
         ORDER BY API_TYPE, API_ID, IDST_TYPE
         ) T

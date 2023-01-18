@@ -17,6 +17,13 @@ public class BankAccEachProdSearch extends SearchDto {
     private String prodName;    // 개별운용상품명
     private String prodNum;    // 상품가입번호
 
+    public BankAccEachProdSearch(String memberId, String orgCd, String accountNum, String prodName) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.accountNum = accountNum;
+        this.prodName = prodName;
+    }
+
     public BankAccEachProdSearch(String memberId, String orgCd, String accountNum, String prodName, String prodNum) {
         this.memberId = memberId;
         this.orgCd = orgCd;

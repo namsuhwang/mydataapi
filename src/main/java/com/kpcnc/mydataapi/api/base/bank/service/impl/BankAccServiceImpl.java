@@ -23,20 +23,36 @@ public class BankAccServiceImpl implements BankAccService {
     BankAccMapper bankAccMapper;
 
     @Override
-    public BankAccEntity regBankAcc(BankAccForm dom) {
+    public void regBankAcc(BankAccForm dom) {
         bankAccMapper.insertBankAcc(dom.getEntity());
-        return bankAccMapper.selectBankAcc(new BankAccSearch(dom));
+        return;
     }
 
     @Override
-    public BankAccEntity modBankAcc(BankAccForm dom) {
+    public void updBankAcc(BankAccForm dom) {
         bankAccMapper.updateBankAcc(dom.getEntity());
-        return bankAccMapper.selectBankAcc(new BankAccSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modBankAcc(BankAccForm dom) {
+        if(getBankAcc(new BankAccSearch(dom)) == null){
+            regBankAcc(dom);
+        }else{
+            updBankAcc(dom);
+        }
+        return;
     }
 
     @Override
     public void delBankAcc(BankAccForm dom) {
         bankAccMapper.deleteBankAcc(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelBankAcc(BankAccForm dom) {
+        bankAccMapper.deleteAllBankAcc(dom.getEntity());
         return;
     }
 

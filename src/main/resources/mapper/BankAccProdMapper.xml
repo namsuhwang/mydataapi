@@ -9,11 +9,14 @@
             MEMBER_ID
             ,ORG_CD
             ,ACCOUNT_NUM
+            ,SEQNO
             ,CURRENCY_CODE
             ,BALANCE_AMT
             ,EVAL_AMT
             ,ISSUE_DATE
             ,EXP_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -23,11 +26,14 @@
             #{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{accountNum, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
             ,#{currencyCode, jdbcType=VARCHAR}
             ,#{balanceAmt, jdbcType=NUMERIC}
             ,#{evalAmt, jdbcType=NUMERIC}
             ,#{issueDate, jdbcType=VARCHAR}
             ,#{expDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -41,11 +47,14 @@
                MEMBER_ID = #{memberId, jdbcType=VARCHAR}
                ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
                ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
                ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
                ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
                ,EVAL_AMT = #{evalAmt, jdbcType=NUMERIC}
                ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
                ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -67,11 +76,14 @@
                MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
+               ,SEQNO
                ,CURRENCY_CODE
                ,BALANCE_AMT
                ,EVAL_AMT
                ,ISSUE_DATE
                ,EXP_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -81,6 +93,9 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </select>
 
     <select id="selectBankAccProdListTotalCnt" parameterType="BankAccProdSearch"  resultType="Long">
@@ -97,6 +112,9 @@
        <if test = 'accountNum  != null and accountNum != ""'>
            AND ACCOUNT_NUM = #{accountNum}
        </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
     </select>
 
     <select id="selectBankAccProdList" parameterType="BankAccProdSearch"  resultType="BankAccProdEntity">
@@ -106,15 +124,18 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
+               ,SEQNO
                ,CURRENCY_CODE
                ,BALANCE_AMT
                ,EVAL_AMT
                ,ISSUE_DATE
                ,EXP_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -130,7 +151,10 @@
        <if test = 'accountNum  != null and accountNum != ""'>
            AND ACCOUNT_NUM = #{accountNum}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

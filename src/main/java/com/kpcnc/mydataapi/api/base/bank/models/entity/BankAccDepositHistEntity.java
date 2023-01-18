@@ -1,5 +1,6 @@
 package com.kpcnc.mydataapi.api.base.bank.models.entity;
 
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccDepositHistEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccDepositHistEntity extends EntityBase {
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String transDtime;    // 거래일시 또는 거래일자
@@ -26,8 +24,4 @@ public class BankAccDepositHistEntity{
     private BigDecimal balanceAmt;    // 거래 후 잔액
     private String paidInCnt;    // 납입회차
     private String transMemo;    // 적요
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

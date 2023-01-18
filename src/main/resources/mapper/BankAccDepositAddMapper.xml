@@ -15,6 +15,8 @@
             ,WITHDRAWABLE_AMT
             ,OFFERED_RATE
             ,LAST_PAID_IN_CNT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -30,6 +32,8 @@
             ,#{withdrawableAmt, jdbcType=NUMERIC}
             ,#{offeredRate, jdbcType=NUMERIC}
             ,#{lastPaidInCnt, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -49,13 +53,17 @@
                ,WITHDRAWABLE_AMT = #{withdrawableAmt, jdbcType=NUMERIC}
                ,OFFERED_RATE = #{offeredRate, jdbcType=NUMERIC}
                ,LAST_PAID_IN_CNT = #{lastPaidInCnt, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </update>
 
     <delete id="deleteBankAccDepositAdd" parameterType="BankAccDepositAddEntity">
@@ -64,7 +72,9 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </delete>
 
     <select id="selectBankAccDepositAdd" parameterType="BankAccDepositAddSearch"  resultType="BankAccDepositAddEntity">
@@ -78,6 +88,8 @@
                ,WITHDRAWABLE_AMT
                ,OFFERED_RATE
                ,LAST_PAID_IN_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -87,7 +99,9 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
-           AND SEQNO = #{seqno}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
     </select>
 
     <select id="selectBankAccDepositAddListTotalCnt" parameterType="BankAccDepositAddSearch"  resultType="Long">
@@ -126,6 +140,8 @@
                ,WITHDRAWABLE_AMT
                ,OFFERED_RATE
                ,LAST_PAID_IN_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

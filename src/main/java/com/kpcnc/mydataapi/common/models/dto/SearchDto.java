@@ -4,9 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Data
 @ToString
 @NoArgsConstructor
 public class SearchDto {
+
+    private String memberId;    // 회원ID
+    private String orgCd;    // 기관코드
     private Integer requestPage;  // 1부터 시작
 
     private Integer requestCnt;

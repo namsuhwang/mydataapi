@@ -9,9 +9,12 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 
-public class CommonUtil {
+public class CommUtil {
 
     @Value("${jwt.secret.signature}")
     private static String signatureKey;
@@ -37,6 +40,31 @@ public class CommonUtil {
             result = false;
         }
         return result;
+    }
+
+    public static boolean isListNullEmpty(List<?> list){
+        boolean result;
+        if(list == null || list.size() == 0){
+            result = true;
+        }else{
+            result = false;
+        }
+        return result;
+    }
+
+
+    // 현재 일자를 String 8 자리로 반환
+    public static String getCurrentDate8(){
+        Date date_now = new Date(System.currentTimeMillis()); // 현재시간을 가져와 Date형으로 저장한다.
+        SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMdd");
+        return fourteen_format.format(date_now);
+    }
+
+    // 현재 시간을 String 14 자리로 반환
+    public static String getCurrentDateTime14(){
+        Date date_now = new Date(System.currentTimeMillis()); // 현재시간을 가져와 Date형으로 저장한다. 년월일시분초 14자리 포멧
+        SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
+        return fourteen_format.format(date_now);
     }
 
 //    public static MemberAuthDto getAuthInfo(){
@@ -85,5 +113,31 @@ public class CommonUtil {
         }
 
         return privateKey;
+    }
+
+    /*
+        scope로 업권유형 조회
+     */
+    public static String getIdstTypeByScope(String scope){
+        if(isNullEmpty(scope)){
+            return scope;
+        }
+
+        String idstType = null;
+        switch(scope.split(".")[0].toUpperCase()){
+            case "BANK" : idstType = "BANK"; break;
+            case "CARD" : idstType = "CARD"; break;
+            case "INSU" : idstType = "INSU"; break;
+            case "INVEST" : idstType = "INVT"; break;
+            case "EFIN" : idstType = "ELEC"; break;
+            case "GINSU" : idstType = "GURT"; break;
+            case "TELECOM" : idstType = "TELE"; break;
+            case "P2P" : idstType = "P2P"; break;
+            case "BOND" : idstType = "BOND"; break;
+            case "CAPTITAL" : idstType = "ITFN"; break;
+            default: idstType = null; break;
+        }
+
+        return idstType;
     }
 }

@@ -14,7 +14,10 @@ public class RecvBaselineForm{
     private String memberId;    // 회원ID
     private String orgCd;    // 기관코드
     private String apiId;    // API ID
-    private String lastRecvData;    // 최종 수신 데이터
+    private String apiTranDay;    // 거래일자
+    private String apiTranId;    // 거래고유번호
+    private String searchTimeStamp;    // 조회타임스탬프
+    private String nextPage;    // 최종 수신 데이터
     private String lastRecvDt;    // 최종 수신 일시
     private String regUserId;    // 등록자
     private String regDt;    // 등록일시
@@ -26,7 +29,9 @@ public class RecvBaselineForm{
         entity.setMemberId(memberId);
         entity.setOrgCd(orgCd);
         entity.setApiId(apiId);
-        entity.setLastRecvData(lastRecvData);
+        entity.setApiTranDay(apiTranDay);
+        entity.setApiTranId(apiTranId);
+        entity.setNextPage(nextPage);
         entity.setLastRecvDt(lastRecvDt);
         entity.setRegUserId(regUserId);
         entity.setRegDt(regDt);
