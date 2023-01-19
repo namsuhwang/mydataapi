@@ -16,7 +16,7 @@ public class RecvBaselineEntity{
     private String apiId;    // API ID
     private String apiTranDay;    // 거래일자
     private String apiTranId;    // 거래고유번호
-    private String searchTimeStamp;    // 조회타임스탬프
+    private Long searchTimeStamp;    // 조회타임스탬프
     private String nextPage;    // 최종 수신 데이터
     private String lastRecvDt;    // 최종 수신 일시
     private String regUserId;    // 등록자

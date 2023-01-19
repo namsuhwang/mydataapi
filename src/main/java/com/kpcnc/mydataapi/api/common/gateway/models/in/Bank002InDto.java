@@ -15,14 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Bank001InDto extends InBaseDto {
-
-    private String regDate;
-
-    @JsonProperty("account_cnt")
+public class Bank002InDto extends InBaseDto {
+    @JsonProperty("basic_cnt")
     private Integer listCnt;
 
-    @JsonProperty("account_list")
-    private List<Bank001DetailInDto> list;
+    @JsonProperty("basic_list")
+    private List<Bank002DetailInDto> list;
 
 }

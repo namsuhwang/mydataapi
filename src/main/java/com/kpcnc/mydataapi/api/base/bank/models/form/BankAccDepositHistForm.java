@@ -1,6 +1,8 @@
 package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccDepositHistEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +14,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccDepositHistForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccDepositHistForm extends FormBase {
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String transDtime;    // 거래일시 또는 거래일자
@@ -26,15 +26,11 @@ public class BankAccDepositHistForm{
     private BigDecimal balanceAmt;    // 거래 후 잔액
     private String paidInCnt;    // 납입회차
     private String transMemo;    // 적요
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccDepositHistEntity getEntity(){
         BankAccDepositHistEntity entity = new BankAccDepositHistEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(this.getMemberId());
+        entity.setOrgCd(this.getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setTransDtime(transDtime);
@@ -46,10 +42,12 @@ public class BankAccDepositHistForm{
         entity.setBalanceAmt(balanceAmt);
         entity.setPaidInCnt(paidInCnt);
         entity.setTransMemo(transMemo);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(this.getApiTranDay());
+        entity.setApiTranId(this.getApiTranId());
+        entity.setRegUserId(this.getRegUserId());
+        entity.setRegDt(this.getRegDt());
+        entity.setChgUserId(this.getChgUserId());
+        entity.setChgDt(this.getChgDt());
         return entity;
     }
 }

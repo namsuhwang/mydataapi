@@ -10,10 +10,13 @@ import java.util.List;
 public interface RecvStatusService{
     public String createRecvSeq(RecvStatusForm dom);
 
-    public RecvStatusEntity regRecvStatus(RecvStatusForm dom);
+    public void regRecvStatus(RecvStatusForm dom);
 
-    public RecvStatusEntity updRecvStatus(RecvStatusForm dom);
-    public RecvStatusEntity modRecvStatus(RecvStatusForm dom);
+    public void updRecvStatus(RecvStatusForm dom);
+
+    public void updRecvStatus(RecvStatusForm dom, Integer incCnt, String orgCd);
+
+    public void modRecvStatus(RecvStatusForm dom);
 
     public void  delRecvStatus(RecvStatusForm dom);
 

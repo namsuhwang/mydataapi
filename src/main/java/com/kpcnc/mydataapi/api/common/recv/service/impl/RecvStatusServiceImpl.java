@@ -29,30 +29,40 @@ public class RecvStatusServiceImpl implements RecvStatusService {
     }
 
     @Override
-    public RecvStatusEntity regRecvStatus(RecvStatusForm dom) {
+    public void regRecvStatus(RecvStatusForm dom) {
         recvStatusMapper.insertRecvStatus(dom.getEntity());
-        return recvStatusMapper.selectRecvStatus(new RecvStatusSearch(dom));
+        return;
     }
 
     @Override
-    public RecvStatusEntity updRecvStatus(RecvStatusForm dom) {
+    public void updRecvStatus(RecvStatusForm dom) {
         RecvStatusEntity entity = getRecvStatus(new RecvStatusSearch(dom));
         entity.setCompleteOrgCnt(entity.getCompleteOrgCnt() + dom.getIncOrgCnt());
         entity.setLastRecvDt(CommUtil.getCurrentDateTime14());
         entity.setLastRecvOrgCd(dom.getLastRecvOrgCd());
         entity.setChgUserId("user01");
         recvStatusMapper.updateRecvStatus(dom.getEntity());
-        return recvStatusMapper.selectRecvStatus(new RecvStatusSearch(dom));
+        return;
     }
 
     @Override
-    public RecvStatusEntity modRecvStatus(RecvStatusForm dom) {
+    public void updRecvStatus(RecvStatusForm dom, Integer incCnt, String orgCd){
+        RecvStatusEntity entity = getRecvStatus(new RecvStatusSearch(dom));
+        entity.setCompleteOrgCnt(entity.getCompleteOrgCnt() + incCnt);
+        entity.setLastRecvDt(CommUtil.getCurrentDateTime14());
+        entity.setLastRecvOrgCd(orgCd);
+        entity.setChgUserId("user01");
+        return;
+    }
+
+    @Override
+    public void modRecvStatus(RecvStatusForm dom) {
         if(getRecvStatus(new RecvStatusSearch(dom)) == null){
             regRecvStatus(dom);
         }else{
             updRecvStatus(dom);
         }
-        return recvStatusMapper.selectRecvStatus(new RecvStatusSearch(dom));
+        return;
     }
 
     @Override

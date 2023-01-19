@@ -31,7 +31,8 @@ public class RecvStatusController {
     public ResponseEntity<ResponseDto<RecvStatusEntity>> regRecvStatus(
         @RequestBody RecvStatusForm dom
     ){
-        RecvStatusEntity result = recvStatusService.regRecvStatus(dom);
+        recvStatusService.regRecvStatus(dom);
+        RecvStatusEntity result = recvStatusService.getRecvStatus(new RecvStatusSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -39,7 +40,8 @@ public class RecvStatusController {
     public ResponseEntity<ResponseDto<RecvStatusEntity>> modRecvStatus(
         @RequestBody RecvStatusForm dom
     ){
-        RecvStatusEntity result = recvStatusService.modRecvStatus(dom);
+        recvStatusService.modRecvStatus(dom);
+        RecvStatusEntity result = recvStatusService.getRecvStatus(new RecvStatusSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -29,7 +29,8 @@ public class BankAccDepositAddController {
     public ResponseEntity<ResponseDto<BankAccDepositAddEntity>> regBankAccDepositAdd(
         @RequestBody BankAccDepositAddForm dom
     ){
-        BankAccDepositAddEntity result = bankAccDepositAddService.regBankAccDepositAdd(dom);
+        bankAccDepositAddService.regBankAccDepositAdd(dom);
+        BankAccDepositAddEntity result = bankAccDepositAddService.getBankAccDepositAdd(new BankAccDepositAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class BankAccDepositAddController {
     public ResponseEntity<ResponseDto<BankAccDepositAddEntity>> modBankAccDepositAdd(
         @RequestBody BankAccDepositAddForm dom
     ){
-        BankAccDepositAddEntity result = bankAccDepositAddService.modBankAccDepositAdd(dom);
+        bankAccDepositAddService.modBankAccDepositAdd(dom);
+        BankAccDepositAddEntity result = bankAccDepositAddService.getBankAccDepositAdd(new BankAccDepositAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -17,4 +17,6 @@ public interface ApiMstService{
     public ApiMstEntity getApiMst(ApiMstSearch dom);
 
     public ResultListDto<ApiMstEntity> getApiMstList(ApiMstSearch dom);
+
+    public List<ApiMstEntity> getApiListByScope(String scope);
 }

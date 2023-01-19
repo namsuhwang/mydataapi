@@ -22,6 +22,7 @@ public class RecvHistBaseServiceImpl implements RecvHistBaseService {
     @Autowired
     RecvHistBaseMapper recvHistBaseMapper;
 
+
     @Override
     public void regRecvHistBase(RecvHistBaseForm dom) {
         recvHistBaseMapper.insertRecvHistBase(dom.getEntity());

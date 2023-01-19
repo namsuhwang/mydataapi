@@ -1,20 +1,12 @@
 package com.kpcnc.mydataapi.api.common.recv.service.impl;
 
-import com.kpcnc.mydataapi.api.base.bank.models.BankAccDepositSearch;
-import com.kpcnc.mydataapi.api.base.bank.models.BankAccSearch;
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccDepositEntity;
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccDepositHistEntity;
-import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEntity;
-import com.kpcnc.mydataapi.api.base.bank.service.BankAccDepositService;
-import com.kpcnc.mydataapi.api.base.bank.service.BankAccService;
 import com.kpcnc.mydataapi.api.common.recv.models.RecvBaselineSearch;
 import com.kpcnc.mydataapi.api.common.recv.models.entity.RecvBaselineEntity;
-import com.kpcnc.mydataapi.api.common.recv.models.form.RecvBaselineForm;
-import com.kpcnc.mydataapi.api.common.recv.repository.RecvBaselineMapper;
 import com.kpcnc.mydataapi.api.common.recv.service.LedgerBankService;
 import com.kpcnc.mydataapi.api.common.recv.service.RecvBaselineService;
-import com.kpcnc.mydataapi.api.common.recv.service.RequestParamsSetService;
-import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
+import com.kpcnc.mydataapi.api.common.recv.service.RequestBankParamsSetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class RequestParamsSetServiceImpl implements RequestParamsSetService {
+public class RequestBankParamsSetServiceImpl implements RequestBankParamsSetService {
     @Autowired
     RecvBaselineService recvBaselineService;
 
@@ -36,6 +27,7 @@ public class RequestParamsSetServiceImpl implements RequestParamsSetService {
     LedgerBankService ledgerBankService;
 
     // BankAcc
+    @Override
     public HashMap<String, Object> getParamsBank001(String memberId, String orgCd){
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(
                 new RecvBaselineSearch(memberId, orgCd, "BANK_001"));
@@ -49,6 +41,7 @@ public class RequestParamsSetServiceImpl implements RequestParamsSetService {
     }
 
     // BankAccDeposit
+    @Override
     public HashMap<String, Object> getParamsBank002(String memberId, String orgCd, String accountNum, String seqno){
         BankAccDepositEntity bankAccDeposit = ledgerBankService.getBankAccDeposit(memberId, orgCd, accountNum, seqno);
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(
@@ -62,6 +55,7 @@ public class RequestParamsSetServiceImpl implements RequestParamsSetService {
     }
 
     // BankAccDepositAdd
+    @Override
     public HashMap<String, Object> getParamsBank003(String memberId, String orgCd, String accountNum, String seqno){
         BankAccDepositEntity bankAccDeposit = ledgerBankService.getBankAccDeposit(memberId, orgCd, accountNum, seqno);
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(

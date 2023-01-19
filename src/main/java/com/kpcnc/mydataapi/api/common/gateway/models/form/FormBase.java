@@ -2,6 +2,7 @@ package com.kpcnc.mydataapi.api.common.gateway.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankCustEntity;
 import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.kpcnc.mydataapi.common.CommUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,14 @@ public class FormBase {
     private String regDt;    // 등록일시
     private String chgUserId;    // 수정자
     private String chgDt;    // 수정일시
+
+    public FormBase(String memberId, String orgCd) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.apiTranDay = CommUtil.getCurrentDate8();
+        this.regUserId = "user01";
+        this.chgUserId = "user01";
+    }
 
     public EntityBase getEntityBase(){
         EntityBase entity = new EntityBase();

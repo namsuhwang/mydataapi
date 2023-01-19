@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.common.recv.models.form;
 
 import com.kpcnc.mydataapi.api.common.recv.models.entity.RecvHistBaseEntity;
+import com.kpcnc.mydataapi.common.CommUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,16 @@ public class RecvHistBaseForm{
     private String regDt;    // 등록일시
     private String chgUserId;    // 수정자
     private String chgDt;    // 수정일시
+
+    public RecvHistBaseForm(String memberId, String orgCd, String apiId, String recvSeq) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.apiId = apiId;
+        this.recvSeq = recvSeq;
+        this.recvStartDt = CommUtil.getCurrentDateTime14();
+        this.regUserId = "user01";
+        this.chgUserId = "user01";
+    }
 
     public RecvHistBaseEntity getEntity(){
         RecvHistBaseEntity entity = new RecvHistBaseEntity();

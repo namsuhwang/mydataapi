@@ -9,12 +9,12 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiCallResponseInfoDto<T> {
+public class ApiCallCycleResponseInfoDto<D> {
     private String apiTranDay;
     private String apiTranId;
     private Long searchTimeStamp;
     private String nextPage;
     // private List<HashMap<String, Object>> list;
     private String resultJson;
-    private T data;
+    private D data;
 }

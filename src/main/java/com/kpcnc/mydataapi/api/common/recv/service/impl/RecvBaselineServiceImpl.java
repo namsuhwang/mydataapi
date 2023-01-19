@@ -23,15 +23,26 @@ public class RecvBaselineServiceImpl implements RecvBaselineService {
     RecvBaselineMapper recvBaselineMapper;
 
     @Override
-    public RecvBaselineEntity regRecvBaseline(RecvBaselineForm dom) {
+    public void regRecvBaseline(RecvBaselineForm dom) {
         recvBaselineMapper.insertRecvBaseline(dom.getEntity());
-        return recvBaselineMapper.selectRecvBaseline(new RecvBaselineSearch(dom));
+        return;
+    }
+
+
+    @Override
+    public void updRecvBaseline(RecvBaselineForm dom) {
+        recvBaselineMapper.updateRecvBaseline(dom.getEntity());
+        return;
     }
 
     @Override
-    public RecvBaselineEntity modRecvBaseline(RecvBaselineForm dom) {
-        recvBaselineMapper.updateRecvBaseline(dom.getEntity());
-        return recvBaselineMapper.selectRecvBaseline(new RecvBaselineSearch(dom));
+    public void modRecvBaseline(RecvBaselineForm dom) {
+        if(getRecvBaseline(new RecvBaselineSearch(dom)) == null){
+            regRecvBaseline(dom);
+        }else{
+            updRecvBaseline(dom);
+        }
+        return;
     }
 
     @Override

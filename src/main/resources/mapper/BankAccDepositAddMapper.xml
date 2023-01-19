@@ -77,6 +77,13 @@
             </if>
     </delete>
 
+    <delete id="deleteAllBankAccDepositAdd" parameterType="BankAccDepositAddEntity">
+        DELETE FROM BANK_ACC_DEPOSIT_Add
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectBankAccDepositAdd" parameterType="BankAccDepositAddSearch"  resultType="BankAccDepositAddEntity">
          SELECT 
                MEMBER_ID

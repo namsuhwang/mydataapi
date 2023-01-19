@@ -31,7 +31,8 @@ public class RecvBaselineController {
     public ResponseEntity<ResponseDto<RecvBaselineEntity>> regRecvBaseline(
         @RequestBody RecvBaselineForm dom
     ){
-        RecvBaselineEntity result = recvBaselineService.regRecvBaseline(dom);
+        recvBaselineService.regRecvBaseline(dom);
+        RecvBaselineEntity result = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -39,7 +40,8 @@ public class RecvBaselineController {
     public ResponseEntity<ResponseDto<RecvBaselineEntity>> modRecvBaseline(
         @RequestBody RecvBaselineForm dom
     ){
-        RecvBaselineEntity result = recvBaselineService.modRecvBaseline(dom);
+        recvBaselineService.modRecvBaseline(dom);
+        RecvBaselineEntity result = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

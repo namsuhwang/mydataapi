@@ -14,6 +14,7 @@ public class MemberTokenForm{
     private String memberId;    // 회원ID
     private String orgCd;    // 기관코드
     private Integer sendReqSeq;    // 전송요구 일련번호
+    private String idstType;    // 업권 유형
     private String scopeList;    // 권한범위 목록
     private String sendRequestType;    // 전송요청 유형
     private String fpSendReqYn;    // 정기전송 요청 여부

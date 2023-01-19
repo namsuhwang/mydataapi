@@ -14,6 +14,8 @@ public interface BankAccDepositMapper{
 
     int deleteBankAccDeposit(BankAccDepositEntity dom);
 
+    int deleteAllBankAccDeposit(BankAccDepositEntity dom);
+
     BankAccDepositEntity selectBankAccDeposit(BankAccDepositSearch dom);
 
     Long selectBankAccDepositListTotalCnt(BankAccDepositSearch dom);

@@ -21,7 +21,7 @@
         ) VALUES
         (
             #{recvSeq, jdbcType=VARCHAR}
-            ,#{recvDetailSeq, jdbcType=NUMERIC}
+            ,SEQUENCE_RECV_DETAIL_SEQ.NEXTVAL
             ,#{recvData, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,#{regDt, jdbcType=VARCHAR}

@@ -6,11 +6,16 @@ import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccDepositForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface BankAccDepositService{
-    public BankAccDepositEntity regBankAccDeposit(BankAccDepositForm dom);
+    public void regBankAccDeposit(BankAccDepositForm dom);
 
-    public BankAccDepositEntity modBankAccDeposit(BankAccDepositForm dom);
+    public void updBankAccDeposit(BankAccDepositForm dom);
 
-    public void  delBankAccDeposit(BankAccDepositForm dom);
+    public void modBankAccDeposit(BankAccDepositForm dom);
+
+    public void delBankAccDeposit(BankAccDepositForm dom);
+
+    public void delAllBankAccDeposit(BankAccDepositForm dom);
+
 
     public BankAccDepositEntity getBankAccDeposit(BankAccDepositSearch dom);
 

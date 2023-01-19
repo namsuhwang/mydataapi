@@ -9,6 +9,7 @@
             MEMBER_ID
             ,ORG_CD
             ,SEND_REQ_SEQ
+            ,IDST_TYPE
             ,SCOPE_LIST
             ,SEND_REQUEST_TYPE
             ,FP_SEND_REQ_YN
@@ -37,6 +38,7 @@
             #{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{sendReqSeq, jdbcType=NUMERIC}
+            ,#{idstType, jdbcType=VARCHAR}
             ,#{scopeList, jdbcType=VARCHAR}
             ,#{sendRequestType, jdbcType=VARCHAR}
             ,#{fpSendReqYn, jdbcType=VARCHAR}
@@ -69,6 +71,7 @@
             MEMBER_ID = #{memberId, jdbcType=VARCHAR}
           ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
           ,SEND_REQ_SEQ = #{sendReqSeq, jdbcType=NUMERIC}
+          ,IDST_TYPE = #{idstType, jdbcType=VARCHAR}
           ,SCOPE_LIST = #{scopeList, jdbcType=VARCHAR}
           ,SEND_REQUEST_TYPE = #{sendRequestType, jdbcType=VARCHAR}
           ,FP_SEND_REQ_YN = #{fpSendReqYn, jdbcType=VARCHAR}
@@ -109,6 +112,7 @@
             MEMBER_ID
              ,ORG_CD
              ,SEND_REQ_SEQ
+             ,IDST_TYPE
              ,SCOPE_LIST
              ,SEND_REQUEST_TYPE
              ,FP_SEND_REQ_YN
@@ -166,6 +170,7 @@
             ,MEMBER_ID
             ,ORG_CD
             ,SEND_REQ_SEQ
+            ,IDST_TYPE
             ,SCOPE_LIST
             ,SEND_REQUEST_TYPE
             ,FP_SEND_REQ_YN

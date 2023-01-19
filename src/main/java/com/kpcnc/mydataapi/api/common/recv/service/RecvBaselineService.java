@@ -7,9 +7,11 @@ import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 
 public interface RecvBaselineService{
-    public RecvBaselineEntity regRecvBaseline(RecvBaselineForm dom);
+    public void regRecvBaseline(RecvBaselineForm dom);
 
-    public RecvBaselineEntity modRecvBaseline(RecvBaselineForm dom);
+    public void updRecvBaseline(RecvBaselineForm dom);
+
+    public void modRecvBaseline(RecvBaselineForm dom);
 
     public void  delRecvBaseline(RecvBaselineForm dom);
 

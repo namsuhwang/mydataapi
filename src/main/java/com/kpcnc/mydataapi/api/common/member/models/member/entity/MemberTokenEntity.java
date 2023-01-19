@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @ToString
 @NoArgsConstructor
@@ -14,7 +16,9 @@ public class MemberTokenEntity{
     private String memberId;    // 회원ID
     private String orgCd;    // 기관코드
     private Integer sendReqSeq;    // 전송요구 일련번호
+    private String idstType;    // 업권 유형
     private String scopeList;    // 권한범위 목록
+    private List<String> scopeLists;
     private String sendRequestType;    // 전송요청 유형
     private String fpSendReqYn;    // 정기전송 요청 여부
     private String fpSendReqDt;    // 정기전송 요구 일시

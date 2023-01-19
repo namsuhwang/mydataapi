@@ -23,20 +23,36 @@ public class BankAccDepositServiceImpl implements BankAccDepositService {
     BankAccDepositMapper bankAccDepositMapper;
 
     @Override
-    public BankAccDepositEntity regBankAccDeposit(BankAccDepositForm dom) {
+    public void regBankAccDeposit(BankAccDepositForm dom) {
         bankAccDepositMapper.insertBankAccDeposit(dom.getEntity());
-        return bankAccDepositMapper.selectBankAccDeposit(new BankAccDepositSearch(dom));
+        return;
     }
 
     @Override
-    public BankAccDepositEntity modBankAccDeposit(BankAccDepositForm dom) {
+    public void updBankAccDeposit(BankAccDepositForm dom) {
         bankAccDepositMapper.updateBankAccDeposit(dom.getEntity());
-        return bankAccDepositMapper.selectBankAccDeposit(new BankAccDepositSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modBankAccDeposit(BankAccDepositForm dom) {
+        if(getBankAccDeposit(new BankAccDepositSearch(dom)) == null){
+            regBankAccDeposit(dom);
+        }else{
+            updBankAccDeposit(dom);
+        }
+        return;
     }
 
     @Override
     public void delBankAccDeposit(BankAccDepositForm dom) {
         bankAccDepositMapper.deleteBankAccDeposit(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void delAllBankAccDeposit(BankAccDepositForm dom) {
+        bankAccDepositMapper.deleteAllBankAccDeposit(dom.getEntity());
         return;
     }
 

@@ -2,6 +2,7 @@ package com.kpcnc.mydataapi.api.common.recv.service.impl;
 
 import com.kpcnc.mydataapi.api.common.recv.models.RecvHistDetailSearch;
 import com.kpcnc.mydataapi.api.common.recv.models.entity.RecvHistDetailEntity;
+import com.kpcnc.mydataapi.api.common.recv.models.form.RecvHistBaseForm;
 import com.kpcnc.mydataapi.api.common.recv.models.form.RecvHistDetailForm;
 import com.kpcnc.mydataapi.api.common.recv.repository.RecvHistDetailMapper;
 import com.kpcnc.mydataapi.api.common.recv.service.RecvHistDetailService;
@@ -25,6 +26,14 @@ public class RecvHistDetailServiceImpl implements RecvHistDetailService {
     @Override
     public Long createRecvDetailSeq(){
         return recvHistDetailMapper.createRecvDetailSeq();
+    }
+
+    @Override
+    public void regRecvHistDetail(RecvHistBaseForm recvHistBaseForm, String resultJson){
+        RecvHistDetailForm regHistDetailFrom = new RecvHistDetailForm(recvHistBaseForm);
+        regHistDetailFrom.setRecvData(resultJson);
+        regRecvHistDetail(regHistDetailFrom);
+        return;
     }
 
     @Override

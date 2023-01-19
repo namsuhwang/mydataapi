@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -56,5 +57,16 @@ public class ApiMstServiceImpl implements ApiMstService {
             result.setPageCnt(list != null && list.size() > 0 ? list.size() : 0);
         }
         return result;
+    }
+
+
+    /*
+        in : scope (예 : bank.deposit)
+        out : scope에 해당하는 API ID 목록(예 :  BANK_002, BANK_003, BANK_004, BANK_014)
+     */
+    @Override
+    public List<ApiMstEntity> getApiListByScope(String scope){
+        List<ApiMstEntity> apiMstlist = getApiMstList(new ApiMstSearch(scope)).getList();
+        return apiMstlist;
     }
 }
