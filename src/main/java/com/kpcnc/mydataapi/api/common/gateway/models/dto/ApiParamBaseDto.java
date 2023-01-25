@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiParamsInfoDto {
+public class ApiParamBaseDto {
     private String memberId;    // 회원ID
 
     private String accessToken;  // 접근토큰
@@ -24,7 +24,7 @@ public class ApiParamsInfoDto {
 
     private String requestParameterJson;
 
-    public ApiParamsInfoDto(MemberTokenEntity token) {
+    public ApiParamBaseDto(MemberTokenEntity token) {
         this.memberId = memberId;
         this.idstType = CommUtil.getIdstTypeByScope(token.getScopeList().split(" ")[0]);
     }

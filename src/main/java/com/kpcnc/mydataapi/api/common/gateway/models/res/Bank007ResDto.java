@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.api.common.gateway.models.in;
+package com.kpcnc.mydataapi.api.common.gateway.models.res;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -15,11 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class InBaseDto {
-    @JsonProperty("x-api-tran-id")
-    private String xApiTranId;
-    private String rspCode;
-    private String rspMsg;
-    private Long searchTimestamp;
-    private String nextPage;
+public class Bank007ResDto extends ResBaseDto {
+
+    @JsonProperty("trans_cnt")
+    private Integer listCnt;
+
+    @JsonProperty("trans_list")
+    private List<Bank007ResDetailDto> list;
+
 }

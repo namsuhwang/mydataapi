@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.api.common.gateway.models.in;
+package com.kpcnc.mydataapi.api.common.gateway.models.res;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -9,14 +9,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Bank001DetailInDto {
+public class Bank001ResDetailDto {
 
     private String accountNum;    // 계좌번호
     private Boolean isConsent;    // 전송요구 여부

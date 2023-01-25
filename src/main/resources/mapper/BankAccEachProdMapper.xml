@@ -117,6 +117,53 @@
            AND PROD_NUM = #{prodNum}
     </select>
 
+
+    <select id="selectBankAccEachProdLast" parameterType="BankAccEachProdSearch"  resultType="BankAccEachProdEntity">
+        SELECT
+            P1.MEMBER_ID
+             ,P1.ORG_CD
+             ,P1.ACCOUNT_NUM
+             ,P1.PROD_NAME
+             ,P1.PROD_NUM
+             ,P1.PROD_TYPE
+             ,P1.CURRENCY_CODE
+             ,P1.EVAL_AMT
+             ,P1.PRINCIPAL_AMT
+             ,P1.HOLDING_NUM
+             ,P1.ISSUE_DATE
+             ,P1.EXP_DATE
+             ,P1.INT_RATE
+             ,P1.API_TRAN_DAY
+             ,P1.API_TRAN_ID
+             ,P1.REG_USER_ID
+             ,P1.REG_DT
+             ,P1.CHG_USER_ID
+             ,P1.CHG_DT
+        FROM BANK_ACC_EACH_PROD P1,
+             (
+                 SELECT *
+                 FROM
+                     (
+                         SELECT
+                             MEMBER_ID, ORG_CD, ACCOUNT_NUM, PROD_NAME, PROD_NUM
+                         FROM BANK_ACC_EACH_PROD
+                         WHERE
+                             MEMBER_ID = #{memberId}
+                           AND ORG_CD = #{orgCd}
+                           AND ACCOUNT_NUM = #{accountNum}
+                           AND PROD_NAME = #{prodName}
+                           AND PROD_NUM = #{prodNum}
+                         ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, PROD_NAME, PROD_NUM
+                     )
+                 WHERE rownum = 1
+             ) P2
+        WHERE P1.MEMBER_ID = P2.MEMBER_ID
+          AND P1.ORG_CD = P2.ORG_CD
+          AND P1.ACCOUNT_NUM = P2.ACCOUNT_NUM
+          AND P1.PROD_NAME = P2.PROD_NAME
+          AND P1.PROD_NUM = P2.PROD_NUM
+    </select>
+
     <select id="selectBankAccEachProdListTotalCnt" parameterType="BankAccEachProdSearch"  resultType="Long">
          SELECT 
              COUNT(*) 

@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccLoanHistEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccLoanHistForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccLoanHistForm extends FormBase {
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String transDtime;    // 거래일시 또는 거래일자
@@ -34,8 +33,8 @@ public class BankAccLoanHistForm{
 
     public BankAccLoanHistEntity getEntity(){
         BankAccLoanHistEntity entity = new BankAccLoanHistEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(this.getMemberId());
+        entity.setOrgCd(this.getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setTransDtime(transDtime);

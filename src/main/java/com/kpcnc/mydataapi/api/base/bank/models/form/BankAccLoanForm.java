@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccLoanEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccLoanForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccLoanForm extends FormBase {
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String issueDate;    // 대출일
@@ -29,10 +28,16 @@ public class BankAccLoanForm{
     private String chgUserId;    // 수정자
     private String chgDt;    // 수정일시
 
+    public BankAccLoanForm(String memberId, String orgCd, String accountNum, String seqno) {
+        super(memberId, orgCd);
+        this.accountNum = accountNum;
+        this.seqno = seqno;
+    }
+
     public BankAccLoanEntity getEntity(){
         BankAccLoanEntity entity = new BankAccLoanEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(this.getMemberId());
+        entity.setOrgCd(this.getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setIssueDate(issueDate);

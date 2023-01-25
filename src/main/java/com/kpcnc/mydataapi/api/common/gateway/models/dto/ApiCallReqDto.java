@@ -15,7 +15,7 @@ import java.util.HashMap;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiCallRequestInfoDto {
+public class ApiCallReqDto {
     private String memberId;    // 회원ID
     private String accessToken;  // 접근토큰
     private String refreshToken;  // 리프레쉬 토큰
@@ -28,21 +28,21 @@ public class ApiCallRequestInfoDto {
     private String recvSeq;   // 수신 일련번호. recvStatus.recvSeq
     private String apiTranDay;
     private String apiTranId;
-    private HashMap<String, Object> requestParameterMap;
-    private String requestParameterJson;
+    private HashMap<String, Object> reqParamMap;
+    private String reqParamJson;
 
-    public ApiCallRequestInfoDto(MemberTokenEntity token) {
+    public ApiCallReqDto(MemberTokenEntity token) {
         this.memberId = token.getMemberId();
         this.idstType = CommUtil.getIdstTypeByScope(token.getScopeList().split(" ")[0]);
     }
 
-    public ApiCallRequestInfoDto(HashMap<String, Object> baseParamsMap){
+    public ApiCallReqDto(HashMap<String, Object> baseParamsMap){
 
     }
 
-    public void setRequestParameterJson(HashMap<String, Object> map){
+    public void setReqParamJson(HashMap<String, Object> map){
         try {
-            this.requestParameterJson = new ObjectMapper().writeValueAsString(map);
+            this.reqParamJson = new ObjectMapper().writeValueAsString(map);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -24,6 +24,11 @@ public class RecvBaselineSearch{
         this.apiId = apiId;
     }
 
+    public RecvBaselineSearch(String apiTranDay, String apiTranId) {
+        this.apiTranDay = apiTranDay;
+        this.apiTranId = apiTranId;
+    }
+
     public RecvBaselineSearch(String memberId, String orgCd, String apiId, String apiTranDay, String apiTranId) {
         this.memberId = memberId;
         this.orgCd = orgCd;

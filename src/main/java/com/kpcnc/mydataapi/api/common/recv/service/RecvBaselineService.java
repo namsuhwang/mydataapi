@@ -1,5 +1,6 @@
 package com.kpcnc.mydataapi.api.common.recv.service;
 
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
 import com.kpcnc.mydataapi.api.common.recv.models.RecvBaselineSearch;
 import com.kpcnc.mydataapi.api.common.recv.models.entity.RecvBaselineEntity;
 import com.kpcnc.mydataapi.api.common.recv.models.form.RecvBaselineForm;
@@ -14,6 +15,8 @@ public interface RecvBaselineService{
     public void modRecvBaseline(RecvBaselineForm dom);
 
     public void  delRecvBaseline(RecvBaselineForm dom);
+
+    public RecvBaselineEntity getRecvBaseline(EntityBase dom);
 
     public RecvBaselineEntity getRecvBaseline(RecvBaselineSearch dom);
 

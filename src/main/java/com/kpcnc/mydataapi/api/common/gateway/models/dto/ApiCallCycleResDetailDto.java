@@ -11,6 +11,6 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiCallCycleResponseDetailInfoDto {
+public class ApiCallCycleResDetailDto {
     private List<Object> list;
 }

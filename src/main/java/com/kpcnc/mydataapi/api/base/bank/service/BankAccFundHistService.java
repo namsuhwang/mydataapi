@@ -1,6 +1,8 @@
 package com.kpcnc.mydataapi.api.base.bank.service;
 
+import com.kpcnc.mydataapi.api.base.bank.models.BankAccDepositHistSearch;
 import com.kpcnc.mydataapi.api.base.bank.models.BankAccFundHistSearch;
+import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccDepositHistEntity;
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccFundHistEntity;
 import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccFundHistForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;

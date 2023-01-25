@@ -1,7 +1,9 @@
 package com.kpcnc.mydataapi.api.base.bank.service;
 
 import com.kpcnc.mydataapi.api.base.bank.models.BankAccEachProdSearch;
+import com.kpcnc.mydataapi.api.base.bank.models.BankAccLoanHistSearch;
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEachProdEntity;
+import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccLoanHistEntity;
 import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccEachProdForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
@@ -13,6 +15,8 @@ public interface BankAccEachProdService{
     public void  delBankAccEachProd(BankAccEachProdForm dom);
 
     public BankAccEachProdEntity getBankAccEachProd(BankAccEachProdSearch dom);
+
+    public BankAccEachProdEntity getBankAccEachProdLast(BankAccEachProdSearch dom);
 
     public ResultListDto<BankAccEachProdEntity> getBankAccEachProdList(BankAccEachProdSearch dom);
 }

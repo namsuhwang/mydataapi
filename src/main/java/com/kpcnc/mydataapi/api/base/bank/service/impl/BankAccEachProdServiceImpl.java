@@ -46,6 +46,11 @@ public class BankAccEachProdServiceImpl implements BankAccEachProdService {
     }
 
     @Override
+    public BankAccEachProdEntity getBankAccEachProdLast(BankAccEachProdSearch dom) {
+        return null;
+    }
+
+    @Override
     public ResultListDto<BankAccEachProdEntity> getBankAccEachProdList(BankAccEachProdSearch dom) {
         ResultListDto<BankAccEachProdEntity> result = new ResultListDto<>();
         Long totalCnt = bankAccEachProdMapper.selectBankAccEachProdListTotalCnt(dom);

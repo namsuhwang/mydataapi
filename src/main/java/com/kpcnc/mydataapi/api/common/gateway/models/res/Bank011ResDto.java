@@ -1,9 +1,10 @@
-package com.kpcnc.mydataapi.api.common.gateway.models.in;
+package com.kpcnc.mydataapi.api.common.gateway.models.res;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccDepositAddForm;
-import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccDepositForm;
+import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccLoanForm;
+import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccProdForm;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,35 +12,36 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Bank002DetailInDto {
+public class Bank011ResDto extends ResBaseDto {
 
-    private Integer accountSeq;
     private String currencyCode;    // 통화코드
-    private String savingMethod;
-    private String issueDate;
-    private String expDate;
-    private BigDecimal commitAmt;
-    private BigDecimal monthlyPaidInAmt;
 
-    public BankAccDepositForm getForm(FormBase formBase, String accountNum, String seqno){
-        BankAccDepositForm form = new BankAccDepositForm();
+    private BigDecimal balanceAmt;    // 계좌잔액
+
+    private BigDecimal evalAmt;    // 계좌평가금액
+
+    private String issueDate;   // 개설일
+
+    private String expDate;   // 만기일
+
+
+    public BankAccProdForm getForm(FormBase formBase, String accountNum){
+        BankAccProdForm form = new BankAccProdForm();
         form.setMemberId(formBase.getMemberId());
         form.setOrgCd(formBase.getOrgCd());
         form.setAccountNum(accountNum);
-        form.setSeqno(seqno);
-        form.setAccountSeq(accountSeq);
         form.setCurrencyCode(currencyCode);
-        form.setSavingMethod(savingMethod);
+        form.setBalanceAmt(balanceAmt);
+        form.setEvalAmt(evalAmt);
         form.setIssueDate(issueDate);
         form.setExpDate(expDate);
-        form.setCommitAmt(commitAmt);
-        form.setMonthlyPaidInAmt(monthlyPaidInAmt);
         form.setRegUserId(formBase.getRegUserId());
         form.setRegDt(formBase.getRegDt());
         form.setChgUserId(formBase.getChgUserId());

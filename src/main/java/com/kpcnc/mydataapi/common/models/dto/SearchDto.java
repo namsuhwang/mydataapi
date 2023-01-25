@@ -27,6 +27,11 @@ public class SearchDto {
         return requestPage;
     }
 
+    public SearchDto(String memberId, String orgCd) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+    }
+
     public void setRequestPage(Integer requestPage) {
         Integer si = null;
         if(requestPage != null && requestPage > 0 && requestCnt != null && requestCnt > 0){

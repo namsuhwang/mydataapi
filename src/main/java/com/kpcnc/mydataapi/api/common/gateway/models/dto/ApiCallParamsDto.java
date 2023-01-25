@@ -1,5 +1,7 @@
 package com.kpcnc.mydataapi.api.common.gateway.models.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kpcnc.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
 import com.kpcnc.mydataapi.common.CommUtil;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,22 @@ public class ApiCallParamsDto {
 //        this.nextPage = (String) baseParamsMap.get("next_page");
 //        this.limit = 500;
         this.paramsMap.put("org_code", baseParamsMap.get("org_code"));
+    }
+
+    public ApiCallParamsDto(String memberId, String orgCode) {
+        this.paramsMap.put("member_id", memberId);
+        this.paramsMap.put("org_code", orgCode);
+    }
+
+    public String getParamJson(){
+        String paramJson;
+        try {
+            paramJson = new ObjectMapper().writeValueAsString(paramsMap);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return paramJson;
     }
 
 }

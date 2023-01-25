@@ -20,7 +20,7 @@ public class BankAccLoanHistIntEntity extends EntityBase {
     private String transType;    // 거래유형
     private String intStartDate;    // 이자적용시작일
     private String intEndDate;    // 이자적용종료일
-    private BigDecimal intRate;    // 적용이율
+    private Float intRate;    // 적용이율
     private BigDecimal appliedIntAmt;    // 이자금액
     private String intType;    // 이자종류 (코드)
 }

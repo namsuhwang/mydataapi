@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiCallResponseInfoDto<T> {
+public class ApiCallResDto<T> {
     private String apiTranDay;
     private String apiTranId;
     private Long searchTimeStamp;

@@ -11,38 +11,38 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class BankAccEachProdSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
     private String prodName;    // 개별운용상품명
     private String prodNum;    // 상품가입번호
 
+    public BankAccEachProdSearch(String memberId, String orgCd, String accountNum) {
+        super(memberId, orgCd);
+        this.accountNum = accountNum;
+        this.prodName = prodName;
+    }
+
     public BankAccEachProdSearch(String memberId, String orgCd, String accountNum, String prodName) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.prodName = prodName;
     }
 
     public BankAccEachProdSearch(String memberId, String orgCd, String accountNum, String prodName, String prodNum) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.prodName = prodName;
         this.prodNum = prodNum;
     }
 
     public BankAccEachProdSearch(BankAccEachProdEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
         this.prodName = entity.getProdName();
         this.prodNum = entity.getProdNum();
     }
 
     public BankAccEachProdSearch(BankAccEachProdForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.accountNum = form.getAccountNum();
         this.prodName = form.getProdName();
         this.prodNum = form.getProdNum();

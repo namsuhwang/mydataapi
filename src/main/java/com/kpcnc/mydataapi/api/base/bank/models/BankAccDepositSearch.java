@@ -11,28 +11,26 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class BankAccDepositSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
 
     public BankAccDepositSearch(String memberId, String orgCd, String accountNum, String seqno) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        this.setMemberId(memberId);
+        this.setOrgCd(orgCd);
         this.accountNum = accountNum;
         this.seqno = seqno;
     }
 
     public BankAccDepositSearch(BankAccDepositEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        this.setMemberId(entity.getMemberId());
+        this.setOrgCd(entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
         this.seqno = entity.getSeqno();
     }
 
     public BankAccDepositSearch(BankAccDepositForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        this.setMemberId(form.getMemberId());
+        this.setOrgCd(form.getOrgCd());
         this.accountNum = form.getAccountNum();
         this.seqno = form.getSeqno();
     }

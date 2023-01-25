@@ -11,8 +11,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class BankAccDepositHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String transDtime;    // 거래일시 또는 거래일자
@@ -20,15 +18,13 @@ public class BankAccDepositHistSearch extends SearchDto {
     private String transType;    // 거래유형 (코드)
 
     public BankAccDepositHistSearch(String memberId, String orgCd, String accountNum, String seqno) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.seqno = seqno;
     }
 
     public BankAccDepositHistSearch(String memberId, String orgCd, String accountNum, String seqno, String transDtime, String transNo) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.seqno = seqno;
         this.transDtime = transDtime;
@@ -36,8 +32,7 @@ public class BankAccDepositHistSearch extends SearchDto {
     }
 
     public BankAccDepositHistSearch(String memberId, String orgCd, String accountNum, String seqno, String transDtime, String transNo, String transType) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.seqno = seqno;
         this.transDtime = transDtime;
@@ -46,8 +41,7 @@ public class BankAccDepositHistSearch extends SearchDto {
     }
 
     public BankAccDepositHistSearch(BankAccDepositHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
         this.seqno = entity.getSeqno();
         this.transDtime = entity.getTransDtime();
@@ -56,8 +50,7 @@ public class BankAccDepositHistSearch extends SearchDto {
     }
 
     public BankAccDepositHistSearch(BankAccDepositHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.accountNum = form.getAccountNum();
         this.seqno = form.getSeqno();
         this.transDtime = form.getTransDtime();

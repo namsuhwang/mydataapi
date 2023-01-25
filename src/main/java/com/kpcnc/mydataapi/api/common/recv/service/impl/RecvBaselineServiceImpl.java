@@ -1,5 +1,6 @@
 package com.kpcnc.mydataapi.api.common.recv.service.impl;
 
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
 import com.kpcnc.mydataapi.api.common.recv.models.RecvBaselineSearch;
 import com.kpcnc.mydataapi.api.common.recv.models.entity.RecvBaselineEntity;
 import com.kpcnc.mydataapi.api.common.recv.models.form.RecvBaselineForm;
@@ -49,6 +50,16 @@ public class RecvBaselineServiceImpl implements RecvBaselineService {
     public void delRecvBaseline(RecvBaselineForm dom) {
         recvBaselineMapper.deleteRecvBaseline(dom.getEntity());
         return;
+    }
+
+    @Override
+    public RecvBaselineEntity getRecvBaseline(EntityBase dom) {
+        RecvBaselineEntity result = null;
+        if(dom != null){
+            result = getRecvBaseline(new RecvBaselineSearch(dom.getApiTranDay(), dom.getApiTranId()));
+        }
+
+        return result;
     }
 
     @Override

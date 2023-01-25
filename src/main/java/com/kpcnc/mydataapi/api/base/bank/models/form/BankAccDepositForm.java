@@ -24,6 +24,12 @@ public class BankAccDepositForm extends FormBase {
     private BigDecimal commitAmt;    // 약정액
     private BigDecimal monthlyPaidInAmt;    // 월 납입액
 
+    public BankAccDepositForm(String memberId, String orgCd, String accountNum, String seqno) {
+        super(memberId, orgCd);
+        this.accountNum = accountNum;
+        this.seqno = seqno;
+    }
+
     public BankAccDepositEntity getEntity(){
         BankAccDepositEntity entity = new BankAccDepositEntity();
         entity.setMemberId(this.getMemberId());

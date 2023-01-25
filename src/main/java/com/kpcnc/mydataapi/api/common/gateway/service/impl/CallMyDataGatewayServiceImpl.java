@@ -2,9 +2,9 @@ package com.kpcnc.mydataapi.api.common.gateway.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallRequestInfoDto;
-import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallResponseInfoDto;
-import com.kpcnc.mydataapi.api.common.gateway.models.in.InBaseListDto;
+import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
+import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
+import com.kpcnc.mydataapi.api.common.gateway.models.res.ResBaseListDto;
 import com.kpcnc.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
 import com.kpcnc.mydataapi.api.common.recv.models.form.RecvBaselineForm;
 import com.kpcnc.mydataapi.api.common.recv.models.form.RecvHistBaseForm;
@@ -46,9 +46,9 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
         out : ApiCallResponseInfo
      */
     @Override
-    public <T> ApiCallResponseInfoDto callMyDataApi(ApiCallRequestInfoDto reqInfo, T classType) {
+    public <T> ApiCallResDto callMyDataApi(ApiCallReqDto reqInfo, T classType) {
         log.info("callMyDataApi in_params:" + reqInfo);
-        ApiCallResponseInfoDto<T> resInfo = new ApiCallResponseInfoDto<T>();
+        ApiCallResDto<T> resInfo = new ApiCallResDto<T>();
 
         /*
             API 게이트웨이 호출.
@@ -130,10 +130,10 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
         out : ApiCallResponseInfo
      */
     @Override
-    public <T, D> ApiCallResponseInfoDto callRepeatMyDataApi(ApiCallRequestInfoDto reqInfo, T classTypeT, D classTypeD) {
-        log.info("callCycleMyDataApi in_params:" + reqInfo);
+    public <T, D> ApiCallResDto callRepeatMyDataApi(ApiCallReqDto reqInfo, T classTypeT, D classTypeD) {
+        log.info("callRepeatMyDataApi in_params:" + reqInfo);
+        ApiCallResDto<T> resInfo = new ApiCallResDto<T>();
         List<D> resDetailList = new ArrayList<>();
-        ApiCallResponseInfoDto<T> resInfo = new ApiCallResponseInfoDto<T>();
 
         /*
             API 게이트웨이 호출.
@@ -173,7 +173,7 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
                 "    ]\n" +
                 "}";
          */
-        HashMap<String, Object> reqParamMap = reqInfo.getRequestParameterMap();
+        HashMap<String, Object> reqParamMap = reqInfo.getReqParamMap();
         Object resultData = null;
 
         // 수신 이력 기본 정보 생성
@@ -188,18 +188,18 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
             }
 
             // 넥스트테이지가 없으면 stop
-            InBaseListDto inBaseListDto = (InBaseListDto<T, D>)resultData;
-            if(CommUtil.isNullEmpty(inBaseListDto.getNextPage())){
+            ResBaseListDto resBaseListDto = (ResBaseListDto<T, D>)resultData;
+            if(CommUtil.isNullEmpty(resBaseListDto.getNextPage())){
                 break;
             }
 
             // 다음 연속 조회를 위한 타임스탬프, 넥스트페이지 세팅
-            reqParamMap.put("search_timestamp", inBaseListDto.getSearchTimestamp());
-            reqParamMap.put("next_page", inBaseListDto.getNextPage());
+            reqParamMap.put("search_timestamp", resBaseListDto.getSearchTimestamp());
+            reqParamMap.put("next_page", resBaseListDto.getNextPage());
 
-            resInfo.setData((T) inBaseListDto);
+            resInfo.setData((T) resBaseListDto);
 
-            List<D> list = inBaseListDto.getList();
+            List<D> list = resBaseListDto.getList();
             for(D detailInfo : list){
                 resDetailList.add(detailInfo);
             }
@@ -221,8 +221,11 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
         recvHistBaseForm.setRecvEndDt(CommUtil.getCurrentDateTime14());
         recvHistBaseService.updRecvHistBase(recvHistBaseForm);
 
-        ((InBaseListDto<?, ?>) resultData).setList(resDetailList);
+        ((ResBaseListDto<?, ?>) resultData).setList(resDetailList);
         resInfo.setData((T)resultData);
         return resInfo;
     }
+
+
+
 }

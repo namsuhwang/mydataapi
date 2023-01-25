@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccProdEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccProdForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccProdForm extends FormBase {
     private String accountNum;    // 계좌번호
     private String currencyCode;    // 통화코드
     private BigDecimal balanceAmt;    // 계좌잔액
@@ -26,10 +25,15 @@ public class BankAccProdForm{
     private String chgUserId;    // 수정자
     private String chgDt;    // 수정일시
 
+    public BankAccProdForm(String memberId, String orgCd, String accountNum) {
+        super(memberId, orgCd);
+        this.accountNum = accountNum;
+    }
+
     public BankAccProdEntity getEntity(){
         BankAccProdEntity entity = new BankAccProdEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(this.getMemberId());
+        entity.setOrgCd(this.getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setCurrencyCode(currencyCode);
         entity.setBalanceAmt(balanceAmt);

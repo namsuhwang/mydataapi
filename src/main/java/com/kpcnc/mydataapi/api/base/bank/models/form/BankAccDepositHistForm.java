@@ -24,7 +24,7 @@ public class BankAccDepositHistForm extends FormBase {
     private String currencyCode;    // 통화코드
     private BigDecimal transAmt;    // 거래금액
     private BigDecimal balanceAmt;    // 거래 후 잔액
-    private String paidInCnt;    // 납입회차
+    private Integer paidInCnt;    // 납입회차
     private String transMemo;    // 적요
 
     public BankAccDepositHistEntity getEntity(){

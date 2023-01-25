@@ -79,16 +79,23 @@
              ,CHG_USER_ID
              ,CHG_DT
         FROM RECV_BASELINE
-        WHERE
-            MEMBER_ID = #{memberId}
-          AND ORG_CD = #{orgCd}
-          AND API_ID = #{apiId}
+        WHERE 1 = 1
+            <if test = 'memberId  != null and memberId != ""'>
+              AND MEMBER_ID = #{memberId}
+            </if>
+            <if test = 'orgCd  != null and orgCd != ""'>
+              AND ORG_CD = #{orgCd}
+            </if>
+            <if test = 'apiId  != null and apiId != ""'>
+              AND API_ID = #{apiId}
+            </if>
             <if test = 'apiTranDay  != null and apiTranDay != ""'>
                 AND API_TRAN_DAY = #{apiTranDay}
             </if>
             <if test = 'apiTranId  != null and apiTranId != ""'>
                 AND API_TRAN_ID = #{apiTranId}
             </if>
+          AND ROWNUM = 1
     </select>
 
     <select id="selectRecvBaselineListTotalCnt" parameterType="RecvBaselineSearch"  resultType="Long">

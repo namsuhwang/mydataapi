@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEachProdEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccEachProdForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccEachProdForm extends FormBase {
     private String accountNum;    // 계좌번호
     private String prodName;    // 개별운용상품명
     private String prodNum;    // 상품가입번호
@@ -33,8 +32,8 @@ public class BankAccEachProdForm{
 
     public BankAccEachProdEntity getEntity(){
         BankAccEachProdEntity entity = new BankAccEachProdEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(this.getMemberId());
+        entity.setOrgCd(this.getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setProdName(prodName);
         entity.setProdNum(prodNum);

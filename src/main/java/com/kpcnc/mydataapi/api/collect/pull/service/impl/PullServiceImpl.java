@@ -3,7 +3,7 @@ package com.kpcnc.mydataapi.api.collect.pull.service.impl;
 import com.kpcnc.mydataapi.api.base.bank.service.BankAccService;
 import com.kpcnc.mydataapi.api.base.bank.service.BankCustService;
 import com.kpcnc.mydataapi.api.collect.pull.service.PullBankService;
-import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallRequestInfoDto;
+import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.kpcnc.mydataapi.api.collect.pull.models.form.PullForm;
 import com.kpcnc.mydataapi.api.collect.pull.service.PullService;
 import com.kpcnc.mydataapi.api.common.api.service.ApiMstService;
@@ -95,7 +95,7 @@ public class PullServiceImpl implements PullService {
         recvStatusService.regRecvStatus(recvStatusForm);
 
         // 전송요구 등록된 기관별로 전송요청함
-        ApiCallRequestInfoDto reqInfo = new ApiCallRequestInfoDto();
+        ApiCallReqDto reqInfo = new ApiCallReqDto();
         reqInfo.setMemberId(member.getMemberId());
         reqInfo.setMemberCi(member.getCi());
         reqInfo.setApiTranDay(recvDay);

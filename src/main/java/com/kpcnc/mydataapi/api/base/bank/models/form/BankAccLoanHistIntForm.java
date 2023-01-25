@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccLoanHistIntEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccLoanHistIntForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class BankAccLoanHistIntForm extends FormBase {
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String transDtime;    // 거래일시 또는 거래일자
@@ -22,7 +21,7 @@ public class BankAccLoanHistIntForm{
     private String transType;    // 거래유형
     private String intStartDate;    // 이자적용시작일
     private String intEndDate;    // 이자적용종료일
-    private BigDecimal intRate;    // 적용이율
+    private Float intRate;    // 적용이율
     private BigDecimal appliedIntAmt;    // 이자금액
     private String intType;    // 이자종류 (코드)
     private String regUserId;    // 등록자
@@ -32,8 +31,8 @@ public class BankAccLoanHistIntForm{
 
     public BankAccLoanHistIntEntity getEntity(){
         BankAccLoanHistIntEntity entity = new BankAccLoanHistIntEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(this.getMemberId());
+        entity.setOrgCd(this.getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setTransDtime(transDtime);

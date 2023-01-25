@@ -1,4 +1,4 @@
-package com.kpcnc.mydataapi.api.common.gateway.models.in;
+package com.kpcnc.mydataapi.api.common.gateway.models.res;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -15,12 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Bank003InDto extends InBaseDto {
-
-    @JsonProperty("detail_cnt")
+public class Bank002ResDto extends ResBaseDto {
+    @JsonProperty("basic_cnt")
     private Integer listCnt;
 
-    @JsonProperty("detail_list")
-    private List<Bank003DetailInDto> list;
+    @JsonProperty("basic_list")
+    private List<Bank002ResDetailDto> list;
 
 }

@@ -22,6 +22,12 @@ public class BankAutoTransSearch extends SearchDto {
     private String scheduledCycle;    // 자동이체주기
     private String scheduledDate;    // 자동이체주기 상세
 
+    public BankAutoTransSearch(String memberId, String orgCd, String accountNum) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.accountNum = accountNum;
+    }
+
     public BankAutoTransSearch(String memberId, String orgCd, String accountNum, String scheduledOrgCode, String scheduledAccountNum, BigDecimal scheduledAmt, String scheduledCycle, String scheduledDate) {
         this.memberId = memberId;
         this.orgCd = orgCd;
