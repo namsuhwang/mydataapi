@@ -16,6 +16,8 @@ public interface DcHistMapper{
 
     DcHistEntity selectDcHist(DcHistSearch dom);
 
+    DcHistEntity selectDcHistLast(DcHistSearch dom);
+
     Long selectDcHistListTotalCnt(DcHistSearch dom);
 
     List<DcHistEntity> selectDcHistList(DcHistSearch dom);

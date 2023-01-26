@@ -29,8 +29,8 @@ public class BankAccDepositHistForm extends FormBase {
 
     public BankAccDepositHistEntity getEntity(){
         BankAccDepositHistEntity entity = new BankAccDepositHistEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setTransDtime(transDtime);
@@ -42,12 +42,12 @@ public class BankAccDepositHistForm extends FormBase {
         entity.setBalanceAmt(balanceAmt);
         entity.setPaidInCnt(paidInCnt);
         entity.setTransMemo(transMemo);
-        entity.setApiTranDay(this.getApiTranDay());
-        entity.setApiTranId(this.getApiTranId());
-        entity.setRegUserId(this.getRegUserId());
-        entity.setRegDt(this.getRegDt());
-        entity.setChgUserId(this.getChgUserId());
-        entity.setChgDt(this.getChgDt());
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

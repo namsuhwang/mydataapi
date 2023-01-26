@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.base.ppay.repository.PpayBalMapper">
+
+    <insert id="insertPpayBal" parameterType="PpayBalEntity">
+        INSERT INTO PPAY_BAL
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,PP_ID
+            ,TOTAL_BALANCE_AMT
+            ,CHARGE_BALANCE_AMT
+            ,RESERVE_BALANCE_AMT
+            ,RESERVE_DUE_AMT
+            ,EXP_DUE_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{ppId, jdbcType=VARCHAR}
+            ,#{totalBalanceAmt, jdbcType=VARCHAR}
+            ,#{chargeBalanceAmt, jdbcType=NUMERIC}
+            ,#{reserveBalanceAmt, jdbcType=NUMERIC}
+            ,#{reserveDueAmt, jdbcType=NUMERIC}
+            ,#{expDueAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+        ) 
+    </insert>
+
+    <update id="updatePpayBal" parameterType="PpayBalEntity">
+        UPDATE PPAY_BAL
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,PP_ID = #{ppId, jdbcType=VARCHAR}
+               ,TOTAL_BALANCE_AMT = #{totalBalanceAmt, jdbcType=VARCHAR}
+               ,CHARGE_BALANCE_AMT = #{chargeBalanceAmt, jdbcType=NUMERIC}
+               ,RESERVE_BALANCE_AMT = #{reserveBalanceAmt, jdbcType=NUMERIC}
+               ,RESERVE_DUE_AMT = #{reserveDueAmt, jdbcType=NUMERIC}
+               ,EXP_DUE_AMT = #{expDueAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+    </update>
+
+    <delete id="deletePpayBal" parameterType="PpayBalEntity">
+        DELETE FROM PPAY_BAL
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+    </delete>
+
+    <select id="selectPpayBal" parameterType="PpayBalSearch"  resultType="PpayBalEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,TOTAL_BALANCE_AMT
+               ,CHARGE_BALANCE_AMT
+               ,RESERVE_BALANCE_AMT
+               ,RESERVE_DUE_AMT
+               ,EXP_DUE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY_BAL
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+    </select>
+
+    <select id="selectPpayBalListTotalCnt" parameterType="PpayBalSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM PPAY_BAL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+    </select>
+
+    <select id="selectPpayBalList" parameterType="PpayBalSearch"  resultType="PpayBalEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, PP_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,TOTAL_BALANCE_AMT
+               ,CHARGE_BALANCE_AMT
+               ,RESERVE_BALANCE_AMT
+               ,RESERVE_DUE_AMT
+               ,EXP_DUE_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY_BAL
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, PP_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

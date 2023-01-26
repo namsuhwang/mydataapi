@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.base.ppay.repository.PpayMapper">
+
+    <insert id="insertPpay" parameterType="PpayEntity">
+        INSERT INTO PPAY
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,PP_ID
+            ,PP_NAME
+            ,IS_CONSENT
+            ,REG_DATE
+            ,LIMIT_AMT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{ppId, jdbcType=VARCHAR}
+            ,#{ppName, jdbcType=VARCHAR}
+            ,#{isConsent, jdbcType=VARCHAR}
+            ,#{regDate, jdbcType=VARCHAR}
+            ,#{limitAmt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+        ) 
+    </insert>
+
+    <update id="updatePpay" parameterType="PpayEntity">
+        UPDATE PPAY
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,PP_ID = #{ppId, jdbcType=VARCHAR}
+               ,PP_NAME = #{ppName, jdbcType=VARCHAR}
+               ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,REG_DATE = #{regDate, jdbcType=VARCHAR}
+               ,LIMIT_AMT = #{limitAmt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+    </update>
+
+    <delete id="deletePpay" parameterType="PpayEntity">
+        DELETE FROM PPAY
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+    </delete>
+
+    <delete id="deleteAllPpay" parameterType="PpayEntity">
+        DELETE FROM PPAY
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <select id="selectPpay" parameterType="PpaySearch"  resultType="PpayEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,PP_NAME
+               ,IS_CONSENT
+               ,REG_DATE
+               ,LIMIT_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+    </select>
+
+    <select id="selectPpayListTotalCnt" parameterType="PpaySearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM PPAY
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+    </select>
+
+    <select id="selectPpayList" parameterType="PpaySearch"  resultType="PpayEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, PP_ID) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,PP_NAME
+               ,IS_CONSENT
+               ,REG_DATE
+               ,LIMIT_AMT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, PP_ID
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

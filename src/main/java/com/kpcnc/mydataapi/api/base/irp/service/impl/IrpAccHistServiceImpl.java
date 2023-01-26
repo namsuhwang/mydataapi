@@ -46,6 +46,11 @@ public class IrpAccHistServiceImpl implements IrpAccHistService {
     }
 
     @Override
+    public IrpAccHistEntity getIrpAccHistLast(IrpAccHistSearch dom) {
+        return irpAccHistMapper.selectIrpAccHistLast(dom);
+    }
+
+    @Override
     public ResultListDto<IrpAccHistEntity> getIrpAccHistList(IrpAccHistSearch dom) {
         ResultListDto<IrpAccHistEntity> result = new ResultListDto<>();
         Long totalCnt = irpAccHistMapper.selectIrpAccHistListTotalCnt(dom);

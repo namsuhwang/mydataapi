@@ -14,5 +14,7 @@ public interface DcHistService{
 
     public DcHistEntity getDcHist(DcHistSearch dom);
 
+    public DcHistEntity getDcHistLast(DcHistSearch dom);
+
     public ResultListDto<DcHistEntity> getDcHistList(DcHistSearch dom);
 }

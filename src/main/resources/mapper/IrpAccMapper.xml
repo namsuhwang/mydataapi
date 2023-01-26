@@ -53,6 +53,13 @@
            AND ACCOUNT_NUM = #{accountNum}
     </delete>
 
+    <delete id="deleteAllIrpAcc" parameterType="IrpAccEntity">
+        DELETE FROM IRP_ACC
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectIrpAcc" parameterType="IrpAccSearch"  resultType="IrpAccEntity">
          SELECT 
                MEMBER_ID

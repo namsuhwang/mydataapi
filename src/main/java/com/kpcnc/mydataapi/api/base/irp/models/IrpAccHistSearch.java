@@ -4,9 +4,11 @@ import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccHistEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccHistForm;
 import com.kpcnc.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
@@ -15,6 +17,12 @@ public class IrpAccHistSearch extends SearchDto {
     private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
     private String transDtime;    // 거래일시 또는 거래일자
+
+    public IrpAccHistSearch(String memberId, String orgCd, String accountNum) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.accountNum = accountNum;
+    }
 
     public IrpAccHistSearch(String memberId, String orgCd, String accountNum, String transDtime) {
         this.memberId = memberId;

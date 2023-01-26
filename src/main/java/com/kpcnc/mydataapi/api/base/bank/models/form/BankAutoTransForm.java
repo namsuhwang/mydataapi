@@ -2,13 +2,11 @@ package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAutoTransEntity;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
@@ -21,10 +19,6 @@ public class BankAutoTransForm extends FormBase {
     private String scheduledCycle;    // 자동이체주기
     private String scheduledDate;    // 자동이체주기 상세
     private String transMemo;    // 적요
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAutoTransForm(String memberId, String orgCd, String accountNum) {
         super(memberId, orgCd);
@@ -33,8 +27,8 @@ public class BankAutoTransForm extends FormBase {
 
     public BankAutoTransEntity getEntity(){
         BankAutoTransEntity entity = new BankAutoTransEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setScheduledOrgCode(scheduledOrgCode);
         entity.setScheduledAccountNum(scheduledAccountNum);
@@ -42,10 +36,12 @@ public class BankAutoTransForm extends FormBase {
         entity.setScheduledCycle(scheduledCycle);
         entity.setScheduledDate(scheduledDate);
         entity.setTransMemo(transMemo);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

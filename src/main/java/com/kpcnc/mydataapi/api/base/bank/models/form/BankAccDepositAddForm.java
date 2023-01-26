@@ -2,13 +2,11 @@ package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccDepositAddEntity;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
@@ -25,8 +23,8 @@ public class BankAccDepositAddForm extends FormBase {
 
     public BankAccDepositAddEntity getEntity(){
         BankAccDepositAddEntity entity = new BankAccDepositAddEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setAccountSeq(accountSeq);
@@ -35,12 +33,12 @@ public class BankAccDepositAddForm extends FormBase {
         entity.setWithdrawableAmt(withdrawableAmt);
         entity.setOfferedRate(offeredRate);
         entity.setLastPaidInCnt(lastPaidInCnt);
-        entity.setApiTranDay(this.getApiTranDay());
-        entity.setApiTranId(this.getApiTranId());
-        entity.setRegUserId(this.getRegUserId());
-        entity.setRegDt(this.getRegDt());
-        entity.setChgUserId(this.getChgUserId());
-        entity.setChgDt(this.getChgDt());
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

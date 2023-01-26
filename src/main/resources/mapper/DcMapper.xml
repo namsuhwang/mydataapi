@@ -11,6 +11,8 @@
             ,DC_NUM
             ,DC_NAME
             ,IS_CONSENT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -22,6 +24,8 @@
             ,#{dcNum, jdbcType=VARCHAR}
             ,#{dcName, jdbcType=VARCHAR}
             ,#{isConsent, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -37,6 +41,8 @@
                ,DC_NUM = #{dcNum, jdbcType=VARCHAR}
                ,DC_NAME = #{dcName, jdbcType=VARCHAR}
                ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -53,6 +59,13 @@
            AND DC_NUM = #{dcNum}
     </delete>
 
+    <delete id="deleteAllDc" parameterType="DcEntity">
+        DELETE FROM DC
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectDc" parameterType="DcSearch"  resultType="DcEntity">
          SELECT 
                MEMBER_ID
@@ -60,6 +73,8 @@
                ,DC_NUM
                ,DC_NAME
                ,IS_CONSENT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -100,6 +115,8 @@
                ,DC_NUM
                ,DC_NAME
                ,IS_CONSENT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

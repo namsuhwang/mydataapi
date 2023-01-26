@@ -3,6 +3,7 @@ package com.kpcnc.mydataapi.api.base.dc.service.impl;
 import com.kpcnc.mydataapi.api.base.dc.models.DcSearch;
 import com.kpcnc.mydataapi.api.base.dc.models.entity.DcEntity;
 import com.kpcnc.mydataapi.api.base.dc.models.form.DcForm;
+import com.kpcnc.mydataapi.api.base.dc.models.form.DcHistForm;
 import com.kpcnc.mydataapi.api.base.dc.repository.DcMapper;
 import com.kpcnc.mydataapi.api.base.dc.service.DcService;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
@@ -37,6 +38,12 @@ public class DcServiceImpl implements DcService {
     @Override
     public void delDc(DcForm dom) {
         dcMapper.deleteDc(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelDc(DcForm dom) {
+        dcMapper.deleteAllDc(dom.getEntity());
         return;
     }
 

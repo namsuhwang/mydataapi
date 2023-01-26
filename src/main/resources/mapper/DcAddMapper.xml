@@ -18,6 +18,8 @@
             ,ISSUE_DATE
             ,EXP_DATE
             ,INT_RATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -36,6 +38,8 @@
             ,#{issueDate, jdbcType=VARCHAR}
             ,#{expDate, jdbcType=VARCHAR}
             ,#{intRate, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -58,6 +62,8 @@
                ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
                ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
                ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -65,6 +71,7 @@
            AND ORG_CD = #{orgCd}
            AND DC_NUM = #{dcNum}
            AND PROD_NAME = #{prodName}
+           AND PROD_NUM = #{prodNum}
     </update>
 
     <delete id="deleteDcAdd" parameterType="DcAddEntity">
@@ -74,6 +81,7 @@
            AND ORG_CD = #{orgCd}
            AND DC_NUM = #{dcNum}
            AND PROD_NAME = #{prodName}
+           AND PROD_NUM = #{prodNum}
     </delete>
 
     <select id="selectDcAdd" parameterType="DcAddSearch"  resultType="DcAddEntity">
@@ -90,6 +98,8 @@
                ,ISSUE_DATE
                ,EXP_DATE
                ,INT_RATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -100,7 +110,59 @@
            AND ORG_CD = #{orgCd}
            AND DC_NUM = #{dcNum}
            AND PROD_NAME = #{prodName}
+           AND PROD_NUM = #{prodNum}
     </select>
+
+    <select id="selectDcAddLast" parameterType="DcAddSearch"  resultType="DcAddEntity">
+        SELECT
+            A1.MEMBER_ID
+             ,A1.ORG_CD
+             ,A1.DC_NUM
+             ,A1.PROD_NAME
+             ,A1.PROD_NUM
+             ,A1.PROD_TYPE
+             ,A1.EVAL_AMT
+             ,A1.PRINCIPAL_AMT
+             ,A1.HOLDING_NUM
+             ,A1.ISSUE_DATE
+             ,A1.EXP_DATE
+             ,A1.INT_RATE
+             ,A1.API_TRAN_DAY
+             ,A1.API_TRAN_ID
+             ,A1.REG_USER_ID
+             ,A1.REG_DT
+             ,A1.CHG_USER_ID
+             ,A1.CHG_DT
+        FROM DC_ADD A1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME, PROD_NUM
+                        FROM DC_ADD
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND DC_NUM = #{dcNum}
+                            <if test = 'prodName  != null and prodName != ""'>
+                                AND PROD_NAME = #{prodName}
+                            </if>
+                            <if test = 'prodNum  != null and prodNum != ""'>
+                                AND PROD_NUM = #{prodNum}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME, PROD_NUM
+                    )
+                WHERE rownum = 1
+            ) A2
+        WHERE
+            A1.MEMBER_ID = A2.MEMBER_ID
+          AND A1.ORG_CD = A2.ORG_CD
+          AND A1.DC_NUM = A2.DC_NUM
+          AND A1.PROD_NAME = A2.PROD_NAME
+          AND A1.PROD_NUM = A2.PROD_NUM
+    </select>
+
 
     <select id="selectDcAddListTotalCnt" parameterType="DcAddSearch"  resultType="Long">
          SELECT 
@@ -119,6 +181,9 @@
        <if test = 'prodName  != null and prodName != ""'>
            AND PROD_NAME = #{prodName}
        </if>
+        <if test = 'prodNum  != null and prodNum != ""'>
+            AND PROD_NUM = #{prodNum}
+        </if>
     </select>
 
     <select id="selectDcAddList" parameterType="DcAddSearch"  resultType="DcAddEntity">
@@ -128,7 +193,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME, PROD_NUM) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,DC_NUM
@@ -141,6 +206,8 @@
                ,ISSUE_DATE
                ,EXP_DATE
                ,INT_RATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -159,7 +226,10 @@
        <if test = 'prodName  != null and prodName != ""'>
            AND PROD_NAME = #{prodName}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME
+        <if test = 'prodNum  != null and prodNum != ""'>
+            AND PROD_NUM = #{prodNum}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, DC_NUM, PROD_NAME, PROD_NUM
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

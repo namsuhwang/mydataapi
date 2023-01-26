@@ -6,13 +6,17 @@ import com.kpcnc.mydataapi.api.base.dc.models.form.DcAddForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface DcAddService{
-    public DcAddEntity regDcAdd(DcAddForm dom);
+    public void regDcAdd(DcAddForm dom);
 
-    public DcAddEntity modDcAdd(DcAddForm dom);
+    public void updDcAdd(DcAddForm dom);
+
+    public void modDcAdd(DcAddForm dom);
 
     public void  delDcAdd(DcAddForm dom);
 
     public DcAddEntity getDcAdd(DcAddSearch dom);
+
+    public DcAddEntity getDcAddLast(DcAddSearch dom);
 
     public ResultListDto<DcAddEntity> getDcAddList(DcAddSearch dom);
 }

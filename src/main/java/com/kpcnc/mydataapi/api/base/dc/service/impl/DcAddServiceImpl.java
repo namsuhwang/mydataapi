@@ -23,15 +23,25 @@ public class DcAddServiceImpl implements DcAddService {
     DcAddMapper dcAddMapper;
 
     @Override
-    public DcAddEntity regDcAdd(DcAddForm dom) {
+    public void regDcAdd(DcAddForm dom) {
         dcAddMapper.insertDcAdd(dom.getEntity());
-        return dcAddMapper.selectDcAdd(new DcAddSearch(dom));
+        return;
     }
 
     @Override
-    public DcAddEntity modDcAdd(DcAddForm dom) {
+    public void updDcAdd(DcAddForm dom) {
         dcAddMapper.updateDcAdd(dom.getEntity());
-        return dcAddMapper.selectDcAdd(new DcAddSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modDcAdd(DcAddForm dom) {
+        if(getDcAdd(new DcAddSearch(dom)) == null){
+            regDcAdd(dom);
+        }else {
+            updDcAdd(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +53,11 @@ public class DcAddServiceImpl implements DcAddService {
     @Override
     public DcAddEntity getDcAdd(DcAddSearch dom) {
         return dcAddMapper.selectDcAdd(dom);
+    }
+
+    @Override
+    public DcAddEntity getDcAddLast(DcAddSearch dom) {
+        return dcAddMapper.selectDcAddLast(dom);
     }
 
     @Override

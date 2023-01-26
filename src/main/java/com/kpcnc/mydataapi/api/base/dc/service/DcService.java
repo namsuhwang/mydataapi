@@ -12,6 +12,8 @@ public interface DcService{
 
     public void  delDc(DcForm dom);
 
+    public void  allDelDc(DcForm dom);
+
     public DcEntity getDc(DcSearch dom);
 
     public ResultListDto<DcEntity> getDcList(DcSearch dom);

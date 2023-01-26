@@ -23,10 +23,6 @@ public class BankAccLoanForm extends FormBase {
     private String repayAccountNum;    // 상환계좌번호 (자동이체)
     private String unredeemedStart;    // 거치기간 시작연월
     private String unredeemedEnd;    // 거치기간 종료연월
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccLoanForm(String memberId, String orgCd, String accountNum, String seqno) {
         super(memberId, orgCd);
@@ -36,8 +32,8 @@ public class BankAccLoanForm extends FormBase {
 
     public BankAccLoanEntity getEntity(){
         BankAccLoanEntity entity = new BankAccLoanEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setIssueDate(issueDate);
@@ -49,10 +45,12 @@ public class BankAccLoanForm extends FormBase {
         entity.setRepayAccountNum(repayAccountNum);
         entity.setUnredeemedStart(unredeemedStart);
         entity.setUnredeemedEnd(unredeemedEnd);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

@@ -16,6 +16,12 @@ public class DcHistSearch extends SearchDto {
     private String dcNum;    // 상품관리번호
     private String transDtime;    // 거래일시 또는 거래일자
 
+    public DcHistSearch(String memberId, String orgCd, String dcNum) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.dcNum = dcNum;
+    }
+
     public DcHistSearch(String memberId, String orgCd, String dcNum, String transDtime) {
         this.memberId = memberId;
         this.orgCd = orgCd;

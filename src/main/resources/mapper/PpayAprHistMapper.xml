@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.base.ppay.repository.PpayAprHistMapper">
+
+    <insert id="insertPpayAprHist" parameterType="PpayAprHistEntity">
+        INSERT INTO PPAY_APR_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,PP_ID
+            ,APPROVED_NUM
+            ,APPROVED_DTIME
+            ,STATUS
+            ,TRANS_DTIME
+            ,MERCHANT_NAME
+            ,MERCHANT_REGNO
+            ,APPROVED_AMT
+            ,MODIFIED_AMT
+            ,TOTAL_INSTALL_CNT
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{ppId, jdbcType=VARCHAR}
+            ,#{approvedNum, jdbcType=VARCHAR}
+            ,#{approvedDtime, jdbcType=VARCHAR}
+            ,#{status, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{merchantRegno, jdbcType=VARCHAR}
+            ,#{approvedAmt, jdbcType=NUMERIC}
+            ,#{modifiedAmt, jdbcType=NUMERIC}
+            ,#{totalInstallCnt, jdbcType=NUMERIC}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+        ) 
+    </insert>
+
+    <update id="updatePpayAprHist" parameterType="PpayAprHistEntity">
+        UPDATE PPAY_APR_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,PP_ID = #{ppId, jdbcType=VARCHAR}
+               ,APPROVED_NUM = #{approvedNum, jdbcType=VARCHAR}
+               ,APPROVED_DTIME = #{approvedDtime, jdbcType=VARCHAR}
+               ,STATUS = #{status, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,MERCHANT_REGNO = #{merchantRegno, jdbcType=VARCHAR}
+               ,APPROVED_AMT = #{approvedAmt, jdbcType=NUMERIC}
+               ,MODIFIED_AMT = #{modifiedAmt, jdbcType=NUMERIC}
+               ,TOTAL_INSTALL_CNT = #{totalInstallCnt, jdbcType=NUMERIC}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+           AND APPROVED_NUM = #{approvedNum}
+           AND APPROVED_DTIME = #{approvedDtime}
+           AND STATUS = #{status}
+           AND TRANS_DTIME = #{transDtime}
+    </update>
+
+    <delete id="deletePpayAprHist" parameterType="PpayAprHistEntity">
+        DELETE FROM PPAY_APR_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+           AND APPROVED_NUM = #{approvedNum}
+           AND APPROVED_DTIME = #{approvedDtime}
+           AND STATUS = #{status}
+           AND TRANS_DTIME = #{transDtime}
+    </delete>
+
+    <select id="selectPpayAprHist" parameterType="PpayAprHistSearch"  resultType="PpayAprHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,APPROVED_NUM
+               ,APPROVED_DTIME
+               ,STATUS
+               ,TRANS_DTIME
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,APPROVED_AMT
+               ,MODIFIED_AMT
+               ,TOTAL_INSTALL_CNT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY_APR_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+           AND APPROVED_NUM = #{approvedNum}
+           AND APPROVED_DTIME = #{approvedDtime}
+           AND STATUS = #{status}
+           AND TRANS_DTIME = #{transDtime}
+    </select>
+
+    <select id="selectPpayAprHistLast" parameterType="PpayAprHistSearch"  resultType="PpayAprHistEntity">
+        SELECT
+            H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.PP_ID
+             ,H1.APPROVED_NUM
+             ,H1.APPROVED_DTIME
+             ,H1.STATUS
+             ,H1.TRANS_DTIME
+             ,H1.MERCHANT_NAME
+             ,H1.MERCHANT_REGNO
+             ,H1.APPROVED_AMT
+             ,H1.MODIFIED_AMT
+             ,H1.TOTAL_INSTALL_CNT
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
+        FROM PPAY_APR_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, PP_ID, APPROVED_NUM, APPROVED_DTIME, STATUS, TRANS_DTIME
+                        FROM PPAY_HIST
+                        WHERE
+                        MEMBER_ID = #{memberId}
+                        AND ORG_CD = #{orgCd}
+                        AND PP_ID = #{ppId}
+                        <if test = 'approvedNum  != null and approvedNum != ""'>
+                            AND APPROVED_NUM = #{approvedNum}
+                        </if>
+                        <if test = 'approvedDtime  != null and approvedDtime != ""'>
+                            AND APPROVED_DTIME = #{approvedDtime}
+                        </if>
+                        <if test = 'status  != null and status != ""'>
+                            AND STATUS = #{status}
+                        </if>
+                        <if test = 'transDtime  != null and transDtime != ""'>
+                            AND TRANS_DTIME = #{transDtime}
+                        </if>
+                        ORDER BY MEMBER_ID, ORG_CD, PP_ID, APPROVED_NUM, APPROVED_DTIME DESC, STATUS, TRANS_DTIME
+                    )
+                WHERE rownum = 1
+            ) H2
+        WHERE
+            H1.MEMBER_ID =  H2.MEMBER_ID
+          AND H1.ORG_CD = H2.ORG_CD
+          AND H1.PP_ID = H2.PP_ID
+          AND H1.APPROVED_NUM = H2.APPROVED_NUM
+          AND H1.APPROVED_DTIME = H2.APPROVED_DTIME
+          AND H1.STATUS = H2.STATUS
+          AND H1.TRANS_DTIME = H2.TRANS_DTIME
+    </select>
+
+    <select id="selectPpayAprHistListTotalCnt" parameterType="PpayAprHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM PPAY_APR_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+       <if test = 'approvedNum  != null and approvedNum != ""'>
+           AND APPROVED_NUM = #{approvedNum}
+       </if>
+       <if test = 'approvedDtime  != null and approvedDtime != ""'>
+           AND APPROVED_DTIME = #{approvedDtime}
+       </if>
+       <if test = 'status  != null and status != ""'>
+           AND STATUS = #{status}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+    </select>
+
+    <select id="selectPpayAprHistList" parameterType="PpayAprHistSearch"  resultType="PpayAprHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, PP_ID, APPROVED_NUM, APPROVED_DTIME, STATUS, TRANS_DTIME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,APPROVED_NUM
+               ,APPROVED_DTIME
+               ,STATUS
+               ,TRANS_DTIME
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,APPROVED_AMT
+               ,MODIFIED_AMT
+               ,TOTAL_INSTALL_CNT
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY_APR_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+       <if test = 'approvedNum  != null and approvedNum != ""'>
+           AND APPROVED_NUM = #{approvedNum}
+       </if>
+       <if test = 'approvedDtime  != null and approvedDtime != ""'>
+           AND APPROVED_DTIME = #{approvedDtime}
+       </if>
+       <if test = 'status  != null and status != ""'>
+           AND STATUS = #{status}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, PP_ID, APPROVED_NUM, APPROVED_DTIME, STATUS, TRANS_DTIME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

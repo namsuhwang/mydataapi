@@ -1,5 +1,6 @@
 package com.kpcnc.mydataapi.api.base.irp.service.impl;
 
+import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccForm;
 import com.kpcnc.mydataapi.api.base.irp.models.IrpAccSearch;
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccForm;
@@ -37,6 +38,12 @@ public class IrpAccServiceImpl implements IrpAccService {
     @Override
     public void delIrpAcc(IrpAccForm dom) {
         irpAccMapper.deleteIrpAcc(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelIrpAcc(IrpAccForm dom) {
+        irpAccMapper.deleteAllIrpAcc(dom.getEntity());
         return;
     }
 

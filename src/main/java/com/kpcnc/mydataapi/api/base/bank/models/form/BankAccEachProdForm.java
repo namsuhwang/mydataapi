@@ -25,15 +25,11 @@ public class BankAccEachProdForm extends FormBase {
     private String issueDate;    // 신규일
     private String expDate;    // 만기일
     private Float intRate;    // 약정이자율
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccEachProdEntity getEntity(){
         BankAccEachProdEntity entity = new BankAccEachProdEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setProdName(prodName);
         entity.setProdNum(prodNum);
@@ -45,10 +41,12 @@ public class BankAccEachProdForm extends FormBase {
         entity.setIssueDate(issueDate);
         entity.setExpDate(expDate);
         entity.setIntRate(intRate);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

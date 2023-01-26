@@ -4,9 +4,11 @@ import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccAddEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccAddForm;
 import com.kpcnc.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

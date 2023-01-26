@@ -2,13 +2,11 @@ package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccLoanHistEntity;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
@@ -26,15 +24,11 @@ public class BankAccLoanHistForm extends FormBase {
     private BigDecimal intAmt;    // 거래금액 중 이자
     private BigDecimal retIntAmt;    // 환출이자
     private String intCnt;    // 이자적용수
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccLoanHistEntity getEntity(){
         BankAccLoanHistEntity entity = new BankAccLoanHistEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setTransDtime(transDtime);
@@ -47,10 +41,12 @@ public class BankAccLoanHistForm extends FormBase {
         entity.setIntAmt(intAmt);
         entity.setRetIntAmt(retIntAmt);
         entity.setIntCnt(intCnt);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

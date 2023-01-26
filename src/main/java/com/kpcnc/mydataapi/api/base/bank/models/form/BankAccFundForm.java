@@ -18,10 +18,6 @@ public class BankAccFundForm extends FormBase {
     private String paidInType;    // 납입유형 (코드)
     private String issueDate;    // 개설일
     private String expDate;    // 만기일
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccFundForm(String memberId, String orgCd, String accountNum, String seqno) {
         super(memberId, orgCd);
@@ -31,18 +27,20 @@ public class BankAccFundForm extends FormBase {
 
     public BankAccFundEntity getEntity(){
         BankAccFundEntity entity = new BankAccFundEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setStandardFundCode(standardFundCode);
         entity.setPaidInType(paidInType);
         entity.setIssueDate(issueDate);
         entity.setExpDate(expDate);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

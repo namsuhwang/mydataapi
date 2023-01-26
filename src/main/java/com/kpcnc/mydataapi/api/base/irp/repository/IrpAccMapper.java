@@ -1,5 +1,6 @@
 package com.kpcnc.mydataapi.api.base.irp.repository;
 
+import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.IrpAccSearch;
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccEntity;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ public interface IrpAccMapper{
     int updateIrpAcc(IrpAccEntity dom);
 
     int deleteIrpAcc(IrpAccEntity dom);
+
+    int deleteAllIrpAcc(IrpAccEntity dom);
 
     IrpAccEntity selectIrpAcc(IrpAccSearch dom);
 

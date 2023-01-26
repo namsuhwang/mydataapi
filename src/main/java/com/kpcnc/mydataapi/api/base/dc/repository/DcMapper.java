@@ -14,6 +14,8 @@ public interface DcMapper{
 
     int deleteDc(DcEntity dom);
 
+    int deleteAllDc(DcEntity dom);
+
     DcEntity selectDc(DcSearch dom);
 
     Long selectDcListTotalCnt(DcSearch dom);

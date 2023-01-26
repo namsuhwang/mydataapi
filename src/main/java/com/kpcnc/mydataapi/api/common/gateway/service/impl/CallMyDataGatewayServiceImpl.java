@@ -132,6 +132,7 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
     @Override
     public <T, D> ApiCallResDto callRepeatMyDataApi(ApiCallReqDto reqInfo, T classTypeT, D classTypeD) {
         log.info("callRepeatMyDataApi in_params:" + reqInfo);
+
         ApiCallResDto<T> resInfo = new ApiCallResDto<T>();
         List<D> resDetailList = new ArrayList<>();
 
@@ -180,6 +181,9 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
         RecvHistBaseForm recvHistBaseForm = new RecvHistBaseForm(reqInfo.getMemberId(), reqInfo.getOrgCd(), reqInfo.getRequestApiId(), reqInfo.getRecvSeq());
         recvHistBaseService.regRecvHistBase(recvHistBaseForm);
 
+        // T resBaseDto = null;
+        ResBaseListDto resBaseListDto;
+
         while(true) {
             try {
                 resultData = new ObjectMapper().readValue(resInfo.getResultJson(), classTypeT.getClass());
@@ -188,8 +192,10 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
             }
 
             // 넥스트테이지가 없으면 stop
-            ResBaseListDto resBaseListDto = (ResBaseListDto<T, D>)resultData;
-            if(CommUtil.isNullEmpty(resBaseListDto.getNextPage())){
+            // ResBaseListDto resBaseListDto = (ResBaseListDto<T, D>)resultData;
+//            resBaseDto = (T)resultData;
+            resBaseListDto = (ResBaseListDto)(T)resultData;
+            if(CommUtil.isNullEmpty((resBaseListDto.getNextPage()))){
                 break;
             }
 
@@ -197,7 +203,7 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
             reqParamMap.put("search_timestamp", resBaseListDto.getSearchTimestamp());
             reqParamMap.put("next_page", resBaseListDto.getNextPage());
 
-            resInfo.setData((T) resBaseListDto);
+            // resInfo.setData((T) resBaseListDto);
 
             List<D> list = resBaseListDto.getList();
             for(D detailInfo : list){
@@ -221,7 +227,7 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
         recvHistBaseForm.setRecvEndDt(CommUtil.getCurrentDateTime14());
         recvHistBaseService.updRecvHistBase(recvHistBaseForm);
 
-        ((ResBaseListDto<?, ?>) resultData).setList(resDetailList);
+        ((ResBaseListDto<D>) resultData).setList(resDetailList);
         resInfo.setData((T)resultData);
         return resInfo;
     }

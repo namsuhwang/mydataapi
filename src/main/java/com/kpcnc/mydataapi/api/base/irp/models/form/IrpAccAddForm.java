@@ -1,6 +1,7 @@
 package com.kpcnc.mydataapi.api.base.irp.models.form;
 
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccAddEntity;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,8 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class IrpAccAddForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class IrpAccAddForm extends FormBase {
+    private String accountNum;    // 계좌번호
     private String irpName;    // 개별운용상품명
     private String irpNo;    // 상품가입번호
     private String irpType;    // 상품유형 (코드)
@@ -24,15 +24,12 @@ public class IrpAccAddForm{
     private String openDate;    // 신규일
     private String expDate;    // 만기일
     private Float intRate;    // 약정이자율
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public IrpAccAddEntity getEntity(){
         IrpAccAddEntity entity = new IrpAccAddEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
+        entity.setAccountNum(accountNum);
         entity.setIrpName(irpName);
         entity.setIrpNo(irpNo);
         entity.setIrpType(irpType);
@@ -42,10 +39,12 @@ public class IrpAccAddForm{
         entity.setOpenDate(openDate);
         entity.setExpDate(expDate);
         entity.setIntRate(intRate);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

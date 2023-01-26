@@ -4,9 +4,11 @@ import com.kpcnc.mydataapi.api.base.dc.models.entity.DcBaseEntity;
 import com.kpcnc.mydataapi.api.base.dc.models.form.DcBaseForm;
 import com.kpcnc.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

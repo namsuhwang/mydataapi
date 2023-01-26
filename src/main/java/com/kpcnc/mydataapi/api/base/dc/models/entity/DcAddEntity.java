@@ -1,5 +1,6 @@
 package com.kpcnc.mydataapi.api.base.dc.models.entity;
 
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class DcAddEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class DcAddEntity extends EntityBase {
     private String dcNum;    // 상품관리번호
     private String prodName;    // 개별운용상품명
     private String prodNum;    // 상품가입번호
@@ -25,8 +23,4 @@ public class DcAddEntity{
     private String issueDate;    // 신규일
     private String expDate;    // 만기일
     private Float intRate;    // 약정이자율
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

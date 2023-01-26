@@ -46,6 +46,11 @@ public class DcHistServiceImpl implements DcHistService {
     }
 
     @Override
+    public DcHistEntity getDcHistLast(DcHistSearch dom) {
+        return dcHistMapper.selectDcHistLast(dom);
+    }
+
+    @Override
     public ResultListDto<DcHistEntity> getDcHistList(DcHistSearch dom) {
         ResultListDto<DcHistEntity> result = new ResultListDto<>();
         Long totalCnt = dcHistMapper.selectDcHistListTotalCnt(dom);

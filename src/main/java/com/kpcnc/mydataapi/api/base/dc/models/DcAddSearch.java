@@ -16,6 +16,12 @@ public class DcAddSearch extends SearchDto {
     private String dcNum;    // 상품관리번호
     private String prodName;    // 개별운용상품명
 
+    public DcAddSearch(String memberId, String orgCd, String dcNum) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.dcNum = dcNum;
+    }
+
     public DcAddSearch(String memberId, String orgCd, String dcNum, String prodName) {
         this.memberId = memberId;
         this.orgCd = orgCd;

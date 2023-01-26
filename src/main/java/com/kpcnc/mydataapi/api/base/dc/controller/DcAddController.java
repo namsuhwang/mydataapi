@@ -29,7 +29,8 @@ public class DcAddController {
     public ResponseEntity<ResponseDto<DcAddEntity>> regDcAdd(
         @RequestBody DcAddForm dom
     ){
-        DcAddEntity result = dcAddService.regDcAdd(dom);
+        dcAddService.regDcAdd(dom);
+        DcAddEntity result = dcAddService.getDcAdd(new DcAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class DcAddController {
     public ResponseEntity<ResponseDto<DcAddEntity>> modDcAdd(
         @RequestBody DcAddForm dom
     ){
-        DcAddEntity result = dcAddService.modDcAdd(dom);
+        dcAddService.modDcAdd(dom);
+        DcAddEntity result = dcAddService.getDcAdd(new DcAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

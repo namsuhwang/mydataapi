@@ -20,10 +20,6 @@ public class BankAccLoanAddForm extends FormBase {
     private BigDecimal balanceAmt;    // 대출잔액
     private BigDecimal loanPrincipal;    // 대출원금
     private String nextRepayDate;    // 다음 이자 상환일
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccLoanAddForm(String memberId, String orgCd, String accountNum, String seqno) {
         super(memberId, orgCd);
@@ -33,18 +29,20 @@ public class BankAccLoanAddForm extends FormBase {
 
     public BankAccLoanAddEntity getEntity(){
         BankAccLoanAddEntity entity = new BankAccLoanAddEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setCurrencyCode(currencyCode);
         entity.setBalanceAmt(balanceAmt);
         entity.setLoanPrincipal(loanPrincipal);
         entity.setNextRepayDate(nextRepayDate);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

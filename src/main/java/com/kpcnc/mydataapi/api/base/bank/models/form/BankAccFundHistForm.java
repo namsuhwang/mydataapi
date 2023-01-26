@@ -24,15 +24,11 @@ public class BankAccFundHistForm extends FormBase {
     private BigDecimal transFundNum;    // 거래좌수
     private BigDecimal transAmt;    // 거래금액
     private BigDecimal balanceAmt;    // 거래 후 잔고평가금액
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public BankAccFundHistEntity getEntity(){
         BankAccFundHistEntity entity = new BankAccFundHistEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setSeqno(seqno);
         entity.setTransDtime(transDtime);
@@ -43,10 +39,12 @@ public class BankAccFundHistForm extends FormBase {
         entity.setTransFundNum(transFundNum);
         entity.setTransAmt(transAmt);
         entity.setBalanceAmt(balanceAmt);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

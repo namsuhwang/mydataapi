@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.base.ppay.repository.PpayHistMapper">
+
+    <insert id="insertPpayHist" parameterType="PpayHistEntity">
+        INSERT INTO PPAY_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,PP_ID
+            ,TRANS_DTIME
+            ,TRANS_TYPE
+            ,TRANS_NO
+            ,TRANS_AMT
+            ,BALANCE_AMT
+            ,TRANS_ORG_CODE
+            ,TRANS_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{ppId, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{balanceAmt, jdbcType=NUMERIC}
+            ,#{transOrgCode, jdbcType=VARCHAR}
+            ,#{transId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+        ) 
+    </insert>
+
+    <update id="updatePpayHist" parameterType="PpayHistEntity">
+        UPDATE PPAY_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,PP_ID = #{ppId, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
+               ,TRANS_ORG_CODE = #{transOrgCode, jdbcType=VARCHAR}
+               ,TRANS_ID = #{transId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_TYPE = #{transType}
+    </update>
+
+    <delete id="deletePpayHist" parameterType="PpayHistEntity">
+        DELETE FROM PPAY_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_TYPE = #{transType}
+    </delete>
+
+    <select id="selectPpayHist" parameterType="PpayHistSearch"  resultType="PpayHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,TRANS_DTIME
+               ,TRANS_TYPE
+               ,TRANS_NO
+               ,TRANS_AMT
+               ,BALANCE_AMT
+               ,TRANS_ORG_CODE
+               ,TRANS_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND PP_ID = #{ppId}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_TYPE = #{transType}
+    </select>
+
+    <select id="selectPpayHistLast" parameterType="PpayHistSearch"  resultType="PpayHistEntity">
+        SELECT
+            H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.PP_ID
+             ,H1.TRANS_DTIME
+             ,H1.TRANS_TYPE
+             ,H1.TRANS_NO
+             ,H1.TRANS_AMT
+             ,H1.BALANCE_AMT
+             ,H1.TRANS_ORG_CODE
+             ,H1.TRANS_ID
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
+        FROM PPAY_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, PP_ID, TRANS_DTIME, TRANS_TYPE
+                        FROM PPAY_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND PP_ID = #{ppId}
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'transType  != null and transType != ""'>
+                                AND TRANS_TYPE = #{transType}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, PP_ID, TRANS_DTIME DESC, TRANS_TYPE
+                    )
+                WHERE rownum = 1
+            ) H2
+        WHERE
+            H1.MEMBER_ID = H2.MEMBER_ID
+          AND H1.ORG_CD = H2.ORG_CD
+          AND H1.PP_ID = H2.PP_ID
+          AND H1.TRANS_DTIME = H2.TRANS_DTIME
+          AND H1.TRANS_TYPE = H2.TRANS_TYPE
+    </select>
+
+    <select id="selectPpayHistListTotalCnt" parameterType="PpayHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM PPAY_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+    </select>
+
+    <select id="selectPpayHistList" parameterType="PpayHistSearch"  resultType="PpayHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, PP_ID, TRANS_DTIME, TRANS_TYPE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,PP_ID
+               ,TRANS_DTIME
+               ,TRANS_TYPE
+               ,TRANS_NO
+               ,TRANS_AMT
+               ,BALANCE_AMT
+               ,TRANS_ORG_CODE
+               ,TRANS_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+        FROM PPAY_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'ppId  != null and ppId != ""'>
+           AND PP_ID = #{ppId}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transType  != null and transType != ""'>
+           AND TRANS_TYPE = #{transType}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, PP_ID, TRANS_DTIME, TRANS_TYPE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

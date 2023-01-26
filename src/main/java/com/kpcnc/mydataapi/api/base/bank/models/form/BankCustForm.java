@@ -17,20 +17,16 @@ public class BankCustForm extends FormBase {
 
     public BankCustEntity getEntity(){
         BankCustEntity entity = new BankCustEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setRegDate(regDate);
-        entity.setApiTranDay(this.getApiTranDay());
-        entity.setApiTranId(this.getApiTranId());
-        entity.setRegUserId(this.getRegUserId());
-        entity.setRegDt(this.getRegDt());
-        entity.setChgUserId(this.getChgUserId());
-        entity.setChgDt(this.getChgDt());
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 
-//    @Override
-//    public EntityBase getEntityBase(){
-//        return super.getEntityBase();
-//    }
 }

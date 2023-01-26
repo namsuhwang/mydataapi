@@ -6,13 +6,17 @@ import com.kpcnc.mydataapi.api.base.bank.models.form.*;
 import com.kpcnc.mydataapi.api.base.bank.service.*;
 import com.kpcnc.mydataapi.api.collect.pull.models.dto.BankParamsDto;
 import com.kpcnc.mydataapi.api.collect.pull.service.PullBankService;
+import com.kpcnc.mydataapi.api.collect.pull.service.PullDbService;
+import com.kpcnc.mydataapi.api.collect.pull.service.PullDcService;
+import com.kpcnc.mydataapi.api.collect.pull.service.PullIrpService;
+import com.kpcnc.mydataapi.api.collect.pull.service.PullPpayService;
 import com.kpcnc.mydataapi.api.common.api.models.entity.ApiMstEntity;
 import com.kpcnc.mydataapi.api.common.api.service.ApiMstService;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
-import com.kpcnc.mydataapi.api.common.gateway.models.res.*;
+import com.kpcnc.mydataapi.api.common.gateway.models.res.bank.*;
 import com.kpcnc.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
 import com.kpcnc.mydataapi.api.common.member.service.MemberService;
 import com.kpcnc.mydataapi.api.common.member.service.MemberTokenService;
@@ -43,7 +47,6 @@ public class PullBankServiceImpl implements PullBankService {
     @Autowired MemberTokenService memberTokenService;
     @Autowired ApiMstService apiMstService;
     @Autowired RecvBaselineService recvBaselineService;
-    @Autowired LedgerBankService ledgerBankService;
     @Autowired CallMyDataGatewayService callMyDataGatewayService;
 
     @Autowired BankAccService bankAccService;
@@ -63,7 +66,10 @@ public class PullBankServiceImpl implements PullBankService {
     @Autowired BankAccProdHistService bankAccProdHistService;
     @Autowired BankAccEachProdService bankAccEachProdService;
 
-    @Autowired RequestBankParamsSetService reqBankParamsSetService;
+    @Autowired PullIrpService pullIrpService;
+    @Autowired PullPpayService pullPpayService;
+    @Autowired PullDbService pullDbService;
+    @Autowired PullDcService pullDcService;
     @Autowired RecvStatusService recvStatusService;
     @Autowired RecvHistBaseService recvHistBaseService;
     @Autowired RecvHistDetailService recvHistDetailService;
@@ -91,9 +97,6 @@ public class PullBankServiceImpl implements PullBankService {
 
         // 수신 상태 업데이트. 기관코드 + API 별로 수신시작/종료 상태 저장.
         recvStatusService.updRecvStatus(recvStatusForm, 1, reqInfo.getOrgCd());
-
-        // 계좌목록은 해지계좌목록을 알 수 없기 때문에 일단 전체 삭제 후 인서트
-        bankAccService.allDelBankAcc((BankAccForm) formBase);
 
         // 고객등록일 설정 위한 기본 정보 설정
         BankCustForm bankCustForm = (BankCustForm) formBase;
@@ -124,19 +127,25 @@ public class PullBankServiceImpl implements PullBankService {
             bankCustService.updBankCust(bankCustForm);
         }
 
+        // 계좌목록은 해지계좌목록을 알 수 없기 때문에 일단 전체 삭제 후 인서트
+        bankAccService.allDelBankAcc((BankAccForm) formBase);
+
         formBase.setApiTranDay(reqInfo.getApiTranDay());
         formBase.setApiTranId(bank001ResDto.getXApiTranId());
         List<Bank001ResDetailDto> accountInfoList = bank001ResDto.getList();
 
         // BankAcc 테이블 반영
-        for(Bank001ResDetailDto accountInfo : accountInfoList){
-            accountList.add(new String[]{accountInfo.getAccountNum(), accountInfo.getSeqno()});
-            bankAccService.regBankAcc(accountInfo.getForm(formBase));
+        for(Bank001ResDetailDto detail : accountInfoList){
+            bankAccService.regBankAcc(detail.getForm(formBase));
+            accountList.add(new String[]{detail.getAccountNum(), detail.getSeqno()});
+            if(detail.getIsConsent() && !targetList.contains(detail.getAccountNum())){
+                targetList.add(detail.getAccountNum());
+            }
         }
-
 
         // 계좌별로 계좌유형에 따라 API 들을 순차적으로 호출함
         for(Bank001ResDetailDto acc : accountInfoList){
+
             if(!acc.getIsConsent()) continue;  // 전송요구 계좌가 아니면 스킵
 
             if(acc.getAccountType().substring(0, 0).equals("1")){  // 수신상품
@@ -158,20 +167,30 @@ public class PullBankServiceImpl implements PullBankService {
                     callBank009(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
                     callBank010(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
                 }
-            }else if(acc.getAccountType().equals("2002") || acc.getAccountType().equals("2003") ||acc.getAccountType().equals("2004")){   // 신탁/ISA
+            }else if(acc.getAccountType().equals("2001") ||acc.getAccountType().equals("2002") || acc.getAccountType().equals("2003") ||acc.getAccountType().equals("2004")){   // 신탁/ISA
+                // 2001 은 isa 로 봐야 할지, irp 로 봐야할지 애매함. 일단 isa 로 처리함.
                 if(reqInfo.getMemberToken().getScopeLists().contains("bank.isa")){
                     callBank011(reqInfo, formBase, acc.getAccountNum());
                     callBank012(reqInfo, formBase, acc.getAccountNum());
                     callBank013(reqInfo, formBase, acc.getAccountNum());
                 }
-            }else if(acc.getAccountType().equals("2001")){   // IRP
-                if(reqInfo.getMemberToken().getScopeLists().contains("bank.irp")){
-
-                }
             }
 
+            if(reqInfo.getMemberToken().getScopeLists().contains("bank.irp")){
+                pullIrpService.pullIrpInfoRun(reqInfo, formBase);
+            }
 
-            bankAccService.regBankAcc(acc.getForm(formBase));
+            if(reqInfo.getMemberToken().getScopeLists().contains("bank.prepaid")){
+                pullPpayService.pullPpayInfoRun(reqInfo, formBase);
+            }
+
+            if(reqInfo.getMemberToken().getScopeLists().contains("bank.db")){
+                pullDbService.pullDbInfoRun(reqInfo, formBase);
+            }
+
+            if(reqInfo.getMemberToken().getScopeLists().contains("bank.dc")){
+                pullDcService.pullDcInfoRun(reqInfo, formBase);
+            }
         }
 
         // 수신 상태 업데이트. 기관코드 + API 별로 종료 상태 저장.
@@ -190,8 +209,8 @@ public class PullBankServiceImpl implements PullBankService {
         req.setRequestApiId("BANK_002");
 
         // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-        BankAccDepositEntity bankAccDeposit = bankAccDepositService.getBankAccDeposit(new BankAccDepositSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
-        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(bankAccDeposit);
+        BankAccDepositEntity entity = bankAccDepositService.getBankAccDeposit(new BankAccDepositSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
+        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
         // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
         BankParamsDto bankParamsDto = (BankParamsDto) new ApiCallParamsDto(req.getMemberId(), req.getOrgCd());
@@ -224,8 +243,8 @@ public class PullBankServiceImpl implements PullBankService {
         req.setRequestApiId("BANK_003");
 
         // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-        BankAccDepositAddEntity bankAccDepositAdd = bankAccDepositAddService.getBankAccDepositAdd(new BankAccDepositAddSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
-        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(bankAccDepositAdd);
+        BankAccDepositAddEntity entity = bankAccDepositAddService.getBankAccDepositAdd(new BankAccDepositAddSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
+        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
         // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
         BankParamsDto bankParamsDto = (BankParamsDto) new ApiCallParamsDto(req.getMemberId(), req.getOrgCd());

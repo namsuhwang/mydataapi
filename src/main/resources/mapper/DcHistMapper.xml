@@ -13,6 +13,8 @@
             ,TRANS_NO
             ,TRANS_TYPE
             ,TRANS_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{transNo, jdbcType=VARCHAR}
             ,#{transType, jdbcType=VARCHAR}
             ,#{transAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
                ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
                ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -70,6 +76,8 @@
                ,TRANS_NO
                ,TRANS_TYPE
                ,TRANS_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -80,6 +88,47 @@
            AND ORG_CD = #{orgCd}
            AND DC_NUM = #{dcNum}
            AND TRANS_DTIME = #{transDtime}
+    </select>
+
+    <select id="selectDcHistLast" parameterType="DcHistSearch"  resultType="DcHistEntity">
+        SELECT
+            H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.DC_NUM
+             ,H1.TRANS_DTIME
+             ,H1.TRANS_NO
+             ,H1.TRANS_TYPE
+             ,H1.TRANS_AMT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+        FROM DC_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, DC_NUM, TRANS_DTIME
+                        FROM DC_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                        AND ORG_CD = #{orgCd}
+                        AND DC_NUM = #{dcNum}
+                        <if test = 'transDtime  != null and transDtime != ""'>
+                            AND TRANS_DTIME = #{transDtime}
+                        </if>
+                        ORDER BY MEMBER_ID, ORG_CD, DC_NUM, TRANS_DTIME DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+        WHERE
+            H1.MEMBER_ID = H2.MEMBER_ID
+          AND H1.ORG_CD = H2.ORG_CD
+          AND H1.DC_NUM = H2.DC_NUM
+          AND H1.TRANS_DTIME = H2.TRANS_DTIME
     </select>
 
     <select id="selectDcHistListTotalCnt" parameterType="DcHistSearch"  resultType="Long">
@@ -116,6 +165,8 @@
                ,TRANS_NO
                ,TRANS_TYPE
                ,TRANS_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

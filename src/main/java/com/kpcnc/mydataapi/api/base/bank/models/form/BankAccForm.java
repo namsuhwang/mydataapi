@@ -23,8 +23,8 @@ public class BankAccForm extends FormBase {
 
     public BankAccEntity getEntity(){
         BankAccEntity entity = new BankAccEntity();
-        entity.setMemberId(this.getMemberId());
-        entity.setOrgCd(this.getOrgCd());
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setAccountNum(accountNum);
         entity.setIsConsent(isConsent);
         entity.setSeqno(seqno);
@@ -33,12 +33,12 @@ public class BankAccForm extends FormBase {
         entity.setIsMinus(isMinus);
         entity.setAccountType(accountType);
         entity.setAccountStatus(accountStatus);
-        entity.setApiTranDay(this.getApiTranDay());
-        entity.setApiTranId(this.getApiTranId());
-        entity.setRegUserId(this.getRegUserId());
-        entity.setRegDt(this.getRegDt());
-        entity.setChgUserId(this.getChgUserId());
-        entity.setChgDt(this.getChgDt());
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

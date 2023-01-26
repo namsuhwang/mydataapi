@@ -16,6 +16,8 @@ public interface DcAddMapper{
 
     DcAddEntity selectDcAdd(DcAddSearch dom);
 
+    DcAddEntity selectDcAddLast(DcAddSearch dom);
+
     Long selectDcAddListTotalCnt(DcAddSearch dom);
 
     List<DcAddEntity> selectDcAddList(DcAddSearch dom);

@@ -1,5 +1,7 @@
 package com.kpcnc.mydataapi.api.base.irp.service;
 
+import com.kpcnc.mydataapi.api.base.bank.models.BankAccLoanHistSearch;
+import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccLoanHistEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.IrpAccHistSearch;
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccHistEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccHistForm;
@@ -13,6 +15,8 @@ public interface IrpAccHistService{
     public void  delIrpAccHist(IrpAccHistForm dom);
 
     public IrpAccHistEntity getIrpAccHist(IrpAccHistSearch dom);
+
+    public IrpAccHistEntity getIrpAccHistLast(IrpAccHistSearch dom);
 
     public ResultListDto<IrpAccHistEntity> getIrpAccHistList(IrpAccHistSearch dom);
 }

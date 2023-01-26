@@ -82,6 +82,44 @@
            AND TRANS_DTIME = #{transDtime}
     </select>
 
+
+    <select id="selectIrpAccHistLast" parameterType="IrpAccHistSearch"  resultType="IrpAccHistEntity">
+        SELECT
+            H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.ACCOUNT_NUM
+             ,H1.TRANS_DTIME
+             ,H1.TRANS_TYPE
+             ,H1.TRANS_NO
+             ,H1.TRANS_AMT
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+        FROM IRP_ACC_HIST H1,
+             (
+                 SELECT *
+                 FROM
+                     (
+                         SELECT
+                             MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_DTIME
+                         FROM IRP_ACC_HIST
+                         WHERE
+                             MEMBER_ID = #{memberId}
+                           AND ORG_CD = #{orgCd}
+                           AND ACCOUNT_NUM = #{accountNum}
+                           AND TRANS_DTIME = #{transDtime}
+                         ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_DTIME DESC
+                     )
+                 WHERE rownum = 1
+             ) H2
+        WHERE
+            H1.MEMBER_ID = H2.MEMBER_ID
+          AND H1.ORG_CD = H2.ORG_CD
+          AND H1.ACCOUNT_NUM = H2.ACCOUNT_NUM
+          AND H1.TRANS_DTIME = H2.TRANS_DTIME
+    </select>
+
     <select id="selectIrpAccHistListTotalCnt" parameterType="IrpAccHistSearch"  resultType="Long">
          SELECT 
              COUNT(*) 

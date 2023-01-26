@@ -18,5 +18,7 @@ public interface IrpAccHistMapper{
 
     Long selectIrpAccHistListTotalCnt(IrpAccHistSearch dom);
 
+    IrpAccHistEntity selectIrpAccHistLast(IrpAccHistSearch dom);
+
     List<IrpAccHistEntity> selectIrpAccHistList(IrpAccHistSearch dom);
 }
