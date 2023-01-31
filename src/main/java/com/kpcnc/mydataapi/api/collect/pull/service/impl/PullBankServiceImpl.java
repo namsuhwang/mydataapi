@@ -225,14 +225,15 @@ public class PullBankServiceImpl implements PullBankService {
         // formBase.setApiTranDay(req.getApiTranDay()); // recvBank002 호출되기 전에 설정되어서 넘어오므로 설정하면 안됨
         formBase.setApiTranId(resDto.getXApiTranId());
 
-        if (resDto.getListCnt() != null && resDto.getListCnt() > 0) {
-            int accountSeq = 0;
+        BankAccDepositForm form = (BankAccDepositForm) formBase;
+        form.setAccountNum(accNo);
+        form.setSeqno(seqno);
+        bankAccDepositService.delAllBankAccDeposit(form);
+
+        if (CommUtil.isListNullEmpty(resDto.getList())) {
             for (Bank002ResDetailDto detail : resDto.getList()) {
-                detail.setAccountSeq(++accountSeq);
-                bankAccDepositService.modBankAccDeposit(detail.getForm(formBase, accNo, seqno));
+                bankAccDepositService.regBankAccDeposit(detail.getForm(formBase, accNo, seqno));
             }
-        }else if(resDto.getListCnt() == 0){
-            bankAccDepositService.delBankAccDeposit(new BankAccDepositForm(req.getMemberId(), req.getOrgCd(), accNo, seqno));
         }
         return CompletableFuture.completedFuture(new String[]{accNo, seqno});
     }
