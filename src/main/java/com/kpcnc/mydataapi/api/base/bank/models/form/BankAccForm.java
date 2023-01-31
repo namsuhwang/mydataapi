@@ -2,11 +2,9 @@ package com.kpcnc.mydataapi.api.base.bank.models.form;
 
 import com.kpcnc.mydataapi.api.base.bank.models.entity.BankAccEntity;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

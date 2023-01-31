@@ -1,20 +1,16 @@
 package com.kpcnc.mydataapi.api.base.invt.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvtPensionAccAddEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InvtPensionAccAddEntity extends EntityBase {
     private String accountNum;    // 계좌번호
     private String prodType;    // 연금가입일
     private BigDecimal prodTypeDetail;    // 납부총액
@@ -24,8 +20,4 @@ public class InvtPensionAccAddEntity{
     private String posType;    // 연금개시(예정)일
     private BigDecimal creditType;    // 금년납입금
     private String isTaxBenefits;    // 통화코드
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

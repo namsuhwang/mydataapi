@@ -11,25 +11,20 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class IrpAccSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
 
     public IrpAccSearch(String memberId, String orgCd, String accountNum) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
     }
 
     public IrpAccSearch(IrpAccEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
     }
 
     public IrpAccSearch(IrpAccForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.accountNum = form.getAccountNum();
     }
 }

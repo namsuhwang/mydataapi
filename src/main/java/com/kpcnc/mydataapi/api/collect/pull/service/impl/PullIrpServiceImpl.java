@@ -6,6 +6,7 @@ import com.kpcnc.mydataapi.api.base.irp.models.IrpAccHistSearch;
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccAddEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccBaseEntity;
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccHistEntity;
+import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccAddForm;
 import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccForm;
 import com.kpcnc.mydataapi.api.base.irp.service.IrpAccAddService;
 import com.kpcnc.mydataapi.api.base.irp.service.IrpAccBaseService;
@@ -52,9 +53,25 @@ public class PullIrpServiceImpl implements PullIrpService {
     public CompletableFuture<List<String>> pullIrpInfoRun(ApiCallReqDto req, FormBase formBase) {
         req.setRequestApiId("IRP_001");
         List<String> targetList = new ArrayList<>();
-        List<String[]> accountList = null;  // 자산목록(예:계좌목록. [0번째 : 계좌번호, 1번째 : 상품명])
 
-        IrpAccForm irpAccForm = (IrpAccForm) formBase;
+        CompletableFuture<List<String>> irp001Result = callIrp001(req, formBase);
+        irp001Result.thenAccept(accList -> {
+            for (String accNo : accList) {
+                callIrp002(req, formBase, accNo);
+                callIrp003(req, formBase, accNo);
+                callIrp004(req, formBase, accNo);
+            }
+        });
+
+        return CompletableFuture.completedFuture(targetList);
+    }
+
+
+    @Async("pullPersonalInfoExecutor")
+    public CompletableFuture<List<String>> callIrp001(ApiCallReqDto req, FormBase formBase) {
+        req.setRequestApiId("IRP_001");
+
+        List<String> accList = new ArrayList<>();
 
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(req.getMemberId(), req.getOrgCd(), req.getRequestApiId()));
 
@@ -71,26 +88,16 @@ public class PullIrpServiceImpl implements PullIrpService {
         irpAccService.allDelIrpAcc((IrpAccForm) formBase);
 
         if(CommUtil.isListNullEmpty(resDto.getList())){
-            return CompletableFuture.completedFuture(targetList);
+            return CompletableFuture.completedFuture(accList);
         }
 
         for (Irp001ResDetailDto detail : resDto.getList()) {
             irpAccService.regIrpAcc(detail.getForm(formBase));
-            accountList.add(new String[]{detail.getAccountNum(), detail.getProdName()});
-            if(detail.getIsConsent() && !targetList.contains(detail.getAccountNum())){
-                targetList.add(detail.getAccountNum());
+            if(detail.getIsConsent()){
+                accList.add(detail.getAccountNum());
             }
         }
-
-        for (Irp001ResDetailDto acc : resDto.getList()) {
-            if(!acc.getIsConsent()) continue;  // 전송요구 계좌가 아니면 스킵
-
-            callIrp002(req, formBase, acc.getAccountNum());
-            callIrp003(req, formBase, acc.getAccountNum());
-            callIrp004(req, formBase, acc.getAccountNum());
-        }
-
-        return CompletableFuture.completedFuture(targetList);
+        return CompletableFuture.completedFuture(accList);
     }
 
     @Async("pullPersonalInfoExecutor")
@@ -120,7 +127,7 @@ public class PullIrpServiceImpl implements PullIrpService {
         req.setRequestApiId("IRP_003");
 
         // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-        IrpAccAddEntity entity = irpAccAddService.getIrpAccAdd(new IrpAccAddSearch(req.getMemberId(), req.getOrgCd(), accNo));
+        IrpAccAddEntity entity = irpAccAddService.getIrpAccAddLast(new IrpAccAddSearch(req.getMemberId(), req.getOrgCd(), accNo));
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
         // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
@@ -131,6 +138,10 @@ public class PullIrpServiceImpl implements PullIrpService {
         ApiCallResDto resInfo = callMyDataGatewayService.callRepeatMyDataApi(req, Irp003ResDto.class, Irp003ResDetailDto.class);
         Irp003ResDto resDto = (Irp003ResDto) resInfo.getData();
         formBase.setApiTranId(resDto.getXApiTranId());
+
+        IrpAccAddForm form = (IrpAccAddForm) formBase;
+        form.setAccountNum(accNo);
+        irpAccAddService.allDelIrpAccAdd(form);
 
         if (resDto.getListCnt() != null && resDto.getListCnt() > 0) {
             for (Irp003ResDetailDto detail : resDto.getList()) {

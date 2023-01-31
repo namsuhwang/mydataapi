@@ -19,6 +19,8 @@
             ,IS_OWN_DMG_COVERAGE
             ,SELF_PAY_RATE
             ,SELF_PAY_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -38,6 +40,8 @@
             ,#{isOwnDmgCoverage, jdbcType=VARCHAR}
             ,#{selfPayRate, jdbcType=VARCHAR}
             ,#{selfPayAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -61,6 +65,8 @@
                ,IS_OWN_DMG_COVERAGE = #{isOwnDmgCoverage, jdbcType=VARCHAR}
                ,SELF_PAY_RATE = #{selfPayRate, jdbcType=VARCHAR}
                ,SELF_PAY_AMT = #{selfPayAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -71,9 +77,17 @@
            AND CAR_INSU_TYPE = #{carInsuType}
     </update>
 
-    <delete id="deleteInsuInsdCar" parameterType="InsuInsdCarEntity">
+    <delete id="deleteAllInsuInsdCar" parameterType="InsuInsdCarEntity">
         DELETE FROM INSU_INSD_CAR
          WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </delete>
+
+    <delete id="deleteInsuInsdCar" parameterType="InsuInsdCarEntity">
+        DELETE FROM INSU_INSD_CAR
+         WHERE
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND INSU_NUM = #{insuNum}
@@ -96,6 +110,8 @@
                ,IS_OWN_DMG_COVERAGE
                ,SELF_PAY_RATE
                ,SELF_PAY_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -109,11 +125,62 @@
            AND CAR_INSU_TYPE = #{carInsuType}
     </select>
 
+    <select id="selectInsuInsdCarLast" parameterType="InsuInsdCarSearch"  resultType="InsuInsdCarEntity">
+         SELECT
+                C1.MEMBER_ID
+               ,C1.ORG_CD
+               ,C1.INSU_NUM
+               ,C1.CAR_NUMBER
+               ,C1.CAR_INSU_TYPE
+               ,C1.CAR_NAME
+               ,C1.START_DATE
+               ,C1.END_DATE
+               ,C1.CONTRACT_AGE
+               ,C1.CONTRACT_DRIVER
+               ,C1.IS_OWN_DMG_COVERAGE
+               ,C1.SELF_PAY_RATE
+               ,C1.SELF_PAY_AMT
+               ,C1.API_TRAN_DAY
+               ,C1.API_TRAN_ID
+               ,C1.REG_USER_ID
+               ,C1.REG_DT
+               ,C1.CHG_USER_ID
+               ,C1.CHG_DT
+        FROM INSU_INSD_CAR C1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM, CAR_NUMBER, CAR_INSU_TYPE
+                        FROM INSU_INSD_CAR
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND C1.INSU_NUM = #{insuNum}
+                             <if test = 'carNumber  != null and carNumber != ""'>
+                                 AND CAR_NUMBER = #{carNumber}
+                             </if>
+                             <if test = 'carInsuType  != null and carInsuType != ""'>
+                                 AND CAR_INSU_TYPE = #{carInsuType}
+                             </if>
+                        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) C2
+       WHERE
+               C1.MEMBER_ID = C2.MEMBER_ID
+           AND C1.ORG_CD = C2.ORG_CD
+           AND C1.INSU_NUM = C2.INSU_NUM
+           AND C1.CAR_NUMBER = C2.CAR_NUMBER
+           AND C1.CAR_INSU_TYPE = C2.CAR_INSU_TYPE
+    </select>
+
     <select id="selectInsuInsdCarListTotalCnt" parameterType="InsuInsdCarSearch"  resultType="Long">
-         SELECT 
-             COUNT(*) 
+         SELECT
+             COUNT(*)
         FROM INSU_INSD_CAR
-       WHERE 1 = 1 
+       WHERE 1 = 1
        <if test = 'memberId  != null and memberId != ""'>
            AND MEMBER_ID = #{memberId}
        </if>
@@ -152,6 +219,8 @@
                ,IS_OWN_DMG_COVERAGE
                ,SELF_PAY_RATE
                ,SELF_PAY_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

@@ -67,6 +67,9 @@
             <if test = 'seqno  != null and seqno != ""'>
                 AND SEQNO = #{seqno}
             </if>
+            <if test = 'currencyCode  != null and currencyCode != ""'>
+                AND CURRENCY_CODE = #{currencyCode}
+            </if>
     </update>
 
     <delete id="deleteBankAccDeposit" parameterType="BankAccDepositEntity">
@@ -78,6 +81,9 @@
             <if test = 'seqno  != null and seqno != ""'>
                 AND SEQNO = #{seqno}
             </if>
+            <if test = 'currencyCode  != null and currencyCode != ""'>
+                AND CURRENCY_CODE = #{currencyCode}
+            </if>
     </delete>
 
     <delete id="deleteAllBankAccDeposit" parameterType="BankAccDepositEntity">
@@ -85,6 +91,12 @@
         WHERE
             MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
+            <if test = 'seqno  != null and seqno != ""'>
+                AND SEQNO = #{seqno}
+            </if>
+            <if test = 'currencyCode  != null and currencyCode != ""'>
+                AND CURRENCY_CODE = #{currencyCode}
+            </if>
     </delete>
 
     <select id="selectBankAccDeposit" parameterType="BankAccDepositSearch"  resultType="BankAccDepositEntity">
@@ -113,6 +125,58 @@
             <if test = 'seqno  != null and seqno != ""'>
                 AND SEQNO = #{seqno}
             </if>
+            <if test = 'currencyCode  != null and currencyCode != ""'>
+                AND CURRENCY_CODE = #{currencyCode}
+            </if>
+    </select>
+
+
+    <select id="selectBankAccDepositLast" parameterType="BankAccDepositSearch"  resultType="BankAccDepositEntity">
+         SELECT
+                B1.MEMBER_ID
+               ,B1.ORG_CD
+               ,B1.ACCOUNT_NUM
+               ,B1.SEQNO
+               ,B1.CURRENCY_CODE
+               ,B1.SAVING_METHOD
+               ,B1.ISSUE_DATE
+               ,B1.EXP_DATE
+               ,B1.COMMIT_AMT
+               ,B1.MONTHLY_PAID_IN_AMT
+               ,B1.API_TRAN_DAY
+               ,B1.API_TRAN_ID
+               ,B1.REG_USER_ID
+               ,B1.REG_DT
+               ,B1.CHG_USER_ID
+               ,B1.CHG_DT
+        FROM BANK_ACC_DEPOSIT B1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, CURRENCY_CODE
+                        FROM BANK_ACC_DEPOSIT
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                            <if test = 'currencyCode  != null and currencyCode != ""'>
+                                AND CURRENCY_CODE = #{currencyCode}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) B2
+       WHERE
+               B1.MEMBER_ID = B2.MEMBER_ID
+           AND B1.ORG_CD = B2.ORG_CD
+           AND B1.ACCOUNT_NUM = B2.ACCOUNT_NUM
+           AND B1.SEQNO = B2.SEQNO
+           AND B1.CURRENCY_CODE = B2.CURRENCY_CODE
     </select>
 
     <select id="selectBankAccDepositListTotalCnt" parameterType="BankAccDepositSearch"  resultType="Long">
@@ -132,6 +196,9 @@
        <if test = 'seqno  != null and seqno != ""'>
            AND SEQNO = #{seqno}
        </if>
+        <if test = 'currencyCode  != null and currencyCode != ""'>
+            AND CURRENCY_CODE = #{currencyCode}
+        </if>
     </select>
 
     <select id="selectBankAccDepositList" parameterType="BankAccDepositSearch"  resultType="BankAccDepositEntity">
@@ -141,7 +208,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, CURRENCY_CODE) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
@@ -172,7 +239,10 @@
        <if test = 'seqno  != null and seqno != ""'>
            AND SEQNO = #{seqno}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO
+        <if test = 'currencyCode  != null and currencyCode != ""'>
+            AND CURRENCY_CODE = #{currencyCode}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, CURRENCY_CODE
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

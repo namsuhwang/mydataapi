@@ -23,26 +23,43 @@ public class InsuInsdMiServiceImpl implements InsuInsdMiService {
     InsuInsdMiMapper insuInsdMiMapper;
 
     @Override
-    public InsuInsdMiEntity regInsuInsdMi(InsuInsdMiForm dom) {
+    public void regInsuInsdMi(InsuInsdMiForm dom) {
         insuInsdMiMapper.insertInsuInsdMi(dom.getEntity());
-        return insuInsdMiMapper.selectInsuInsdMi(new InsuInsdMiSearch(dom));
     }
 
     @Override
-    public InsuInsdMiEntity modInsuInsdMi(InsuInsdMiForm dom) {
+    public void updInsuInsdMi(InsuInsdMiForm dom) {
         insuInsdMiMapper.updateInsuInsdMi(dom.getEntity());
-        return insuInsdMiMapper.selectInsuInsdMi(new InsuInsdMiSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsdMi(InsuInsdMiForm dom) {
+        if(getInsuInsdMi(new InsuInsdMiSearch(dom)) == null){
+            regInsuInsdMi(dom);
+        }else{
+            updInsuInsdMi(dom);
+        }
     }
 
     @Override
     public void delInsuInsdMi(InsuInsdMiForm dom) {
         insuInsdMiMapper.deleteInsuInsdMi(dom.getEntity());
-        return;
+    }
+
+    @Override
+    public void allDelInsuInsdMi(InsuInsdMiForm dom) {
+        insuInsdMiMapper.deleteAllInsuInsdMi(dom.getEntity());
+
     }
 
     @Override
     public InsuInsdMiEntity getInsuInsdMi(InsuInsdMiSearch dom) {
         return insuInsdMiMapper.selectInsuInsdMi(dom);
+    }
+
+    @Override
+    public InsuInsdMiEntity getInsuInsdMiLast(InsuInsdMiSearch dom) {
+        return insuInsdMiMapper.selectInsuInsdMiLast(dom);
     }
 
     @Override

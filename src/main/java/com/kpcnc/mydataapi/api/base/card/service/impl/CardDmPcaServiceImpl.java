@@ -23,15 +23,26 @@ public class CardDmPcaServiceImpl implements CardDmPcaService {
     CardDmPcaMapper cardDmPcaMapper;
 
     @Override
-    public CardDmPcaEntity regCardDmPca(CardDmPcaForm dom) {
+    public void regCardDmPca(CardDmPcaForm dom) {
         cardDmPcaMapper.insertCardDmPca(dom.getEntity());
-        return cardDmPcaMapper.selectCardDmPca(new CardDmPcaSearch(dom));
+        return;
     }
 
     @Override
-    public CardDmPcaEntity modCardDmPca(CardDmPcaForm dom) {
+    public void updCardDmPca(CardDmPcaForm dom) {
         cardDmPcaMapper.updateCardDmPca(dom.getEntity());
-        return cardDmPcaMapper.selectCardDmPca(new CardDmPcaSearch(dom));
+        return;
+    }
+
+
+    @Override
+    public void modCardDmPca(CardDmPcaForm dom) {
+        if(getCardDmPca(new CardDmPcaSearch(dom)) == null){
+            regCardDmPca(dom);
+        }else{
+            updCardDmPca(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +54,11 @@ public class CardDmPcaServiceImpl implements CardDmPcaService {
     @Override
     public CardDmPcaEntity getCardDmPca(CardDmPcaSearch dom) {
         return cardDmPcaMapper.selectCardDmPca(dom);
+    }
+
+    @Override
+    public CardDmPcaEntity getCardDmPcaLast(CardDmPcaSearch dom) {
+        return cardDmPcaMapper.selectCardDmPcaLast(dom);
     }
 
     @Override

@@ -23,21 +23,33 @@ public class InsuLoanServiceImpl implements InsuLoanService {
     InsuLoanMapper insuLoanMapper;
 
     @Override
-    public InsuLoanEntity regInsuLoan(InsuLoanForm dom) {
+    public void regInsuLoan(InsuLoanForm dom) {
         insuLoanMapper.insertInsuLoan(dom.getEntity());
-        return insuLoanMapper.selectInsuLoan(new InsuLoanSearch(dom));
     }
 
     @Override
-    public InsuLoanEntity modInsuLoan(InsuLoanForm dom) {
+    public void updInsuLoan(InsuLoanForm dom) {
         insuLoanMapper.updateInsuLoan(dom.getEntity());
-        return insuLoanMapper.selectInsuLoan(new InsuLoanSearch(dom));
     }
+
+    @Override
+    public void modInsuLoan(InsuLoanForm dom) {
+        if(getInsuLoan(new InsuLoanSearch(dom)) == null){
+            regInsuLoan(dom);
+        }else{
+            updInsuLoan(dom);
+        }
+    }
+
 
     @Override
     public void delInsuLoan(InsuLoanForm dom) {
         insuLoanMapper.deleteInsuLoan(dom.getEntity());
-        return;
+    }
+
+    @Override
+    public void allDelInsuLoan(InsuLoanForm dom) {
+        insuLoanMapper.deleteAllInsuLoan(dom.getEntity());
     }
 
     @Override

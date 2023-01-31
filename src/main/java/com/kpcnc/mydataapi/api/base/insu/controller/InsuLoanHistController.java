@@ -29,7 +29,8 @@ public class InsuLoanHistController {
     public ResponseEntity<ResponseDto<InsuLoanHistEntity>> regInsuLoanHist(
         @RequestBody InsuLoanHistForm dom
     ){
-        InsuLoanHistEntity result = insuLoanHistService.regInsuLoanHist(dom);
+        insuLoanHistService.regInsuLoanHist(dom);
+        InsuLoanHistEntity result = insuLoanHistService.getInsuLoanHist(new InsuLoanHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuLoanHistController {
     public ResponseEntity<ResponseDto<InsuLoanHistEntity>> modInsuLoanHist(
         @RequestBody InsuLoanHistForm dom
     ){
-        InsuLoanHistEntity result = insuLoanHistService.modInsuLoanHist(dom);
+        insuLoanHistService.modInsuLoanHist(dom);
+        InsuLoanHistEntity result = insuLoanHistService.getInsuLoanHist(new InsuLoanHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

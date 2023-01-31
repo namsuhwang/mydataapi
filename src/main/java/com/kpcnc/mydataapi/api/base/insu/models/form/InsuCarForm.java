@@ -1,18 +1,15 @@
 package com.kpcnc.mydataapi.api.base.insu.models.form;
 
 import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuCarEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuCarForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InsuCarForm extends FormBase {
     private String insuNum;    // 증권번호
     private String carNumber;    // 차량번호
     private String carInsuType;    // 자동차보험 구분 (코드)
@@ -24,15 +21,11 @@ public class InsuCarForm{
     private String isOwnDmgCoverage;    // 자기차량손해 (여부)
     private String selfPayRate;    // 자기부담금 구분 (코드)
     private Long selfPayAmt;    // 자기부담금 금액
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public InsuCarEntity getEntity(){
         InsuCarEntity entity = new InsuCarEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setInsuNum(insuNum);
         entity.setCarNumber(carNumber);
         entity.setCarInsuType(carInsuType);
@@ -44,10 +37,12 @@ public class InsuCarForm{
         entity.setIsOwnDmgCoverage(isOwnDmgCoverage);
         entity.setSelfPayRate(selfPayRate);
         entity.setSelfPayAmt(selfPayAmt);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

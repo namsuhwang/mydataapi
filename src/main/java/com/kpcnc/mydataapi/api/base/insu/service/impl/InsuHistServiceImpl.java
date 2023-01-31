@@ -23,15 +23,25 @@ public class InsuHistServiceImpl implements InsuHistService {
     InsuHistMapper insuHistMapper;
 
     @Override
-    public InsuHistEntity regInsuHist(InsuHistForm dom) {
+    public void regInsuHist(InsuHistForm dom) {
         insuHistMapper.insertInsuHist(dom.getEntity());
-        return insuHistMapper.selectInsuHist(new InsuHistSearch(dom));
+        return;
     }
 
     @Override
-    public InsuHistEntity modInsuHist(InsuHistForm dom) {
+    public void updInsuHist(InsuHistForm dom) {
         insuHistMapper.updateInsuHist(dom.getEntity());
-        return insuHistMapper.selectInsuHist(new InsuHistSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modInsuHist(InsuHistForm dom) {
+        if(getInsuHist(new InsuHistSearch(dom)) == null){
+            regInsuHist(dom);
+        }else{
+            updInsuHist(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +53,11 @@ public class InsuHistServiceImpl implements InsuHistService {
     @Override
     public InsuHistEntity getInsuHist(InsuHistSearch dom) {
         return insuHistMapper.selectInsuHist(dom);
+    }
+
+    @Override
+    public InsuHistEntity getInsuHistLast(InsuHistSearch dom) {
+        return insuHistMapper.selectInsuHistLast(dom);
     }
 
     @Override

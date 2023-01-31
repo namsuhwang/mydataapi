@@ -14,7 +14,11 @@ public interface InsuGurtMapper{
 
     int deleteInsuGurt(InsuGurtEntity dom);
 
+    int deleteAllInsuGurt(InsuGurtEntity dom);
+
     InsuGurtEntity selectInsuGurt(InsuGurtSearch dom);
+
+    InsuGurtEntity selectInsuGurtLast(InsuGurtSearch dom);
 
     Long selectInsuGurtListTotalCnt(InsuGurtSearch dom);
 

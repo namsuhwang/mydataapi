@@ -23,15 +23,22 @@ public class BankAutoTransServiceImpl implements BankAutoTransService {
     BankAutoTransMapper bankAutoTransMapper;
 
     @Override
-    public BankAutoTransEntity regBankAutoTrans(BankAutoTransForm dom) {
+    public void regBankAutoTrans(BankAutoTransForm dom) {
         bankAutoTransMapper.insertBankAutoTrans(dom.getEntity());
-        return bankAutoTransMapper.selectBankAutoTrans(new BankAutoTransSearch(dom));
     }
 
     @Override
-    public BankAutoTransEntity modBankAutoTrans(BankAutoTransForm dom) {
+    public void updBankAutoTrans(BankAutoTransForm dom) {
         bankAutoTransMapper.updateBankAutoTrans(dom.getEntity());
-        return bankAutoTransMapper.selectBankAutoTrans(new BankAutoTransSearch(dom));
+    }
+
+    @Override
+    public void modBankAutoTrans(BankAutoTransForm dom) {
+        if(getBankAutoTrans(new BankAutoTransSearch(dom)) == null){
+            regBankAutoTrans(dom);
+        }else{
+            updBankAutoTrans(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,18 @@ public class BankAutoTransServiceImpl implements BankAutoTransService {
     }
 
     @Override
+    public void allDelBankAutoTrans(BankAutoTransForm dom) {
+        bankAutoTransMapper.deleteAllBankAutoTrans(dom.getEntity());
+    }
+
+    @Override
     public BankAutoTransEntity getBankAutoTrans(BankAutoTransSearch dom) {
         return bankAutoTransMapper.selectBankAutoTrans(dom);
+    }
+
+    @Override
+    public BankAutoTransEntity getBankAutoTransLast(BankAutoTransSearch dom) {
+        return bankAutoTransMapper.selectBankAutoTransLast(dom);
     }
 
     @Override

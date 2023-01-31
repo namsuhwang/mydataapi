@@ -13,8 +13,6 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 public class BankAutoTransSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
     private String scheduledOrgCode;    // 지동이체 기관(코드)
     private String scheduledAccountNum;    // 자동이체계좌 번호
@@ -23,14 +21,12 @@ public class BankAutoTransSearch extends SearchDto {
     private String scheduledDate;    // 자동이체주기 상세
 
     public BankAutoTransSearch(String memberId, String orgCd, String accountNum) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
     }
 
     public BankAutoTransSearch(String memberId, String orgCd, String accountNum, String scheduledOrgCode, String scheduledAccountNum, BigDecimal scheduledAmt, String scheduledCycle, String scheduledDate) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.scheduledOrgCode = scheduledOrgCode;
         this.scheduledAccountNum = scheduledAccountNum;
@@ -40,8 +36,7 @@ public class BankAutoTransSearch extends SearchDto {
     }
 
     public BankAutoTransSearch(BankAutoTransEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
         this.scheduledOrgCode = entity.getScheduledOrgCode();
         this.scheduledAccountNum = entity.getScheduledAccountNum();
@@ -51,8 +46,7 @@ public class BankAutoTransSearch extends SearchDto {
     }
 
     public BankAutoTransSearch(BankAutoTransForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.accountNum = form.getAccountNum();
         this.scheduledOrgCode = form.getScheduledOrgCode();
         this.scheduledAccountNum = form.getScheduledAccountNum();

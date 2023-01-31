@@ -29,7 +29,8 @@ public class InsuInsdMiController {
     public ResponseEntity<ResponseDto<InsuInsdMiEntity>> regInsuInsdMi(
         @RequestBody InsuInsdMiForm dom
     ){
-        InsuInsdMiEntity result = insuInsdMiService.regInsuInsdMi(dom);
+        insuInsdMiService.regInsuInsdMi(dom);
+        InsuInsdMiEntity result = insuInsdMiService.getInsuInsdMi(new InsuInsdMiSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuInsdMiController {
     public ResponseEntity<ResponseDto<InsuInsdMiEntity>> modInsuInsdMi(
         @RequestBody InsuInsdMiForm dom
     ){
-        InsuInsdMiEntity result = insuInsdMiService.modInsuInsdMi(dom);
+        insuInsdMiService.modInsuInsdMi(dom);
+        InsuInsdMiEntity result = insuInsdMiService.getInsuInsdMi(new InsuInsdMiSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

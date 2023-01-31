@@ -29,7 +29,8 @@ public class InsuGurtController {
     public ResponseEntity<ResponseDto<InsuGurtEntity>> regInsuGurt(
         @RequestBody InsuGurtForm dom
     ){
-        InsuGurtEntity result = insuGurtService.regInsuGurt(dom);
+        insuGurtService.regInsuGurt(dom);
+        InsuGurtEntity result = insuGurtService.getInsuGurt(new InsuGurtSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuGurtController {
     public ResponseEntity<ResponseDto<InsuGurtEntity>> modInsuGurt(
         @RequestBody InsuGurtForm dom
     ){
-        InsuGurtEntity result = insuGurtService.modInsuGurt(dom);
+        insuGurtService.modInsuGurt(dom);
+        InsuGurtEntity result = insuGurtService.getInsuGurt(new InsuGurtSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

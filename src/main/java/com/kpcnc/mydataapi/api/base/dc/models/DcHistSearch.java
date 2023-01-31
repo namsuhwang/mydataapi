@@ -11,34 +11,32 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class DcHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String dcNum;    // 상품관리번호
     private String transDtime;    // 거래일시 또는 거래일자
 
+    public DcHistSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public DcHistSearch(String memberId, String orgCd, String dcNum) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.dcNum = dcNum;
     }
 
     public DcHistSearch(String memberId, String orgCd, String dcNum, String transDtime) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.dcNum = dcNum;
         this.transDtime = transDtime;
     }
 
     public DcHistSearch(DcHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.dcNum = entity.getDcNum();
         this.transDtime = entity.getTransDtime();
     }
 
     public DcHistSearch(DcHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.dcNum = form.getDcNum();
         this.transDtime = form.getTransDtime();
     }

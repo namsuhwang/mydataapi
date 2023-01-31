@@ -12,6 +12,8 @@ public interface CardService{
 
     public void  delCard(CardForm dom);
 
+    public void  allDelCard(CardForm dom);
+
     public CardEntity getCard(CardSearch dom);
 
     public ResultListDto<CardEntity> getCardList(CardSearch dom);

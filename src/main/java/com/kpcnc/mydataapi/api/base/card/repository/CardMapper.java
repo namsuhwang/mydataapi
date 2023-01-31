@@ -14,6 +14,8 @@ public interface CardMapper{
 
     int deleteCard(CardEntity dom);
 
+    int deleteAllCard(CardEntity dom);
+
     CardEntity selectCard(CardSearch dom);
 
     Long selectCardListTotalCnt(CardSearch dom);

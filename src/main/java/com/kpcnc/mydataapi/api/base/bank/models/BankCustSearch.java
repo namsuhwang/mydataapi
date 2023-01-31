@@ -14,25 +14,21 @@ public class BankCustSearch extends SearchDto {
     private String regDate;    // 고객생성일
 
     public BankCustSearch(String memberId, String orgCd) {
-        this.setMemberId(memberId);
-        this.setOrgCd(orgCd);
+        super(memberId, orgCd);
     }
 
     public BankCustSearch(String memberId, String orgCd, String regDate) {
-        this.setMemberId(memberId);
-        this.setOrgCd(orgCd);
+        super(memberId, orgCd);
         this.regDate = regDate;
     }
 
     public BankCustSearch(BankCustEntity entity) {
-        this.setMemberId(entity.getMemberId());
-        this.setOrgCd(entity.getOrgCd());
+        super(entity.getMemberId(), entity.getOrgCd());
         this.regDate = entity.getRegDate();
     }
 
     public BankCustSearch(BankCustForm form) {
-        this.setMemberId(form.getMemberId());
-        this.setOrgCd(form.getOrgCd());
+        super(form.getMemberId(), form.getOrgCd());
         this.regDate = form.getRegDate();
     }
 }

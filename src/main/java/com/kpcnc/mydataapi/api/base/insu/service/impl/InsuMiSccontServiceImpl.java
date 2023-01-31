@@ -23,15 +23,22 @@ public class InsuMiSccontServiceImpl implements InsuMiSccontService {
     InsuMiSccontMapper insuMiSccontMapper;
 
     @Override
-    public InsuMiSccontEntity regInsuMiSccont(InsuMiSccontForm dom) {
+    public void regInsuMiSccont(InsuMiSccontForm dom) {
         insuMiSccontMapper.insertInsuMiSccont(dom.getEntity());
-        return insuMiSccontMapper.selectInsuMiSccont(new InsuMiSccontSearch(dom));
     }
 
     @Override
-    public InsuMiSccontEntity modInsuMiSccont(InsuMiSccontForm dom) {
+    public void updInsuMiSccont(InsuMiSccontForm dom) {
         insuMiSccontMapper.updateInsuMiSccont(dom.getEntity());
-        return insuMiSccontMapper.selectInsuMiSccont(new InsuMiSccontSearch(dom));
+    }
+
+    @Override
+    public void modInsuMiSccont(InsuMiSccontForm dom) {
+        if(getInsuMiSccont(new InsuMiSccontSearch(dom)) == null){
+            regInsuMiSccont(dom);
+        }else{
+            updInsuMiSccont(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,19 @@ public class InsuMiSccontServiceImpl implements InsuMiSccontService {
     }
 
     @Override
+    public void allDelInsuMiSccont(InsuMiSccontForm dom) {
+        insuMiSccontMapper.deleteAllInsuMiSccont(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InsuMiSccontEntity getInsuMiSccont(InsuMiSccontSearch dom) {
         return insuMiSccontMapper.selectInsuMiSccont(dom);
+    }
+
+    @Override
+    public InsuMiSccontEntity getInsuMiSccontLast(InsuMiSccontSearch dom) {
+        return insuMiSccontMapper.selectInsuMiSccontLast(dom);
     }
 
     @Override

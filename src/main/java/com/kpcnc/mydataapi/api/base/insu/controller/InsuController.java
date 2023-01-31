@@ -2,7 +2,7 @@ package com.kpcnc.mydataapi.api.base.insu.controller;
 
 import com.kpcnc.mydataapi.api.base.insu.models.InsuSearch;
 import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuEntity;
-import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuForm;
+import com.kpcnc.mydataapi.api.base.insu.models.form.InsuForm;
 import com.kpcnc.mydataapi.api.base.insu.service.InsuService;
 import com.kpcnc.mydataapi.common.models.dto.ResponseDto;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
@@ -29,7 +29,8 @@ public class InsuController {
     public ResponseEntity<ResponseDto<InsuEntity>> regInsu(
         @RequestBody InsuForm dom
     ){
-        InsuEntity result = insuService.regInsu(dom);
+        insuService.regInsu(dom);
+        InsuEntity result = insuService.getInsu(new InsuSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuController {
     public ResponseEntity<ResponseDto<InsuEntity>> modInsu(
         @RequestBody InsuForm dom
     ){
-        InsuEntity result = insuService.modInsu(dom);
+        insuService.modInsu(dom);
+        InsuEntity result = insuService.getInsu(new InsuSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

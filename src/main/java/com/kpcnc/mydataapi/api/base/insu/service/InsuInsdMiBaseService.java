@@ -6,11 +6,13 @@ import com.kpcnc.mydataapi.api.base.insu.models.form.InsuInsdMiBaseForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InsuInsdMiBaseService{
-    public InsuInsdMiBaseEntity regInsuInsdMiBase(InsuInsdMiBaseForm dom);
+    public void regInsuInsdMiBase(InsuInsdMiBaseForm dom);
 
-    public InsuInsdMiBaseEntity modInsuInsdMiBase(InsuInsdMiBaseForm dom);
+    public void updInsuInsdMiBase(InsuInsdMiBaseForm dom);
 
-    public void  delInsuInsdMiBase(InsuInsdMiBaseForm dom);
+    public void modInsuInsdMiBase(InsuInsdMiBaseForm dom);
+
+    public void delInsuInsdMiBase(InsuInsdMiBaseForm dom);
 
     public InsuInsdMiBaseEntity getInsuInsdMiBase(InsuInsdMiBaseSearch dom);
 

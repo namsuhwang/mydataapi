@@ -29,7 +29,8 @@ public class InsuInsdSccontController {
     public ResponseEntity<ResponseDto<InsuInsdSccontEntity>> regInsuInsdSccont(
         @RequestBody InsuInsdSccontForm dom
     ){
-        InsuInsdSccontEntity result = insuInsdSccontService.regInsuInsdSccont(dom);
+        insuInsdSccontService.regInsuInsdSccont(dom);
+        InsuInsdSccontEntity result = insuInsdSccontService.getInsuInsdSccont(new InsuInsdSccontSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuInsdSccontController {
     public ResponseEntity<ResponseDto<InsuInsdSccontEntity>> modInsuInsdSccont(
         @RequestBody InsuInsdSccontForm dom
     ){
-        InsuInsdSccontEntity result = insuInsdSccontService.modInsuInsdSccont(dom);
+        insuInsdSccontService.modInsuInsdSccont(dom);
+        InsuInsdSccontEntity result = insuInsdSccontService.getInsuInsdSccont(new InsuInsdSccontSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

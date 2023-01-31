@@ -29,7 +29,8 @@ public class CardOsPcaController {
     public ResponseEntity<ResponseDto<CardOsPcaEntity>> regCardOsPca(
         @RequestBody CardOsPcaForm dom
     ){
-        CardOsPcaEntity result = cardOsPcaService.regCardOsPca(dom);
+        cardOsPcaService.regCardOsPca(dom);
+        CardOsPcaEntity result = cardOsPcaService.getCardOsPca(new CardOsPcaSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardOsPcaController {
     public ResponseEntity<ResponseDto<CardOsPcaEntity>> modCardOsPca(
         @RequestBody CardOsPcaForm dom
     ){
-        CardOsPcaEntity result = cardOsPcaService.modCardOsPca(dom);
+        cardOsPcaService.modCardOsPca(dom);
+        CardOsPcaEntity result = cardOsPcaService.getCardOsPca(new CardOsPcaSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

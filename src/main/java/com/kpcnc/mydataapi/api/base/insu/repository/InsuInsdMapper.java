@@ -14,7 +14,11 @@ public interface InsuInsdMapper{
 
     int deleteInsuInsd(InsuInsdEntity dom);
 
+    int deleteAllInsuInsd(InsuInsdEntity dom);
+
     InsuInsdEntity selectInsuInsd(InsuInsdSearch dom);
+
+    InsuInsdEntity selectInsuInsdLast(InsuInsdSearch dom);
 
     Long selectInsuInsdListTotalCnt(InsuInsdSearch dom);
 

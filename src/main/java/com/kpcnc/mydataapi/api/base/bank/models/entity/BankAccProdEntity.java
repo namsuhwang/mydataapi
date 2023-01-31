@@ -1,13 +1,12 @@
 package com.kpcnc.mydataapi.api.base.bank.models.entity;
 
 import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

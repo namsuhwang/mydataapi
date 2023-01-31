@@ -14,6 +14,8 @@ public interface InsuBaseInsdMapper{
 
     int deleteInsuBaseInsd(InsuBaseInsdEntity dom);
 
+    int deleteAllInsuBaseInsd(InsuBaseInsdEntity dom);
+
     InsuBaseInsdEntity selectInsuBaseInsd(InsuBaseInsdSearch dom);
 
     Long selectInsuBaseInsdListTotalCnt(InsuBaseInsdSearch dom);

@@ -18,6 +18,12 @@ public class InsuHistSearch extends SearchDto {
     private Integer transAppliedMonth;    // 납입연월
     private Integer paidInCnt;    // 납입회차
 
+    public InsuHistSearch(String memberId, String orgCd, String insuNum) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.insuNum = insuNum;
+    }
+
     public InsuHistSearch(String memberId, String orgCd, String insuNum, String transDate, Integer transAppliedMonth, Integer paidInCnt) {
         this.memberId = memberId;
         this.orgCd = orgCd;

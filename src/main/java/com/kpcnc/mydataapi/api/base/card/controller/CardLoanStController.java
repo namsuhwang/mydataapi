@@ -29,7 +29,8 @@ public class CardLoanStController {
     public ResponseEntity<ResponseDto<CardLoanStEntity>> regCardLoanSt(
         @RequestBody CardLoanStForm dom
     ){
-        CardLoanStEntity result = cardLoanStService.regCardLoanSt(dom);
+        cardLoanStService.regCardLoanSt(dom);
+        CardLoanStEntity result = cardLoanStService.getCardLoanSt(new CardLoanStSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardLoanStController {
     public ResponseEntity<ResponseDto<CardLoanStEntity>> modCardLoanSt(
         @RequestBody CardLoanStForm dom
     ){
-        CardLoanStEntity result = cardLoanStService.modCardLoanSt(dom);
+        cardLoanStService.modCardLoanSt(dom);
+        CardLoanStEntity result = cardLoanStService.getCardLoanSt(new CardLoanStSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

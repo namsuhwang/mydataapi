@@ -25,13 +25,11 @@ public class BankAccDepositAddServiceImpl implements BankAccDepositAddService {
     @Override
     public void regBankAccDepositAdd(BankAccDepositAddForm dom) {
         bankAccDepositAddMapper.insertBankAccDepositAdd(dom.getEntity());
-        return;
     }
 
     @Override
     public void updBankAccDepositAdd(BankAccDepositAddForm dom) {
         bankAccDepositAddMapper.updateBankAccDepositAdd(dom.getEntity());
-        return;
     }
 
     @Override
@@ -41,7 +39,6 @@ public class BankAccDepositAddServiceImpl implements BankAccDepositAddService {
         }else{
             updBankAccDepositAdd(dom);
         }
-        return;
     }
 
     @Override
@@ -59,6 +56,11 @@ public class BankAccDepositAddServiceImpl implements BankAccDepositAddService {
     @Override
     public BankAccDepositAddEntity getBankAccDepositAdd(BankAccDepositAddSearch dom) {
         return bankAccDepositAddMapper.selectBankAccDepositAdd(dom);
+    }
+
+    @Override
+    public BankAccDepositAddEntity getBankAccDepositAddLast(BankAccDepositAddSearch dom) {
+        return bankAccDepositAddMapper.selectBankAccDepositAddLast(dom);
     }
 
     @Override

@@ -29,7 +29,8 @@ public class InsuMiBaseController {
     public ResponseEntity<ResponseDto<InsuMiBaseEntity>> regInsuMiBase(
         @RequestBody InsuMiBaseForm dom
     ){
-        InsuMiBaseEntity result = insuMiBaseService.regInsuMiBase(dom);
+        insuMiBaseService.regInsuMiBase(dom);
+        InsuMiBaseEntity result = insuMiBaseService.getInsuMiBase(new InsuMiBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuMiBaseController {
     public ResponseEntity<ResponseDto<InsuMiBaseEntity>> modInsuMiBase(
         @RequestBody InsuMiBaseForm dom
     ){
-        InsuMiBaseEntity result = insuMiBaseService.modInsuMiBase(dom);
+        insuMiBaseService.modInsuMiBase(dom);
+        InsuMiBaseEntity result = insuMiBaseService.getInsuMiBase(new InsuMiBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

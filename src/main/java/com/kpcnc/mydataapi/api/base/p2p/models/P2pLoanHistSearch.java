@@ -11,25 +11,24 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class P2pLoanHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String lendingId;    // 대출계약번호
 
+    public P2pLoanHistSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public P2pLoanHistSearch(String memberId, String orgCd, String lendingId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.lendingId = lendingId;
     }
 
     public P2pLoanHistSearch(P2pLoanHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.lendingId = entity.getLendingId();
     }
 
     public P2pLoanHistSearch(P2pLoanHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.lendingId = form.getLendingId();
     }
 }

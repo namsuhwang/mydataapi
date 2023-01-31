@@ -14,7 +14,11 @@ public interface InsuMapper{
 
     int deleteInsu(InsuEntity dom);
 
+    int deleteAllInsu(InsuEntity dom);
+
     InsuEntity selectInsu(InsuSearch dom);
+
+    InsuEntity selectInsuLast(InsuSearch dom);
 
     Long selectInsuListTotalCnt(InsuSearch dom);
 

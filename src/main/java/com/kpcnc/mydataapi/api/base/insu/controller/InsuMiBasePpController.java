@@ -1,7 +1,7 @@
 package com.kpcnc.mydataapi.api.base.insu.controller;
 
-import com.kpcnc.mydataapi.api.InsuMiBasePpEntity;
 import com.kpcnc.mydataapi.api.base.insu.models.InsuMiBasePpSearch;
+import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuMiBasePpEntity;
 import com.kpcnc.mydataapi.api.base.insu.models.form.InsuMiBasePpForm;
 import com.kpcnc.mydataapi.api.base.insu.service.InsuMiBasePpService;
 import com.kpcnc.mydataapi.common.models.dto.ResponseDto;
@@ -29,7 +29,8 @@ public class InsuMiBasePpController {
     public ResponseEntity<ResponseDto<InsuMiBasePpEntity>> regInsuMiBasePp(
         @RequestBody InsuMiBasePpForm dom
     ){
-        InsuMiBasePpEntity result = insuMiBasePpService.regInsuMiBasePp(dom);
+        insuMiBasePpService.regInsuMiBasePp(dom);
+        InsuMiBasePpEntity result = insuMiBasePpService.getInsuMiBasePp(new InsuMiBasePpSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuMiBasePpController {
     public ResponseEntity<ResponseDto<InsuMiBasePpEntity>> modInsuMiBasePp(
         @RequestBody InsuMiBasePpForm dom
     ){
-        InsuMiBasePpEntity result = insuMiBasePpService.modInsuMiBasePp(dom);
+        insuMiBasePpService.modInsuMiBasePp(dom);
+        InsuMiBasePpEntity result = insuMiBasePpService.getInsuMiBasePp(new InsuMiBasePpSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

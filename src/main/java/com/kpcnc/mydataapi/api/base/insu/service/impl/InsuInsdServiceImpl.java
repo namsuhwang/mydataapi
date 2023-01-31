@@ -23,26 +23,42 @@ public class InsuInsdServiceImpl implements InsuInsdService {
     InsuInsdMapper insuInsdMapper;
 
     @Override
-    public InsuInsdEntity regInsuInsd(InsuInsdForm dom) {
+    public void regInsuInsd(InsuInsdForm dom) {
         insuInsdMapper.insertInsuInsd(dom.getEntity());
-        return insuInsdMapper.selectInsuInsd(new InsuInsdSearch(dom));
     }
 
     @Override
-    public InsuInsdEntity modInsuInsd(InsuInsdForm dom) {
+    public void updInsuInsd(InsuInsdForm dom) {
         insuInsdMapper.updateInsuInsd(dom.getEntity());
-        return insuInsdMapper.selectInsuInsd(new InsuInsdSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsd(InsuInsdForm dom) {
+        if(getInsuInsd(new InsuInsdSearch(dom)) == null){
+            regInsuInsd(dom);
+        }else{
+            updInsuInsd(dom);
+        }
     }
 
     @Override
     public void delInsuInsd(InsuInsdForm dom) {
         insuInsdMapper.deleteInsuInsd(dom.getEntity());
-        return;
+    }
+
+    @Override
+    public void allDelInsuInsd(InsuInsdForm dom) {
+        insuInsdMapper.deleteAllInsuInsd(dom.getEntity());
     }
 
     @Override
     public InsuInsdEntity getInsuInsd(InsuInsdSearch dom) {
         return insuInsdMapper.selectInsuInsd(dom);
+    }
+
+    @Override
+    public InsuInsdEntity getInsuInsdLast(InsuInsdSearch dom) {
+        return insuInsdMapper.selectInsuInsdLast(dom);
     }
 
     @Override

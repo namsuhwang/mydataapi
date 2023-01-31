@@ -1,16 +1,5 @@
 package com.kpcnc.mydataapi.api.collect.pull.service.impl;
 
-import com.kpcnc.mydataapi.api.base.irp.models.IrpAccAddSearch;
-import com.kpcnc.mydataapi.api.base.irp.models.IrpAccBaseSearch;
-import com.kpcnc.mydataapi.api.base.irp.models.IrpAccHistSearch;
-import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccAddEntity;
-import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccBaseEntity;
-import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccHistEntity;
-import com.kpcnc.mydataapi.api.base.irp.models.form.IrpAccForm;
-import com.kpcnc.mydataapi.api.base.irp.service.IrpAccAddService;
-import com.kpcnc.mydataapi.api.base.irp.service.IrpAccBaseService;
-import com.kpcnc.mydataapi.api.base.irp.service.IrpAccHistService;
-import com.kpcnc.mydataapi.api.base.irp.service.IrpAccService;
 import com.kpcnc.mydataapi.api.base.ppay.models.PpayAprHistSearch;
 import com.kpcnc.mydataapi.api.base.ppay.models.PpayBalSearch;
 import com.kpcnc.mydataapi.api.base.ppay.models.PpayHistSearch;
@@ -22,9 +11,7 @@ import com.kpcnc.mydataapi.api.base.ppay.service.PpayAprHistService;
 import com.kpcnc.mydataapi.api.base.ppay.service.PpayBalService;
 import com.kpcnc.mydataapi.api.base.ppay.service.PpayHistService;
 import com.kpcnc.mydataapi.api.base.ppay.service.PpayService;
-import com.kpcnc.mydataapi.api.collect.pull.models.dto.IrpParamsDto;
 import com.kpcnc.mydataapi.api.collect.pull.models.dto.PpayParamsDto;
-import com.kpcnc.mydataapi.api.collect.pull.service.PullIrpService;
 import com.kpcnc.mydataapi.api.collect.pull.service.PullPpayService;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
@@ -66,9 +53,25 @@ public class PullPpayServiceImpl implements PullPpayService {
     public CompletableFuture<List<String>> pullPpayInfoRun(ApiCallReqDto req, FormBase formBase) {
         req.setRequestApiId("PPAY_001");
         List<String> targetList = new ArrayList<>();
-        List<String[]> accountList = null;  // 자산목록(예:계좌목록. [0번째 : 계좌번호, 1번째 : 상품명])
 
-        PpayForm ppayForm = (PpayForm) formBase;
+        CompletableFuture<List<String>> ppay001Result = callPpay001(req, formBase);
+        ppay001Result.thenAccept(ppIdList -> {
+            for (String ppId : ppIdList) {
+                callPpay002(req, formBase, ppId);
+                callPpay003(req, formBase, ppId);
+                callPpay004(req, formBase, ppId);
+            }
+        });
+
+        return CompletableFuture.completedFuture(targetList);
+    }
+
+
+    @Async("pullPersonalInfoExecutor")
+    public CompletableFuture<List<String>> callPpay001(ApiCallReqDto req, FormBase formBase) {
+        req.setRequestApiId("PPAY_001");
+
+        List<String> ppIdList = new ArrayList<>();
 
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(req.getMemberId(), req.getOrgCd(), req.getRequestApiId()));
 
@@ -85,26 +88,17 @@ public class PullPpayServiceImpl implements PullPpayService {
         ppayService.allDelPpay((PpayForm) formBase);
 
         if(CommUtil.isListNullEmpty(resDto.getList())){
-            return CompletableFuture.completedFuture(targetList);
+            return CompletableFuture.completedFuture(ppIdList);
         }
 
         for (Ppay001ResDetailDto detail : resDto.getList()) {
             ppayService.regPpay(detail.getForm(formBase));
-            accountList.add(new String[]{detail.getPpId(), detail.getPpName()});
-            if(detail.getIsConsent() && !targetList.contains(detail.getPpId())){
-                targetList.add(detail.getPpId());
+            if(detail.getIsConsent()){
+                ppIdList.add(detail.getPpId());
             }
         }
 
-        for (Ppay001ResDetailDto pp : resDto.getList()) {
-            if(!pp.getIsConsent()) continue;  // 전송요구 계좌가 아니면 스킵
-
-            callPpay002(req, formBase, pp.getPpId());
-            callPpay003(req, formBase, pp.getPpId());
-            callPpay004(req, formBase, pp.getPpId());
-        }
-
-        return CompletableFuture.completedFuture(targetList);
+        return CompletableFuture.completedFuture(ppIdList);
     }
 
     @Async("pullPersonalInfoExecutor")
@@ -148,9 +142,13 @@ public class PullPpayServiceImpl implements PullPpayService {
             Ppay003ResDto resDto = (Ppay003ResDto) resInfo.getData();
             formBase.setApiTranId(resDto.getXApiTranId());
 
-            if (resDto.getListCnt() != null && resDto.getListCnt() > 0) {
+            if (!CommUtil.isListNullEmpty(resDto.getList())) {
                 for (Ppay003ResDetailDto detail : resDto.getList()) {
-                    ppayHistService.regPpayHist(detail.getForm(formBase, ppId));
+                    if(detail.getTransDtime().substring(0, 8).equals(lastHist.getTransDtime().substring(0, 8))){
+                        ppayHistService.modPpayHist(detail.getForm(formBase, ppId));
+                    }else{
+                        ppayHistService.regPpayHist(detail.getForm(formBase, ppId));
+                    }
                 }
             }
 

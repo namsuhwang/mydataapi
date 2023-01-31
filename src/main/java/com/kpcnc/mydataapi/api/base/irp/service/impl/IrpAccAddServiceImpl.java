@@ -23,26 +23,42 @@ public class IrpAccAddServiceImpl implements IrpAccAddService {
     IrpAccAddMapper irpAccAddMapper;
 
     @Override
-    public IrpAccAddEntity regIrpAccAdd(IrpAccAddForm dom) {
+    public void regIrpAccAdd(IrpAccAddForm dom) {
         irpAccAddMapper.insertIrpAccAdd(dom.getEntity());
-        return irpAccAddMapper.selectIrpAccAdd(new IrpAccAddSearch(dom));
     }
 
     @Override
-    public IrpAccAddEntity modIrpAccAdd(IrpAccAddForm dom) {
+    public void updIrpAccAdd(IrpAccAddForm dom) {
         irpAccAddMapper.updateIrpAccAdd(dom.getEntity());
-        return irpAccAddMapper.selectIrpAccAdd(new IrpAccAddSearch(dom));
+    }
+
+    @Override
+    public void modIrpAccAdd(IrpAccAddForm dom) {
+        if(getIrpAccAdd(new IrpAccAddSearch(dom)) == null){
+            regIrpAccAdd(dom);
+        }else{
+            updIrpAccAdd(dom);
+        }
     }
 
     @Override
     public void delIrpAccAdd(IrpAccAddForm dom) {
         irpAccAddMapper.deleteIrpAccAdd(dom.getEntity());
-        return;
     }
 
     @Override
+    public void allDelIrpAccAdd(IrpAccAddForm dom) {
+        irpAccAddMapper.deleteAllIrpAccAdd(dom.getEntity());
+    }
+    @Override
     public IrpAccAddEntity getIrpAccAdd(IrpAccAddSearch dom) {
         return irpAccAddMapper.selectIrpAccAdd(dom);
+    }
+
+
+    @Override
+    public IrpAccAddEntity getIrpAccAddLast(IrpAccAddSearch dom) {
+        return irpAccAddMapper.selectIrpAccAddLast(dom);
     }
 
     @Override

@@ -14,6 +14,8 @@
             ,BALANCE_AMT
             ,LOAN_PRINCIPAL
             ,NEXT_REPAY_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -28,6 +30,8 @@
             ,#{balanceAmt, jdbcType=NUMERIC}
             ,#{loanPrincipal, jdbcType=NUMERIC}
             ,#{nextRepayDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -46,6 +50,8 @@
                ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
                ,LOAN_PRINCIPAL = #{loanPrincipal, jdbcType=NUMERIC}
                ,NEXT_REPAY_DATE = #{nextRepayDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -74,6 +80,8 @@
                ,BALANCE_AMT
                ,LOAN_PRINCIPAL
                ,NEXT_REPAY_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -121,6 +129,8 @@
                ,BALANCE_AMT
                ,LOAN_PRINCIPAL
                ,NEXT_REPAY_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

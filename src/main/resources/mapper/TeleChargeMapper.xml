@@ -12,6 +12,8 @@
             ,CHARGE_MONTH
             ,CHARGE_AMT
             ,CHARGE_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -24,6 +26,8 @@
             ,#{chargeMonth, jdbcType=VARCHAR}
             ,#{chargeAmt, jdbcType=NUMERIC}
             ,#{chargeDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -40,6 +44,8 @@
                ,CHARGE_MONTH = #{chargeMonth, jdbcType=VARCHAR}
                ,CHARGE_AMT = #{chargeAmt, jdbcType=NUMERIC}
                ,CHARGE_DATE = #{chargeDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -64,6 +70,8 @@
                ,CHARGE_MONTH
                ,CHARGE_AMT
                ,CHARGE_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -105,6 +113,8 @@
                ,CHARGE_MONTH
                ,CHARGE_AMT
                ,CHARGE_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

@@ -14,7 +14,11 @@ public interface BankAutoTransMapper{
 
     int deleteBankAutoTrans(BankAutoTransEntity dom);
 
+    int deleteAllBankAutoTrans(BankAutoTransEntity dom);
+
     BankAutoTransEntity selectBankAutoTrans(BankAutoTransSearch dom);
+
+    BankAutoTransEntity selectBankAutoTransLast(BankAutoTransSearch dom);
 
     Long selectBankAutoTransListTotalCnt(BankAutoTransSearch dom);
 

@@ -29,7 +29,8 @@ public class CardRvController {
     public ResponseEntity<ResponseDto<CardRvEntity>> regCardRv(
         @RequestBody CardRvForm dom
     ){
-        CardRvEntity result = cardRvService.regCardRv(dom);
+        cardRvService.regCardRv(dom);
+        CardRvEntity result = cardRvService.getCardRv(new CardRvSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardRvController {
     public ResponseEntity<ResponseDto<CardRvEntity>> modCardRv(
         @RequestBody CardRvForm dom
     ){
-        CardRvEntity result = cardRvService.modCardRv(dom);
+        cardRvService.modCardRv(dom);
+        CardRvEntity result = cardRvService.getCardRv(new CardRvSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -16,6 +16,8 @@
             ,AGREED_PAY_RATE
             ,AGREED_PAY_AMT
             ,REMAINED_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -32,6 +34,8 @@
             ,#{agreedPayRate, jdbcType=NUMERIC}
             ,#{agreedPayAmt, jdbcType=NUMERIC}
             ,#{remainedAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -52,6 +56,8 @@
                ,AGREED_PAY_RATE = #{agreedPayRate, jdbcType=NUMERIC}
                ,AGREED_PAY_AMT = #{agreedPayAmt, jdbcType=NUMERIC}
                ,REMAINED_AMT = #{remainedAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -70,6 +76,13 @@
            AND END_DATE = #{endDate}
     </delete>
 
+    <delete id="deleteAllCardRv" parameterType="CardRvEntity">
+        DELETE FROM CARD_RV
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectCardRv" parameterType="CardRvSearch"  resultType="CardRvEntity">
          SELECT 
                MEMBER_ID
@@ -82,6 +95,8 @@
                ,AGREED_PAY_RATE
                ,AGREED_PAY_AMT
                ,REMAINED_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -131,6 +146,8 @@
                ,AGREED_PAY_RATE
                ,AGREED_PAY_AMT
                ,REMAINED_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

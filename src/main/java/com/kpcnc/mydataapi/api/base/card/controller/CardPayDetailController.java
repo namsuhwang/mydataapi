@@ -29,7 +29,8 @@ public class CardPayDetailController {
     public ResponseEntity<ResponseDto<CardPayDetailEntity>> regCardPayDetail(
         @RequestBody CardPayDetailForm dom
     ){
-        CardPayDetailEntity result = cardPayDetailService.regCardPayDetail(dom);
+        cardPayDetailService.regCardPayDetail(dom);
+        CardPayDetailEntity result = cardPayDetailService.getCardPayDetail(new CardPayDetailSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardPayDetailController {
     public ResponseEntity<ResponseDto<CardPayDetailEntity>> modCardPayDetail(
         @RequestBody CardPayDetailForm dom
     ){
-        CardPayDetailEntity result = cardPayDetailService.modCardPayDetail(dom);
+        cardPayDetailService.modCardPayDetail(dom);
+        CardPayDetailEntity result = cardPayDetailService.getCardPayDetail(new CardPayDetailSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

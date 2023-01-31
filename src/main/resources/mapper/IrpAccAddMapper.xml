@@ -8,8 +8,9 @@
         (
             MEMBER_ID
             ,ORG_CD
-            ,IRP_NAME
+            ,ACCOUNT_NUM
             ,IRP_NO
+            ,IRP_NAME
             ,IRP_TYPE
             ,EVAL_AMT
             ,INV_PRINCIPAL
@@ -17,6 +18,8 @@
             ,OPEN_DATE
             ,EXP_DATE
             ,INT_RATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -25,8 +28,9 @@
         (
             #{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
-            ,#{irpName, jdbcType=VARCHAR}
+            , #{accountNun, jdbcType=VARCHAR}
             ,#{irpNo, jdbcType=VARCHAR}
+            ,#{irpName, jdbcType=VARCHAR}
             ,#{irpType, jdbcType=VARCHAR}
             ,#{evalAmt, jdbcType=NUMERIC}
             ,#{invPrincipal, jdbcType=NUMERIC}
@@ -34,6 +38,8 @@
             ,#{openDate, jdbcType=VARCHAR}
             ,#{expDate, jdbcType=VARCHAR}
             ,#{intRate, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -46,6 +52,7 @@
            SET 
                MEMBER_ID = #{memberId, jdbcType=VARCHAR}
                ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUN = #{accountNun, jdbcType=VARCHAR}
                ,IRP_NAME = #{irpName, jdbcType=VARCHAR}
                ,IRP_NO = #{irpNo, jdbcType=VARCHAR}
                ,IRP_TYPE = #{irpType, jdbcType=VARCHAR}
@@ -55,12 +62,15 @@
                ,OPEN_DATE = #{openDate, jdbcType=VARCHAR}
                ,EXP_DATE = #{expDate, jdbcType=VARCHAR}
                ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
-           AND IRP_NAME = #{irpName}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND IRP_NO = #{irpNo}
     </update>
 
     <delete id="deleteIrpAccAdd" parameterType="IrpAccAddEntity">
@@ -68,15 +78,25 @@
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
-           AND IRP_NAME = #{irpName}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND IRP_NO = #{irpNo}
+    </delete>
+
+    <delete id="deleteAllIrpAccAdd" parameterType="IrpAccAddEntity">
+        DELETE FROM IRP_ACC_ADD
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
     </delete>
 
     <select id="selectIrpAccAdd" parameterType="IrpAccAddSearch"  resultType="IrpAccAddEntity">
          SELECT 
                MEMBER_ID
                ,ORG_CD
-               ,IRP_NAME
+               ,ACCOUNT_NUM
                ,IRP_NO
+               ,IRP_NAME
                ,IRP_TYPE
                ,EVAL_AMT
                ,INV_PRINCIPAL
@@ -84,6 +104,8 @@
                ,OPEN_DATE
                ,EXP_DATE
                ,INT_RATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -92,7 +114,54 @@
        WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
-           AND IRP_NAME = #{irpName}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND IRP_NO = #{irpNo}
+    </select>
+
+    <select id="selectIrpAccAddLast" parameterType="IrpAccAddSearch"  resultType="IrpAccAddEntity">
+         SELECT
+                I1.MEMBER_ID
+               ,I1.ORG_CD
+               ,I1.ACCOUNT_NUM
+               ,I1.IRP_NO
+               ,I1.IRP_NAME
+               ,I1.IRP_TYPE
+               ,I1.EVAL_AMT
+               ,I1.INV_PRINCIPAL
+               ,I1.FUND_NUM
+               ,I1.OPEN_DATE
+               ,I1.EXP_DATE
+               ,I1.INT_RATE
+               ,I1.API_TRAN_DAY
+               ,I1.API_TRAN_ID
+               ,I1.REG_USER_ID
+               ,I1.REG_DT
+               ,I1.CHG_USER_ID
+               ,I1.CHG_DT
+        FROM IRP_ACC_ADD I1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, IRP_NO
+                        FROM IRP_ACC_ADD
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) I2
+       WHERE
+               I1.MEMBER_ID = I2.MEMBER_ID
+           AND I1.ORG_CD = I2.ORG_CD
+           AND I1.ACCOUNT_NUM = I2.ACCOUNT_NUM
+           AND I1.IRP_NO = I2.IRP_NO
     </select>
 
     <select id="selectIrpAccAddListTotalCnt" parameterType="IrpAccAddSearch"  resultType="Long">
@@ -106,8 +175,11 @@
        <if test = 'orgCd  != null and orgCd != ""'>
            AND ORG_CD = #{orgCd}
        </if>
-       <if test = 'irpName  != null and irpName != ""'>
-           AND IRP_NAME = #{irpName}
+        <if test = 'accountNum  != null and accountNum != ""'>
+            AND ACCOUNT_NUM = #{accountNum}
+        </if>
+       <if test = 'irpNo  != null and irpNo != ""'>
+           AND IRP_NO = #{irpNo}
        </if>
     </select>
 
@@ -130,6 +202,8 @@
                ,OPEN_DATE
                ,EXP_DATE
                ,INT_RATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

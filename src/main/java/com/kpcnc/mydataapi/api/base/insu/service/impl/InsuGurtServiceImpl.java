@@ -23,15 +23,22 @@ public class InsuGurtServiceImpl implements InsuGurtService {
     InsuGurtMapper insuGurtMapper;
 
     @Override
-    public InsuGurtEntity regInsuGurt(InsuGurtForm dom) {
+    public void regInsuGurt(InsuGurtForm dom) {
         insuGurtMapper.insertInsuGurt(dom.getEntity());
-        return insuGurtMapper.selectInsuGurt(new InsuGurtSearch(dom));
     }
 
     @Override
-    public InsuGurtEntity modInsuGurt(InsuGurtForm dom) {
+    public void updInsuGurt(InsuGurtForm dom) {
         insuGurtMapper.updateInsuGurt(dom.getEntity());
-        return insuGurtMapper.selectInsuGurt(new InsuGurtSearch(dom));
+    }
+
+    @Override
+    public void modInsuGurt(InsuGurtForm dom) {
+        if(getInsuGurt(new InsuGurtSearch(dom)) == null){
+            regInsuGurt(dom);
+        }else{
+            updInsuGurt(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,20 @@ public class InsuGurtServiceImpl implements InsuGurtService {
     }
 
     @Override
+    public void allDelInsuGurt(InsuGurtForm dom) {
+        insuGurtMapper.deleteAllInsuGurt(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InsuGurtEntity getInsuGurt(InsuGurtSearch dom) {
         return insuGurtMapper.selectInsuGurt(dom);
+    }
+
+
+    @Override
+    public InsuGurtEntity getInsuGurtLast(InsuGurtSearch dom) {
+        return insuGurtMapper.selectInsuGurtLast(dom);
     }
 
     @Override

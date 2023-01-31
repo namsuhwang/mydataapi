@@ -29,7 +29,8 @@ public class IrpAccAddController {
     public ResponseEntity<ResponseDto<IrpAccAddEntity>> regIrpAccAdd(
         @RequestBody IrpAccAddForm dom
     ){
-        IrpAccAddEntity result = irpAccAddService.regIrpAccAdd(dom);
+        irpAccAddService.regIrpAccAdd(dom);
+        IrpAccAddEntity result = irpAccAddService.getIrpAccAddLast(new IrpAccAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class IrpAccAddController {
     public ResponseEntity<ResponseDto<IrpAccAddEntity>> modIrpAccAdd(
         @RequestBody IrpAccAddForm dom
     ){
-        IrpAccAddEntity result = irpAccAddService.modIrpAccAdd(dom);
+        irpAccAddService.modIrpAccAdd(dom);
+        IrpAccAddEntity result = irpAccAddService.getIrpAccAddLast(new IrpAccAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

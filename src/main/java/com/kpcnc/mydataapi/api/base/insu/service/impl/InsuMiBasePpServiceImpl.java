@@ -1,7 +1,7 @@
 package com.kpcnc.mydataapi.api.base.insu.service.impl;
 
-import com.kpcnc.mydataapi.api.InsuMiBasePpEntity;
 import com.kpcnc.mydataapi.api.base.insu.models.InsuMiBasePpSearch;
+import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuMiBasePpEntity;
 import com.kpcnc.mydataapi.api.base.insu.models.form.InsuMiBasePpForm;
 import com.kpcnc.mydataapi.api.base.insu.repository.InsuMiBasePpMapper;
 import com.kpcnc.mydataapi.api.base.insu.service.InsuMiBasePpService;
@@ -23,15 +23,22 @@ public class InsuMiBasePpServiceImpl implements InsuMiBasePpService {
     InsuMiBasePpMapper insuMiBasePpMapper;
 
     @Override
-    public InsuMiBasePpEntity regInsuMiBasePp(InsuMiBasePpForm dom) {
+    public void regInsuMiBasePp(InsuMiBasePpForm dom) {
         insuMiBasePpMapper.insertInsuMiBasePp(dom.getEntity());
-        return insuMiBasePpMapper.selectInsuMiBasePp(new InsuMiBasePpSearch(dom));
     }
 
     @Override
-    public InsuMiBasePpEntity modInsuMiBasePp(InsuMiBasePpForm dom) {
+    public void updInsuMiBasePp(InsuMiBasePpForm dom) {
         insuMiBasePpMapper.updateInsuMiBasePp(dom.getEntity());
-        return insuMiBasePpMapper.selectInsuMiBasePp(new InsuMiBasePpSearch(dom));
+    }
+
+    @Override
+    public void modInsuMiBasePp(InsuMiBasePpForm dom) {
+        if(getInsuMiBasePp(new InsuMiBasePpSearch(dom)) == null){
+            regInsuMiBasePp(dom);
+        }else{
+            updInsuMiBasePp(dom);
+        }
     }
 
     @Override
@@ -39,6 +46,13 @@ public class InsuMiBasePpServiceImpl implements InsuMiBasePpService {
         insuMiBasePpMapper.deleteInsuMiBasePp(dom.getEntity());
         return;
     }
+
+    @Override
+    public void allDelInsuMiBasePp(InsuMiBasePpForm dom) {
+        insuMiBasePpMapper.deleteAllInsuMiBasePp(dom.getEntity());
+        return;
+    }
+
 
     @Override
     public InsuMiBasePpEntity getInsuMiBasePp(InsuMiBasePpSearch dom) {

@@ -1,20 +1,17 @@
 package com.kpcnc.mydataapi.api.base.card.models.form;
 
 import com.kpcnc.mydataapi.api.base.card.models.entity.CardChargeAddEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardChargeAddForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class CardChargeAddForm extends FormBase {
     private String seqno;    // 결제순번
     private String chargeMonth;    // 청구년월
     private String cardId;    // 카드 식별자
@@ -29,15 +26,11 @@ public class CardChargeAddForm{
     private Integer curInstallCnt;    // 현재 할부회차
     private Long balanceAmt;    // 할부 결제 후 잔액
     private String prodType;    // 상품구분 (코드)
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public CardChargeAddEntity getEntity(){
         CardChargeAddEntity entity = new CardChargeAddEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setSeqno(seqno);
         entity.setChargeMonth(chargeMonth);
         entity.setCardId(cardId);
@@ -52,10 +45,12 @@ public class CardChargeAddForm{
         entity.setCurInstallCnt(curInstallCnt);
         entity.setBalanceAmt(balanceAmt);
         entity.setProdType(prodType);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

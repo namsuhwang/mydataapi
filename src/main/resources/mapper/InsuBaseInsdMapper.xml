@@ -12,6 +12,8 @@
             ,INSURED_NO
             ,INSURED_NAME
             ,IS_PRIMARY
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -24,6 +26,8 @@
             ,#{insuredNo, jdbcType=VARCHAR}
             ,#{insuredName, jdbcType=VARCHAR}
             ,#{isPrimary, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -40,6 +44,8 @@
                ,INSURED_NO = #{insuredNo, jdbcType=VARCHAR}
                ,INSURED_NAME = #{insuredName, jdbcType=VARCHAR}
                ,IS_PRIMARY = #{isPrimary, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -58,6 +64,15 @@
            AND INSURED_NO = #{insuredNo}
     </delete>
 
+    <delete id="deleteAllInsuBaseInsd" parameterType="InsuBaseInsdEntity">
+        DELETE FROM INSU_BASE_INSD
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </delete>
+
+
     <select id="selectInsuBaseInsd" parameterType="InsuBaseInsdSearch"  resultType="InsuBaseInsdEntity">
          SELECT 
                MEMBER_ID
@@ -66,6 +81,8 @@
                ,INSURED_NO
                ,INSURED_NAME
                ,IS_PRIMARY
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -111,6 +128,8 @@
                ,INSURED_NO
                ,INSURED_NAME
                ,IS_PRIMARY
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

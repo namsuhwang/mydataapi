@@ -11,17 +11,18 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CardChargeAddSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String seqno;    // 결제순번
     private String chargeMonth;    // 청구년월
     private String cardId;    // 카드 식별자
     private String paidDtime;    // 사용일시 또는 사용일자
     private String transNo;    // 거래번호
 
+    public CardChargeAddSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public CardChargeAddSearch(String memberId, String orgCd, String seqno, String chargeMonth, String cardId, String paidDtime, String transNo) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.seqno = seqno;
         this.chargeMonth = chargeMonth;
         this.cardId = cardId;
@@ -30,8 +31,7 @@ public class CardChargeAddSearch extends SearchDto {
     }
 
     public CardChargeAddSearch(CardChargeAddEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.seqno = entity.getSeqno();
         this.chargeMonth = entity.getChargeMonth();
         this.cardId = entity.getCardId();
@@ -40,8 +40,7 @@ public class CardChargeAddSearch extends SearchDto {
     }
 
     public CardChargeAddSearch(CardChargeAddForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.seqno = form.getSeqno();
         this.chargeMonth = form.getChargeMonth();
         this.cardId = form.getCardId();

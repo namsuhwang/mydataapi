@@ -14,7 +14,11 @@ public interface InsuInsdCarMapper{
 
     int deleteInsuInsdCar(InsuInsdCarEntity dom);
 
+    int deleteAllInsuInsdCar(InsuInsdCarEntity dom);
+
     InsuInsdCarEntity selectInsuInsdCar(InsuInsdCarSearch dom);
+
+    InsuInsdCarEntity selectInsuInsdCarLast(InsuInsdCarSearch dom);
 
     Long selectInsuInsdCarListTotalCnt(InsuInsdCarSearch dom);
 

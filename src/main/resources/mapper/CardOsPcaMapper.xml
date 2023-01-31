@@ -23,6 +23,8 @@
             ,COUNTRY_CODE
             ,CURRENCY_CODE
             ,KRW_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -46,6 +48,8 @@
             ,#{countryCode, jdbcType=VARCHAR}
             ,#{currencyCode, jdbcType=VARCHAR}
             ,#{krwAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -73,6 +77,8 @@
                ,COUNTRY_CODE = #{countryCode, jdbcType=VARCHAR}
                ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
                ,KRW_AMT = #{krwAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -110,6 +116,8 @@
                ,COUNTRY_CODE
                ,CURRENCY_CODE
                ,KRW_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -120,6 +128,59 @@
            AND ORG_CD = #{orgCd}
            AND CARD_ID = #{cardId}
            AND PURCHASE_NUM = #{purchaseNum}
+    </select>
+
+    <select id="selectCardOsPcaLast" parameterType="CardOsPcaSearch"  resultType="CardOsPcaEntity">
+         SELECT
+                C1.MEMBER_ID
+               ,C1.ORG_CD
+               ,C1.CARD_ID
+               ,C1.PURCHASE_NUM
+               ,C1.PURCHASE_DATE
+               ,C1.SALES_DATE
+               ,C1.PRI_APPROVED_NUM
+               ,C1.PRI_APPROVED_DTIME
+               ,C1.PRI_APPROVED_AMT
+               ,C1.PRI_KRW_AMT
+               ,C1.PRI_CURRENCY_CODE
+               ,C1.PAY_TYPE
+               ,C1.MERCHANT_NAME
+               ,C1.APPROVED_AMT
+               ,C1.COUNTRY_CODE
+               ,C1.CURRENCY_CODE
+               ,C1.KRW_AMT
+               ,C1.API_TRAN_DAY
+               ,C1.API_TRAN_ID
+               ,C1.REG_USER_ID
+               ,C1.REG_DT
+               ,C1.CHG_USER_ID
+               ,C1.CHG_DT
+        FROM CARD_OS_PCA C1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, CARD_ID, PURCHASE_NUM
+                        FROM CARD_OS_PCA
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'cardId  != null and cardId != ""'>
+                                AND CARD_ID = #{cardId}
+                            </if>
+                            <if test = 'purchaseNum  != null and purchaseNum != ""'>
+                                AND PURCHASE_NUM = #{purchaseNum}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, CARD_ID, PURCHASE_NUM DESC
+                    )
+                WHERE rownum = 1
+            ) C2
+       WHERE
+             C1.MEMBER_ID = #{memberId}
+           AND C1.ORG_CD = #{orgCd}
+           AND C1.CARD_ID = #{cardId}
+           AND C1.PURCHASE_NUM = #{purchaseNum}
     </select>
 
     <select id="selectCardOsPcaListTotalCnt" parameterType="CardOsPcaSearch"  resultType="Long">
@@ -166,6 +227,8 @@
                ,COUNTRY_CODE
                ,CURRENCY_CODE
                ,KRW_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

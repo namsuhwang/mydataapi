@@ -23,19 +23,35 @@ public class CardPayDetailServiceImpl implements CardPayDetailService {
     CardPayDetailMapper cardPayDetailMapper;
 
     @Override
-    public CardPayDetailEntity regCardPayDetail(CardPayDetailForm dom) {
+    public void regCardPayDetail(CardPayDetailForm dom) {
         cardPayDetailMapper.insertCardPayDetail(dom.getEntity());
-        return cardPayDetailMapper.selectCardPayDetail(new CardPayDetailSearch(dom));
+        return;
     }
 
     @Override
-    public CardPayDetailEntity modCardPayDetail(CardPayDetailForm dom) {
+    public void updCardPayDetail(CardPayDetailForm dom) {
         cardPayDetailMapper.updateCardPayDetail(dom.getEntity());
-        return cardPayDetailMapper.selectCardPayDetail(new CardPayDetailSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modCardPayDetail(CardPayDetailForm dom) {
+        if(getCardPayDetail(new CardPayDetailSearch(dom)) == null){
+            regCardPayDetail(dom);
+        }else{
+            updCardPayDetail(dom);
+        }
+        return;
     }
 
     @Override
     public void delCardPayDetail(CardPayDetailForm dom) {
+        cardPayDetailMapper.deleteCardPayDetail(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelCardPayDetail(CardPayDetailForm dom) {
         cardPayDetailMapper.deleteCardPayDetail(dom.getEntity());
         return;
     }

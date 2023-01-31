@@ -16,6 +16,8 @@ public interface CardAprDmHistMapper{
 
     CardAprDmHistEntity selectCardAprDmHist(CardAprDmHistSearch dom);
 
+    CardAprDmHistEntity selectCardAprDmHistLast(CardAprDmHistSearch dom);
+
     Long selectCardAprDmHistListTotalCnt(CardAprDmHistSearch dom);
 
     List<CardAprDmHistEntity> selectCardAprDmHistList(CardAprDmHistSearch dom);

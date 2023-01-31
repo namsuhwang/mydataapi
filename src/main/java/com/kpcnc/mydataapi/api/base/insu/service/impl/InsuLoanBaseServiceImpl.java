@@ -23,15 +23,22 @@ public class InsuLoanBaseServiceImpl implements InsuLoanBaseService {
     InsuLoanBaseMapper insuLoanBaseMapper;
 
     @Override
-    public InsuLoanBaseEntity regInsuLoanBase(InsuLoanBaseForm dom) {
+    public void regInsuLoanBase(InsuLoanBaseForm dom) {
         insuLoanBaseMapper.insertInsuLoanBase(dom.getEntity());
-        return insuLoanBaseMapper.selectInsuLoanBase(new InsuLoanBaseSearch(dom));
     }
 
     @Override
-    public InsuLoanBaseEntity modInsuLoanBase(InsuLoanBaseForm dom) {
+    public void updInsuLoanBase(InsuLoanBaseForm dom) {
         insuLoanBaseMapper.updateInsuLoanBase(dom.getEntity());
-        return insuLoanBaseMapper.selectInsuLoanBase(new InsuLoanBaseSearch(dom));
+    }
+
+    @Override
+    public void modInsuLoanBase(InsuLoanBaseForm dom) {
+        if(getInsuLoanBase(new InsuLoanBaseSearch(dom)) == null){
+            regInsuLoanBase(dom);
+        }else{
+            updInsuLoanBase(dom);
+        }
     }
 
     @Override

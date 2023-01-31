@@ -16,6 +16,8 @@ public interface CardOsPcaMapper{
 
     CardOsPcaEntity selectCardOsPca(CardOsPcaSearch dom);
 
+    CardOsPcaEntity selectCardOsPcaLast(CardOsPcaSearch dom);
+
     Long selectCardOsPcaListTotalCnt(CardOsPcaSearch dom);
 
     List<CardOsPcaEntity> selectCardOsPcaList(CardOsPcaSearch dom);

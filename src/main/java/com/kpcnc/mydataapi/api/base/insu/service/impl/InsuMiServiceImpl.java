@@ -23,15 +23,22 @@ public class InsuMiServiceImpl implements InsuMiService {
     InsuMiMapper insuMiMapper;
 
     @Override
-    public InsuMiEntity regInsuMi(InsuMiForm dom) {
+    public void regInsuMi(InsuMiForm dom) {
         insuMiMapper.insertInsuMi(dom.getEntity());
-        return insuMiMapper.selectInsuMi(new InsuMiSearch(dom));
     }
 
     @Override
-    public InsuMiEntity modInsuMi(InsuMiForm dom) {
+    public void updInsuMi(InsuMiForm dom) {
         insuMiMapper.updateInsuMi(dom.getEntity());
-        return insuMiMapper.selectInsuMi(new InsuMiSearch(dom));
+    }
+
+    @Override
+    public void modInsuMi(InsuMiForm dom) {
+        if(getInsuMi(new InsuMiSearch(dom)) == null){
+            regInsuMi(dom);
+        }else{
+            updInsuMi(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,19 @@ public class InsuMiServiceImpl implements InsuMiService {
     }
 
     @Override
+    public void allDelInsuMi(InsuMiForm dom) {
+        insuMiMapper.deleteAllInsuMi(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InsuMiEntity getInsuMi(InsuMiSearch dom) {
         return insuMiMapper.selectInsuMi(dom);
+    }
+
+    @Override
+    public InsuMiEntity getInsuMiLast(InsuMiSearch dom) {
+        return insuMiMapper.selectInsuMiLast(dom);
     }
 
     @Override

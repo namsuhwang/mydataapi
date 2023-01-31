@@ -2,7 +2,7 @@ package com.kpcnc.mydataapi.api.base.insu.service.impl;
 
 import com.kpcnc.mydataapi.api.base.insu.models.InsuSearch;
 import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuEntity;
-import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuForm;
+import com.kpcnc.mydataapi.api.base.insu.models.form.InsuForm;
 import com.kpcnc.mydataapi.api.base.insu.repository.InsuMapper;
 import com.kpcnc.mydataapi.api.base.insu.service.InsuService;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
@@ -23,26 +23,42 @@ public class InsuServiceImpl implements InsuService {
     InsuMapper insuMapper;
 
     @Override
-    public InsuEntity regInsu(InsuForm dom) {
+    public void regInsu(InsuForm dom) {
         insuMapper.insertInsu(dom.getEntity());
-        return insuMapper.selectInsu(new InsuSearch(dom));
     }
 
     @Override
-    public InsuEntity modInsu(InsuForm dom) {
+    public void updInsu(InsuForm dom) {
         insuMapper.updateInsu(dom.getEntity());
-        return insuMapper.selectInsu(new InsuSearch(dom));
+    }
+
+    @Override
+    public void modInsu(InsuForm dom) {
+        if(getInsu(new InsuSearch(dom)) == null){
+            regInsu(dom);
+        }else{
+            updInsu(dom);
+        }
     }
 
     @Override
     public void delInsu(InsuForm dom) {
         insuMapper.deleteInsu(dom.getEntity());
-        return;
+    }
+
+    @Override
+    public void allDelInsu(InsuForm dom) {
+        insuMapper.deleteAllInsu(dom.getEntity());
     }
 
     @Override
     public InsuEntity getInsu(InsuSearch dom) {
         return insuMapper.selectInsu(dom);
+    }
+
+    @Override
+    public InsuEntity getInsuLast(InsuSearch dom) {
+        return insuMapper.selectInsuLast(dom);
     }
 
     @Override

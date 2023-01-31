@@ -6,11 +6,15 @@ import com.kpcnc.mydataapi.api.base.card.models.form.CardLoanStForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface CardLoanStService{
-    public CardLoanStEntity regCardLoanSt(CardLoanStForm dom);
+    public void regCardLoanSt(CardLoanStForm dom);
 
-    public CardLoanStEntity modCardLoanSt(CardLoanStForm dom);
+    public void updCardLoanSt(CardLoanStForm dom);
+
+    public void modCardLoanSt(CardLoanStForm dom);
 
     public void  delCardLoanSt(CardLoanStForm dom);
+
+    public void  allDelCardLoanSt(CardLoanStForm dom);
 
     public CardLoanStEntity getCardLoanSt(CardLoanStSearch dom);
 

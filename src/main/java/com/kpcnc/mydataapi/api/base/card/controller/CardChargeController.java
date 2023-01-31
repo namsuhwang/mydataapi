@@ -29,7 +29,8 @@ public class CardChargeController {
     public ResponseEntity<ResponseDto<CardChargeEntity>> regCardCharge(
         @RequestBody CardChargeForm dom
     ){
-        CardChargeEntity result = cardChargeService.regCardCharge(dom);
+        cardChargeService.regCardCharge(dom);
+        CardChargeEntity result = cardChargeService.getCardCharge(new CardChargeSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardChargeController {
     public ResponseEntity<ResponseDto<CardChargeEntity>> modCardCharge(
         @RequestBody CardChargeForm dom
     ){
-        CardChargeEntity result = cardChargeService.modCardCharge(dom);
+        cardChargeService.modCardCharge(dom);
+        CardChargeEntity result = cardChargeService.getCardCharge(new CardChargeSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

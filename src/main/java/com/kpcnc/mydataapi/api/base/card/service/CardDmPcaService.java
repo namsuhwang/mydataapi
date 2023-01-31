@@ -6,13 +6,17 @@ import com.kpcnc.mydataapi.api.base.card.models.form.CardDmPcaForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface CardDmPcaService{
-    public CardDmPcaEntity regCardDmPca(CardDmPcaForm dom);
+    public void regCardDmPca(CardDmPcaForm dom);
 
-    public CardDmPcaEntity modCardDmPca(CardDmPcaForm dom);
+    public void updCardDmPca(CardDmPcaForm dom);
+
+    public void modCardDmPca(CardDmPcaForm dom);
 
     public void  delCardDmPca(CardDmPcaForm dom);
 
     public CardDmPcaEntity getCardDmPca(CardDmPcaSearch dom);
+
+    public CardDmPcaEntity getCardDmPcaLast(CardDmPcaSearch dom);
 
     public ResultListDto<CardDmPcaEntity> getCardDmPcaList(CardDmPcaSearch dom);
 }

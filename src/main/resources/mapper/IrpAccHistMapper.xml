@@ -13,6 +13,8 @@
             ,TRANS_TYPE
             ,TRANS_NO
             ,TRANS_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{transType, jdbcType=VARCHAR}
             ,#{transNo, jdbcType=VARCHAR}
             ,#{transAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
                ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
                ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -70,6 +76,8 @@
                ,TRANS_TYPE
                ,TRANS_NO
                ,TRANS_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -92,6 +100,8 @@
              ,H1.TRANS_TYPE
              ,H1.TRANS_NO
              ,H1.TRANS_AMT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
              ,H1.REG_USER_ID
              ,H1.REG_DT
              ,H1.CHG_USER_ID
@@ -154,6 +164,8 @@
                ,TRANS_TYPE
                ,TRANS_NO
                ,TRANS_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

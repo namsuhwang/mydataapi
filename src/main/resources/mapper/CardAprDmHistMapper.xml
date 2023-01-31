@@ -18,6 +18,8 @@
             ,APPROVED_AMT
             ,MODIFIED_AMT
             ,TOTAL_INSTALL_CNT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -36,6 +38,8 @@
             ,#{approvedAmt, jdbcType=NUMERIC}
             ,#{modifiedAmt, jdbcType=NUMERIC}
             ,#{totalInstallCnt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -58,6 +62,8 @@
                ,APPROVED_AMT = #{approvedAmt, jdbcType=NUMERIC}
                ,MODIFIED_AMT = #{modifiedAmt, jdbcType=NUMERIC}
                ,TOTAL_INSTALL_CNT = #{totalInstallCnt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -90,6 +96,8 @@
                ,APPROVED_AMT
                ,MODIFIED_AMT
                ,TOTAL_INSTALL_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -100,6 +108,54 @@
            AND ORG_CD = #{orgCd}
            AND APPROVED_DTIME = #{approvedDtime}
            AND APPROVED_NUM = #{approvedNum}
+    </select>
+
+    <select id="selectCardAprDmHistLast" parameterType="CardAprDmHistSearch"  resultType="CardAprDmHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.APPROVED_DTIME
+               ,H1.APPROVED_NUM
+               ,H1.STATUS
+               ,H1.PAY_TYPE
+               ,H1.TRANS_DTIME
+               ,H1.MERCHANT_NAME
+               ,H1.MERCHANT_REGNO
+               ,H1.APPROVED_AMT
+               ,H1.MODIFIED_AMT
+               ,H1.TOTAL_INSTALL_CNT
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM CARD_APR_DM_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, APPROVED_DTIME, APPROVED_NUM
+                        FROM CARD_APR_DM_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'approvedDtime  != null and approvedDtime != ""'>
+                                AND APPROVED_DTIME = #{approvedDtime}
+                            </if>
+                            <if test = 'approvedNum  != null and approvedNum != ""'>
+                                AND APPROVED_NUM = #{approvedNum}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, APPROVED_DTIME DESC, APPROVED_NUM DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+               H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.APPROVED_DTIME = H2.APPROVED_DTIME
+           AND H1.APPROVED_NUM = H2.APPROVED_NUM
     </select>
 
     <select id="selectCardAprDmHistListTotalCnt" parameterType="CardAprDmHistSearch"  resultType="Long">
@@ -141,6 +197,8 @@
                ,APPROVED_AMT
                ,MODIFIED_AMT
                ,TOTAL_INSTALL_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

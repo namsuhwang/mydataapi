@@ -10,6 +10,8 @@
             ,ORG_CD
             ,INSU_NUM
             ,INSURED_NAME
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -20,6 +22,8 @@
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{insuNum, jdbcType=VARCHAR}
             ,#{insuredName, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -34,6 +38,8 @@
                ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
                ,INSU_NUM = #{insuNum, jdbcType=VARCHAR}
                ,INSURED_NAME = #{insuredName, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -58,6 +64,8 @@
                ,ORG_CD
                ,INSU_NUM
                ,INSURED_NAME
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -101,6 +109,8 @@
                ,ORG_CD
                ,INSU_NUM
                ,INSURED_NAME
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

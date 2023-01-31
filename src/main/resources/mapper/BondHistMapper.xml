@@ -15,6 +15,8 @@
             ,BALANCE_AMT
             ,INT_AMT
             ,PRINCIPAL_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -30,6 +32,8 @@
             ,#{balanceAmt, jdbcType=NUMERIC}
             ,#{intAmt, jdbcType=NUMERIC}
             ,#{principalAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -49,6 +53,8 @@
                ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
                ,INT_AMT = #{intAmt, jdbcType=NUMERIC}
                ,PRINCIPAL_AMT = #{principalAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -78,6 +84,8 @@
                ,BALANCE_AMT
                ,INT_AMT
                ,PRINCIPAL_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -88,6 +96,49 @@
            AND ORG_CD = #{orgCd}
            AND BOND_NUM = #{bondNum}
            AND TRANS_DTIME = #{transDtime}
+    </select>
+
+    <select id="selectBondHistLast" parameterType="BondHistSearch"  resultType="BondHistEntity">
+        SELECT
+              H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.BOND_NUM
+             ,H1.TRANS_DTIME
+             ,H1.TRANS_NO
+             ,H1.TRANS_AMT
+             ,H1.BALANCE_AMT
+             ,H1.INT_AMT
+             ,H1.PRINCIPAL_AMT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+        FROM BOND_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, BOND_NUM, TRANS_DTIME
+                        FROM BANK_ACC_DEPOSIT_HIST badh
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND BOND_NUM = #{bondNum}
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, BOND_NUM, TRANS_DTIME DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+        WHERE
+            H1.MEMBER_ID = H2.MEMBER_ID
+          AND H1.ORG_CD = H2.ORG_CD
+          AND H1.BOND_NUM = H2.BOND_NUM
+          AND H1.TRANS_DTIME = H2.TRANS_DTIME
     </select>
 
     <select id="selectBondHistListTotalCnt" parameterType="BondHistSearch"  resultType="Long">
@@ -126,6 +177,8 @@
                ,BALANCE_AMT
                ,INT_AMT
                ,PRINCIPAL_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -144,7 +197,7 @@
        <if test = 'transDtime  != null and transDtime != ""'>
            AND TRANS_DTIME = #{transDtime}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, BOND_NUM, TRANS_DTIME
+        ORDER BY MEMBER_ID, ORG_CD, BOND_NUM, TRANS_DTIME DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

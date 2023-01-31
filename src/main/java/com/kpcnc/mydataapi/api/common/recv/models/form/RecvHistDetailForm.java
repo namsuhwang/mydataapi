@@ -21,6 +21,7 @@ public class RecvHistDetailForm{
 
     public RecvHistDetailForm(RecvHistBaseForm baseForm) {
         this.recvSeq = baseForm.getRecvSeq();
+
         this.regUserId = baseForm.getRegUserId();
         this.regDt = baseForm.getRegDt();
         this.chgUserId = baseForm.getChgUserId();

@@ -41,6 +41,12 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public void allDelCard(CardForm dom) {
+        cardMapper.deleteAllCard(dom.getEntity());
+        return;
+    }
+
+    @Override
     public CardEntity getCard(CardSearch dom) {
         return cardMapper.selectCard(dom);
     }

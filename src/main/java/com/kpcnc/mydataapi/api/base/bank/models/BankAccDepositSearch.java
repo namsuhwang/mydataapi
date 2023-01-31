@@ -15,22 +15,19 @@ public class BankAccDepositSearch extends SearchDto {
     private String seqno;    // 회차번호
 
     public BankAccDepositSearch(String memberId, String orgCd, String accountNum, String seqno) {
-        this.setMemberId(memberId);
-        this.setOrgCd(orgCd);
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.seqno = seqno;
     }
 
     public BankAccDepositSearch(BankAccDepositEntity entity) {
-        this.setMemberId(entity.getMemberId());
-        this.setOrgCd(entity.getOrgCd());
+        super(entity.getMemberId(), entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
         this.seqno = entity.getSeqno();
     }
 
     public BankAccDepositSearch(BankAccDepositForm form) {
-        this.setMemberId(form.getMemberId());
-        this.setOrgCd(form.getOrgCd());
+        super(form.getMemberId(), form.getOrgCd());
         this.accountNum = form.getAccountNum();
         this.seqno = form.getSeqno();
     }

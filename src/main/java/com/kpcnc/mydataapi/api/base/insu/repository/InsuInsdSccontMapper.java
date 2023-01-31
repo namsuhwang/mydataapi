@@ -16,6 +16,8 @@ public interface InsuInsdSccontMapper{
 
     InsuInsdSccontEntity selectInsuInsdSccont(InsuInsdSccontSearch dom);
 
+    InsuInsdSccontEntity selectInsuInsdSccontLast(InsuInsdSccontSearch dom);
+
     Long selectInsuInsdSccontListTotalCnt(InsuInsdSccontSearch dom);
 
     List<InsuInsdSccontEntity> selectInsuInsdSccontList(InsuInsdSccontSearch dom);

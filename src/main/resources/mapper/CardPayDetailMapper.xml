@@ -17,6 +17,8 @@
             ,REVOLVING_AMT
             ,LOAN_LONG_AMT
             ,ETC_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -34,6 +36,8 @@
             ,#{revolvingAmt, jdbcType=VARCHAR}
             ,#{loanLongAmt, jdbcType=VARCHAR}
             ,#{etcAmt, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -55,6 +59,8 @@
                ,REVOLVING_AMT = #{revolvingAmt, jdbcType=VARCHAR}
                ,LOAN_LONG_AMT = #{loanLongAmt, jdbcType=VARCHAR}
                ,ETC_AMT = #{etcAmt, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -73,6 +79,13 @@
            AND PAY_DUE_DATE = #{payDueDate}
     </delete>
 
+    <delete id="deleteAllCardPayDetail" parameterType="CardPayDetailEntity">
+        DELETE FROM CARD_PAY_DETAIL
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectCardPayDetail" parameterType="CardPayDetailSearch"  resultType="CardPayDetailEntity">
          SELECT 
                MEMBER_ID
@@ -86,6 +99,8 @@
                ,REVOLVING_AMT
                ,LOAN_LONG_AMT
                ,ETC_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -136,6 +151,8 @@
                ,REVOLVING_AMT
                ,LOAN_LONG_AMT
                ,ETC_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

@@ -15,6 +15,8 @@
             ,PAID_AMT
             ,CURRENCY_CODE
             ,PAY_METHOD
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -30,6 +32,8 @@
             ,#{paidAmt, jdbcType=NUMERIC}
             ,#{currencyCode, jdbcType=VARCHAR}
             ,#{payMethod, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -49,6 +53,8 @@
                ,PAID_AMT = #{paidAmt, jdbcType=NUMERIC}
                ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
                ,PAY_METHOD = #{payMethod, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -82,6 +88,8 @@
                ,PAID_AMT
                ,CURRENCY_CODE
                ,PAY_METHOD
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -94,6 +102,59 @@
            AND TRANS_DATE = #{transDate}
            AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
            AND PAID_IN_CNT = #{paidInCnt}
+    </select>
+
+    <select id="selectInsuHistLast" parameterType="InsuHistSearch"  resultType="InsuHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.INSU_NUM
+               ,H1.TRANS_DATE
+               ,H1.TRANS_APPLIED_MONTH
+               ,H1.PAID_IN_CNT
+               ,H1.PAID_AMT
+               ,H1.CURRENCY_CODE
+               ,H1.PAY_METHOD
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM INSU_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM, TRANS_DATE, TRANS_APPLIED_MONTH, PAID_IN_CNT
+                        FROM INSU_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'insuNum  != null and insuNum != ""'>
+                                AND INSU_NUM = #{insuNum}
+                            </if>
+                            <if test = 'transDate  != null and transDate != ""'>
+                                AND TRANS_DATE = #{transDate}
+                            </if>
+                            <if test = 'transAppliedMonth  != null and transAppliedMonth != ""'>
+                                AND TRANS_APPLIED_MONTH = #{transAppliedMonth}
+                            </if>
+                            <if test = 'paidInCnt  != null and paidInCnt != ""'>
+                                AND PAID_IN_CNT = #{paidInCnt}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, TRANS_DTIME DESC, TRANS_APPLIED_MONTH DESC, PAID_IN_CNT DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+             H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.INSU_NUM = H2.INSU_NUM
+           AND H1.TRANS_DATE = H2.TRANS_DATE
+           AND H1.TRANS_APPLIED_MONTH = H2.TRANS_APPLIED_MONTH
+           AND H1.PAID_IN_CNT = H2.PAID_IN_CNT
     </select>
 
     <select id="selectInsuHistListTotalCnt" parameterType="InsuHistSearch"  resultType="Long">
@@ -138,6 +199,8 @@
                ,PAID_AMT
                ,CURRENCY_CODE
                ,PAY_METHOD
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

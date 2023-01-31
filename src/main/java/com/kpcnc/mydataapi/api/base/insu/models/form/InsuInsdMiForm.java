@@ -1,18 +1,15 @@
 package com.kpcnc.mydataapi.api.base.insu.models.form;
 
 import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuInsdMiEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuInsdMiForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InsuInsdMiForm extends FormBase {
     private String insuNum;    // 증권번호
     private Integer gurtSeq;    // 보장일련번호
     private String subject;    // 계약관계자 구분 (코드)
@@ -25,15 +22,11 @@ public class InsuInsdMiForm{
     private Long coverageAmt;    // 담보금액
     private String startDate;    // 담보기간 시작일자
     private String endDate;    // 담보기간 종료일자
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public InsuInsdMiEntity getEntity(){
         InsuInsdMiEntity entity = new InsuInsdMiEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setInsuNum(insuNum);
         entity.setGurtSeq(gurtSeq);
         entity.setSubject(subject);
@@ -46,10 +39,12 @@ public class InsuInsdMiForm{
         entity.setCoverageAmt(coverageAmt);
         entity.setStartDate(startDate);
         entity.setEndDate(endDate);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

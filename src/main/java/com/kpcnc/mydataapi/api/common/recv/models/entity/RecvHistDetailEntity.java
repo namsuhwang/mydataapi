@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class RecvHistDetailEntity{
     private Long rowNum;
-    private String recvSeq;    // 수신 일련번호
+    private String recvSeq;    // 수신 ID
     private Long recvDetailSeq;    // 수신 상세 일련번호
     private String recvData;    // 수신데이터
     private String regUserId;    // 등록자

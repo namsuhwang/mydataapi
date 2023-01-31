@@ -11,16 +11,17 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class ItfnLoanHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String accountNum;    // 계좌번호
     private String seqno;    // 회차번호
     private String transDtime;    // 거래일시
     private String transNo;    // 거래번호
 
+    public ItfnLoanHistSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public ItfnLoanHistSearch(String memberId, String orgCd, String accountNum, String seqno, String transDtime, String transNo) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.accountNum = accountNum;
         this.seqno = seqno;
         this.transDtime = transDtime;
@@ -28,8 +29,7 @@ public class ItfnLoanHistSearch extends SearchDto {
     }
 
     public ItfnLoanHistSearch(ItfnLoanHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.accountNum = entity.getAccountNum();
         this.seqno = entity.getSeqno();
         this.transDtime = entity.getTransDtime();
@@ -37,8 +37,7 @@ public class ItfnLoanHistSearch extends SearchDto {
     }
 
     public ItfnLoanHistSearch(ItfnLoanHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.accountNum = form.getAccountNum();
         this.seqno = form.getSeqno();
         this.transDtime = form.getTransDtime();

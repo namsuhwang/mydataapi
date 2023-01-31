@@ -11,25 +11,24 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class InsuMiPaySearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String insuNum;    // 증권번호
 
+    public InsuMiPaySearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public InsuMiPaySearch(String memberId, String orgCd, String insuNum) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.insuNum = insuNum;
     }
 
     public InsuMiPaySearch(InsuMiPayEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.insuNum = entity.getInsuNum();
     }
 
     public InsuMiPaySearch(InsuMiPayForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.insuNum = form.getInsuNum();
     }
 }

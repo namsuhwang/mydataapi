@@ -1,20 +1,16 @@
 package com.kpcnc.mydataapi.api.base.insu.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuSccontEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InsuSccontEntity extends EntityBase {
     private String insuNum;    // 증권번호
     private String insuredNo;    // 피보험자 번호
     private String contractName;    // 특약명
@@ -23,8 +19,4 @@ public class InsuSccontEntity{
     private BigDecimal contractFaceAmt;    // 특약가입금액
     private String currencyCode;    // 통화코드(특 약가입금액)
     private String isRequired;    // 특약의 유형 (여부)
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

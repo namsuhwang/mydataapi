@@ -14,6 +14,8 @@
             ,PROD_NAME
             ,ACCOUNT_TYPE
             ,ACCOUNT_STATUS
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -28,6 +30,8 @@
             ,#{prodName, jdbcType=VARCHAR}
             ,#{accountType, jdbcType=VARCHAR}
             ,#{accountStatus, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -46,6 +50,8 @@
                ,PROD_NAME = #{prodName, jdbcType=VARCHAR}
                ,ACCOUNT_TYPE = #{accountType, jdbcType=VARCHAR}
                ,ACCOUNT_STATUS = #{accountStatus, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -72,6 +78,8 @@
                ,PROD_NAME
                ,ACCOUNT_TYPE
                ,ACCOUNT_STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -115,6 +123,8 @@
                ,PROD_NAME
                ,ACCOUNT_TYPE
                ,ACCOUNT_STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

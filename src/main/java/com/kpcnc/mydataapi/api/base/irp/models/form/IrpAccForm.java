@@ -2,11 +2,10 @@ package com.kpcnc.mydataapi.api.base.irp.models.form;
 
 import com.kpcnc.mydataapi.api.base.irp.models.entity.IrpAccEntity;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

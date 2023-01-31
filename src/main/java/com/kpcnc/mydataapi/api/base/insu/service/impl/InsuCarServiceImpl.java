@@ -23,15 +23,22 @@ public class InsuCarServiceImpl implements InsuCarService {
     InsuCarMapper insuCarMapper;
 
     @Override
-    public InsuCarEntity regInsuCar(InsuCarForm dom) {
+    public void regInsuCar(InsuCarForm dom) {
         insuCarMapper.insertInsuCar(dom.getEntity());
-        return insuCarMapper.selectInsuCar(new InsuCarSearch(dom));
     }
 
     @Override
-    public InsuCarEntity modInsuCar(InsuCarForm dom) {
+    public void updInsuCar(InsuCarForm dom) {
         insuCarMapper.updateInsuCar(dom.getEntity());
-        return insuCarMapper.selectInsuCar(new InsuCarSearch(dom));
+    }
+
+    @Override
+    public void modInsuCar(InsuCarForm dom) {
+        if(getInsuCar(new InsuCarSearch(dom)) == null){
+            regInsuCar(dom);
+        }else{
+            updInsuCar(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,18 @@ public class InsuCarServiceImpl implements InsuCarService {
     }
 
     @Override
+    public void allDelInsuCar(InsuCarForm dom) {
+        insuCarMapper.deleteAllInsuCar(dom.getEntity());
+    }
+
+    @Override
     public InsuCarEntity getInsuCar(InsuCarSearch dom) {
         return insuCarMapper.selectInsuCar(dom);
+    }
+
+    @Override
+    public InsuCarEntity getInsuCarLast(InsuCarSearch dom) {
+        return insuCarMapper.selectInsuCarLast(dom);
     }
 
     @Override

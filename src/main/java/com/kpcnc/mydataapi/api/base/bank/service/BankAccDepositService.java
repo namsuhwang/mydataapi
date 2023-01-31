@@ -19,5 +19,7 @@ public interface BankAccDepositService{
 
     public BankAccDepositEntity getBankAccDeposit(BankAccDepositSearch dom);
 
+    public BankAccDepositEntity getBankAccDepositLast(BankAccDepositSearch dom);
+
     public ResultListDto<BankAccDepositEntity> getBankAccDepositList(BankAccDepositSearch dom);
 }

@@ -62,6 +62,11 @@ public class BankAccDepositServiceImpl implements BankAccDepositService {
     }
 
     @Override
+    public BankAccDepositEntity getBankAccDepositLast(BankAccDepositSearch dom) {
+        return bankAccDepositMapper.selectBankAccDeposit(dom);
+    }
+
+    @Override
     public ResultListDto<BankAccDepositEntity> getBankAccDepositList(BankAccDepositSearch dom) {
         ResultListDto<BankAccDepositEntity> result = new ResultListDto<>();
         Long totalCnt = bankAccDepositMapper.selectBankAccDepositListTotalCnt(dom);

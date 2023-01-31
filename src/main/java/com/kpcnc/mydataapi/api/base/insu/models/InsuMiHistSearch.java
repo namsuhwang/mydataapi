@@ -11,16 +11,22 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class InsuMiHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String insuNum;    // 증권번호
     private String transDate;    // 납입일자
     private Integer transAppliedMonth;    // 납입연월
     private Integer paidInCnt;    // 납입회차
 
+    public InsuMiHistSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
+    public InsuMiHistSearch(String memberId, String orgCd, String insuNum) {
+        super(memberId, orgCd);
+        this.insuNum = insuNum;
+    }
+
     public InsuMiHistSearch(String memberId, String orgCd, String insuNum, String transDate, Integer transAppliedMonth, Integer paidInCnt) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.insuNum = insuNum;
         this.transDate = transDate;
         this.transAppliedMonth = transAppliedMonth;
@@ -28,8 +34,7 @@ public class InsuMiHistSearch extends SearchDto {
     }
 
     public InsuMiHistSearch(InsuMiHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.insuNum = entity.getInsuNum();
         this.transDate = entity.getTransDate();
         this.transAppliedMonth = entity.getTransAppliedMonth();
@@ -37,8 +42,7 @@ public class InsuMiHistSearch extends SearchDto {
     }
 
     public InsuMiHistSearch(InsuMiHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.insuNum = form.getInsuNum();
         this.transDate = form.getTransDate();
         this.transAppliedMonth = form.getTransAppliedMonth();

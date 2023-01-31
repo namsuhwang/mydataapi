@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Bank013ResDto extends ResBaseDto {
 
     @JsonProperty("isa_cnt")

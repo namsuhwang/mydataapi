@@ -29,7 +29,8 @@ public class CardAprDmHistController {
     public ResponseEntity<ResponseDto<CardAprDmHistEntity>> regCardAprDmHist(
         @RequestBody CardAprDmHistForm dom
     ){
-        CardAprDmHistEntity result = cardAprDmHistService.regCardAprDmHist(dom);
+        cardAprDmHistService.regCardAprDmHist(dom);
+        CardAprDmHistEntity result = cardAprDmHistService.getCardAprDmHistLast(new CardAprDmHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardAprDmHistController {
     public ResponseEntity<ResponseDto<CardAprDmHistEntity>> modCardAprDmHist(
         @RequestBody CardAprDmHistForm dom
     ){
-        CardAprDmHistEntity result = cardAprDmHistService.modCardAprDmHist(dom);
+        cardAprDmHistService.modCardAprDmHist(dom);
+        CardAprDmHistEntity result = cardAprDmHistService.getCardAprDmHistLast(new CardAprDmHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

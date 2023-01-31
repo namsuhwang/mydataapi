@@ -6,9 +6,11 @@ import com.kpcnc.mydataapi.api.base.insu.models.form.InsuLoanBaseForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InsuLoanBaseService{
-    public InsuLoanBaseEntity regInsuLoanBase(InsuLoanBaseForm dom);
+    public void regInsuLoanBase(InsuLoanBaseForm dom);
 
-    public InsuLoanBaseEntity modInsuLoanBase(InsuLoanBaseForm dom);
+    public void updInsuLoanBase(InsuLoanBaseForm dom);
+
+    public void modInsuLoanBase(InsuLoanBaseForm dom);
 
     public void  delInsuLoanBase(InsuLoanBaseForm dom);
 

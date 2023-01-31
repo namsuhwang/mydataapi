@@ -23,15 +23,25 @@ public class InsuBaseServiceImpl implements InsuBaseService {
     InsuBaseMapper insuBaseMapper;
 
     @Override
-    public InsuBaseEntity regInsuBase(InsuBaseForm dom) {
+    public void regInsuBase(InsuBaseForm dom) {
         insuBaseMapper.insertInsuBase(dom.getEntity());
-        return insuBaseMapper.selectInsuBase(new InsuBaseSearch(dom));
+        return;
     }
 
     @Override
-    public InsuBaseEntity modInsuBase(InsuBaseForm dom) {
+    public void updInsuBase(InsuBaseForm dom) {
         insuBaseMapper.updateInsuBase(dom.getEntity());
-        return insuBaseMapper.selectInsuBase(new InsuBaseSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modInsuBase(InsuBaseForm dom) {
+        if(getInsuBase(new InsuBaseSearch(dom)) == null){
+            regInsuBase(dom);
+        }else{
+            updInsuBase(dom);
+        }
+        return;
     }
 
     @Override
@@ -39,6 +49,14 @@ public class InsuBaseServiceImpl implements InsuBaseService {
         insuBaseMapper.deleteInsuBase(dom.getEntity());
         return;
     }
+
+
+    @Override
+    public void allDelInsuBase(InsuBaseForm dom) {
+        insuBaseMapper.deleteAllInsuBase(dom.getEntity());
+        return;
+    }
+
 
     @Override
     public InsuBaseEntity getInsuBase(InsuBaseSearch dom) {

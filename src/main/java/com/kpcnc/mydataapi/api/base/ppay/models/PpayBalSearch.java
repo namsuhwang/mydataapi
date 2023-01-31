@@ -11,25 +11,20 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class PpayBalSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String ppId;    // 선불카드 식별자
 
     public PpayBalSearch(String memberId, String orgCd, String ppId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.ppId = ppId;
     }
 
     public PpayBalSearch(PpayBalEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.ppId = entity.getPpId();
     }
 
     public PpayBalSearch(PpayBalForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.ppId = form.getPpId();
     }
 }

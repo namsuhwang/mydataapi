@@ -16,6 +16,8 @@ public interface CardLoanLgHistMapper{
 
     CardLoanLgHistEntity selectCardLoanLgHist(CardLoanLgHistSearch dom);
 
+    CardLoanLgHistEntity selectCardLoanLgHistLast(CardLoanLgHistSearch dom);
+
     Long selectCardLoanLgHistListTotalCnt(CardLoanLgHistSearch dom);
 
     List<CardLoanLgHistEntity> selectCardLoanLgHistList(CardLoanLgHistSearch dom);

@@ -1,20 +1,17 @@
 package com.kpcnc.mydataapi.api.base.insu.models.form;
 
 import com.kpcnc.mydataapi.api.base.insu.models.entity.InsuMiBaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuMiBaseForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InsuMiBaseForm extends FormBase {
     private String insuNum;    // 증권번호
     private String isRenewable;    // 갱신여부 (여부)
     private String issueDate;    // 계약체결일
@@ -22,15 +19,11 @@ public class InsuMiBaseForm{
     private BigDecimal faceAmt;    // 보험가입금액
     private String currencyCode;    // 통화코드(보 험가입금액)
     private Integer prizeCnt;    // 목적물수
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public InsuMiBaseEntity getEntity(){
         InsuMiBaseEntity entity = new InsuMiBaseEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setInsuNum(insuNum);
         entity.setIsRenewable(isRenewable);
         entity.setIssueDate(issueDate);
@@ -38,10 +31,12 @@ public class InsuMiBaseForm{
         entity.setFaceAmt(faceAmt);
         entity.setCurrencyCode(currencyCode);
         entity.setPrizeCnt(prizeCnt);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

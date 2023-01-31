@@ -19,6 +19,8 @@
             ,COVERAGE_AMT
             ,START_DATE
             ,END_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -38,6 +40,8 @@
             ,#{coverageAmt, jdbcType=NUMERIC}
             ,#{startDate, jdbcType=VARCHAR}
             ,#{endDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -61,6 +65,8 @@
                ,COVERAGE_AMT = #{coverageAmt, jdbcType=NUMERIC}
                ,START_DATE = #{startDate, jdbcType=VARCHAR}
                ,END_DATE = #{endDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -81,6 +87,14 @@
            AND RELATION = #{relation}
     </delete>
 
+    <delete id="deleteAllInsuGurt" parameterType="InsuGurtEntity">
+        DELETE FROM INSU_GURT
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </delete>
+
     <select id="selectInsuGurt" parameterType="InsuGurtSearch"  resultType="InsuGurtEntity">
          SELECT 
                MEMBER_ID
@@ -96,6 +110,8 @@
                ,COVERAGE_AMT
                ,START_DATE
                ,END_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -107,6 +123,57 @@
            AND INSU_NUM = #{insuNum}
            AND SUBJECT = #{subject}
            AND RELATION = #{relation}
+    </select>
+
+    <select id="selectInsuGurtLast" parameterType="InsuGurtSearch"  resultType="InsuGurtEntity">
+         SELECT
+                S1.MEMBER_ID
+               ,S1.ORG_CD
+               ,S1.INSU_NUM
+               ,S1.SUBJECT
+               ,S1.RELATION
+               ,S1.STATUS
+               ,S1.COVERAGE_CODE
+               ,S1.TYPE
+               ,S1.COVERAGE_NUM
+               ,S1.COVERAGE_NAME
+               ,S1.COVERAGE_AMT
+               ,S1.START_DATE
+               ,S1.END_DATE
+               ,S1.API_TRAN_DAY
+               ,S1.API_TRAN_ID
+               ,S1.REG_USER_ID
+               ,S1.REG_DT
+               ,S1.CHG_USER_ID
+               ,S1.CHG_DT
+        FROM INSU_GURT S1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM, SUBJECT, RELATION
+                        FROM INSU_GURT
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND INSU_NUM = #{insuNum}
+                            <if test = 'subject  != null and subject != ""'>
+                                AND SUBJECT = #{subject}
+                            </if>
+                            <if test = 'relation  != null and relation != ""'>
+                                AND RELATION = #{relation}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) S2
+       WHERE
+               S1.MEMBER_ID = S2.MEMBER_ID
+           AND S1.ORG_CD = S2.ORG_CD
+           AND S1.INSU_NUM = S2.INSU_NUM
+           AND S1.SUBJECT = S2.SUBJECT
+           AND S1.RELATION = S2.RELATION
     </select>
 
     <select id="selectInsuGurtListTotalCnt" parameterType="InsuGurtSearch"  resultType="Long">
@@ -152,6 +219,8 @@
                ,COVERAGE_AMT
                ,START_DATE
                ,END_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

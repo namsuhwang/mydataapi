@@ -16,6 +16,8 @@
             ,CONTRACT_FACE_AMT
             ,CURRENCY_CODE
             ,IS_REQUIRED
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -32,6 +34,8 @@
             ,#{contractFaceAmt, jdbcType=NUMERIC}
             ,#{currencyCode, jdbcType=VARCHAR}
             ,#{isRequired, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -52,6 +56,8 @@
                ,CONTRACT_FACE_AMT = #{contractFaceAmt, jdbcType=NUMERIC}
                ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
                ,IS_REQUIRED = #{isRequired, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -72,6 +78,15 @@
            AND CONTRACT_NAME = #{contractName}
     </delete>
 
+    <delete id="deleteAllInsuSccont" parameterType="InsuSccontEntity">
+        DELETE FROM INSU_SCCONT
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+           AND INSURED_NO = #{insuredNo}
+    </delete>
+
     <select id="selectInsuSccont" parameterType="InsuSccontSearch"  resultType="InsuSccontEntity">
          SELECT 
                MEMBER_ID
@@ -84,6 +99,8 @@
                ,CONTRACT_FACE_AMT
                ,CURRENCY_CODE
                ,IS_REQUIRED
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -95,6 +112,56 @@
            AND INSU_NUM = #{insuNum}
            AND INSURED_NO = #{insuredNo}
            AND CONTRACT_NAME = #{contractName}
+    </select>
+
+    <select id="selectInsuSccontLast" parameterType="InsuSccontSearch"  resultType="InsuSccontEntity">
+         SELECT
+                S1.MEMBER_ID
+               ,S1.ORG_CD
+               ,S1.INSU_NUM
+               ,S1.INSURED_NO
+               ,S1.CONTRACT_NAME
+               ,S1.CONTRACT_STATUS
+               ,S1.CONTRACT_EXP_DATE
+               ,S1.CONTRACT_FACE_AMT
+               ,S1.CURRENCY_CODE
+               ,S1.IS_REQUIRED
+               ,S1.API_TRAN_DAY
+               ,S1.API_TRAN_ID
+               ,S1.REG_USER_ID
+               ,S1.REG_DT
+               ,S1.CHG_USER_ID
+               ,S1.CHG_DT
+        FROM INSU_SCCONT S1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM, INSURED_NO, CONTRACT_NAME
+                        FROM INSU_SCCONT
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'insuNum  != null and insuNum != ""'>
+                                AND INSU_NUM = #{insuNum}
+                            </if>
+                            <if test = 'insuredNo  != null and insuredNo != ""'>
+                                AND INSURED_NO = #{insuredNo}
+                            </if>
+                            <if test = 'contractName  != null and contractName != ""'>
+                                AND CONTRACT_NAME = #{contractName}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) S2
+       WHERE
+             S1.MEMBER_ID = S2.MEMBER_ID
+           AND S1.ORG_CD = S2.ORG_CD
+           AND S1.INSU_NUM = S2.INSU_NUM
+           AND S1.INSURED_NO = S2.INSURED_NO
+           AND S1.CONTRACT_NAME = S2.CONTRACT_NAME
     </select>
 
     <select id="selectInsuSccontListTotalCnt" parameterType="InsuSccontSearch"  resultType="Long">
@@ -137,6 +204,8 @@
                ,CONTRACT_FACE_AMT
                ,CURRENCY_CODE
                ,IS_REQUIRED
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

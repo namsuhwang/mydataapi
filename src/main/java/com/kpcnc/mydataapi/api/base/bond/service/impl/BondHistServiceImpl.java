@@ -45,6 +45,13 @@ public class BondHistServiceImpl implements BondHistService {
         return bondHistMapper.selectBondHist(dom);
     }
 
+
+    @Override
+    public BondHistEntity getBondHistLast(BondHistSearch dom) {
+        return bondHistMapper.selectBondHistLast(dom);
+    }
+
+
     @Override
     public ResultListDto<BondHistEntity> getBondHistList(BondHistSearch dom) {
         ResultListDto<BondHistEntity> result = new ResultListDto<>();

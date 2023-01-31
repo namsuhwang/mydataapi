@@ -29,7 +29,8 @@ public class InsuInsdMiBasePpController {
     public ResponseEntity<ResponseDto<InsuInsdMiBasePpEntity>> regInsuInsdMiBasePp(
         @RequestBody InsuInsdMiBasePpForm dom
     ){
-        InsuInsdMiBasePpEntity result = insuInsdMiBasePpService.regInsuInsdMiBasePp(dom);
+        insuInsdMiBasePpService.regInsuInsdMiBasePp(dom);
+        InsuInsdMiBasePpEntity result = insuInsdMiBasePpService.getInsuInsdMiBasePp(new InsuInsdMiBasePpSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuInsdMiBasePpController {
     public ResponseEntity<ResponseDto<InsuInsdMiBasePpEntity>> modInsuInsdMiBasePp(
         @RequestBody InsuInsdMiBasePpForm dom
     ){
-        InsuInsdMiBasePpEntity result = insuInsdMiBasePpService.modInsuInsdMiBasePp(dom);
+        insuInsdMiBasePpService.modInsuInsdMiBasePp(dom);
+        InsuInsdMiBasePpEntity result = insuInsdMiBasePpService.getInsuInsdMiBasePp(new InsuInsdMiBasePpSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

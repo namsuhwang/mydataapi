@@ -1,20 +1,16 @@
 package com.kpcnc.mydataapi.api.base.card.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardLoanLgHistEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class CardLoanLgHistEntity extends EntityBase {
     private String loanNum;    // 대출번호
     private String transDtime;    // 거래일시 또는 거래일자
     private String transNo;    // 거래번호
@@ -24,8 +20,4 @@ public class CardLoanLgHistEntity{
     private BigDecimal balanceAmt;    // 거래 후 대출잔액
     private BigDecimal principalAmt;    // 거래금액 중 원금
     private BigDecimal intAmt;    // 거래금액 중 이자
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

@@ -23,20 +23,36 @@ public class CardRvServiceImpl implements CardRvService {
     CardRvMapper cardRvMapper;
 
     @Override
-    public CardRvEntity regCardRv(CardRvForm dom) {
+    public void regCardRv(CardRvForm dom) {
         cardRvMapper.insertCardRv(dom.getEntity());
-        return cardRvMapper.selectCardRv(new CardRvSearch(dom));
+        return;
     }
 
     @Override
-    public CardRvEntity modCardRv(CardRvForm dom) {
+    public void updCardRv(CardRvForm dom) {
         cardRvMapper.updateCardRv(dom.getEntity());
-        return cardRvMapper.selectCardRv(new CardRvSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modCardRv(CardRvForm dom) {
+        if(getCardRv(new CardRvSearch(dom))== null){
+            regCardRv(dom);
+        }else{
+            updCardRv(dom);
+        }
+        return;
     }
 
     @Override
     public void delCardRv(CardRvForm dom) {
         cardRvMapper.deleteCardRv(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelCardRv(CardRvForm dom) {
+        cardRvMapper.deleteAllCardRv(dom.getEntity());
         return;
     }
 

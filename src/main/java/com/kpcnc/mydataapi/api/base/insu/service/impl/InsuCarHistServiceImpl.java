@@ -23,15 +23,25 @@ public class InsuCarHistServiceImpl implements InsuCarHistService {
     InsuCarHistMapper insuCarHistMapper;
 
     @Override
-    public InsuCarHistEntity regInsuCarHist(InsuCarHistForm dom) {
+    public void regInsuCarHist(InsuCarHistForm dom) {
         insuCarHistMapper.insertInsuCarHist(dom.getEntity());
-        return insuCarHistMapper.selectInsuCarHist(new InsuCarHistSearch(dom));
+        return;
     }
 
     @Override
-    public InsuCarHistEntity modInsuCarHist(InsuCarHistForm dom) {
+    public void updInsuCarHist(InsuCarHistForm dom) {
         insuCarHistMapper.updateInsuCarHist(dom.getEntity());
-        return insuCarHistMapper.selectInsuCarHist(new InsuCarHistSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modInsuCarHist(InsuCarHistForm dom) {
+        if(getInsuCarHist(new InsuCarHistSearch(dom)) == null){
+            regInsuCarHist(dom);
+        }else{
+            updInsuCarHist(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +53,11 @@ public class InsuCarHistServiceImpl implements InsuCarHistService {
     @Override
     public InsuCarHistEntity getInsuCarHist(InsuCarHistSearch dom) {
         return insuCarHistMapper.selectInsuCarHist(dom);
+    }
+
+    @Override
+    public InsuCarHistEntity getInsuCarHistLast(InsuCarHistSearch dom) {
+        return insuCarHistMapper.selectInsuCarHistLast(dom);
     }
 
     @Override

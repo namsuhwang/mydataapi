@@ -16,6 +16,8 @@ public interface CardChargeAddMapper{
 
     CardChargeAddEntity selectCardChargeAdd(CardChargeAddSearch dom);
 
+    CardChargeAddEntity selectCardChargeAddLast(CardChargeAddSearch dom);
+
     Long selectCardChargeAddListTotalCnt(CardChargeAddSearch dom);
 
     List<CardChargeAddEntity> selectCardChargeAddList(CardChargeAddSearch dom);

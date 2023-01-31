@@ -29,7 +29,8 @@ public class InsuCarHistController {
     public ResponseEntity<ResponseDto<InsuCarHistEntity>> regInsuCarHist(
         @RequestBody InsuCarHistForm dom
     ){
-        InsuCarHistEntity result = insuCarHistService.regInsuCarHist(dom);
+        insuCarHistService.regInsuCarHist(dom);
+        InsuCarHistEntity result = insuCarHistService.getInsuCarHist(new InsuCarHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuCarHistController {
     public ResponseEntity<ResponseDto<InsuCarHistEntity>> modInsuCarHist(
         @RequestBody InsuCarHistForm dom
     ){
-        InsuCarHistEntity result = insuCarHistService.modInsuCarHist(dom);
+        insuCarHistService.modInsuCarHist(dom);
+        InsuCarHistEntity result = insuCarHistService.getInsuCarHist(new InsuCarHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

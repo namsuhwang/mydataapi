@@ -1,20 +1,17 @@
 package com.kpcnc.mydataapi.api.base.card.models.form;
 
 import com.kpcnc.mydataapi.api.base.card.models.entity.CardDmPcaEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardDmPcaForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class CardDmPcaForm extends FormBase {
     private String cardId;    // 카드 식별자
     private String purchaseNum;    // 매입번호
     private String purchaseDate;    // 매입일자
@@ -27,15 +24,11 @@ public class CardDmPcaForm{
     private String merchantRegno;    // 가맹점 사업자등록번호
     private BigDecimal approvedAmt;    // 이용금액
     private Integer totalInstallCnt;    // 전체 할부회차
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public CardDmPcaEntity getEntity(){
         CardDmPcaEntity entity = new CardDmPcaEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setCardId(cardId);
         entity.setPurchaseNum(purchaseNum);
         entity.setPurchaseDate(purchaseDate);
@@ -48,10 +41,12 @@ public class CardDmPcaForm{
         entity.setMerchantRegno(merchantRegno);
         entity.setApprovedAmt(approvedAmt);
         entity.setTotalInstallCnt(totalInstallCnt);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

@@ -14,6 +14,8 @@ public interface CardRvMapper{
 
     int deleteCardRv(CardRvEntity dom);
 
+    int deleteAllCardRv(CardRvEntity dom);
+
     CardRvEntity selectCardRv(CardRvSearch dom);
 
     Long selectCardRvListTotalCnt(CardRvSearch dom);

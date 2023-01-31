@@ -14,7 +14,11 @@ public interface InsuInsdMiSccontMapper{
 
     int deleteInsuInsdMiSccont(InsuInsdMiSccontEntity dom);
 
+    int deleteAllInsuInsdMiSccont(InsuInsdMiSccontEntity dom);
+
     InsuInsdMiSccontEntity selectInsuInsdMiSccont(InsuInsdMiSccontSearch dom);
+
+    InsuInsdMiSccontEntity selectInsuInsdMiSccontLast(InsuInsdMiSccontSearch dom);
 
     Long selectInsuInsdMiSccontListTotalCnt(InsuInsdMiSccontSearch dom);
 

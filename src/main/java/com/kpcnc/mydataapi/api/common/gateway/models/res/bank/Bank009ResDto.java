@@ -3,7 +3,6 @@ package com.kpcnc.mydataapi.api.common.gateway.models.res.bank;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccLoanAddForm;
-import com.kpcnc.mydataapi.api.base.bank.models.form.BankAccLoanForm;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
 import com.kpcnc.mydataapi.api.common.gateway.models.res.ResBaseDto;
 import lombok.*;

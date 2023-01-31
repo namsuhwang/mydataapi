@@ -11,28 +11,27 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CardRvSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String reqDate;    // 리볼빙약정 시작일
     private String endDate;    // 리볼빙약정 종료일
 
+    public CardRvSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public CardRvSearch(String memberId, String orgCd, String reqDate, String endDate) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.reqDate = reqDate;
         this.endDate = endDate;
     }
 
     public CardRvSearch(CardRvEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.reqDate = entity.getReqDate();
         this.endDate = entity.getEndDate();
     }
 
     public CardRvSearch(CardRvForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.reqDate = form.getReqDate();
         this.endDate = form.getEndDate();
     }

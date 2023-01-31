@@ -21,6 +21,8 @@
             ,INT_AMT
             ,REPAY_ORG_CODE
             ,REPAY_ACCOUNT_NUM
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -42,6 +44,8 @@
             ,#{intAmt, jdbcType=NUMERIC}
             ,#{repayOrgCode, jdbcType=VARCHAR}
             ,#{repayAccountNum, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -67,6 +71,8 @@
                ,INT_AMT = #{intAmt, jdbcType=NUMERIC}
                ,REPAY_ORG_CODE = #{repayOrgCode, jdbcType=VARCHAR}
                ,REPAY_ACCOUNT_NUM = #{repayAccountNum, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -87,6 +93,13 @@
            AND LOAN_CNT = #{loanCnt}
     </delete>
 
+    <delete id="deleteAllCardLoanLg" parameterType="CardLoanLgEntity">
+        DELETE FROM CARD_LOAN_LG
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectCardLoanLg" parameterType="CardLoanLgSearch"  resultType="CardLoanLgEntity">
          SELECT 
                MEMBER_ID
@@ -104,6 +117,8 @@
                ,INT_AMT
                ,REPAY_ORG_CODE
                ,REPAY_ACCOUNT_NUM
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -162,6 +177,8 @@
                ,INT_AMT
                ,REPAY_ORG_CODE
                ,REPAY_ACCOUNT_NUM
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

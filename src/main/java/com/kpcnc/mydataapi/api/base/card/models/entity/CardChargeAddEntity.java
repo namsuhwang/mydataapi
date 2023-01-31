@@ -1,20 +1,16 @@
 package com.kpcnc.mydataapi.api.base.card.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardChargeAddEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class CardChargeAddEntity extends EntityBase {
     private String seqno;    // 결제순번
     private String chargeMonth;    // 청구년월
     private String cardId;    // 카드 식별자
@@ -28,9 +24,5 @@ public class CardChargeAddEntity{
     private Integer totalInstallCnt;    // 전체 할부회차
     private Integer curInstallCnt;    // 현재 할부회차
     private Long balanceAmt;    // 할부 결제 후 잔액
-    private String prodType;    // 상품구분 (코드)
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
+    private String prodType;    // 상품구분 (코드) 
 }

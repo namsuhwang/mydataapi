@@ -17,6 +17,8 @@
             ,FIRST_DEPOSIT_DATE
             ,REG_DATE
             ,RCV_START_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -34,6 +36,8 @@
             ,#{firstDepositDate, jdbcType=VARCHAR}
             ,#{regDate, jdbcType=VARCHAR}
             ,#{rcvStartDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -55,6 +59,8 @@
                ,FIRST_DEPOSIT_DATE = #{firstDepositDate, jdbcType=VARCHAR}
                ,REG_DATE = #{regDate, jdbcType=VARCHAR}
                ,RCV_START_DATE = #{rcvStartDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -84,6 +90,8 @@
                ,FIRST_DEPOSIT_DATE
                ,REG_DATE
                ,RCV_START_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -130,6 +138,8 @@
                ,FIRST_DEPOSIT_DATE
                ,REG_DATE
                ,RCV_START_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

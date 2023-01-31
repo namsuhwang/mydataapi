@@ -6,13 +6,19 @@ import com.kpcnc.mydataapi.api.base.insu.models.form.InsuSccontForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InsuSccontService{
-    public InsuSccontEntity regInsuSccont(InsuSccontForm dom);
+    public void regInsuSccont(InsuSccontForm dom);
 
-    public InsuSccontEntity modInsuSccont(InsuSccontForm dom);
+    public void updInsuSccont(InsuSccontForm dom);
+
+    public void modInsuSccont(InsuSccontForm dom);
 
     public void  delInsuSccont(InsuSccontForm dom);
 
+    public void  allDelInsuSccont(InsuSccontForm dom);
+
     public InsuSccontEntity getInsuSccont(InsuSccontSearch dom);
+
+    public InsuSccontEntity getInsuSccontLast(InsuSccontSearch dom);
 
     public ResultListDto<InsuSccontEntity> getInsuSccontList(InsuSccontSearch dom);
 }

@@ -1,20 +1,16 @@
 package com.kpcnc.mydataapi.api.base.insu.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuBaseEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InsuBaseEntity extends EntityBase {
     private String insuNum;    // 증권번호
     private String isRenewable;    // 갱신여부 (여부)
     private String issueDate;    // 계약체결일
@@ -27,8 +23,4 @@ public class InsuBaseEntity{
     private String pensionRcvCycle;    // 연금수령주기
     private String isLoanable;    // 대출실행 가능 상품 여부
     private Integer insuredCnt;    // 피보험자수
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

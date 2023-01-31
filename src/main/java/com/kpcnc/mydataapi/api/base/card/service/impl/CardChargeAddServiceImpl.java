@@ -23,15 +23,25 @@ public class CardChargeAddServiceImpl implements CardChargeAddService {
     CardChargeAddMapper cardChargeAddMapper;
 
     @Override
-    public CardChargeAddEntity regCardChargeAdd(CardChargeAddForm dom) {
+    public void regCardChargeAdd(CardChargeAddForm dom) {
         cardChargeAddMapper.insertCardChargeAdd(dom.getEntity());
-        return cardChargeAddMapper.selectCardChargeAdd(new CardChargeAddSearch(dom));
+        return;
     }
 
     @Override
-    public CardChargeAddEntity modCardChargeAdd(CardChargeAddForm dom) {
+    public void updCardChargeAdd(CardChargeAddForm dom) {
         cardChargeAddMapper.updateCardChargeAdd(dom.getEntity());
-        return cardChargeAddMapper.selectCardChargeAdd(new CardChargeAddSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modCardChargeAdd(CardChargeAddForm dom) {
+        if(getCardChargeAdd(new CardChargeAddSearch(dom)) == null){
+            regCardChargeAdd(dom);
+        }else{
+            updCardChargeAdd(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +53,11 @@ public class CardChargeAddServiceImpl implements CardChargeAddService {
     @Override
     public CardChargeAddEntity getCardChargeAdd(CardChargeAddSearch dom) {
         return cardChargeAddMapper.selectCardChargeAdd(dom);
+    }
+
+    @Override
+    public CardChargeAddEntity getCardChargeAddLast(CardChargeAddSearch dom) {
+        return cardChargeAddMapper.selectCardChargeAddLast(dom);
     }
 
     @Override

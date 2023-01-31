@@ -13,6 +13,8 @@
             ,CHARGE_DAY
             ,CHARGE_MONTH
             ,PAID_OUT_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{chargeDay, jdbcType=VARCHAR}
             ,#{chargeMonth, jdbcType=VARCHAR}
             ,#{paidOutDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,CHARGE_DAY = #{chargeDay, jdbcType=VARCHAR}
                ,CHARGE_MONTH = #{chargeMonth, jdbcType=VARCHAR}
                ,PAID_OUT_DATE = #{paidOutDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -68,6 +74,8 @@
                ,CHARGE_DAY
                ,CHARGE_MONTH
                ,PAID_OUT_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -77,6 +85,45 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND SEQNO = #{seqno}
+    </select>
+
+    <select id="selectCardChargeLast" parameterType="CardChargeSearch"  resultType="CardChargeEntity">
+         SELECT
+                C1.MEMBER_ID
+               ,C1.ORG_CD
+               ,C1.SEQNO
+               ,C1.CHARGE_AMT
+               ,C1.CHARGE_DAY
+               ,C1.CHARGE_MONTH
+               ,C1.PAID_OUT_DATE
+               ,C1.API_TRAN_DAY
+               ,C1.API_TRAN_ID
+               ,C1.REG_USER_ID
+               ,C1.REG_DT
+               ,C1.CHG_USER_ID
+               ,C1.CHG_DT
+        FROM CARD_CHARGE C1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, SEQNO
+                        FROM CARD_CHARGE
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD,SEQNO DESC
+                    )
+                WHERE rownum = 1
+            ) C2
+       WHERE
+             C1.MEMBER_ID = #{memberId}
+           AND C1.ORG_CD = #{orgCd}
+           AND C1.SEQNO = #{seqno}
     </select>
 
     <select id="selectCardChargeListTotalCnt" parameterType="CardChargeSearch"  resultType="Long">
@@ -110,6 +157,8 @@
                ,CHARGE_DAY
                ,CHARGE_MONTH
                ,PAID_OUT_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

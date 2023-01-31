@@ -14,5 +14,7 @@ public interface CardLoanLgHistService{
 
     public CardLoanLgHistEntity getCardLoanLgHist(CardLoanLgHistSearch dom);
 
+    public CardLoanLgHistEntity getCardLoanLgHistLast(CardLoanLgHistSearch dom);
+
     public ResultListDto<CardLoanLgHistEntity> getCardLoanLgHistList(CardLoanLgHistSearch dom);
 }

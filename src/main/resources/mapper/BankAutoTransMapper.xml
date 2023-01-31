@@ -15,6 +15,8 @@
             ,SCHEDULED_CYCLE
             ,SCHEDULED_DATE
             ,TRANS_MEMO
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -30,6 +32,8 @@
             ,#{scheduledCycle, jdbcType=VARCHAR}
             ,#{scheduledDate, jdbcType=VARCHAR}
             ,#{transMemo, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -49,6 +53,8 @@
                ,SCHEDULED_CYCLE = #{scheduledCycle, jdbcType=VARCHAR}
                ,SCHEDULED_DATE = #{scheduledDate, jdbcType=VARCHAR}
                ,TRANS_MEMO = #{transMemo, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -64,7 +70,7 @@
 
     <delete id="deleteBankAutoTrans" parameterType="BankAutoTransEntity">
         DELETE FROM BANK_AUTO_TRANS
-         WHERE 
+         WHERE
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
@@ -73,6 +79,14 @@
            AND SCHEDULED_AMT = #{scheduledAmt}
            AND SCHEDULED_CYCLE = #{scheduledCycle}
            AND SCHEDULED_DATE = #{scheduledDate}
+    </delete>
+
+    <delete id="deleteAllBankAutoTrans" parameterType="BankAutoTransEntity">
+        DELETE FROM BANK_AUTO_TRANS
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
     </delete>
 
     <select id="selectBankAutoTrans" parameterType="BankAutoTransSearch"  resultType="BankAutoTransEntity">
@@ -86,6 +100,8 @@
                ,SCHEDULED_CYCLE
                ,SCHEDULED_DATE
                ,TRANS_MEMO
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -100,6 +116,65 @@
            AND SCHEDULED_AMT = #{scheduledAmt}
            AND SCHEDULED_CYCLE = #{scheduledCycle}
            AND SCHEDULED_DATE = #{scheduledDate}
+    </select>
+
+    <select id="selectBankAutoTransLast" parameterType="BankAutoTransSearch"  resultType="BankAutoTransEntity">
+         SELECT
+                B1.MEMBER_ID
+               ,B1.ORG_CD
+               ,B1.ACCOUNT_NUM
+               ,B1.SCHEDULED_ORG_CODE
+               ,B1.SCHEDULED_ACCOUNT_NUM
+               ,B1.SCHEDULED_AMT
+               ,B1.SCHEDULED_CYCLE
+               ,B1.SCHEDULED_DATE
+               ,B1.TRANS_MEMO
+               ,B1.API_TRAN_DAY
+               ,B1.API_TRAN_ID
+               ,B1.REG_USER_ID
+               ,B1.REG_DT
+               ,B1.CHG_USER_ID
+               ,B1.CHG_DT
+        FROM BANK_AUTO_TRANS B1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, SCHEDULED_ORG_CODE, SCHEDULED_ACCOUNT_NUM , SCHEDULED_AMT, SCHEDULED_CYCLE, SCHEDULED_DATE
+                        FROM BANK_AUTO_TRANS
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'scheduledOrgCode  != null and scheduledOrgCode != ""'>
+                                AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+                            </if>
+                            <if test = 'scheduledAccountNum  != null and scheduledAccountNum != ""'>
+                                AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+                            </if>
+                            <if test = 'scheduledAmt  != null and scheduledAmt != ""'>
+                                AND SCHEDULED_AMT = #{scheduledAmt}
+                            </if>
+                            <if test = 'scheduledCycle  != null and scheduledCycle != ""'>
+                                AND SCHEDULED_CYCLE = #{scheduledCycle}
+                            </if>
+                            <if test = 'scheduledDate  != null and scheduledDate != ""'>
+                                AND SCHEDULED_DATE = #{scheduledDate}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) B2
+       WHERE
+             B1.MEMBER_ID = B2.MEMBER_ID
+           AND B1.ORG_CD = B2.ORG_CD
+           AND B1.ACCOUNT_NUM = B2.ACCOUNT_NUM
+           AND B1.SCHEDULED_ORG_CODE = B2.SCHEDULED_ORG_CODE
+           AND B1.SCHEDULED_ACCOUNT_NUM = B2.SCHEDULED_ACCOUNT_NUM
+           AND B1.SCHEDULED_AMT = B2.SCHEDULED_AMT
+           AND B1.SCHEDULED_CYCLE = B2.SCHEDULED_CYCLE
+           AND B1.SCHEDULED_DATE = B2.SCHEDULED_DATE
     </select>
 
     <select id="selectBankAutoTransListTotalCnt" parameterType="BankAutoTransSearch"  resultType="Long">
@@ -150,6 +225,8 @@
                ,SCHEDULED_CYCLE
                ,SCHEDULED_DATE
                ,TRANS_MEMO
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

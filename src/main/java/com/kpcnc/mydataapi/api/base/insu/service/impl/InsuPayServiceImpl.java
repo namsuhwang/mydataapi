@@ -23,15 +23,22 @@ public class InsuPayServiceImpl implements InsuPayService {
     InsuPayMapper insuPayMapper;
 
     @Override
-    public InsuPayEntity regInsuPay(InsuPayForm dom) {
+    public void regInsuPay(InsuPayForm dom) {
         insuPayMapper.insertInsuPay(dom.getEntity());
-        return insuPayMapper.selectInsuPay(new InsuPaySearch(dom));
     }
 
     @Override
-    public InsuPayEntity modInsuPay(InsuPayForm dom) {
+    public void updInsuPay(InsuPayForm dom) {
         insuPayMapper.updateInsuPay(dom.getEntity());
-        return insuPayMapper.selectInsuPay(new InsuPaySearch(dom));
+    }
+
+    @Override
+    public void modInsuPay(InsuPayForm dom) {
+        if(getInsuPay(new InsuPaySearch(dom)) == null){
+            regInsuPay(dom);
+        }else{
+            updInsuPay(dom);
+        }
     }
 
     @Override

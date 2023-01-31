@@ -23,15 +23,21 @@ public class InsuInsdMiSccontServiceImpl implements InsuInsdMiSccontService {
     InsuInsdMiSccontMapper insuInsdMiSccontMapper;
 
     @Override
-    public InsuInsdMiSccontEntity regInsuInsdMiSccont(InsuInsdMiSccontForm dom) {
+    public void regInsuInsdMiSccont(InsuInsdMiSccontForm dom) {
         insuInsdMiSccontMapper.insertInsuInsdMiSccont(dom.getEntity());
-        return insuInsdMiSccontMapper.selectInsuInsdMiSccont(new InsuInsdMiSccontSearch(dom));
     }
 
     @Override
-    public InsuInsdMiSccontEntity modInsuInsdMiSccont(InsuInsdMiSccontForm dom) {
+    public void updInsuInsdMiSccont(InsuInsdMiSccontForm dom) {
         insuInsdMiSccontMapper.updateInsuInsdMiSccont(dom.getEntity());
-        return insuInsdMiSccontMapper.selectInsuInsdMiSccont(new InsuInsdMiSccontSearch(dom));
+    }
+    @Override
+    public void modInsuInsdMiSccont(InsuInsdMiSccontForm dom) {
+        if(getInsuInsdMiSccont(new InsuInsdMiSccontSearch(dom)) == null){
+            regInsuInsdMiSccont(dom);
+        }else{
+            updInsuInsdMiSccont(dom);
+        }
     }
 
     @Override
@@ -41,8 +47,19 @@ public class InsuInsdMiSccontServiceImpl implements InsuInsdMiSccontService {
     }
 
     @Override
+    public void allDelInsuInsdMiSccont(InsuInsdMiSccontForm dom) {
+        insuInsdMiSccontMapper.deleteAllInsuInsdMiSccont(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InsuInsdMiSccontEntity getInsuInsdMiSccont(InsuInsdMiSccontSearch dom) {
         return insuInsdMiSccontMapper.selectInsuInsdMiSccont(dom);
+    }
+
+    @Override
+    public InsuInsdMiSccontEntity getInsuInsdMiSccontLast(InsuInsdMiSccontSearch dom) {
+        return insuInsdMiSccontMapper.selectInsuInsdMiSccontLast(dom);
     }
 
     @Override

@@ -15,6 +15,8 @@
             ,LOAN_PAID_AMT
             ,INT_PAID_AMT
             ,INT_CNT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -30,6 +32,8 @@
             ,#{loanPaidAmt, jdbcType=NUMERIC}
             ,#{intPaidAmt, jdbcType=NUMERIC}
             ,#{intCnt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -49,12 +53,16 @@
                ,LOAN_PAID_AMT = #{loanPaidAmt, jdbcType=NUMERIC}
                ,INT_PAID_AMT = #{intPaidAmt, jdbcType=NUMERIC}
                ,INT_CNT = #{intCnt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_DTIME = #{transDtime}
     </update>
 
     <delete id="deleteInsuLoanHist" parameterType="InsuLoanHistEntity">
@@ -63,6 +71,8 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_DTIME = #{transDtime}
     </delete>
 
     <select id="selectInsuLoanHist" parameterType="InsuLoanHistSearch"  resultType="InsuLoanHistEntity">
@@ -76,6 +86,8 @@
                ,LOAN_PAID_AMT
                ,INT_PAID_AMT
                ,INT_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -85,6 +97,58 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+           AND TRANS_NO = #{transNo}
+           AND TRANS_DTIME = #{transDtime}
+    </select>
+
+
+    <select id="selectInsuLoanHistLast" parameterType="InsuLoanHistSearch"  resultType="InsuLoanHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.ACCOUNT_NUM
+               ,H1.TRANS_NO
+               ,H1.TRANS_DTIME
+               ,H1.CURRENCY_CODE
+               ,H1.LOAN_PAID_AMT
+               ,H1.INT_PAID_AMT
+               ,H1.INT_CNT
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM INSU_LOAN_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_NO, TRANS_DTIME
+                        FROM INSU_LOAN_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'accountNum  != null and accountNum != ""'>
+                                AND ACCOUNT_NUM = #{accountNum}
+                            </if>
+                            <if test = 'transNo  != null and transNo != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_NO, TRANS_DTIME DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+             H1.MEMBER_ID = #{memberId}
+           AND H1.ORG_CD = #{orgCd}
+           AND H1.ACCOUNT_NUM = #{accountNum}
+           AND H1.TRANS_NO = #{transNo}
+           AND H1.TRANS_DTIME = #{transDtime}
     </select>
 
     <select id="selectInsuLoanHistListTotalCnt" parameterType="InsuLoanHistSearch"  resultType="Long">
@@ -120,6 +184,8 @@
                ,LOAN_PAID_AMT
                ,INT_PAID_AMT
                ,INT_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

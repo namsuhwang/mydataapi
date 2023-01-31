@@ -23,15 +23,22 @@ public class InsuInsdGurtServiceImpl implements InsuInsdGurtService {
     InsuInsdGurtMapper insuInsdGurtMapper;
 
     @Override
-    public InsuInsdGurtEntity regInsuInsdGurt(InsuInsdGurtForm dom) {
+    public void regInsuInsdGurt(InsuInsdGurtForm dom) {
         insuInsdGurtMapper.insertInsuInsdGurt(dom.getEntity());
-        return insuInsdGurtMapper.selectInsuInsdGurt(new InsuInsdGurtSearch(dom));
     }
 
     @Override
-    public InsuInsdGurtEntity modInsuInsdGurt(InsuInsdGurtForm dom) {
+    public void updInsuInsdGurt(InsuInsdGurtForm dom) {
         insuInsdGurtMapper.updateInsuInsdGurt(dom.getEntity());
-        return insuInsdGurtMapper.selectInsuInsdGurt(new InsuInsdGurtSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsdGurt(InsuInsdGurtForm dom) {
+        if(getInsuInsdGurt(new InsuInsdGurtSearch(dom)) == null){
+            regInsuInsdGurt(dom);
+        }else{
+            updInsuInsdGurt(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,18 @@ public class InsuInsdGurtServiceImpl implements InsuInsdGurtService {
     }
 
     @Override
+    public void allDelInsuInsdGurt(InsuInsdGurtForm dom) {
+        insuInsdGurtMapper.deleteAllInsuInsdGurt(dom.getEntity());
+    }
+
+    @Override
     public InsuInsdGurtEntity getInsuInsdGurt(InsuInsdGurtSearch dom) {
         return insuInsdGurtMapper.selectInsuInsdGurt(dom);
+    }
+
+    @Override
+    public InsuInsdGurtEntity getInsuInsdGurtLast(InsuInsdGurtSearch dom) {
+        return insuInsdGurtMapper.selectInsuInsdGurtLast(dom);
     }
 
     @Override

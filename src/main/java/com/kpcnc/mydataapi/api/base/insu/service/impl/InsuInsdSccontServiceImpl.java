@@ -23,15 +23,22 @@ public class InsuInsdSccontServiceImpl implements InsuInsdSccontService {
     InsuInsdSccontMapper insuInsdSccontMapper;
 
     @Override
-    public InsuInsdSccontEntity regInsuInsdSccont(InsuInsdSccontForm dom) {
+    public void regInsuInsdSccont(InsuInsdSccontForm dom) {
         insuInsdSccontMapper.insertInsuInsdSccont(dom.getEntity());
-        return insuInsdSccontMapper.selectInsuInsdSccont(new InsuInsdSccontSearch(dom));
     }
 
     @Override
-    public InsuInsdSccontEntity modInsuInsdSccont(InsuInsdSccontForm dom) {
+    public void updInsuInsdSccont(InsuInsdSccontForm dom) {
         insuInsdSccontMapper.updateInsuInsdSccont(dom.getEntity());
-        return insuInsdSccontMapper.selectInsuInsdSccont(new InsuInsdSccontSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsdSccont(InsuInsdSccontForm dom) {
+        if(getInsuInsdSccont(new InsuInsdSccontSearch(dom)) == null){
+            regInsuInsdSccont(dom);
+        }else{
+            updInsuInsdSccont(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class InsuInsdSccontServiceImpl implements InsuInsdSccontService {
     @Override
     public InsuInsdSccontEntity getInsuInsdSccont(InsuInsdSccontSearch dom) {
         return insuInsdSccontMapper.selectInsuInsdSccont(dom);
+    }
+
+    @Override
+    public InsuInsdSccontEntity getInsuInsdSccontLast(InsuInsdSccontSearch dom) {
+        return insuInsdSccontMapper.selectInsuInsdSccontLast(dom);
     }
 
     @Override

@@ -22,6 +22,8 @@
             ,CUR_INSTALL_CNT
             ,BALANCE_AMT
             ,PROD_TYPE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -44,6 +46,8 @@
             ,#{curInstallCnt, jdbcType=NUMERIC}
             ,#{balanceAmt, jdbcType=NUMERIC}
             ,#{prodType, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -70,6 +74,8 @@
                ,CUR_INSTALL_CNT = #{curInstallCnt, jdbcType=NUMERIC}
                ,BALANCE_AMT = #{balanceAmt, jdbcType=NUMERIC}
                ,PROD_TYPE = #{prodType, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -112,6 +118,8 @@
                ,CUR_INSTALL_CNT
                ,BALANCE_AMT
                ,PROD_TYPE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -125,6 +133,70 @@
            AND CARD_ID = #{cardId}
            AND PAID_DTIME = #{paidDtime}
            AND TRANS_NO = #{transNo}
+    </select>
+
+    <select id="selectCardChargeAddLast" parameterType="CardChargeAddSearch"  resultType="CardChargeAddEntity">
+         SELECT
+                C1.MEMBER_ID
+               ,C1.ORG_CD
+               ,C1.SEQNO
+               ,C1.CHARGE_MONTH
+               ,C1.CARD_ID
+               ,C1.PAID_DTIME
+               ,C1.TRANS_NO
+               ,C1.PAID_AMT
+               ,C1.CURRENCY_CODE
+               ,C1.MERCHANT_NAME
+               ,C1.MERCHANT_REGNO
+               ,C1.CREDIT_FEE_AMT
+               ,C1.TOTAL_INSTALL_CNT
+               ,C1.CUR_INSTALL_CNT
+               ,C1.BALANCE_AMT
+               ,C1.PROD_TYPE
+               ,C1.API_TRAN_DAY
+               ,C1.API_TRAN_ID
+               ,C1.REG_USER_ID
+               ,C1.REG_DT
+               ,C1.CHG_USER_ID
+               ,C1.CHG_DT
+        FROM CARD_CHARGE_ADD C1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, SEQNO, CHARGE_MONTH, CARD_ID, PAID_DTIME, TRANS_NO
+                        FROM CARD_CHARGE_ADD
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                            <if test = 'chargeMonth  != null and chargeMonth != ""'>
+                                AND CHARGE_MONTH = #{chargeMonth}
+                            </if>
+                            <if test = 'cardId  != null and cardId != ""'>
+                                AND CARD_ID = #{cardId}
+                            </if>
+                            <if test = 'paidDtime  != null and paidDtime != ""'>
+                                AND PAID_DTIME = #{paidDtime}
+                            </if>
+                            <if test = 'transNo  != null and transNo != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, SEQNO DESC, CHARGE_MONTH DESC, CARD_ID, PAID_DTIME DESC, TRANS_NO
+                    )
+                WHERE rownum = 1
+            ) C2
+       WHERE
+             C1.MEMBER_ID = C2.MEMBER_ID
+           AND C1.ORG_CD = C2.ORG_CD
+           AND C1.SEQNO = C2.SEQNO
+           AND C1.CHARGE_MONTH = C2.CHARGE_MONTH
+           AND C1.CARD_ID = C2.CARD_ID
+           AND C1.PAID_DTIME = C2.PAID_DTIME
+           AND C1.TRANS_NO = C2.TRANS_NO
     </select>
 
     <select id="selectCardChargeAddListTotalCnt" parameterType="CardChargeAddSearch"  resultType="Long">
@@ -179,6 +251,8 @@
                ,CUR_INSTALL_CNT
                ,BALANCE_AMT
                ,PROD_TYPE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

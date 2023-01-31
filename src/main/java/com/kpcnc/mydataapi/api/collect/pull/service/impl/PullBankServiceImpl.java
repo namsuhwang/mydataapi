@@ -78,44 +78,105 @@ public class PullBankServiceImpl implements PullBankService {
         은행 기관별 전송요구등록건별 조회 처리
      */
     @Async("pullPersonalInfoExecutor")
-    public CompletableFuture<List<String>> pullBankInfoRun(ApiCallReqDto reqInfo, RecvStatusForm recvStatusForm) {
+    public CompletableFuture<List<String>> pullBankInfoRun(ApiCallReqDto req, RecvStatusForm recvStatusForm) {
         List<String> targetList = new ArrayList<>();
-        List<String[]> accountList = null;  // 자산목록(예:계좌목록. [0번째 : 계좌번호, 1번째 : 회차번호])
-        HashMap<String, Object> reqParamMap = null;
 
-        FormBase formBase = new FormBase(reqInfo.getMemberId(), reqInfo.getOrgCd());
-        formBase.setApiTranDay(reqInfo.getApiTranDay());
+        FormBase formBase = new FormBase(req.getMemberId(), req.getOrgCd());
+        formBase.setApiTranDay(req.getApiTranDay());
 
         // 전송여부가 자산목록인 건 조회.
         // MEMBER_TOKEM.SCOPE_LIST 의 첫번째는 무조건 자산목록(*.list) scope 라고 가정.
         /* 자산목록 요청인 건만 먼저 조회하여 조회해야할 자산목록 설정(예:계좌목록)  */
 
         // 보유자산목록(*.list)을 조회하기 위한 API 정보
-        ApiMstEntity assetListQryApiEntity = apiMstService.getApiListByScope(reqInfo.getMemberToken().getScopeLists().get(0)).get(0);
-        reqInfo.setRequestApiId(assetListQryApiEntity.getApiId());
-        reqInfo.setRequestUrl(assetListQryApiEntity.getApiUrlResource());
+        ApiMstEntity assetListQryApiEntity = apiMstService.getApiListByScope(req.getMemberToken().getScopeLists().get(0)).get(0);
+        req.setRequestApiId(assetListQryApiEntity.getApiId());
+        req.setRequestUrl(assetListQryApiEntity.getApiUrlResource());
 
         // 수신 상태 업데이트. 기관코드 + API 별로 수신시작/종료 상태 저장.
-        recvStatusService.updRecvStatus(recvStatusForm, 1, reqInfo.getOrgCd());
+        recvStatusService.updRecvStatus(recvStatusForm, 1, req.getOrgCd());
+
+        // 계좌별로 계좌유형에 따라 API 들을 순차적으로 호출함
+        CompletableFuture<List<String[]>> bank001Result = callBank001(req, formBase);
+        bank001Result.thenAccept(accList -> {
+            for(String[] acc : accList){
+                if(acc[2].substring(0, 0).equals("1")){  // 수신상품
+                    if(req.getMemberToken().getScopeLists().contains("bank.deposit")){
+                        callBank002(req, formBase, acc[0], acc[1]);
+                        callBank003(req, formBase, acc[0], acc[1]);
+                        callBank004(req, formBase, acc[0], acc[1]);
+                        callBank014(req, formBase, acc[0]);
+                    }
+                }else if(acc[2].equals("2001") || acc[2].equals("2999")){   // 펀드상품
+                    if(req.getMemberToken().getScopeLists().contains("bank.invest")){
+                        callBank005(req, formBase, acc[0], acc[1]);
+                        callBank006(req, formBase, acc[0], acc[1]);
+                        callBank007(req, formBase, acc[0], acc[1]);
+                    }
+                }else if(acc[2].substring(0, 0).equals("3")){   // 대출상품
+                    if(req.getMemberToken().getScopeLists().contains("bank.loan")){
+                        callBank008(req, formBase, acc[0], acc[1]);
+                        callBank009(req, formBase, acc[0], acc[1]);
+                        callBank010(req, formBase, acc[0], acc[1]);
+                    }
+                }else if(acc[2].equals("2001") || acc[2].equals("2002") || acc[2].equals("2003") || acc[2].equals("2004")){   // 신탁/ISA
+                    // 2001 은 isa 로 봐야 할지, irp 로 봐야할지 애매함. 일단 isa 로 처리함.
+                    if(req.getMemberToken().getScopeLists().contains("bank.isa")){
+                        callBank011(req, formBase, acc[0]);
+                        callBank012(req, formBase, acc[0]);
+                        callBank013(req, formBase, acc[0]);
+                    }
+                }
+
+            }
+        });
+
+        if(req.getMemberToken().getScopeLists().contains("bank.irp")){
+            pullIrpService.pullIrpInfoRun(req, formBase);
+        }
+
+        if(req.getMemberToken().getScopeLists().contains("bank.prepaid")){
+            pullPpayService.pullPpayInfoRun(req, formBase);
+        }
+
+        if(req.getMemberToken().getScopeLists().contains("bank.db")){
+            pullDbService.pullDbInfoRun(req, formBase);
+        }
+
+        if(req.getMemberToken().getScopeLists().contains("bank.dc")){
+            pullDcService.pullDcInfoRun(req, formBase);
+        }
+
+        // 수신 상태 업데이트. 기관코드 + API 별로 종료 상태 저장.
+        recvStatusForm.setRecvStatus("1");
+        recvStatusForm.setRecvEndDt(CommUtil.getCurrentDateTime14());
+        recvStatusService.updRecvStatus(recvStatusForm);
+        return CompletableFuture.completedFuture(targetList);
+    }
+
+
+    /*
+        BANK_001 (BANK_ACC) 계좌 목록
+     */
+    @Async("pullPersonalInfoExecutor")
+    public CompletableFuture<List<String[]>> callBank001(ApiCallReqDto req, FormBase formBase){
+        req.setRequestApiId("BANK_001");
+
+        List<String[]> accountList = new ArrayList<>();
 
         // 고객등록일 설정 위한 기본 정보 설정
         BankCustForm bankCustForm = (BankCustForm) formBase;
 
         // 입력 파라메터용 Map, Json 기본 설정
-        BankParamsDto bankParamsDto = (BankParamsDto) new ApiCallParamsDto(reqInfo.getMemberId(), reqInfo.getOrgCd());
+        BankParamsDto bankParamsDto = (BankParamsDto) new ApiCallParamsDto(req.getMemberId(), req.getOrgCd());
 
-        BankCustEntity bankCust = bankCustService.getBankCust(new BankCustSearch(reqInfo.getMemberId(), reqInfo.getOrgCd()));
-        RecvBaselineEntity baseline = null;
-        if(bankCust != null){
-            baseline = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(bankCust.getApiTranDay(), bankCust.getApiTranId()));
-        }
+        BankCustEntity entity = bankCustService.getBankCust(new BankCustSearch(req.getMemberId(), req.getOrgCd()));
+        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
-        reqInfo.setReqParamJson(bankParamsDto.getParamsBank001(baseline.getSearchTimeStamp(), baseline.getNextPage()));
-        reqInfo.setReqParamMap(reqParamMap);
-        reqInfo.setReqParamJson(reqParamMap);
+        req.setReqParamJson(bankParamsDto.getParamsBank001(baseline.getSearchTimeStamp(), baseline.getNextPage()));
 
         // 게이트웨이 call
-        ApiCallResDto resInfo = callMyDataGatewayService.callRepeatMyDataApi(reqInfo, Bank001ResDto.class, Bank001ResDetailDto.class);
+        ApiCallResDto resInfo = callMyDataGatewayService.callRepeatMyDataApi(req, Bank001ResDto.class, Bank001ResDetailDto.class);
         Bank001ResDto bank001ResDto = (Bank001ResDto) resInfo.getData();
 
         // BankCust 테이블 반영(고객등록일 설정)
@@ -130,76 +191,18 @@ public class PullBankServiceImpl implements PullBankService {
         // 계좌목록은 해지계좌목록을 알 수 없기 때문에 일단 전체 삭제 후 인서트
         bankAccService.allDelBankAcc((BankAccForm) formBase);
 
-        formBase.setApiTranDay(reqInfo.getApiTranDay());
         formBase.setApiTranId(bank001ResDto.getXApiTranId());
         List<Bank001ResDetailDto> accountInfoList = bank001ResDto.getList();
 
         // BankAcc 테이블 반영
         for(Bank001ResDetailDto detail : accountInfoList){
             bankAccService.regBankAcc(detail.getForm(formBase));
-            accountList.add(new String[]{detail.getAccountNum(), detail.getSeqno()});
-            if(detail.getIsConsent() && !targetList.contains(detail.getAccountNum())){
-                targetList.add(detail.getAccountNum());
+            if(detail.getIsConsent()){
+                accountList.add(new String[]{detail.getAccountNum(), detail.getSeqno(), detail.getAccountType()});
             }
         }
-
-        // 계좌별로 계좌유형에 따라 API 들을 순차적으로 호출함
-        for(Bank001ResDetailDto acc : accountInfoList){
-
-            if(!acc.getIsConsent()) continue;  // 전송요구 계좌가 아니면 스킵
-
-            if(acc.getAccountType().substring(0, 0).equals("1")){  // 수신상품
-                if(reqInfo.getMemberToken().getScopeLists().contains("bank.deposit")){
-                    callBank002(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank003(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank004(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank014(reqInfo, formBase, acc.getAccountNum());
-                }
-            }else if(acc.getAccountType().equals("2001") || acc.getAccountType().equals("2999")){   // 펀드상품
-                if(reqInfo.getMemberToken().getScopeLists().contains("bank.invest")){
-                    callBank005(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank006(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank007(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                }
-            }else if(acc.getAccountType().substring(0, 0).equals("3")){   // 대출상품
-                if(reqInfo.getMemberToken().getScopeLists().contains("bank.loan")){
-                    callBank008(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank009(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                    callBank010(reqInfo, formBase, acc.getAccountNum(), acc.getSeqno());
-                }
-            }else if(acc.getAccountType().equals("2001") ||acc.getAccountType().equals("2002") || acc.getAccountType().equals("2003") ||acc.getAccountType().equals("2004")){   // 신탁/ISA
-                // 2001 은 isa 로 봐야 할지, irp 로 봐야할지 애매함. 일단 isa 로 처리함.
-                if(reqInfo.getMemberToken().getScopeLists().contains("bank.isa")){
-                    callBank011(reqInfo, formBase, acc.getAccountNum());
-                    callBank012(reqInfo, formBase, acc.getAccountNum());
-                    callBank013(reqInfo, formBase, acc.getAccountNum());
-                }
-            }
-
-            if(reqInfo.getMemberToken().getScopeLists().contains("bank.irp")){
-                pullIrpService.pullIrpInfoRun(reqInfo, formBase);
-            }
-
-            if(reqInfo.getMemberToken().getScopeLists().contains("bank.prepaid")){
-                pullPpayService.pullPpayInfoRun(reqInfo, formBase);
-            }
-
-            if(reqInfo.getMemberToken().getScopeLists().contains("bank.db")){
-                pullDbService.pullDbInfoRun(reqInfo, formBase);
-            }
-
-            if(reqInfo.getMemberToken().getScopeLists().contains("bank.dc")){
-                pullDcService.pullDcInfoRun(reqInfo, formBase);
-            }
-        }
-
-        // 수신 상태 업데이트. 기관코드 + API 별로 종료 상태 저장.
-        recvStatusForm.setRecvStatus("1");
-        recvStatusForm.setRecvEndDt(CommUtil.getCurrentDateTime14());
-        recvStatusService.updRecvStatus(recvStatusForm);
-        return CompletableFuture.completedFuture(targetList);
+        return CompletableFuture.completedFuture(accountList);
     }
-
 
     /*
         BANK_002 (BANK_ACC_DEPOSIT) 수신계좌 기본 정보
@@ -209,7 +212,7 @@ public class PullBankServiceImpl implements PullBankService {
         req.setRequestApiId("BANK_002");
 
         // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-        BankAccDepositEntity entity = bankAccDepositService.getBankAccDeposit(new BankAccDepositSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
+        BankAccDepositEntity entity = bankAccDepositService.getBankAccDepositLast(new BankAccDepositSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
         // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
@@ -243,7 +246,7 @@ public class PullBankServiceImpl implements PullBankService {
         req.setRequestApiId("BANK_003");
 
         // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-        BankAccDepositAddEntity entity = bankAccDepositAddService.getBankAccDepositAdd(new BankAccDepositAddSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
+        BankAccDepositAddEntity entity = bankAccDepositAddService.getBankAccDepositAddLast(new BankAccDepositAddSearch(req.getMemberId(), req.getOrgCd(), accNo, seqno));
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
         // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
@@ -296,7 +299,11 @@ public class PullBankServiceImpl implements PullBankService {
 
             if (resDto.getListCnt() != null && resDto.getListCnt() > 0) {
                 for (Bank004ResDetailDto detail : resDto.getList()) {
-                    bankAccDepositHistService.regBankAccDepositHist(detail.getForm(formBase, accNo, seqno));
+                    if(detail.getTransDtime().substring(0, 8).equals(lastHist.getTransDtime().substring(0, 8))){
+                        bankAccDepositHistService.modBankAccDepositHist(detail.getForm(formBase, accNo, seqno));
+                    }else {
+                        bankAccDepositHistService.regBankAccDepositHist(detail.getForm(formBase, accNo, seqno));
+                    }
                 }
             }
 
@@ -648,7 +655,7 @@ public class PullBankServiceImpl implements PullBankService {
         req.setRequestApiId("BANK_014");
 
         // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-        BankAutoTransEntity entity = bankAutoTransService.getBankAutoTrans(new BankAutoTransSearch(req.getMemberId(), req.getOrgCd(), accNo));
+        BankAutoTransEntity entity = bankAutoTransService.getBankAutoTransLast(new BankAutoTransSearch(req.getMemberId(), req.getOrgCd(), accNo));
         RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(entity);
 
         // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
@@ -671,79 +678,4 @@ public class PullBankServiceImpl implements PullBankService {
         return CompletableFuture.completedFuture(new String[]{accNo});
     }
 
-//
-//
-//
-//
-//
-//    /*
-//        BANK_002 (BANK_ACC_DEPOSIT) 수신계좌 기본 정보
-//     */
-//    @Async("pullPersonalInfoExecutor")
-//    public CompletableFuture<List<String[]>> recvBank002(ApiCallReqDto reqInfo, FormBase formBase, List<String[]> accountList){
-//        reqInfo.setRequestApiId("BANK_002");
-//        // 요청 파라메터 기본값(회원ID, 조회 대상 기관코드) 설정한 기본 DTO 생성
-//        BankParamsDto bankParamsDto = (BankParamsDto) new ApiCallParamsDto(reqInfo.getMemberId(), reqInfo.getOrgCd());
-//
-//        // 일단 삭제하고 시작. 해지계좌를 판별할 수 없기 때문에 먼저 전체 삭제함
-//        // bankAccDepositService.delAllBankAccDeposit((BankAccDepositForm)formBase);
-//        // 일단 전체 삭제하려고 했으나 애매해서 우선 기존 계좌를 순서대로 호출하고 응답 내용이 없는 건(basic_cnt = 0)은 삭제하도록 함
-//        RecvBaselineEntity baseline = null;
-//
-//        for(String[] accInfo : accountList) {
-//            BankAccDepositEntity bankAccDeposit = bankAccDepositService.getBankAccDeposit(new BankAccDepositSearch(reqInfo.getMemberId(), reqInfo.getOrgCd(), accInfo[0], accInfo[1]));
-//            if(bankAccDeposit != null){
-//                baseline = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(bankAccDeposit.getApiTranDay(), bankAccDeposit.getApiTranId()));
-//            }
-//
-//            reqInfo.setReqParamJson(bankParamsDto.getParamsBank002(accInfo[0], accInfo[1], baseline.getSearchTimeStamp()));
-//
-//            // 게이트웨이 call
-//            ApiCallResDto resInfo = callMyDataGatewayService.callRepeatMyDataApi(reqInfo, Bank002ResDto.class, Bank002ResDetailDto.class);
-//            Bank002ResDto bank002ResDto = (Bank002ResDto) resInfo.getData();
-//            // formBase.setApiTranDay(reqInfo.getApiTranDay()); // recvBank002 호출되기 전에 설정되어서 넘어오므로 설정하면 안됨
-//            formBase.setApiTranId(bank002ResDto.getXApiTranId());
-//
-//            if (bank002ResDto.getListCnt() != null && bank002ResDto.getListCnt() > 0) {
-//                int accountSeq = 0;
-//                for (Bank002ResDetailDto detail : bank002ResDto.getList()) {
-//                    detail.setAccountSeq(++accountSeq);
-//                    bankAccDepositService.modBankAccDeposit(detail.getForm(formBase, accInfo[0], accInfo[1]));
-//                }
-//            }else if(bank002ResDto.getListCnt() == 0){
-//                bankAccDepositService.delBankAccDeposit(new BankAccDepositForm(reqInfo.getMemberId(), reqInfo.getOrgCd(), accInfo[0], accInfo[1]));
-//            }
-//        }
-//        return CompletableFuture.completedFuture(accountList);
-//    }
-//
-//
-//    /*
-//        BANK_003 (BANK_ACC_DEPOSIT_ADD) 수신계좌 추가 정보
-//     */
-//    @Async("pullPersonalInfoExecutor")
-//    public CompletableFuture<List<String[]>> recvBank003(ApiCallReqDto reqInfo, FormBase formBase, List<String[]> accountList){
-//        reqInfo.setRequestApiId("BANK_003");
-//
-//        // 일단 삭제하고 시작. 해지계좌를 판별할 수 없기 때문에 먼저 전체 삭제함
-//        bankAccDepositAddService.delAllBankAccDepositAdd((BankAccDepositAddForm)formBase);
-//
-//        for(String[] accountInfo : accountList) {
-//            reqInfo.setReqParamJson(reqBankParamsSetService.getParamsBank003(reqInfo.getMemberId(), reqInfo.getOrgCd(), accountInfo[0], accountInfo[1]));
-//
-//            // 게이트웨이 call
-//            ApiCallResDto resInfo = callMyDataGatewayService.callRepeatMyDataApi(reqInfo, Bank003ResDto.class, Bank003ResDetailDto.class);
-//            Bank003ResDto bank003InDto = (Bank003ResDto) resInfo.getData();
-//            formBase.setApiTranId(bank003InDto.getXApiTranId());
-//
-//            if (bank003InDto.getListCnt() != null && bank003InDto.getListCnt() > 0) {
-//                int accountSeq = 0;
-//                for (Bank003ResDetailDto detail : bank003InDto.getList()) {
-//                    detail.setAccountSeq(++accountSeq);
-//                    bankAccDepositAddService.regBankAccDepositAdd(detail.getForm(formBase, accountInfo[0], accountInfo[1]));
-//                }
-//            }
-//        }
-//        return CompletableFuture.completedFuture(accountList);
-//    }
 }

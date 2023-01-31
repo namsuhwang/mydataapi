@@ -19,6 +19,8 @@
             ,COUNTRY_CODE
             ,CURRENCY_CODE
             ,KRW_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -38,6 +40,8 @@
             ,#{countryCode, jdbcType=VARCHAR}
             ,#{currencyCode, jdbcType=VARCHAR}
             ,#{krwAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -61,6 +65,8 @@
                ,COUNTRY_CODE = #{countryCode, jdbcType=VARCHAR}
                ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
                ,KRW_AMT = #{krwAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -96,6 +102,8 @@
                ,COUNTRY_CODE
                ,CURRENCY_CODE
                ,KRW_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -107,6 +115,59 @@
            AND APPROVED_DTIME = #{approvedDtime}
            AND APPROVED_NUM = #{approvedNum}
            AND STATUS = #{status}
+    </select>
+
+    <select id="selectCardAprOsHistLast" parameterType="CardAprOsHistSearch"  resultType="CardAprOsHistEntity">
+        SELECT
+              H1.MEMBER_ID
+             ,H1.ORG_CD
+             ,H1.APPROVED_DTIME
+             ,H1.APPROVED_NUM
+             ,H1.STATUS
+             ,H1.PAY_TYPE
+             ,H1.TRANS_DTIME
+             ,H1.MERCHANT_NAME
+             ,H1.APPROVED_AMT
+             ,H1.MODIFIED_AMT
+             ,H1.COUNTRY_CODE
+             ,H1.CURRENCY_CODE
+             ,H1.KRW_AMT
+             ,H1.API_TRAN_DAY
+             ,H1.API_TRAN_ID
+             ,H1.REG_USER_ID
+             ,H1.REG_DT
+             ,H1.CHG_USER_ID
+             ,H1.CHG_DT
+        FROM CARD_APR_OS_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, APPROVED_DTIME, APPROVED_NUM, STATUS
+                        FROM CARD_APR_OS_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'approvedDtime  != null and approvedDtime != ""'>
+                                AND APPROVED_DTIME = #{approvedDtime}
+                            </if>
+                            <if test = 'approvedNum  != null and approvedNum != ""'>
+                                AND APPROVED_NUM = #{approvedNum}
+                            </if>
+                            <if test = 'status  != null and status != ""'>
+                                AND STATUS = #{status}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, APPROVED_DTIME DESC, APPROVED_NUM DESC, STATUS
+                    )
+                WHERE rownum = 1
+            ) H2
+        WHERE
+            H1.MEMBER_ID = H2.MEMBER_ID
+          AND H1.ORG_CD = H2.ORG_CD
+          AND H1.APPROVED_DTIME = H2.APPROVED_DTIME
+          AND H1.APPROVED_NUM = H2.APPROVED_NUM
+          AND H1.STATUS = H2.STATUS
     </select>
 
     <select id="selectCardAprOsHistListTotalCnt" parameterType="CardAprOsHistSearch"  resultType="Long">
@@ -152,6 +213,8 @@
                ,COUNTRY_CODE
                ,CURRENCY_CODE
                ,KRW_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

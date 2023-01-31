@@ -9,6 +9,8 @@
             MEMBER_ID
             ,ORG_CD
             ,IS_RUNNING_PENSION
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -18,6 +20,8 @@
             #{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{isRunningPension, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -31,6 +35,8 @@
                MEMBER_ID = #{memberId, jdbcType=VARCHAR}
                ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
                ,IS_RUNNING_PENSION = #{isRunningPension, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -52,6 +58,8 @@
                MEMBER_ID
                ,ORG_CD
                ,IS_RUNNING_PENSION
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -90,6 +98,8 @@
                ,MEMBER_ID
                ,ORG_CD
                ,IS_RUNNING_PENSION
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

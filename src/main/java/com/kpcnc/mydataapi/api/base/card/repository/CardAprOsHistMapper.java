@@ -16,6 +16,8 @@ public interface CardAprOsHistMapper{
 
     CardAprOsHistEntity selectCardAprOsHist(CardAprOsHistSearch dom);
 
+    CardAprOsHistEntity selectCardAprOsHistLast(CardAprOsHistSearch dom);
+
     Long selectCardAprOsHistListTotalCnt(CardAprOsHistSearch dom);
 
     List<CardAprOsHistEntity> selectCardAprOsHistList(CardAprOsHistSearch dom);

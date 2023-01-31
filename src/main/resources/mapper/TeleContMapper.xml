@@ -13,6 +13,8 @@
             ,TELECOM_NUM
             ,TYPE
             ,STATUS
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{telecomNum, jdbcType=VARCHAR}
             ,#{type, jdbcType=VARCHAR}
             ,#{status, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,TELECOM_NUM = #{telecomNum, jdbcType=VARCHAR}
                ,TYPE = #{type, jdbcType=VARCHAR}
                ,STATUS = #{status, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -68,6 +74,8 @@
                ,TELECOM_NUM
                ,TYPE
                ,STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -110,6 +118,8 @@
                ,TELECOM_NUM
                ,TYPE
                ,STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

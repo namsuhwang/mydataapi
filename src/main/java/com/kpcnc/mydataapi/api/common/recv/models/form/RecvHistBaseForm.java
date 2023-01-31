@@ -1,7 +1,6 @@
 package com.kpcnc.mydataapi.api.common.recv.models.form;
 
 import com.kpcnc.mydataapi.api.common.recv.models.entity.RecvHistBaseEntity;
-import com.kpcnc.mydataapi.common.CommUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,9 +27,6 @@ public class RecvHistBaseForm{
         this.orgCd = orgCd;
         this.apiId = apiId;
         this.recvSeq = recvSeq;
-        this.recvStartDt = CommUtil.getCurrentDateTime14();
-        this.regUserId = "user01";
-        this.chgUserId = "user01";
     }
 
     public RecvHistBaseEntity getEntity(){

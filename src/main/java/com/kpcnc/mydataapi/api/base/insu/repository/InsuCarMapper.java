@@ -14,7 +14,11 @@ public interface InsuCarMapper{
 
     int deleteInsuCar(InsuCarEntity dom);
 
+    int deleteAllInsuCar(InsuCarEntity dom);
+
     InsuCarEntity selectInsuCar(InsuCarSearch dom);
+
+    InsuCarEntity selectInsuCarLast(InsuCarSearch dom);
 
     Long selectInsuCarListTotalCnt(InsuCarSearch dom);
 

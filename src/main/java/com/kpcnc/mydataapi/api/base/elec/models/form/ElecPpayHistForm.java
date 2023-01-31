@@ -1,20 +1,17 @@
 package com.kpcnc.mydataapi.api.base.elec.models.form;
 
 import com.kpcnc.mydataapi.api.base.elec.models.entity.ElecPpayHistEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ElecPpayHistForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class ElecPpayHistForm extends FormBase {
     private String fobId;    // 권면 ID
     private String accountId;    // 계정식별값
     private String transDtime;    // 거래일시 또는 거래일자
@@ -32,15 +29,11 @@ public class ElecPpayHistForm{
     private String transCategory;    // 상품(구매)분 류 (코드)
     private String payMethod;    // 결제방법 (코드)
     private String isScheduled;    // 정기결제여부
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 
     public ElecPpayHistEntity getEntity(){
         ElecPpayHistEntity entity = new ElecPpayHistEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setFobId(fobId);
         entity.setAccountId(accountId);
         entity.setTransDtime(transDtime);
@@ -58,10 +51,12 @@ public class ElecPpayHistForm{
         entity.setTransCategory(transCategory);
         entity.setPayMethod(payMethod);
         entity.setIsScheduled(isScheduled);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setApiTranDay(getApiTranDay());
+        entity.setApiTranId(getApiTranId());
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

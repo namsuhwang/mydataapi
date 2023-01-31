@@ -23,20 +23,33 @@ public class InsuInsdMiBasePpServiceImpl implements InsuInsdMiBasePpService {
     InsuInsdMiBasePpMapper insuInsdMiBasePpMapper;
 
     @Override
-    public InsuInsdMiBasePpEntity regInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
+    public void regInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
         insuInsdMiBasePpMapper.insertInsuInsdMiBasePp(dom.getEntity());
-        return insuInsdMiBasePpMapper.selectInsuInsdMiBasePp(new InsuInsdMiBasePpSearch(dom));
     }
 
     @Override
-    public InsuInsdMiBasePpEntity modInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
+    public void updInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
         insuInsdMiBasePpMapper.updateInsuInsdMiBasePp(dom.getEntity());
-        return insuInsdMiBasePpMapper.selectInsuInsdMiBasePp(new InsuInsdMiBasePpSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
+        if(getInsuInsdMiBasePp(new InsuInsdMiBasePpSearch(dom)) == null){
+            regInsuInsdMiBasePp(dom);
+        }else{
+            updInsuInsdMiBasePp(dom);
+        }
     }
 
     @Override
     public void delInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
         insuInsdMiBasePpMapper.deleteInsuInsdMiBasePp(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelInsuInsdMiBasePp(InsuInsdMiBasePpForm dom) {
+        insuInsdMiBasePpMapper.deleteAllInsuInsdMiBasePp(dom.getEntity());
         return;
     }
 

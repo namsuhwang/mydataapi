@@ -11,16 +11,17 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class ElecPpayAutoChargeSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String fobId;    // 권면 ID
     private String accountId;    // 계정식별값
     private Integer autoChargeSeq;    // 자동충전일련번호
     private String chargeOrgCode;    // 충전지불수단 기관 (코드)
 
+    public ElecPpayAutoChargeSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public ElecPpayAutoChargeSearch(String memberId, String orgCd, String fobId, String accountId, Integer autoChargeSeq, String chargeOrgCode) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.fobId = fobId;
         this.accountId = accountId;
         this.autoChargeSeq = autoChargeSeq;
@@ -28,8 +29,7 @@ public class ElecPpayAutoChargeSearch extends SearchDto {
     }
 
     public ElecPpayAutoChargeSearch(ElecPpayAutoChargeEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.fobId = entity.getFobId();
         this.accountId = entity.getAccountId();
         this.autoChargeSeq = entity.getAutoChargeSeq();
@@ -37,8 +37,7 @@ public class ElecPpayAutoChargeSearch extends SearchDto {
     }
 
     public ElecPpayAutoChargeSearch(ElecPpayAutoChargeForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.fobId = form.getFobId();
         this.accountId = form.getAccountId();
         this.autoChargeSeq = form.getAutoChargeSeq();

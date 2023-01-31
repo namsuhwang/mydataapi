@@ -14,6 +14,8 @@ public interface InsuMiBaseMapper{
 
     int deleteInsuMiBase(InsuMiBaseEntity dom);
 
+    int deleteAllInsuMiBase(InsuMiBaseEntity dom);
+
     InsuMiBaseEntity selectInsuMiBase(InsuMiBaseSearch dom);
 
     Long selectInsuMiBaseListTotalCnt(InsuMiBaseSearch dom);

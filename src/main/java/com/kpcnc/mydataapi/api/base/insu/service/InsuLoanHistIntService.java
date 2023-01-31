@@ -6,9 +6,11 @@ import com.kpcnc.mydataapi.api.base.insu.models.form.InsuLoanHistIntForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InsuLoanHistIntService{
-    public InsuLoanHistIntEntity regInsuLoanHistInt(InsuLoanHistIntForm dom);
+    public void regInsuLoanHistInt(InsuLoanHistIntForm dom);
 
-    public InsuLoanHistIntEntity modInsuLoanHistInt(InsuLoanHistIntForm dom);
+    public void updInsuLoanHistInt(InsuLoanHistIntForm dom);
+
+    public void modInsuLoanHistInt(InsuLoanHistIntForm dom);
 
     public void  delInsuLoanHistInt(InsuLoanHistIntForm dom);
 

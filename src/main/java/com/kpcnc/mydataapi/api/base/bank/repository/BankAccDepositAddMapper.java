@@ -18,6 +18,8 @@ public interface BankAccDepositAddMapper{
 
     BankAccDepositAddEntity selectBankAccDepositAdd(BankAccDepositAddSearch dom);
 
+    BankAccDepositAddEntity selectBankAccDepositAddLast(BankAccDepositAddSearch dom);
+
     Long selectBankAccDepositAddListTotalCnt(BankAccDepositAddSearch dom);
 
     List<BankAccDepositAddEntity> selectBankAccDepositAddList(BankAccDepositAddSearch dom);

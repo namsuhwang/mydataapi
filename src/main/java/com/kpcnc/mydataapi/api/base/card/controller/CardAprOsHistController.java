@@ -1,6 +1,8 @@
 package com.kpcnc.mydataapi.api.base.card.controller;
 
+import com.kpcnc.mydataapi.api.base.card.models.CardAprDmHistSearch;
 import com.kpcnc.mydataapi.api.base.card.models.CardAprOsHistSearch;
+import com.kpcnc.mydataapi.api.base.card.models.entity.CardAprDmHistEntity;
 import com.kpcnc.mydataapi.api.base.card.models.entity.CardAprOsHistEntity;
 import com.kpcnc.mydataapi.api.base.card.models.form.CardAprOsHistForm;
 import com.kpcnc.mydataapi.api.base.card.service.CardAprOsHistService;
@@ -29,7 +31,8 @@ public class CardAprOsHistController {
     public ResponseEntity<ResponseDto<CardAprOsHistEntity>> regCardAprOsHist(
         @RequestBody CardAprOsHistForm dom
     ){
-        CardAprOsHistEntity result = cardAprOsHistService.regCardAprOsHist(dom);
+        cardAprOsHistService.regCardAprOsHist(dom);
+        CardAprOsHistEntity result = cardAprOsHistService.getCardAprOsHistLast(new CardAprOsHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +40,8 @@ public class CardAprOsHistController {
     public ResponseEntity<ResponseDto<CardAprOsHistEntity>> modCardAprOsHist(
         @RequestBody CardAprOsHistForm dom
     ){
-        CardAprOsHistEntity result = cardAprOsHistService.modCardAprOsHist(dom);
+        cardAprOsHistService.modCardAprOsHist(dom);
+        CardAprOsHistEntity result = cardAprOsHistService.getCardAprOsHistLast(new CardAprOsHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -11,28 +11,28 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class BondHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String bondNum;    // 채권번호
     private String transDtime;    // 거래일시 또는 거래일자
 
+    public BondHistSearch(String memberId, String orgCd, String bondNum) {
+        super(memberId, orgCd);
+        this.bondNum = bondNum;
+    }
+
     public BondHistSearch(String memberId, String orgCd, String bondNum, String transDtime) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.bondNum = bondNum;
         this.transDtime = transDtime;
     }
 
     public BondHistSearch(BondHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.bondNum = entity.getBondNum();
         this.transDtime = entity.getTransDtime();
     }
 
     public BondHistSearch(BondHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.bondNum = form.getBondNum();
         this.transDtime = form.getTransDtime();
     }

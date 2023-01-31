@@ -6,11 +6,13 @@ import com.kpcnc.mydataapi.api.base.insu.models.form.InsuPayForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InsuPayService{
-    public InsuPayEntity regInsuPay(InsuPayForm dom);
+    public void regInsuPay(InsuPayForm dom);
 
-    public InsuPayEntity modInsuPay(InsuPayForm dom);
+    public void updInsuPay(InsuPayForm dom);
 
-    public void  delInsuPay(InsuPayForm dom);
+    public void modInsuPay(InsuPayForm dom);
+
+    public void delInsuPay(InsuPayForm dom);
 
     public InsuPayEntity getInsuPay(InsuPaySearch dom);
 

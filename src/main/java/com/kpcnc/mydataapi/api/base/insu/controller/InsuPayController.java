@@ -29,7 +29,8 @@ public class InsuPayController {
     public ResponseEntity<ResponseDto<InsuPayEntity>> regInsuPay(
         @RequestBody InsuPayForm dom
     ){
-        InsuPayEntity result = insuPayService.regInsuPay(dom);
+        insuPayService.regInsuPay(dom);
+        InsuPayEntity result = insuPayService.getInsuPay(new InsuPaySearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuPayController {
     public ResponseEntity<ResponseDto<InsuPayEntity>> modInsuPay(
         @RequestBody InsuPayForm dom
     ){
-        InsuPayEntity result = insuPayService.modInsuPay(dom);
+        insuPayService.modInsuPay(dom);
+        InsuPayEntity result = insuPayService.getInsuPay(new InsuPaySearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

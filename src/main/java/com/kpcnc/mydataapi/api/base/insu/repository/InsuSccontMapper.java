@@ -14,7 +14,11 @@ public interface InsuSccontMapper{
 
     int deleteInsuSccont(InsuSccontEntity dom);
 
+    int deleteAllInsuSccont(InsuSccontEntity dom);
+
     InsuSccontEntity selectInsuSccont(InsuSccontSearch dom);
+
+    InsuSccontEntity selectInsuSccontLast(InsuSccontSearch dom);
 
     Long selectInsuSccontListTotalCnt(InsuSccontSearch dom);
 

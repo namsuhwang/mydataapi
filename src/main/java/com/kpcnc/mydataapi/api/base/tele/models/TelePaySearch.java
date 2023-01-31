@@ -11,25 +11,24 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class TelePaySearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String mgmtId;    // 계약관리번호
 
+    public TelePaySearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public TelePaySearch(String memberId, String orgCd, String mgmtId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.mgmtId = mgmtId;
     }
 
     public TelePaySearch(TelePayEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.mgmtId = entity.getMgmtId();
     }
 
     public TelePaySearch(TelePayForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.mgmtId = form.getMgmtId();
     }
 }

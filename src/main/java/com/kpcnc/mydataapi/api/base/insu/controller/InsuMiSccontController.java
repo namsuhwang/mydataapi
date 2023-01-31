@@ -29,7 +29,8 @@ public class InsuMiSccontController {
     public ResponseEntity<ResponseDto<InsuMiSccontEntity>> regInsuMiSccont(
         @RequestBody InsuMiSccontForm dom
     ){
-        InsuMiSccontEntity result = insuMiSccontService.regInsuMiSccont(dom);
+        insuMiSccontService.regInsuMiSccont(dom);
+        InsuMiSccontEntity result = insuMiSccontService.getInsuMiSccont(new InsuMiSccontSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuMiSccontController {
     public ResponseEntity<ResponseDto<InsuMiSccontEntity>> modInsuMiSccont(
         @RequestBody InsuMiSccontForm dom
     ){
-        InsuMiSccontEntity result = insuMiSccontService.modInsuMiSccont(dom);
+        insuMiSccontService.modInsuMiSccont(dom);
+        InsuMiSccontEntity result = insuMiSccontService.getInsuMiSccont(new InsuMiSccontSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

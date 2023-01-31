@@ -29,7 +29,8 @@ public class InsuBaseController {
     public ResponseEntity<ResponseDto<InsuBaseEntity>> regInsuBase(
         @RequestBody InsuBaseForm dom
     ){
-        InsuBaseEntity result = insuBaseService.regInsuBase(dom);
+        insuBaseService.regInsuBase(dom);
+        InsuBaseEntity result = insuBaseService.getInsuBase(new InsuBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuBaseController {
     public ResponseEntity<ResponseDto<InsuBaseEntity>> modInsuBase(
         @RequestBody InsuBaseForm dom
     ){
-        InsuBaseEntity result = insuBaseService.modInsuBase(dom);
+        insuBaseService.modInsuBase(dom);
+        InsuBaseEntity result = insuBaseService.getInsuBase(new InsuBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

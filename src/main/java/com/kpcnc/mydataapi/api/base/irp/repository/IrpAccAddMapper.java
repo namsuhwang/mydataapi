@@ -14,7 +14,11 @@ public interface IrpAccAddMapper{
 
     int deleteIrpAccAdd(IrpAccAddEntity dom);
 
+    int deleteAllIrpAccAdd(IrpAccAddEntity dom);
+
     IrpAccAddEntity selectIrpAccAdd(IrpAccAddSearch dom);
+
+    IrpAccAddEntity selectIrpAccAddLast(IrpAccAddSearch dom);
 
     Long selectIrpAccAddListTotalCnt(IrpAccAddSearch dom);
 

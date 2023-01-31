@@ -14,6 +14,8 @@ public interface InsuInsdMiBasePpMapper{
 
     int deleteInsuInsdMiBasePp(InsuInsdMiBasePpEntity dom);
 
+    int deleteAllInsuInsdMiBasePp(InsuInsdMiBasePpEntity dom);
+
     InsuInsdMiBasePpEntity selectInsuInsdMiBasePp(InsuInsdMiBasePpSearch dom);
 
     Long selectInsuInsdMiBasePpListTotalCnt(InsuInsdMiBasePpSearch dom);

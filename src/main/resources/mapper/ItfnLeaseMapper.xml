@@ -17,6 +17,8 @@
             ,REPAY_ORG_CODE
             ,REPAY_ACCOUNT_NUM
             ,NEXT_REPAY_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -34,6 +36,8 @@
             ,#{repayOrgCode, jdbcType=VARCHAR}
             ,#{repayAccountNum, jdbcType=VARCHAR}
             ,#{nextRepayDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -55,6 +59,8 @@
                ,REPAY_ORG_CODE = #{repayOrgCode, jdbcType=VARCHAR}
                ,REPAY_ACCOUNT_NUM = #{repayAccountNum, jdbcType=VARCHAR}
                ,NEXT_REPAY_DATE = #{nextRepayDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -86,6 +92,8 @@
                ,REPAY_ORG_CODE
                ,REPAY_ACCOUNT_NUM
                ,NEXT_REPAY_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -136,6 +144,8 @@
                ,REPAY_ORG_CODE
                ,REPAY_ACCOUNT_NUM
                ,NEXT_REPAY_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

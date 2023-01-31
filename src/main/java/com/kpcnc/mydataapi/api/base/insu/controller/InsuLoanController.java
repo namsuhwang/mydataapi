@@ -29,7 +29,8 @@ public class InsuLoanController {
     public ResponseEntity<ResponseDto<InsuLoanEntity>> regInsuLoan(
         @RequestBody InsuLoanForm dom
     ){
-        InsuLoanEntity result = insuLoanService.regInsuLoan(dom);
+        insuLoanService.regInsuLoan(dom);
+        InsuLoanEntity result = insuLoanService.getInsuLoan(new InsuLoanSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuLoanController {
     public ResponseEntity<ResponseDto<InsuLoanEntity>> modInsuLoan(
         @RequestBody InsuLoanForm dom
     ){
-        InsuLoanEntity result = insuLoanService.modInsuLoan(dom);
+        insuLoanService.modInsuLoan(dom);
+        InsuLoanEntity result = insuLoanService.getInsuLoan(new InsuLoanSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

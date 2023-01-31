@@ -14,6 +14,8 @@ public interface BondMapper{
 
     int deleteBond(BondEntity dom);
 
+    int deleteAllBond(BondEntity dom);
+
     BondEntity selectBond(BondSearch dom);
 
     Long selectBondListTotalCnt(BondSearch dom);

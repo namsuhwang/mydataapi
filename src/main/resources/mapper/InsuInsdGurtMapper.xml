@@ -20,6 +20,8 @@
             ,COVERAGE_AMT
             ,START_DATE
             ,END_DATE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -40,6 +42,8 @@
             ,#{coverageAmt, jdbcType=NUMERIC}
             ,#{startDate, jdbcType=VARCHAR}
             ,#{endDate, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -64,6 +68,8 @@
                ,COVERAGE_AMT = #{coverageAmt, jdbcType=NUMERIC}
                ,START_DATE = #{startDate, jdbcType=VARCHAR}
                ,END_DATE = #{endDate, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -86,6 +92,14 @@
            AND RELATION = #{relation}
     </delete>
 
+    <delete id="deleteAllInsuInsdGurt" parameterType="InsuInsdGurtEntity">
+        DELETE FROM INSU_INSD_GURT
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </delete>
+
     <select id="selectInsuInsdGurt" parameterType="InsuInsdGurtSearch"  resultType="InsuInsdGurtEntity">
          SELECT 
                MEMBER_ID
@@ -102,6 +116,8 @@
                ,COVERAGE_AMT
                ,START_DATE
                ,END_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -114,6 +130,62 @@
            AND GURT_SEQ = #{gurtSeq}
            AND SUBJECT = #{subject}
            AND RELATION = #{relation}
+    </select>
+
+    <select id="selectInsuInsdGurtLast" parameterType="InsuInsdGurtSearch"  resultType="InsuInsdGurtEntity">
+         SELECT
+                G1.MEMBER_ID
+               ,G1.ORG_CD
+               ,G1.INSU_NUM
+               ,G1.GURT_SEQ
+               ,G1.SUBJECT
+               ,G1.RELATION
+               ,G1.STATUS
+               ,G1.COVERAGE_CODE
+               ,G1.TYPE
+               ,G1.COVERAGE_NUM
+               ,G1.COVERAGE_NAME
+               ,G1.COVERAGE_AMT
+               ,G1.START_DATE
+               ,G1.END_DATE
+               ,G1.API_TRAN_DAY
+               ,G1.API_TRAN_ID
+               ,G1.REG_USER_ID
+               ,G1.REG_DT
+               ,G1.CHG_USER_ID
+               ,G1.CHG_DT
+        FROM INSU_INSD_GURT G1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM, GURT_SEQ, SUBJECT, RELATION
+                        FROM INSU_INSD_GURT
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND INSU_NUM = #{insuNum}
+                            <if test = 'gurtSeq  != null and gurtSeq != ""'>
+                                AND GURT_SEQ = #{gurtSeq}
+                            </if>
+                            <if test = 'subject  != null and subject != ""'>
+                                AND SUBJECT = #{subject}
+                            </if>
+                            <if test = 'relation  != null and relation != ""'>
+                                AND RELATION = #{relation}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) G2
+       WHERE
+             G1.MEMBER_ID = G2.MEMBER_ID
+           AND G1.ORG_CD = G2.ORG_CD
+           AND G1.INSU_NUM = G2.INSU_NUM
+           AND G1.GURT_SEQ = G2.GURT_SEQ
+           AND G1.SUBJECT = G2.SUBJECT
+           AND G1.RELATION = G2.RELATION
     </select>
 
     <select id="selectInsuInsdGurtListTotalCnt" parameterType="InsuInsdGurtSearch"  resultType="Long">
@@ -163,6 +235,8 @@
                ,COVERAGE_AMT
                ,START_DATE
                ,END_DATE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

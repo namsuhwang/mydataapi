@@ -23,20 +23,33 @@ public class InsuBaseInsdServiceImpl implements InsuBaseInsdService {
     InsuBaseInsdMapper insuBaseInsdMapper;
 
     @Override
-    public InsuBaseInsdEntity regInsuBaseInsd(InsuBaseInsdForm dom) {
+    public void regInsuBaseInsd(InsuBaseInsdForm dom) {
         insuBaseInsdMapper.insertInsuBaseInsd(dom.getEntity());
-        return insuBaseInsdMapper.selectInsuBaseInsd(new InsuBaseInsdSearch(dom));
     }
 
     @Override
-    public InsuBaseInsdEntity modInsuBaseInsd(InsuBaseInsdForm dom) {
+    public void updInsuBaseInsd(InsuBaseInsdForm dom) {
         insuBaseInsdMapper.updateInsuBaseInsd(dom.getEntity());
-        return insuBaseInsdMapper.selectInsuBaseInsd(new InsuBaseInsdSearch(dom));
+    }
+
+    @Override
+    public void modInsuBaseInsd(InsuBaseInsdForm dom) {
+        if(getInsuBaseInsd(new InsuBaseInsdSearch(dom)) == null){
+            regInsuBaseInsd(dom);
+        }else{
+            updInsuBaseInsd(dom);
+        }
     }
 
     @Override
     public void delInsuBaseInsd(InsuBaseInsdForm dom) {
         insuBaseInsdMapper.deleteInsuBaseInsd(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelInsuBaseInsd(InsuBaseInsdForm dom) {
+        insuBaseInsdMapper.deleteAllInsuBaseInsd(dom.getEntity());
         return;
     }
 

@@ -1,20 +1,16 @@
 package com.kpcnc.mydataapi.api.base.card.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardDmPcaEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class CardDmPcaEntity extends EntityBase {
     private String cardId;    // 카드 식별자
     private String purchaseNum;    // 매입번호
     private String purchaseDate;    // 매입일자
@@ -27,8 +23,4 @@ public class CardDmPcaEntity{
     private String merchantRegno;    // 가맹점 사업자등록번호
     private BigDecimal approvedAmt;    // 이용금액
     private Integer totalInstallCnt;    // 전체 할부회차
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

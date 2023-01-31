@@ -12,6 +12,8 @@ public interface BondService{
 
     public void  delBond(BondForm dom);
 
+    public void  allDelBond(BondForm dom);
+
     public BondEntity getBond(BondSearch dom);
 
     public ResultListDto<BondEntity> getBondList(BondSearch dom);

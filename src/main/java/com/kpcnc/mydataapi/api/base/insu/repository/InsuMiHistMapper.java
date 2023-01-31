@@ -16,6 +16,8 @@ public interface InsuMiHistMapper{
 
     InsuMiHistEntity selectInsuMiHist(InsuMiHistSearch dom);
 
+    InsuMiHistEntity selectInsuMiHistLast(InsuMiHistSearch dom);
+
     Long selectInsuMiHistListTotalCnt(InsuMiHistSearch dom);
 
     List<InsuMiHistEntity> selectInsuMiHistList(InsuMiHistSearch dom);

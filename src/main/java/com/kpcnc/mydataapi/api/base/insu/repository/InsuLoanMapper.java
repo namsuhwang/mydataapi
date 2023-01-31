@@ -14,6 +14,8 @@ public interface InsuLoanMapper{
 
     int deleteInsuLoan(InsuLoanEntity dom);
 
+    int deleteAllInsuLoan(InsuLoanEntity dom);
+
     InsuLoanEntity selectInsuLoan(InsuLoanSearch dom);
 
     Long selectInsuLoanListTotalCnt(InsuLoanSearch dom);

@@ -16,6 +16,8 @@ public interface CardDmPcaMapper{
 
     CardDmPcaEntity selectCardDmPca(CardDmPcaSearch dom);
 
+    CardDmPcaEntity selectCardDmPcaLast(CardDmPcaSearch dom);
+
     Long selectCardDmPcaListTotalCnt(CardDmPcaSearch dom);
 
     List<CardDmPcaEntity> selectCardDmPcaList(CardDmPcaSearch dom);

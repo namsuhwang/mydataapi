@@ -16,6 +16,8 @@ public interface InsuCarHistMapper{
 
     InsuCarHistEntity selectInsuCarHist(InsuCarHistSearch dom);
 
+    InsuCarHistEntity selectInsuCarHistLast(InsuCarHistSearch dom);
+
     Long selectInsuCarHistListTotalCnt(InsuCarHistSearch dom);
 
     List<InsuCarHistEntity> selectInsuCarHistList(InsuCarHistSearch dom);

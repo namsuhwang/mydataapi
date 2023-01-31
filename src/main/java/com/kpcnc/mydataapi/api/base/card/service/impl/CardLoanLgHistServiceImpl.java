@@ -46,6 +46,11 @@ public class CardLoanLgHistServiceImpl implements CardLoanLgHistService {
     }
 
     @Override
+    public CardLoanLgHistEntity getCardLoanLgHistLast(CardLoanLgHistSearch dom) {
+        return cardLoanLgHistMapper.selectCardLoanLgHistLast(dom);
+    }
+
+    @Override
     public ResultListDto<CardLoanLgHistEntity> getCardLoanLgHistList(CardLoanLgHistSearch dom) {
         ResultListDto<CardLoanLgHistEntity> result = new ResultListDto<>();
         Long totalCnt = cardLoanLgHistMapper.selectCardLoanLgHistListTotalCnt(dom);

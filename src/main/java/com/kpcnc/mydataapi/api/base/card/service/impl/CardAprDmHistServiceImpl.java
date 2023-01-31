@@ -23,15 +23,25 @@ public class CardAprDmHistServiceImpl implements CardAprDmHistService {
     CardAprDmHistMapper cardAprDmHistMapper;
 
     @Override
-    public CardAprDmHistEntity regCardAprDmHist(CardAprDmHistForm dom) {
+    public void regCardAprDmHist(CardAprDmHistForm dom) {
         cardAprDmHistMapper.insertCardAprDmHist(dom.getEntity());
-        return cardAprDmHistMapper.selectCardAprDmHist(new CardAprDmHistSearch(dom));
+        return;
     }
 
     @Override
-    public CardAprDmHistEntity modCardAprDmHist(CardAprDmHistForm dom) {
+    public void updCardAprDmHist(CardAprDmHistForm dom) {
         cardAprDmHistMapper.updateCardAprDmHist(dom.getEntity());
-        return cardAprDmHistMapper.selectCardAprDmHist(new CardAprDmHistSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modCardAprDmHist(CardAprDmHistForm dom) {
+        if(getCardAprDmHist(new CardAprDmHistSearch(dom)) == null){
+            regCardAprDmHist(dom);
+        }else{
+            updCardAprDmHist(dom);
+        }
+        return;
     }
 
     @Override
@@ -44,6 +54,12 @@ public class CardAprDmHistServiceImpl implements CardAprDmHistService {
     public CardAprDmHistEntity getCardAprDmHist(CardAprDmHistSearch dom) {
         return cardAprDmHistMapper.selectCardAprDmHist(dom);
     }
+
+    @Override
+    public CardAprDmHistEntity getCardAprDmHistLast(CardAprDmHistSearch dom) {
+        return cardAprDmHistMapper.selectCardAprDmHistLast(dom);
+    }
+
 
     @Override
     public ResultListDto<CardAprDmHistEntity> getCardAprDmHistList(CardAprDmHistSearch dom) {

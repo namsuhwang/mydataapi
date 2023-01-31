@@ -11,25 +11,24 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class ElecPpaySearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String fobId;    // 권면 ID
 
+    public ElecPpaySearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public ElecPpaySearch(String memberId, String orgCd, String fobId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.fobId = fobId;
     }
 
     public ElecPpaySearch(ElecPpayEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.fobId = entity.getFobId();
     }
 
     public ElecPpaySearch(ElecPpayForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.fobId = form.getFobId();
     }
 }

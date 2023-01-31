@@ -20,6 +20,8 @@
             ,INT_AMT
             ,RET_INT_AMT
             ,INT_CNT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -40,6 +42,8 @@
             ,#{intAmt, jdbcType=NUMERIC}
             ,#{retIntAmt, jdbcType=NUMERIC}
             ,#{intCnt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -64,6 +68,8 @@
                ,INT_AMT = #{intAmt, jdbcType=NUMERIC}
                ,RET_INT_AMT = #{retIntAmt, jdbcType=NUMERIC}
                ,INT_CNT = #{intCnt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -102,6 +108,8 @@
                ,INT_AMT
                ,RET_INT_AMT
                ,INT_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -163,6 +171,8 @@
                ,INT_AMT
                ,RET_INT_AMT
                ,INT_CNT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

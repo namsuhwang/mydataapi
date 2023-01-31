@@ -23,15 +23,22 @@ public class InsuLoanHistServiceImpl implements InsuLoanHistService {
     InsuLoanHistMapper insuLoanHistMapper;
 
     @Override
-    public InsuLoanHistEntity regInsuLoanHist(InsuLoanHistForm dom) {
+    public void regInsuLoanHist(InsuLoanHistForm dom) {
         insuLoanHistMapper.insertInsuLoanHist(dom.getEntity());
-        return insuLoanHistMapper.selectInsuLoanHist(new InsuLoanHistSearch(dom));
     }
 
     @Override
-    public InsuLoanHistEntity modInsuLoanHist(InsuLoanHistForm dom) {
+    public void updInsuLoanHist(InsuLoanHistForm dom) {
         insuLoanHistMapper.updateInsuLoanHist(dom.getEntity());
-        return insuLoanHistMapper.selectInsuLoanHist(new InsuLoanHistSearch(dom));
+    }
+
+    @Override
+    public void modInsuLoanHist(InsuLoanHistForm dom) {
+        if(getInsuLoanHist(new InsuLoanHistSearch(dom)) == null){
+            regInsuLoanHist(dom);
+        }else{
+            updInsuLoanHist(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class InsuLoanHistServiceImpl implements InsuLoanHistService {
     @Override
     public InsuLoanHistEntity getInsuLoanHist(InsuLoanHistSearch dom) {
         return insuLoanHistMapper.selectInsuLoanHist(dom);
+    }
+
+    @Override
+    public InsuLoanHistEntity getInsuLoanHistLast(InsuLoanHistSearch dom) {
+        return insuLoanHistMapper.selectInsuLoanHistLast(dom);
     }
 
     @Override

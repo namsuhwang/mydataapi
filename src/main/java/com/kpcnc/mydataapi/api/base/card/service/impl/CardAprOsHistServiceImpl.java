@@ -23,15 +23,26 @@ public class CardAprOsHistServiceImpl implements CardAprOsHistService {
     CardAprOsHistMapper cardAprOsHistMapper;
 
     @Override
-    public CardAprOsHistEntity regCardAprOsHist(CardAprOsHistForm dom) {
+    public void regCardAprOsHist(CardAprOsHistForm dom) {
         cardAprOsHistMapper.insertCardAprOsHist(dom.getEntity());
-        return cardAprOsHistMapper.selectCardAprOsHist(new CardAprOsHistSearch(dom));
+        return;
+    }
+
+
+    @Override
+    public void updCardAprOsHist(CardAprOsHistForm dom) {
+        cardAprOsHistMapper.updateCardAprOsHist(dom.getEntity());
+        return;
     }
 
     @Override
-    public CardAprOsHistEntity modCardAprOsHist(CardAprOsHistForm dom) {
-        cardAprOsHistMapper.updateCardAprOsHist(dom.getEntity());
-        return cardAprOsHistMapper.selectCardAprOsHist(new CardAprOsHistSearch(dom));
+    public void modCardAprOsHist(CardAprOsHistForm dom) {
+        if(getCardAprOsHist(new CardAprOsHistSearch(dom)) == null){
+            regCardAprOsHist(dom);
+        }else{
+            updCardAprOsHist(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +54,11 @@ public class CardAprOsHistServiceImpl implements CardAprOsHistService {
     @Override
     public CardAprOsHistEntity getCardAprOsHist(CardAprOsHistSearch dom) {
         return cardAprOsHistMapper.selectCardAprOsHist(dom);
+    }
+
+    @Override
+    public CardAprOsHistEntity getCardAprOsHistLast(CardAprOsHistSearch dom) {
+        return cardAprOsHistMapper.selectCardAprOsHistLast(dom);
     }
 
     @Override

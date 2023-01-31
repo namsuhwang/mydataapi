@@ -14,6 +14,8 @@ public interface CardLoanLgMapper{
 
     int deleteCardLoanLg(CardLoanLgEntity dom);
 
+    int deleteAllCardLoanLg(CardLoanLgEntity dom);
+
     CardLoanLgEntity selectCardLoanLg(CardLoanLgSearch dom);
 
     Long selectCardLoanLgListTotalCnt(CardLoanLgSearch dom);

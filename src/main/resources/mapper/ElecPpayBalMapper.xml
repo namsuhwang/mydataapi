@@ -16,6 +16,8 @@
             ,WITHDRAWABLE_AMT
             ,RESERVE_DUE_AMT
             ,EXP_DUE_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -32,6 +34,8 @@
             ,#{withdrawableAmt, jdbcType=NUMERIC}
             ,#{reserveDueAmt, jdbcType=NUMERIC}
             ,#{expDueAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -52,6 +56,8 @@
                ,WITHDRAWABLE_AMT = #{withdrawableAmt, jdbcType=NUMERIC}
                ,RESERVE_DUE_AMT = #{reserveDueAmt, jdbcType=NUMERIC}
                ,EXP_DUE_AMT = #{expDueAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -82,6 +88,8 @@
                ,WITHDRAWABLE_AMT
                ,RESERVE_DUE_AMT
                ,EXP_DUE_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -131,6 +139,8 @@
                ,WITHDRAWABLE_AMT
                ,RESERVE_DUE_AMT
                ,EXP_DUE_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

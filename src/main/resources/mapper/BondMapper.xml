@@ -13,6 +13,8 @@
             ,BOND_TYPE
             ,TAKEOVER_DATE
             ,INIT_ORG_CODE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{bondType, jdbcType=VARCHAR}
             ,#{takeoverDate, jdbcType=VARCHAR}
             ,#{initOrgCode, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,BOND_TYPE = #{bondType, jdbcType=VARCHAR}
                ,TAKEOVER_DATE = #{takeoverDate, jdbcType=VARCHAR}
                ,INIT_ORG_CODE = #{initOrgCode, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -59,6 +65,13 @@
            AND BOND_NUM = #{bondNum}
     </delete>
 
+    <delete id="deleteAllBond" parameterType="BondEntity">
+        DELETE FROM BOND
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectBond" parameterType="BondSearch"  resultType="BondEntity">
          SELECT 
                MEMBER_ID
@@ -68,6 +81,8 @@
                ,BOND_TYPE
                ,TAKEOVER_DATE
                ,INIT_ORG_CODE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -110,6 +125,8 @@
                ,BOND_TYPE
                ,TAKEOVER_DATE
                ,INIT_ORG_CODE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

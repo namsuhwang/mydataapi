@@ -13,6 +13,8 @@
             ,IS_CONSENT
             ,REG_DATE
             ,IS_PAY
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{isConsent, jdbcType=VARCHAR}
             ,#{regDate, jdbcType=VARCHAR}
             ,#{isPay, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,IS_CONSENT = #{isConsent, jdbcType=VARCHAR}
                ,REG_DATE = #{regDate, jdbcType=VARCHAR}
                ,IS_PAY = #{isPay, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -70,6 +76,8 @@
                ,IS_CONSENT
                ,REG_DATE
                ,IS_PAY
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -116,6 +124,8 @@
                ,IS_CONSENT
                ,REG_DATE
                ,IS_PAY
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

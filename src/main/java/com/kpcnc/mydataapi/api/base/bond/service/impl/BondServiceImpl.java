@@ -41,6 +41,13 @@ public class BondServiceImpl implements BondService {
     }
 
     @Override
+    public void allDelBond(BondForm dom) {
+        bondMapper.deleteAllBond(dom.getEntity());
+        return;
+    }
+
+
+    @Override
     public BondEntity getBond(BondSearch dom) {
         return bondMapper.selectBond(dom);
     }

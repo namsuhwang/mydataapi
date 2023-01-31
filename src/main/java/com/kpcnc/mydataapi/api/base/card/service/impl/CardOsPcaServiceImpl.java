@@ -23,15 +23,25 @@ public class CardOsPcaServiceImpl implements CardOsPcaService {
     CardOsPcaMapper cardOsPcaMapper;
 
     @Override
-    public CardOsPcaEntity regCardOsPca(CardOsPcaForm dom) {
+    public void regCardOsPca(CardOsPcaForm dom) {
         cardOsPcaMapper.insertCardOsPca(dom.getEntity());
-        return cardOsPcaMapper.selectCardOsPca(new CardOsPcaSearch(dom));
+        return;
     }
 
     @Override
-    public CardOsPcaEntity modCardOsPca(CardOsPcaForm dom) {
+    public void updCardOsPca(CardOsPcaForm dom) {
         cardOsPcaMapper.updateCardOsPca(dom.getEntity());
-        return cardOsPcaMapper.selectCardOsPca(new CardOsPcaSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modCardOsPca(CardOsPcaForm dom) {
+        if(getCardOsPca(new CardOsPcaSearch(dom)) == null){
+            regCardOsPca(dom);
+        }else{
+            updCardOsPca(dom);
+        }
+        return;
     }
 
     @Override
@@ -43,6 +53,11 @@ public class CardOsPcaServiceImpl implements CardOsPcaService {
     @Override
     public CardOsPcaEntity getCardOsPca(CardOsPcaSearch dom) {
         return cardOsPcaMapper.selectCardOsPca(dom);
+    }
+
+    @Override
+    public CardOsPcaEntity getCardOsPcaLast(CardOsPcaSearch dom) {
+        return cardOsPcaMapper.selectCardOsPcaLast(dom);
     }
 
     @Override

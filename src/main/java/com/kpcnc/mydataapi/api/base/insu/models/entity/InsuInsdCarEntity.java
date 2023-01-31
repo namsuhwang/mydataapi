@@ -1,18 +1,14 @@
 package com.kpcnc.mydataapi.api.base.insu.models.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.kpcnc.mydataapi.api.common.gateway.models.entity.EntityBase;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuInsdCarEntity{
-    private Long rowNum;
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class InsuInsdCarEntity extends EntityBase {
     private String insuNum;    // 증권번호
     private String carNumber;    // 차량번호
     private String carInsuType;    // 자동차보험 구분 (코드)
@@ -24,8 +20,4 @@ public class InsuInsdCarEntity{
     private String isOwnDmgCoverage;    // 자기차량손해 (여부)
     private String selfPayRate;    // 자기부담금 구분 (코드)
     private Long selfPayAmt;    // 자기부담금 금액
-    private String regUserId;    // 등록자
-    private String regDt;    // 등록일시
-    private String chgUserId;    // 수정자
-    private String chgDt;    // 수정일시
 }

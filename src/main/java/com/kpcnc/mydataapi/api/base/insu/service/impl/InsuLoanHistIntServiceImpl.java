@@ -23,15 +23,22 @@ public class InsuLoanHistIntServiceImpl implements InsuLoanHistIntService {
     InsuLoanHistIntMapper insuLoanHistIntMapper;
 
     @Override
-    public InsuLoanHistIntEntity regInsuLoanHistInt(InsuLoanHistIntForm dom) {
+    public void regInsuLoanHistInt(InsuLoanHistIntForm dom) {
         insuLoanHistIntMapper.insertInsuLoanHistInt(dom.getEntity());
-        return insuLoanHistIntMapper.selectInsuLoanHistInt(new InsuLoanHistIntSearch(dom));
     }
 
     @Override
-    public InsuLoanHistIntEntity modInsuLoanHistInt(InsuLoanHistIntForm dom) {
+    public void updInsuLoanHistInt(InsuLoanHistIntForm dom) {
         insuLoanHistIntMapper.updateInsuLoanHistInt(dom.getEntity());
-        return insuLoanHistIntMapper.selectInsuLoanHistInt(new InsuLoanHistIntSearch(dom));
+    }
+
+    @Override
+    public void modInsuLoanHistInt(InsuLoanHistIntForm dom) {
+        if(getInsuLoanHistInt(new InsuLoanHistIntSearch(dom)) == null){
+            regInsuLoanHistInt(dom);
+        }else{
+            updInsuLoanHistInt(dom);
+        }
     }
 
     @Override

@@ -11,28 +11,27 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class ElecAccSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String subKey;    // Sub key
     private String accountId;    // 계정식별값
 
+    public ElecAccSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public ElecAccSearch(String memberId, String orgCd, String subKey, String accountId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.subKey = subKey;
         this.accountId = accountId;
     }
 
     public ElecAccSearch(ElecAccEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.subKey = entity.getSubKey();
         this.accountId = entity.getAccountId();
     }
 
     public ElecAccSearch(ElecAccForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.subKey = form.getSubKey();
         this.accountId = form.getAccountId();
     }

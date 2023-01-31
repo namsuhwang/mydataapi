@@ -2,7 +2,7 @@ package com.kpcnc.mydataapi.api.collect.pull.service.impl;
 
 import com.kpcnc.mydataapi.api.base.bank.service.BankAccService;
 import com.kpcnc.mydataapi.api.base.bank.service.BankCustService;
-import com.kpcnc.mydataapi.api.collect.pull.service.PullBankService;
+import com.kpcnc.mydataapi.api.collect.pull.service.*;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.kpcnc.mydataapi.api.collect.pull.models.form.PullForm;
 import com.kpcnc.mydataapi.api.collect.pull.service.PullService;
@@ -44,18 +44,15 @@ public class PullServiceImpl implements PullService {
     @Autowired BankAccService bankAccService;
     @Autowired BankCustService bankCustService;
 
-    @Autowired
-    RequestBankParamsSetService reqParamsSetService;
-    @Autowired
-    RecvStatusService recvStatusService;
-    @Autowired
-    RecvHistBaseService recvHistBaseService;
+    @Autowired RequestBankParamsSetService reqParamsSetService;
+    @Autowired RecvStatusService recvStatusService;
+    @Autowired RecvHistBaseService recvHistBaseService;
 
-    @Autowired
-    RecvHistDetailService recvHistDetailService;
+    @Autowired RecvHistDetailService recvHistDetailService;
 
-    @Autowired
-    PullBankService pullBankService;
+    @Autowired PullBankService pullBankService;
+    @Autowired PullCardService pullCardService;
+    @Autowired PullInsuService pullInsuService;
 
     /*
         Async로 기관별로 조회 호출.
@@ -113,6 +110,8 @@ public class PullServiceImpl implements PullService {
             if(token.getSendRequestType().equals("1")) {
                 switch(token.getIdstType().toUpperCase()){
                     case "BANK": pullBankService.pullBankInfoRun(reqInfo, recvStatusForm); break;
+                    case "CARD": pullCardService.pullCardInfoRun(reqInfo, recvStatusForm); break;
+                    case "INSU": pullInsuService.pullInsuInfoRun(reqInfo, recvStatusForm); break;
                 }
                 targetList.add(token.getOrgCd());
             }

@@ -23,15 +23,22 @@ public class InsuInsdMiBaseServiceImpl implements InsuInsdMiBaseService {
     InsuInsdMiBaseMapper insuInsdMiBaseMapper;
 
     @Override
-    public InsuInsdMiBaseEntity regInsuInsdMiBase(InsuInsdMiBaseForm dom) {
+    public void regInsuInsdMiBase(InsuInsdMiBaseForm dom) {
         insuInsdMiBaseMapper.insertInsuInsdMiBase(dom.getEntity());
-        return insuInsdMiBaseMapper.selectInsuInsdMiBase(new InsuInsdMiBaseSearch(dom));
     }
 
     @Override
-    public InsuInsdMiBaseEntity modInsuInsdMiBase(InsuInsdMiBaseForm dom) {
+    public void updInsuInsdMiBase(InsuInsdMiBaseForm dom) {
         insuInsdMiBaseMapper.updateInsuInsdMiBase(dom.getEntity());
-        return insuInsdMiBaseMapper.selectInsuInsdMiBase(new InsuInsdMiBaseSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsdMiBase(InsuInsdMiBaseForm dom) {
+        if(getInsuInsdMiBase(new InsuInsdMiBaseSearch(dom)) == null){
+            regInsuInsdMiBase(dom);
+        }else{
+            updInsuInsdMiBase(dom);
+        }
     }
 
     @Override

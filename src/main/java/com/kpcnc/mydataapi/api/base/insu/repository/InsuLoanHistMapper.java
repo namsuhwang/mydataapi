@@ -16,6 +16,8 @@ public interface InsuLoanHistMapper{
 
     InsuLoanHistEntity selectInsuLoanHist(InsuLoanHistSearch dom);
 
+    InsuLoanHistEntity selectInsuLoanHistLast(InsuLoanHistSearch dom);
+
     Long selectInsuLoanHistListTotalCnt(InsuLoanHistSearch dom);
 
     List<InsuLoanHistEntity> selectInsuLoanHistList(InsuLoanHistSearch dom);

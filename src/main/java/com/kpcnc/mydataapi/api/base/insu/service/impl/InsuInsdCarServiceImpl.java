@@ -23,15 +23,22 @@ public class InsuInsdCarServiceImpl implements InsuInsdCarService {
     InsuInsdCarMapper insuInsdCarMapper;
 
     @Override
-    public InsuInsdCarEntity regInsuInsdCar(InsuInsdCarForm dom) {
+    public void regInsuInsdCar(InsuInsdCarForm dom) {
         insuInsdCarMapper.insertInsuInsdCar(dom.getEntity());
-        return insuInsdCarMapper.selectInsuInsdCar(new InsuInsdCarSearch(dom));
     }
 
     @Override
-    public InsuInsdCarEntity modInsuInsdCar(InsuInsdCarForm dom) {
+    public void updInsuInsdCar(InsuInsdCarForm dom) {
         insuInsdCarMapper.updateInsuInsdCar(dom.getEntity());
-        return insuInsdCarMapper.selectInsuInsdCar(new InsuInsdCarSearch(dom));
+    }
+
+    @Override
+    public void modInsuInsdCar(InsuInsdCarForm dom) {
+        if(getInsuInsdCar(new InsuInsdCarSearch(dom)) == null){
+            regInsuInsdCar(dom);
+        }else{
+            updInsuInsdCar(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,19 @@ public class InsuInsdCarServiceImpl implements InsuInsdCarService {
     }
 
     @Override
+    public void allDelInsuInsdCar(InsuInsdCarForm dom) {
+        insuInsdCarMapper.deleteAllInsuInsdCar(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InsuInsdCarEntity getInsuInsdCar(InsuInsdCarSearch dom) {
         return insuInsdCarMapper.selectInsuInsdCar(dom);
+    }
+
+    @Override
+    public InsuInsdCarEntity getInsuInsdCarLast(InsuInsdCarSearch dom) {
+        return insuInsdCarMapper.selectInsuInsdCarLast(dom);
     }
 
     @Override

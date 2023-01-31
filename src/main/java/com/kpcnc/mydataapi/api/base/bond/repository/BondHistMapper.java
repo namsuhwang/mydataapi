@@ -16,6 +16,8 @@ public interface BondHistMapper{
 
     BondHistEntity selectBondHist(BondHistSearch dom);
 
+    BondHistEntity selectBondHistLast(BondHistSearch dom);
+
     Long selectBondHistListTotalCnt(BondHistSearch dom);
 
     List<BondHistEntity> selectBondHistList(BondHistSearch dom);

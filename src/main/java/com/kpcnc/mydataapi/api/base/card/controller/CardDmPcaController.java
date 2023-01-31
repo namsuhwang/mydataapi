@@ -29,7 +29,8 @@ public class CardDmPcaController {
     public ResponseEntity<ResponseDto<CardDmPcaEntity>> regCardDmPca(
         @RequestBody CardDmPcaForm dom
     ){
-        CardDmPcaEntity result = cardDmPcaService.regCardDmPca(dom);
+        cardDmPcaService.regCardDmPca(dom);
+        CardDmPcaEntity result = cardDmPcaService.getCardDmPcaLast(new CardDmPcaSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class CardDmPcaController {
     public ResponseEntity<ResponseDto<CardDmPcaEntity>> modCardDmPca(
         @RequestBody CardDmPcaForm dom
     ){
-        CardDmPcaEntity result = cardDmPcaService.modCardDmPca(dom);
+        cardDmPcaService.modCardDmPca(dom);
+        CardDmPcaEntity result = cardDmPcaService.getCardDmPcaLast(new CardDmPcaSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -11,33 +11,38 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class InsuMiSccontSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String insuNum;    // 증권번호
-    private String prizeNum;    // 피보험인/물 번호
+    private String insuredNo;    // 피보험인/물 번호
     private String contractName;    // 특약명
 
-    public InsuMiSccontSearch(String memberId, String orgCd, String insuNum, String prizeNum, String contractName) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+    public InsuMiSccontSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
+    public InsuMiSccontSearch(String memberId, String orgCd, String insuNum, String insuredNo) {
+        super(memberId, orgCd);
         this.insuNum = insuNum;
-        this.prizeNum = prizeNum;
+        this.insuredNo = insuredNo;
+    }
+
+    public InsuMiSccontSearch(String memberId, String orgCd, String insuNum, String insuredNo, String contractName) {
+        super(memberId, orgCd);
+        this.insuNum = insuNum;
+        this.insuredNo = insuredNo;
         this.contractName = contractName;
     }
 
     public InsuMiSccontSearch(InsuMiSccontEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.insuNum = entity.getInsuNum();
-        this.prizeNum = entity.getPrizeNum();
+        this.insuredNo = entity.getInsuredNo();
         this.contractName = entity.getContractName();
     }
 
     public InsuMiSccontSearch(InsuMiSccontForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.insuNum = form.getInsuNum();
-        this.prizeNum = form.getPrizeNum();
+        this.insuredNo = form.getInsuredNo();
         this.contractName = form.getContractName();
     }
 }

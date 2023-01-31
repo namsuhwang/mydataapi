@@ -13,6 +13,8 @@
             ,PROD_NAME
             ,INSU_TYPE
             ,INSU_STATUS
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,6 +28,8 @@
             ,#{prodName, jdbcType=VARCHAR}
             ,#{insuType, jdbcType=VARCHAR}
             ,#{insuStatus, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -43,6 +47,8 @@
                ,PROD_NAME = #{prodName, jdbcType=VARCHAR}
                ,INSU_TYPE = #{insuType, jdbcType=VARCHAR}
                ,INSU_STATUS = #{insuStatus, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -59,6 +65,13 @@
            AND INSU_NUM = #{insuNum}
     </delete>
 
+    <delete id="deleteAllInsu" parameterType="InsuEntity">
+        DELETE FROM INSU
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectInsu" parameterType="InsuSearch"  resultType="InsuEntity">
          SELECT 
                MEMBER_ID
@@ -68,6 +81,8 @@
                ,PROD_NAME
                ,INSU_TYPE
                ,INSU_STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -77,6 +92,45 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND INSU_NUM = #{insuNum}
+    </select>
+
+    <select id="selectInsuLast" parameterType="InsuSearch"  resultType="InsuEntity">
+         SELECT
+                S1.MEMBER_ID
+               ,S1.ORG_CD
+               ,S1.INSU_NUM
+               ,S1.IS_CONSENT
+               ,S1.PROD_NAME
+               ,S1.INSU_TYPE
+               ,S1.INSU_STATUS
+               ,S1.API_TRAN_DAY
+               ,S1.API_TRAN_ID
+               ,S1.REG_USER_ID
+               ,S1.REG_DT
+               ,S1.CHG_USER_ID
+               ,S1.CHG_DT
+        FROM INSU S1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM
+                        FROM INSU
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'insuNum  != null and insuNum != ""'>
+                                AND INSU_NUM = #{insuNum}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, CHG_DT DESC
+                    )
+                WHERE rownum = 1
+            ) S2
+       WHERE
+             S1.MEMBER_ID = S2.MEMBER_ID
+           AND S1.ORG_CD = S2.ORG_CD
+           AND S1.INSU_NUM = S2.INSU_NUM
     </select>
 
     <select id="selectInsuListTotalCnt" parameterType="InsuSearch"  resultType="Long">
@@ -110,6 +164,8 @@
                ,PROD_NAME
                ,INSU_TYPE
                ,INSU_STATUS
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

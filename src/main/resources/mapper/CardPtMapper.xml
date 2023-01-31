@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.base.card.repository.CardPtMapper">
+
+    <insert id="insertCardPt" parameterType="CardPtEntity">
+        INSERT INTO CARD_PT
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,POINT_NAME
+            ,REMAIN_POINT_AMT
+            ,EXPIRING_POINT_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{pointName, jdbcType=VARCHAR}
+            ,#{remainPointAmt, jdbcType=NUMERIC}
+            ,#{expiringPointAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateCardPt" parameterType="CardPtEntity">
+        UPDATE CARD_PT
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,POINT_NAME = #{pointName, jdbcType=VARCHAR}
+               ,REMAIN_POINT_AMT = #{remainPointAmt, jdbcType=NUMERIC}
+               ,EXPIRING_POINT_AMT = #{expiringPointAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND POINT_NAME = #{pointName}
+    </update>
+
+    <delete id="deleteCardPt" parameterType="CardPtEntity">
+        DELETE FROM CARD_PT
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND POINT_NAME = #{pointName}
+    </delete>
+
+    <delete id="deleteAllCardPt" parameterType="CardPtEntity">
+        DELETE FROM CARD_PT
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
+    <select id="selectCardPt" parameterType="CardPtSearch"  resultType="CardPtEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,POINT_NAME
+               ,REMAIN_POINT_AMT
+               ,EXPIRING_POINT_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_PT
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND POINT_NAME = #{pointName}
+    </select>
+
+    <select id="selectCardPtLast" parameterType="CardPtSearch"  resultType="CardPtEntity">
+         SELECT
+                T1.MEMBER_ID
+               ,T1.ORG_CD
+               ,T1.POINT_NAME
+               ,T1.REMAIN_POINT_AMT
+               ,T1.EXPIRING_POINT_AMT
+               ,T1.API_TRAN_DAY
+               ,T1.API_TRAN_ID
+               ,T1.REG_USER_ID
+               ,T1.REG_DT
+               ,T1.CHG_USER_ID
+               ,T1.CHG_DT
+        FROM CARD_PT T1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, POINT_NAME
+                        FROM CARD_PT
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'pointName  != null and pointName != ""'>
+                                AND POINT_NAME = #{pointName}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, POINT_NAME
+                    )
+                WHERE rownum = 1
+            ) T2
+       WHERE
+             T1.MEMBER_ID = #{memberId}
+           AND T1.ORG_CD = #{orgCd}
+           AND T1.POINT_NAME = #{pointName}
+    </select>
+
+    <select id="selectCardPtListTotalCnt" parameterType="CardPtSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM CARD_PT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'pointName  != null and pointName != ""'>
+           AND POINT_NAME = #{pointName}
+       </if>
+    </select>
+
+    <select id="selectCardPtList" parameterType="CardPtSearch"  resultType="CardPtEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, POINT_NAME) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,POINT_NAME
+               ,REMAIN_POINT_AMT
+               ,EXPIRING_POINT_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM CARD_PT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'pointName  != null and pointName != ""'>
+           AND POINT_NAME = #{pointName}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, POINT_NAME
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -13,8 +13,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class PpayAprHistSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String ppId;    // 선불카드 식별자
     private String approvedNum;    // 승인번호
     private String approvedDtime;    // 승인일시
@@ -22,14 +20,12 @@ public class PpayAprHistSearch extends SearchDto {
     private String transDtime;    // 정정 또는 승인취소일시
 
     public PpayAprHistSearch(String memberId, String orgCd, String ppId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.ppId = ppId;
     }
 
     public PpayAprHistSearch(String memberId, String orgCd, String ppId, String approvedNum, String approvedDtime, String status, String transDtime) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.ppId = ppId;
         this.approvedNum = approvedNum;
         this.approvedDtime = approvedDtime;
@@ -38,8 +34,7 @@ public class PpayAprHistSearch extends SearchDto {
     }
 
     public PpayAprHistSearch(PpayAprHistEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.ppId = entity.getPpId();
         this.approvedNum = entity.getApprovedNum();
         this.approvedDtime = entity.getApprovedDtime();
@@ -48,8 +43,7 @@ public class PpayAprHistSearch extends SearchDto {
     }
 
     public PpayAprHistSearch(PpayAprHistForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.ppId = form.getPpId();
         this.approvedNum = form.getApprovedNum();
         this.approvedDtime = form.getApprovedDtime();

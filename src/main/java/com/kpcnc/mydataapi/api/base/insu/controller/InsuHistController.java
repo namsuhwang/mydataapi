@@ -29,7 +29,8 @@ public class InsuHistController {
     public ResponseEntity<ResponseDto<InsuHistEntity>> regInsuHist(
         @RequestBody InsuHistForm dom
     ){
-        InsuHistEntity result = insuHistService.regInsuHist(dom);
+        insuHistService.regInsuHist(dom);
+        InsuHistEntity result = insuHistService.getInsuHist(new InsuHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuHistController {
     public ResponseEntity<ResponseDto<InsuHistEntity>> modInsuHist(
         @RequestBody InsuHistForm dom
     ){
-        InsuHistEntity result = insuHistService.modInsuHist(dom);
+        insuHistService.modInsuHist(dom);
+        InsuHistEntity result = insuHistService.getInsuHist(new InsuHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -14,5 +14,7 @@ public interface BondHistService{
 
     public BondHistEntity getBondHist(BondHistSearch dom);
 
+    public BondHistEntity getBondHistLast(BondHistSearch dom);
+
     public ResultListDto<BondHistEntity> getBondHistList(BondHistSearch dom);
 }

@@ -1,10 +1,15 @@
 package com.kpcnc.mydataapi.api.collect.pull.service.impl;
 
+import com.kpcnc.mydataapi.api.base.bond.models.BondSearch;
+import com.kpcnc.mydataapi.api.base.bond.models.entity.BondEntity;
+import com.kpcnc.mydataapi.api.base.bond.models.form.BondForm;
 import com.kpcnc.mydataapi.api.base.dc.models.DcAddSearch;
 import com.kpcnc.mydataapi.api.base.dc.models.DcBaseSearch;
 import com.kpcnc.mydataapi.api.base.dc.models.DcHistSearch;
+import com.kpcnc.mydataapi.api.base.dc.models.DcSearch;
 import com.kpcnc.mydataapi.api.base.dc.models.entity.DcAddEntity;
 import com.kpcnc.mydataapi.api.base.dc.models.entity.DcBaseEntity;
+import com.kpcnc.mydataapi.api.base.dc.models.entity.DcEntity;
 import com.kpcnc.mydataapi.api.base.dc.models.entity.DcHistEntity;
 import com.kpcnc.mydataapi.api.base.dc.models.form.DcForm;
 import com.kpcnc.mydataapi.api.base.dc.service.DcAddService;
@@ -22,6 +27,7 @@ import com.kpcnc.mydataapi.api.base.ppay.service.PpayAprHistService;
 import com.kpcnc.mydataapi.api.base.ppay.service.PpayBalService;
 import com.kpcnc.mydataapi.api.base.ppay.service.PpayHistService;
 import com.kpcnc.mydataapi.api.base.ppay.service.PpayService;
+import com.kpcnc.mydataapi.api.collect.pull.models.dto.BondParamsDto;
 import com.kpcnc.mydataapi.api.collect.pull.models.dto.DcParamsDto;
 import com.kpcnc.mydataapi.api.collect.pull.models.dto.PpayParamsDto;
 import com.kpcnc.mydataapi.api.collect.pull.service.PullDcService;
@@ -30,6 +36,8 @@ import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.form.FormBase;
+import com.kpcnc.mydataapi.api.common.gateway.models.res.bond.Bond001ResDetailDto;
+import com.kpcnc.mydataapi.api.common.gateway.models.res.bond.Bond001ResDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.res.dc.*;
 import com.kpcnc.mydataapi.api.common.gateway.models.res.irp.Irp002ResDto;
 import com.kpcnc.mydataapi.api.common.gateway.models.res.ppay.*;
@@ -67,45 +75,54 @@ public class PullDcServiceImpl implements PullDcService {
     public CompletableFuture<List<String>> pullDcInfoRun(ApiCallReqDto req, FormBase formBase) {
         req.setRequestApiId("DC_001");
         List<String> targetList = new ArrayList<>();
-        List<String[]> accountList = null;  // 자산목록(예:계좌목록. [0번째 : 계좌번호, 1번째 : 상품명])
 
-        DcForm dcForm = (DcForm) formBase;
+        CompletableFuture<List<String>> dc001Result = callDc001(req, formBase);
+        dc001Result.thenAccept(dcNumList -> {
+            for (String dcNum : dcNumList) {
+                callDc002(req, formBase, dcNum);
+                callDc003(req, formBase, dcNum);
+                callDc004(req, formBase, dcNum);
+            }
+        });
 
-        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(req.getMemberId(), req.getOrgCd(), req.getRequestApiId()));
+        return CompletableFuture.completedFuture(targetList);
+    }
+
+    /*
+        DC_001 (BOND)  목록
+     */
+    @Async("pullPersonalInfoExecutor")
+    public CompletableFuture<List<String>> callDc001(ApiCallReqDto req, FormBase formBase){
+        req.setRequestApiId("DC_001");
+
+        List<String> dcNumList = new ArrayList<>();
 
         // 입력 파라메터용 Map, Json 기본 설정
         DcParamsDto dcParamsDto = (DcParamsDto) new ApiCallParamsDto(req.getMemberId(), req.getOrgCd());
+
+        RecvBaselineEntity baseline = recvBaselineService.getRecvBaseline(new RecvBaselineSearch(req.getMemberId(), req.getOrgCd(), req.getRequestApiId()));
+
         req.setReqParamJson(dcParamsDto.getParamsDc001(baseline.getSearchTimeStamp(), baseline.getNextPage()));
 
         // 게이트웨이 call
         ApiCallResDto resInfo = callMyDataGatewayService.callRepeatMyDataApi(req, Dc001ResDto.class, Dc001ResDetailDto.class);
         Dc001ResDto resDto = (Dc001ResDto) resInfo.getData();
-        formBase.setApiTranId(resDto.getXApiTranId());
 
-        // 목록은 해지목록을 알 수 없기 때문에 일단 전체 삭제 후 인서트
+        // 해지건을 알 수 없기 때문에 일단 전체 삭제 후 인서트
         dcService.allDelDc((DcForm) formBase);
 
-        if(CommUtil.isListNullEmpty(resDto.getList())){
-            return CompletableFuture.completedFuture(targetList);
-        }
+        formBase.setApiTranId(resDto.getXApiTranId());
+        List<Dc001ResDetailDto> dcInfoList = resDto.getList();
 
-        for (Dc001ResDetailDto detail : resDto.getList()) {
+        // 테이블 반영
+        for(Dc001ResDetailDto detail : dcInfoList){
             dcService.regDc(detail.getForm(formBase));
-            accountList.add(new String[]{detail.getDcNum(), detail.getDcName()});
-            if(detail.getIsConsent() && !targetList.contains(detail.getDcNum())){
-                targetList.add(detail.getDcNum());
+            if(detail.getIsConsent()){
+                dcNumList.add(detail.getDcNum());
             }
         }
 
-        for (Dc001ResDetailDto dc : resDto.getList()) {
-            if(!dc.getIsConsent()) continue;  // 전송요구 계좌가 아니면 스킵
-
-            callDc002(req, formBase, dc.getDcNum());
-            callDc003(req, formBase, dc.getDcNum());
-            callDc004(req, formBase, dc.getDcNum());
-        }
-
-        return CompletableFuture.completedFuture(targetList);
+        return CompletableFuture.completedFuture(dcNumList);
     }
 
     @Async("pullPersonalInfoExecutor")

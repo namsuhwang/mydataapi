@@ -11,25 +11,24 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CardBaseSearch extends SearchDto {
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
     private String cardId;    // 카드 식별자
 
+    public CardBaseSearch(String memberId, String orgCd) {
+        super(memberId, orgCd);
+    }
+
     public CardBaseSearch(String memberId, String orgCd, String cardId) {
-        this.memberId = memberId;
-        this.orgCd = orgCd;
+        super(memberId, orgCd);
         this.cardId = cardId;
     }
 
     public CardBaseSearch(CardBaseEntity entity) {
-        this.memberId = entity.getMemberId();
-        this.orgCd = entity.getOrgCd();
+        super(entity.getMemberId(), entity.getOrgCd());
         this.cardId = entity.getCardId();
     }
 
     public CardBaseSearch(CardBaseForm form) {
-        this.memberId = form.getMemberId();
-        this.orgCd = form.getOrgCd();
+        super(form.getMemberId(), form.getOrgCd());
         this.cardId = form.getCardId();
     }
 }

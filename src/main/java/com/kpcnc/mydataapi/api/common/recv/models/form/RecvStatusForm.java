@@ -16,7 +16,7 @@ public class RecvStatusForm{
     private String recvSeq;    // 수신 일련번호
     private Integer targetOrgCnt;    // 대상 기관수
     private Integer completeOrgCnt;    // 완료 기관수
-    private Integer incOrgCnt;    // 완료 추가할 기관수.
+    private Integer incOrgCnt;    // 처리완료로 증가시킬 기관수
     private String recvStatus;    // 수신 상태
     private String recvStartDt;    // 수신 시작 일시
     private String recvEndDt;    // 수신 종료 일시

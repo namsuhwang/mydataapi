@@ -29,7 +29,8 @@ public class InsuInsdMiSccontController {
     public ResponseEntity<ResponseDto<InsuInsdMiSccontEntity>> regInsuInsdMiSccont(
         @RequestBody InsuInsdMiSccontForm dom
     ){
-        InsuInsdMiSccontEntity result = insuInsdMiSccontService.regInsuInsdMiSccont(dom);
+        insuInsdMiSccontService.regInsuInsdMiSccont(dom);
+        InsuInsdMiSccontEntity result = insuInsdMiSccontService.getInsuInsdMiSccontLast(new InsuInsdMiSccontSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InsuInsdMiSccontController {
     public ResponseEntity<ResponseDto<InsuInsdMiSccontEntity>> modInsuInsdMiSccont(
         @RequestBody InsuInsdMiSccontForm dom
     ){
-        InsuInsdMiSccontEntity result = insuInsdMiSccontService.modInsuInsdMiSccont(dom);
+        insuInsdMiSccontService.modInsuInsdMiSccont(dom);
+        InsuInsdMiSccontEntity result = insuInsdMiSccontService.getInsuInsdMiSccontLast(new InsuInsdMiSccontSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

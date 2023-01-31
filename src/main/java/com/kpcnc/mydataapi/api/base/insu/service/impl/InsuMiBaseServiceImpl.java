@@ -23,15 +23,22 @@ public class InsuMiBaseServiceImpl implements InsuMiBaseService {
     InsuMiBaseMapper insuMiBaseMapper;
 
     @Override
-    public InsuMiBaseEntity regInsuMiBase(InsuMiBaseForm dom) {
+    public void regInsuMiBase(InsuMiBaseForm dom) {
         insuMiBaseMapper.insertInsuMiBase(dom.getEntity());
-        return insuMiBaseMapper.selectInsuMiBase(new InsuMiBaseSearch(dom));
     }
 
     @Override
-    public InsuMiBaseEntity modInsuMiBase(InsuMiBaseForm dom) {
+    public void updInsuMiBase(InsuMiBaseForm dom) {
         insuMiBaseMapper.updateInsuMiBase(dom.getEntity());
-        return insuMiBaseMapper.selectInsuMiBase(new InsuMiBaseSearch(dom));
+    }
+
+    @Override
+    public void modInsuMiBase(InsuMiBaseForm dom) {
+        if(getInsuMiBase(new InsuMiBaseSearch(dom)) == null){
+            regInsuMiBase(dom);
+        }else{
+            updInsuMiBase(dom);
+        }
     }
 
     @Override
@@ -41,7 +48,18 @@ public class InsuMiBaseServiceImpl implements InsuMiBaseService {
     }
 
     @Override
+    public void allDelInsuMiBase(InsuMiBaseForm dom) {
+        insuMiBaseMapper.deleteAllInsuMiBase(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InsuMiBaseEntity getInsuMiBase(InsuMiBaseSearch dom) {
+        return insuMiBaseMapper.selectInsuMiBase(dom);
+    }
+
+    @Override
+    public InsuMiBaseEntity getInsuMiBaseLast(InsuMiBaseSearch dom) {
         return insuMiBaseMapper.selectInsuMiBase(dom);
     }
 

@@ -23,20 +23,36 @@ public class CardLoanLgServiceImpl implements CardLoanLgService {
     CardLoanLgMapper cardLoanLgMapper;
 
     @Override
-    public CardLoanLgEntity regCardLoanLg(CardLoanLgForm dom) {
+    public void regCardLoanLg(CardLoanLgForm dom) {
         cardLoanLgMapper.insertCardLoanLg(dom.getEntity());
-        return cardLoanLgMapper.selectCardLoanLg(new CardLoanLgSearch(dom));
+        return;
     }
 
     @Override
-    public CardLoanLgEntity modCardLoanLg(CardLoanLgForm dom) {
+    public void updCardLoanLg(CardLoanLgForm dom) {
         cardLoanLgMapper.updateCardLoanLg(dom.getEntity());
-        return cardLoanLgMapper.selectCardLoanLg(new CardLoanLgSearch(dom));
+        return;
+    }
+
+    @Override
+    public void modCardLoanLg(CardLoanLgForm dom) {
+        if(getCardLoanLg(new CardLoanLgSearch(dom)) == null){
+            regCardLoanLg(dom);
+        }else{
+            updCardLoanLg(dom);
+        }
+        return;
     }
 
     @Override
     public void delCardLoanLg(CardLoanLgForm dom) {
         cardLoanLgMapper.deleteCardLoanLg(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelCardLoanLg(CardLoanLgForm dom) {
+        cardLoanLgMapper.deleteAllCardLoanLg(dom.getEntity());
         return;
     }
 

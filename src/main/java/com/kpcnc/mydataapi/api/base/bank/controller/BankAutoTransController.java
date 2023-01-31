@@ -29,7 +29,8 @@ public class BankAutoTransController {
     public ResponseEntity<ResponseDto<BankAutoTransEntity>> regBankAutoTrans(
         @RequestBody BankAutoTransForm dom
     ){
-        BankAutoTransEntity result = bankAutoTransService.regBankAutoTrans(dom);
+        bankAutoTransService.regBankAutoTrans(dom);
+        BankAutoTransEntity result = bankAutoTransService.getBankAutoTransLast(new BankAutoTransSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class BankAutoTransController {
     public ResponseEntity<ResponseDto<BankAutoTransEntity>> modBankAutoTrans(
         @RequestBody BankAutoTransForm dom
     ){
-        BankAutoTransEntity result = bankAutoTransService.modBankAutoTrans(dom);
+        bankAutoTransService.modBankAutoTrans(dom);
+        BankAutoTransEntity result = bankAutoTransService.getBankAutoTransLast(new BankAutoTransSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
