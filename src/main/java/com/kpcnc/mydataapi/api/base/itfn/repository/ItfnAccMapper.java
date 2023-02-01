@@ -14,6 +14,8 @@ public interface ItfnAccMapper{
 
     int deleteItfnAcc(ItfnAccEntity dom);
 
+    int deleteAllItfnAcc(ItfnAccEntity dom);
+
     ItfnAccEntity selectItfnAcc(ItfnAccSearch dom);
 
     Long selectItfnAccListTotalCnt(ItfnAccSearch dom);

@@ -29,7 +29,8 @@ public class ItfnLeaseHistController {
     public ResponseEntity<ResponseDto<ItfnLeaseHistEntity>> regItfnLeaseHist(
         @RequestBody ItfnLeaseHistForm dom
     ){
-        ItfnLeaseHistEntity result = itfnLeaseHistService.regItfnLeaseHist(dom);
+        itfnLeaseHistService.regItfnLeaseHist(dom);
+        ItfnLeaseHistEntity result = itfnLeaseHistService.getItfnLeaseHist(new ItfnLeaseHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ItfnLeaseHistController {
     public ResponseEntity<ResponseDto<ItfnLeaseHistEntity>> modItfnLeaseHist(
         @RequestBody ItfnLeaseHistForm dom
     ){
-        ItfnLeaseHistEntity result = itfnLeaseHistService.modItfnLeaseHist(dom);
+        itfnLeaseHistService.modItfnLeaseHist(dom);
+        ItfnLeaseHistEntity result = itfnLeaseHistService.getItfnLeaseHist(new ItfnLeaseHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -29,7 +29,8 @@ public class InvtAccBaseController {
     public ResponseEntity<ResponseDto<InvtAccBaseEntity>> regInvtAccBase(
         @RequestBody InvtAccBaseForm dom
     ){
-        InvtAccBaseEntity result = invtAccBaseService.regInvtAccBase(dom);
+        invtAccBaseService.regInvtAccBase(dom);
+        InvtAccBaseEntity result = invtAccBaseService.getInvtAccBase(new InvtAccBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InvtAccBaseController {
     public ResponseEntity<ResponseDto<InvtAccBaseEntity>> modInvtAccBase(
         @RequestBody InvtAccBaseForm dom
     ){
-        InvtAccBaseEntity result = invtAccBaseService.modInvtAccBase(dom);
+        invtAccBaseService.modInvtAccBase(dom);
+        InvtAccBaseEntity result = invtAccBaseService.getInvtAccBase(new InvtAccBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

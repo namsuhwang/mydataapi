@@ -29,7 +29,8 @@ public class ItfnLeaseController {
     public ResponseEntity<ResponseDto<ItfnLeaseEntity>> regItfnLease(
         @RequestBody ItfnLeaseForm dom
     ){
-        ItfnLeaseEntity result = itfnLeaseService.regItfnLease(dom);
+        itfnLeaseService.regItfnLease(dom);
+        ItfnLeaseEntity result = itfnLeaseService.getItfnLease(new ItfnLeaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ItfnLeaseController {
     public ResponseEntity<ResponseDto<ItfnLeaseEntity>> modItfnLease(
         @RequestBody ItfnLeaseForm dom
     ){
-        ItfnLeaseEntity result = itfnLeaseService.modItfnLease(dom);
+        itfnLeaseService.modItfnLease(dom);
+        ItfnLeaseEntity result = itfnLeaseService.getItfnLease(new ItfnLeaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

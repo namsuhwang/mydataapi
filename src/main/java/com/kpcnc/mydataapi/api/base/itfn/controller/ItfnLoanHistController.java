@@ -29,7 +29,8 @@ public class ItfnLoanHistController {
     public ResponseEntity<ResponseDto<ItfnLoanHistEntity>> regItfnLoanHist(
         @RequestBody ItfnLoanHistForm dom
     ){
-        ItfnLoanHistEntity result = itfnLoanHistService.regItfnLoanHist(dom);
+        itfnLoanHistService.regItfnLoanHist(dom);
+        ItfnLoanHistEntity result = itfnLoanHistService.getItfnLoanHist(new ItfnLoanHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ItfnLoanHistController {
     public ResponseEntity<ResponseDto<ItfnLoanHistEntity>> modItfnLoanHist(
         @RequestBody ItfnLoanHistForm dom
     ){
-        ItfnLoanHistEntity result = itfnLoanHistService.modItfnLoanHist(dom);
+        itfnLoanHistService.modItfnLoanHist(dom);
+        ItfnLoanHistEntity result = itfnLoanHistService.getItfnLoanHist(new ItfnLoanHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

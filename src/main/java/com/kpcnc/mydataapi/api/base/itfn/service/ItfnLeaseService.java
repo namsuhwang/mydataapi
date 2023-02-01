@@ -6,11 +6,13 @@ import com.kpcnc.mydataapi.api.base.itfn.models.form.ItfnLeaseForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface ItfnLeaseService{
-    public ItfnLeaseEntity regItfnLease(ItfnLeaseForm dom);
+    public void regItfnLease(ItfnLeaseForm dom);
 
-    public ItfnLeaseEntity modItfnLease(ItfnLeaseForm dom);
+    public void updItfnLease(ItfnLeaseForm dom);
 
-    public void  delItfnLease(ItfnLeaseForm dom);
+    public void modItfnLease(ItfnLeaseForm dom);
+
+    public void delItfnLease(ItfnLeaseForm dom);
 
     public ItfnLeaseEntity getItfnLease(ItfnLeaseSearch dom);
 

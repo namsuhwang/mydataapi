@@ -23,15 +23,22 @@ public class InvtAccBaseServiceImpl implements InvtAccBaseService {
     InvtAccBaseMapper invtAccBaseMapper;
 
     @Override
-    public InvtAccBaseEntity regInvtAccBase(InvtAccBaseForm dom) {
+    public void regInvtAccBase(InvtAccBaseForm dom) {
         invtAccBaseMapper.insertInvtAccBase(dom.getEntity());
-        return invtAccBaseMapper.selectInvtAccBase(new InvtAccBaseSearch(dom));
     }
 
     @Override
-    public InvtAccBaseEntity modInvtAccBase(InvtAccBaseForm dom) {
+    public void updInvtAccBase(InvtAccBaseForm dom) {
         invtAccBaseMapper.updateInvtAccBase(dom.getEntity());
-        return invtAccBaseMapper.selectInvtAccBase(new InvtAccBaseSearch(dom));
+    }
+
+    @Override
+    public void modInvtAccBase(InvtAccBaseForm dom) {
+        if(getInvtAccBase(new InvtAccBaseSearch(dom)) == null){
+            regInvtAccBase(dom);
+        }else{
+            updInvtAccBase(dom);
+        }
     }
 
     @Override

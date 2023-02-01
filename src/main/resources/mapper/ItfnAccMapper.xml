@@ -68,6 +68,13 @@
            AND ACCOUNT_NUM = #{accountNum}
     </delete>
 
+    <delete id="deleteAllItfnAcc" parameterType="ItfnAccEntity">
+        DELETE FROM ITFN_ACC
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectItfnAcc" parameterType="ItfnAccSearch"  resultType="ItfnAccEntity">
          SELECT 
                MEMBER_ID

@@ -23,20 +23,33 @@ public class InvtAccServiceImpl implements InvtAccService {
     InvtAccMapper invtAccMapper;
 
     @Override
-    public InvtAccEntity regInvtAcc(InvtAccForm dom) {
+    public void regInvtAcc(InvtAccForm dom) {
         invtAccMapper.insertInvtAcc(dom.getEntity());
-        return invtAccMapper.selectInvtAcc(new InvtAccSearch(dom));
     }
 
     @Override
-    public InvtAccEntity modInvtAcc(InvtAccForm dom) {
+    public void updInvtAcc(InvtAccForm dom) {
         invtAccMapper.updateInvtAcc(dom.getEntity());
-        return invtAccMapper.selectInvtAcc(new InvtAccSearch(dom));
+    }
+
+    @Override
+    public void modInvtAcc(InvtAccForm dom) {
+        if(getInvtAcc(new InvtAccSearch(dom)) == null){
+            regInvtAcc(dom);
+        }else{
+            updInvtAcc(dom);
+        }
     }
 
     @Override
     public void delInvtAcc(InvtAccForm dom) {
         invtAccMapper.deleteInvtAcc(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelInvtAcc(InvtAccForm dom) {
+        invtAccMapper.deleteAllInvtAcc(dom.getEntity());
         return;
     }
 

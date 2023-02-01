@@ -4,18 +4,16 @@ import com.kpcnc.mydataapi.api.base.invt.models.entity.InvtPensionAccAddEntity;
 import com.kpcnc.mydataapi.api.base.invt.models.form.InvtPensionAccAddForm;
 import com.kpcnc.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
 public class InvtPensionAccAddSearch extends SearchDto {
     private String accountNum;    // 계좌번호
-
-    public InvtPensionAccAddSearch(String memberId, String orgCd) {
-        super(memberId, orgCd);
-    }
 
     public InvtPensionAccAddSearch(String memberId, String orgCd, String accountNum) {
         super(memberId, orgCd);

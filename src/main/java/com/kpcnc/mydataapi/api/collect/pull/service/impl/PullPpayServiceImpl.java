@@ -51,7 +51,6 @@ public class PullPpayServiceImpl implements PullPpayService {
 
     @Async("pullPersonalInfoExecutor")
     public CompletableFuture<List<String>> pullPpayInfoRun(ApiCallReqDto req, FormBase formBase) {
-        req.setRequestApiId("PPAY_001");
         List<String> targetList = new ArrayList<>();
 
         CompletableFuture<List<String>> ppay001Result = callPpay001(req, formBase);

@@ -6,11 +6,13 @@ import com.kpcnc.mydataapi.api.base.invt.models.form.InvtPensionAccAddForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InvtPensionAccAddService{
-    public InvtPensionAccAddEntity regInvtPensionAccAdd(InvtPensionAccAddForm dom);
+    public void regInvtPensionAccAdd(InvtPensionAccAddForm dom);
 
-    public InvtPensionAccAddEntity modInvtPensionAccAdd(InvtPensionAccAddForm dom);
+    public void updInvtPensionAccAdd(InvtPensionAccAddForm dom);
 
-    public void  delInvtPensionAccAdd(InvtPensionAccAddForm dom);
+    public void modInvtPensionAccAdd(InvtPensionAccAddForm dom);
+
+    public void delInvtPensionAccAdd(InvtPensionAccAddForm dom);
 
     public InvtPensionAccAddEntity getInvtPensionAccAdd(InvtPensionAccAddSearch dom);
 

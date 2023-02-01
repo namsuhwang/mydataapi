@@ -29,7 +29,8 @@ public class ItfnAccController {
     public ResponseEntity<ResponseDto<ItfnAccEntity>> regItfnAcc(
         @RequestBody ItfnAccForm dom
     ){
-        ItfnAccEntity result = itfnAccService.regItfnAcc(dom);
+        itfnAccService.regItfnAcc(dom);
+        ItfnAccEntity result = itfnAccService.getItfnAcc(new ItfnAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ItfnAccController {
     public ResponseEntity<ResponseDto<ItfnAccEntity>> modItfnAcc(
         @RequestBody ItfnAccForm dom
     ){
-        ItfnAccEntity result = itfnAccService.modItfnAcc(dom);
+        itfnAccService.modItfnAcc(dom);
+        ItfnAccEntity result = itfnAccService.getItfnAcc(new ItfnAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

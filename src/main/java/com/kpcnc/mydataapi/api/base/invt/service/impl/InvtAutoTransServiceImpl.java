@@ -23,15 +23,22 @@ public class InvtAutoTransServiceImpl implements InvtAutoTransService {
     InvtAutoTransMapper invtAutoTransMapper;
 
     @Override
-    public InvtAutoTransEntity regInvtAutoTrans(InvtAutoTransForm dom) {
+    public void regInvtAutoTrans(InvtAutoTransForm dom) {
         invtAutoTransMapper.insertInvtAutoTrans(dom.getEntity());
-        return invtAutoTransMapper.selectInvtAutoTrans(new InvtAutoTransSearch(dom));
     }
 
     @Override
-    public InvtAutoTransEntity modInvtAutoTrans(InvtAutoTransForm dom) {
+    public void updInvtAutoTrans(InvtAutoTransForm dom) {
         invtAutoTransMapper.updateInvtAutoTrans(dom.getEntity());
-        return invtAutoTransMapper.selectInvtAutoTrans(new InvtAutoTransSearch(dom));
+    }
+
+    @Override
+    public void modInvtAutoTrans(InvtAutoTransForm dom) {
+        if(getInvtAutoTrans(new InvtAutoTransSearch(dom)) == null){
+            regInvtAutoTrans(dom);
+        }else{
+            updInvtAutoTrans(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,19 @@ public class InvtAutoTransServiceImpl implements InvtAutoTransService {
     }
 
     @Override
+    public void allDelInvtAutoTrans(InvtAutoTransForm dom) {
+        invtAutoTransMapper.deleteAllInvtAutoTrans(dom.getEntity());
+        return;
+    }
+
+    @Override
     public InvtAutoTransEntity getInvtAutoTrans(InvtAutoTransSearch dom) {
         return invtAutoTransMapper.selectInvtAutoTrans(dom);
+    }
+
+    @Override
+    public InvtAutoTransEntity getInvtAutoTransLast(InvtAutoTransSearch dom) {
+        return invtAutoTransMapper.selectInvtAutoTransLast(dom);
     }
 
     @Override

@@ -14,6 +14,8 @@ public interface InvtAccMapper{
 
     int deleteInvtAcc(InvtAccEntity dom);
 
+    int deleteAllInvtAcc(InvtAccEntity dom);
+
     InvtAccEntity selectInvtAcc(InvtAccSearch dom);
 
     Long selectInvtAccListTotalCnt(InvtAccSearch dom);

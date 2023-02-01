@@ -6,13 +6,17 @@ import com.kpcnc.mydataapi.api.base.itfn.models.form.ItfnLoanHistForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface ItfnLoanHistService{
-    public ItfnLoanHistEntity regItfnLoanHist(ItfnLoanHistForm dom);
+    public void regItfnLoanHist(ItfnLoanHistForm dom);
 
-    public ItfnLoanHistEntity modItfnLoanHist(ItfnLoanHistForm dom);
+    public void updItfnLoanHist(ItfnLoanHistForm dom);
 
-    public void  delItfnLoanHist(ItfnLoanHistForm dom);
+    public void modItfnLoanHist(ItfnLoanHistForm dom);
+
+    public void delItfnLoanHist(ItfnLoanHistForm dom);
 
     public ItfnLoanHistEntity getItfnLoanHist(ItfnLoanHistSearch dom);
+
+    public ItfnLoanHistEntity getItfnLoanHistLast(ItfnLoanHistSearch dom);
 
     public ResultListDto<ItfnLoanHistEntity> getItfnLoanHistList(ItfnLoanHistSearch dom);
 }

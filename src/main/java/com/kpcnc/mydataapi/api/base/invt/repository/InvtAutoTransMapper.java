@@ -14,7 +14,11 @@ public interface InvtAutoTransMapper{
 
     int deleteInvtAutoTrans(InvtAutoTransEntity dom);
 
+    int deleteAllInvtAutoTrans(InvtAutoTransEntity dom);
+
     InvtAutoTransEntity selectInvtAutoTrans(InvtAutoTransSearch dom);
+
+    InvtAutoTransEntity selectInvtAutoTransLast(InvtAutoTransSearch dom);
 
     Long selectInvtAutoTransListTotalCnt(InvtAutoTransSearch dom);
 

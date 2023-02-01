@@ -124,6 +124,62 @@
            AND TRANS_NO = #{transNo}
     </select>
 
+    <select id="selectItfnLoanHistLast" parameterType="ItfnLoanHistSearch"  resultType="ItfnLoanHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.ACCOUNT_NUM
+               ,H1.SEQNO
+               ,H1.TRANS_DTIME
+               ,H1.TRANS_NO
+               ,H1.TRANS_TYPE
+               ,H1.CURRENCY_CODE
+               ,H1.TRANS_AMT
+               ,H1.BALANCE_AMT
+               ,H1.PRINCIPAL_AMT
+               ,H1.INT_AMT
+               ,H1.RET_INT_AMT
+               ,H1.INT_CNT
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM ITFN_LOAN_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME , TRANS_NO
+                        FROM ITFN_LOAN_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'transNo  != null and transNo != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+             H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.ACCOUNT_NUM = H2.ACCOUNT_NUM
+           AND H1.SEQNO = H2.SEQNO
+           AND H1.TRANS_DTIME = H2.TRANS_DTIME
+           AND H1.TRANS_NO = H2.TRANS_NO
+    </select>
+
     <select id="selectItfnLoanHistListTotalCnt" parameterType="ItfnLoanHistSearch"  resultType="Long">
          SELECT 
              COUNT(*) 

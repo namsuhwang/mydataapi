@@ -29,7 +29,8 @@ public class InvtAutoTransController {
     public ResponseEntity<ResponseDto<InvtAutoTransEntity>> regInvtAutoTrans(
         @RequestBody InvtAutoTransForm dom
     ){
-        InvtAutoTransEntity result = invtAutoTransService.regInvtAutoTrans(dom);
+        invtAutoTransService.regInvtAutoTrans(dom);
+        InvtAutoTransEntity result = invtAutoTransService.getInvtAutoTrans(new InvtAutoTransSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InvtAutoTransController {
     public ResponseEntity<ResponseDto<InvtAutoTransEntity>> modInvtAutoTrans(
         @RequestBody InvtAutoTransForm dom
     ){
-        InvtAutoTransEntity result = invtAutoTransService.modInvtAutoTrans(dom);
+        invtAutoTransService.modInvtAutoTrans(dom);
+        InvtAutoTransEntity result = invtAutoTransService.getInvtAutoTrans(new InvtAutoTransSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

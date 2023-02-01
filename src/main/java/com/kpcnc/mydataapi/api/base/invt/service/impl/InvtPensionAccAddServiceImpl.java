@@ -23,15 +23,22 @@ public class InvtPensionAccAddServiceImpl implements InvtPensionAccAddService {
     InvtPensionAccAddMapper invtPensionAccAddMapper;
 
     @Override
-    public InvtPensionAccAddEntity regInvtPensionAccAdd(InvtPensionAccAddForm dom) {
+    public void regInvtPensionAccAdd(InvtPensionAccAddForm dom) {
         invtPensionAccAddMapper.insertInvtPensionAccAdd(dom.getEntity());
-        return invtPensionAccAddMapper.selectInvtPensionAccAdd(new InvtPensionAccAddSearch(dom));
     }
 
     @Override
-    public InvtPensionAccAddEntity modInvtPensionAccAdd(InvtPensionAccAddForm dom) {
+    public void updInvtPensionAccAdd(InvtPensionAccAddForm dom) {
         invtPensionAccAddMapper.updateInvtPensionAccAdd(dom.getEntity());
-        return invtPensionAccAddMapper.selectInvtPensionAccAdd(new InvtPensionAccAddSearch(dom));
+    }
+
+    @Override
+    public void modInvtPensionAccAdd(InvtPensionAccAddForm dom) {
+        if(getInvtPensionAccAdd(new InvtPensionAccAddSearch(dom)) == null){
+            regInvtPensionAccAdd(dom);
+        }else{
+            updInvtPensionAccAdd(dom);
+        }
     }
 
     @Override

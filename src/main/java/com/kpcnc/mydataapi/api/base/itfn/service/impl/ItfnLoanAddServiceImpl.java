@@ -23,15 +23,22 @@ public class ItfnLoanAddServiceImpl implements ItfnLoanAddService {
     ItfnLoanAddMapper itfnLoanAddMapper;
 
     @Override
-    public ItfnLoanAddEntity regItfnLoanAdd(ItfnLoanAddForm dom) {
+    public void regItfnLoanAdd(ItfnLoanAddForm dom) {
         itfnLoanAddMapper.insertItfnLoanAdd(dom.getEntity());
-        return itfnLoanAddMapper.selectItfnLoanAdd(new ItfnLoanAddSearch(dom));
     }
 
     @Override
-    public ItfnLoanAddEntity modItfnLoanAdd(ItfnLoanAddForm dom) {
+    public void updItfnLoanAdd(ItfnLoanAddForm dom) {
         itfnLoanAddMapper.updateItfnLoanAdd(dom.getEntity());
-        return itfnLoanAddMapper.selectItfnLoanAdd(new ItfnLoanAddSearch(dom));
+    }
+
+    @Override
+    public void modItfnLoanAdd(ItfnLoanAddForm dom) {
+        if(getItfnLoanAdd(new ItfnLoanAddSearch(dom)) == null){
+            regItfnLoanAdd(dom);
+        }else{
+            updItfnLoanAdd(dom);
+        }
     }
 
     @Override

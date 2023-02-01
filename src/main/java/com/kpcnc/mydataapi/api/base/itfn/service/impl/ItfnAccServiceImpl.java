@@ -23,20 +23,33 @@ public class ItfnAccServiceImpl implements ItfnAccService {
     ItfnAccMapper itfnAccMapper;
 
     @Override
-    public ItfnAccEntity regItfnAcc(ItfnAccForm dom) {
+    public void regItfnAcc(ItfnAccForm dom) {
         itfnAccMapper.insertItfnAcc(dom.getEntity());
-        return itfnAccMapper.selectItfnAcc(new ItfnAccSearch(dom));
     }
 
     @Override
-    public ItfnAccEntity modItfnAcc(ItfnAccForm dom) {
+    public void updItfnAcc(ItfnAccForm dom) {
         itfnAccMapper.updateItfnAcc(dom.getEntity());
-        return itfnAccMapper.selectItfnAcc(new ItfnAccSearch(dom));
+    }
+
+    @Override
+    public void modItfnAcc(ItfnAccForm dom) {
+        if(getItfnAcc(new ItfnAccSearch(dom)) == null){
+            regItfnAcc(dom);
+        }else{
+            updItfnAcc(dom);
+        }
     }
 
     @Override
     public void delItfnAcc(ItfnAccForm dom) {
         itfnAccMapper.deleteItfnAcc(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelItfnAcc(ItfnAccForm dom) {
+        itfnAccMapper.deleteAllItfnAcc(dom.getEntity());
         return;
     }
 

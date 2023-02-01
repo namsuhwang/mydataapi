@@ -23,15 +23,22 @@ public class ItfnLoanHistServiceImpl implements ItfnLoanHistService {
     ItfnLoanHistMapper itfnLoanHistMapper;
 
     @Override
-    public ItfnLoanHistEntity regItfnLoanHist(ItfnLoanHistForm dom) {
+    public void regItfnLoanHist(ItfnLoanHistForm dom) {
         itfnLoanHistMapper.insertItfnLoanHist(dom.getEntity());
-        return itfnLoanHistMapper.selectItfnLoanHist(new ItfnLoanHistSearch(dom));
     }
 
     @Override
-    public ItfnLoanHistEntity modItfnLoanHist(ItfnLoanHistForm dom) {
+    public void updItfnLoanHist(ItfnLoanHistForm dom) {
         itfnLoanHistMapper.updateItfnLoanHist(dom.getEntity());
-        return itfnLoanHistMapper.selectItfnLoanHist(new ItfnLoanHistSearch(dom));
+    }
+
+    @Override
+    public void modItfnLoanHist(ItfnLoanHistForm dom) {
+        if(getItfnLoanHist(new ItfnLoanHistSearch(dom)) == null){
+            regItfnLoanHist(dom);
+        }else{
+            updItfnLoanHist(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class ItfnLoanHistServiceImpl implements ItfnLoanHistService {
     @Override
     public ItfnLoanHistEntity getItfnLoanHist(ItfnLoanHistSearch dom) {
         return itfnLoanHistMapper.selectItfnLoanHist(dom);
+    }
+
+    @Override
+    public ItfnLoanHistEntity getItfnLoanHistLast(ItfnLoanHistSearch dom) {
+        return itfnLoanHistMapper.selectItfnLoanHistLast(dom);
     }
 
     @Override

@@ -55,11 +55,29 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
+           AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+           AND SCHEDULED_AMT = #{scheduledAmt}
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+           AND SCHEDULED_DATE = #{scheduledDate}
     </update>
 
     <delete id="deleteInvtAutoTrans" parameterType="InvtAutoTransEntity">
         DELETE FROM INVT_AUTO_TRANS
          WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+           AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+           AND SCHEDULED_AMT = #{scheduledAmt}
+           AND SCHEDULED_CYCLE = #{scheduledCycle}
+           AND SCHEDULED_DATE = #{scheduledDate}
+    </delete>
+
+    <delete id="deleteAllInvtAutoTrans" parameterType="InvtAutoTransEntity">
+        DELETE FROM INVT_AUTO_TRANS
+         WHERE
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
@@ -83,8 +101,13 @@
         FROM INVT_AUTO_TRANS
        WHERE 
                MEMBER_ID = #{memberId}
-           AND ORG_CD = #{orgCd}
-           AND ACCOUNT_NUM = #{accountNum}
+         AND ORG_CD = #{orgCd}
+         AND ACCOUNT_NUM = #{accountNum}
+         AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+         AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+         AND SCHEDULED_AMT = #{scheduledAmt}
+         AND SCHEDULED_CYCLE = #{scheduledCycle}
+         AND SCHEDULED_DATE = #{scheduledDate}
     </select>
 
     <select id="selectInvtAutoTransListTotalCnt" parameterType="InvtAutoTransSearch"  resultType="Long">
@@ -101,6 +124,21 @@
        <if test = 'accountNum  != null and accountNum != ""'>
            AND ACCOUNT_NUM = #{accountNum}
        </if>
+        <if test = 'scheduledOrgCode  != null and scheduledOrgCode != ""'>
+            AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+        </if>
+        <if test = 'scheduledAccountNum  != null and scheduledAccountNum != ""'>
+            AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+        </if>
+        <if test = 'scheduledAmt  != null and scheduledAmt != ""'>
+            AND SCHEDULED_AMT = #{scheduledAmt}
+        </if>
+        <if test = 'scheduledCycle  != null and scheduledCycle != ""'>
+            AND SCHEDULED_CYCLE = #{scheduledCycle}
+        </if>
+        <if test = 'scheduledDate  != null and scheduledDate != ""'>
+            AND SCHEDULED_DATE = #{scheduledDate}
+        </if>
     </select>
 
     <select id="selectInvtAutoTransList" parameterType="InvtAutoTransSearch"  resultType="InvtAutoTransEntity">
@@ -135,6 +173,21 @@
        <if test = 'accountNum  != null and accountNum != ""'>
            AND ACCOUNT_NUM = #{accountNum}
        </if>
+        <if test = 'scheduledOrgCode  != null and scheduledOrgCode != ""'>
+            AND SCHEDULED_ORG_CODE = #{scheduledOrgCode}
+        </if>
+        <if test = 'scheduledAccountNum  != null and scheduledAccountNum != ""'>
+            AND SCHEDULED_ACCOUNT_NUM = #{scheduledAccountNum}
+        </if>
+        <if test = 'scheduledAmt  != null and scheduledAmt != ""'>
+            AND SCHEDULED_AMT = #{scheduledAmt}
+        </if>
+        <if test = 'scheduledCycle  != null and scheduledCycle != ""'>
+            AND SCHEDULED_CYCLE = #{scheduledCycle}
+        </if>
+        <if test = 'scheduledDate  != null and scheduledDate != ""'>
+            AND SCHEDULED_DATE = #{scheduledDate}
+        </if>
         ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 

@@ -59,6 +59,8 @@
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
            AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
     </update>
 
     <delete id="deleteItfnLeaseHist" parameterType="ItfnLeaseHistEntity">
@@ -68,6 +70,8 @@
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
            AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
     </delete>
 
     <select id="selectItfnLeaseHist" parameterType="ItfnLeaseHistSearch"  resultType="ItfnLeaseHistEntity">
@@ -92,6 +96,58 @@
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
            AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+    </select>
+
+    <select id="selectItfnLeaseHistLast" parameterType="ItfnLeaseHistSearch"  resultType="ItfnLeaseHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.ACCOUNT_NUM
+               ,H1.SEQNO
+               ,H1.TRANS_DTIME
+               ,H1.TRANS_NO
+               ,H1.TRANS_TYPE
+               ,H1.TRANS_AMT
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM ITFN_LEASE_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME , TRANS_NO
+                        FROM ITFN_LEASE_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'transNo  != null and transNo != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+             H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.ACCOUNT_NUM = H2.ACCOUNT_NUM
+           AND H1.SEQNO = H2.SEQNO
+           AND H1.TRANS_DTIME = H2.TRANS_DTIME
+           AND H1.TRANS_NO = H2.TRANS_NO
     </select>
 
     <select id="selectItfnLeaseHistListTotalCnt" parameterType="ItfnLeaseHistSearch"  resultType="Long">
@@ -111,6 +167,12 @@
        <if test = 'seqno  != null and seqno != ""'>
            AND SEQNO = #{seqno}
        </if>
+        <if test = 'transDtime  != null and transDtime != ""'>
+            AND TRANS_DTIME = #{transDtime}
+        </if>
+        <if test = 'transNo  != null and transNo != ""'>
+            AND TRANS_NO = #{transNo}
+        </if>
     </select>
 
     <select id="selectItfnLeaseHistList" parameterType="ItfnLeaseHistSearch"  resultType="ItfnLeaseHistEntity">
@@ -120,7 +182,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
@@ -149,7 +211,13 @@
        <if test = 'seqno  != null and seqno != ""'>
            AND SEQNO = #{seqno}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO
+        <if test = 'transDtime  != null and transDtime != ""'>
+            AND TRANS_DTIME = #{transDtime}
+        </if>
+        <if test = 'transNo  != null and transNo != ""'>
+            AND TRANS_NO = #{transNo}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME DESC, TRANS_NO DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

@@ -6,11 +6,13 @@ import com.kpcnc.mydataapi.api.base.invt.models.form.InvtAccBaseForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InvtAccBaseService{
-    public InvtAccBaseEntity regInvtAccBase(InvtAccBaseForm dom);
+    public void regInvtAccBase(InvtAccBaseForm dom);
 
-    public InvtAccBaseEntity modInvtAccBase(InvtAccBaseForm dom);
+    public void updInvtAccBase(InvtAccBaseForm dom);
 
-    public void  delInvtAccBase(InvtAccBaseForm dom);
+    public void modInvtAccBase(InvtAccBaseForm dom);
+
+    public void delInvtAccBase(InvtAccBaseForm dom);
 
     public InvtAccBaseEntity getInvtAccBase(InvtAccBaseSearch dom);
 

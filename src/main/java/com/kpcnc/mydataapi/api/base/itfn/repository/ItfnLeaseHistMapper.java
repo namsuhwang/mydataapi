@@ -16,6 +16,8 @@ public interface ItfnLeaseHistMapper{
 
     ItfnLeaseHistEntity selectItfnLeaseHist(ItfnLeaseHistSearch dom);
 
+    ItfnLeaseHistEntity selectItfnLeaseHistLast(ItfnLeaseHistSearch dom);
+
     Long selectItfnLeaseHistListTotalCnt(ItfnLeaseHistSearch dom);
 
     List<ItfnLeaseHistEntity> selectItfnLeaseHistList(ItfnLeaseHistSearch dom);

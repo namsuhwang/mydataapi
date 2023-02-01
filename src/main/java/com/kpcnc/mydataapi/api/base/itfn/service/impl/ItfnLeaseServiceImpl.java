@@ -23,15 +23,22 @@ public class ItfnLeaseServiceImpl implements ItfnLeaseService {
     ItfnLeaseMapper itfnLeaseMapper;
 
     @Override
-    public ItfnLeaseEntity regItfnLease(ItfnLeaseForm dom) {
+    public void regItfnLease(ItfnLeaseForm dom) {
         itfnLeaseMapper.insertItfnLease(dom.getEntity());
-        return itfnLeaseMapper.selectItfnLease(new ItfnLeaseSearch(dom));
     }
 
     @Override
-    public ItfnLeaseEntity modItfnLease(ItfnLeaseForm dom) {
+    public void updItfnLease(ItfnLeaseForm dom) {
         itfnLeaseMapper.updateItfnLease(dom.getEntity());
-        return itfnLeaseMapper.selectItfnLease(new ItfnLeaseSearch(dom));
+    }
+
+    @Override
+    public void modItfnLease(ItfnLeaseForm dom) {
+        if(getItfnLease(new ItfnLeaseSearch(dom)) == null){
+            regItfnLease(dom);
+        }else{
+            updItfnLease(dom);
+        }
     }
 
     @Override

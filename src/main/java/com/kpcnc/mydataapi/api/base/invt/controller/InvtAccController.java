@@ -29,7 +29,8 @@ public class InvtAccController {
     public ResponseEntity<ResponseDto<InvtAccEntity>> regInvtAcc(
         @RequestBody InvtAccForm dom
     ){
-        InvtAccEntity result = invtAccService.regInvtAcc(dom);
+        invtAccService.regInvtAcc(dom);
+        InvtAccEntity result = invtAccService.getInvtAcc(new InvtAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InvtAccController {
     public ResponseEntity<ResponseDto<InvtAccEntity>> modInvtAcc(
         @RequestBody InvtAccForm dom
     ){
-        InvtAccEntity result = invtAccService.modInvtAcc(dom);
+        invtAccService.modInvtAcc(dom);
+        InvtAccEntity result = invtAccService.getInvtAcc(new InvtAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

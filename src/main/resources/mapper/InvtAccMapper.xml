@@ -71,6 +71,13 @@
            AND ACCOUNT_NUM = #{accountNum}
     </delete>
 
+    <delete id="deleteAllInvtAcc" parameterType="InvtAccEntity">
+        DELETE FROM INVT_ACC
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectInvtAcc" parameterType="InvtAccSearch"  resultType="InvtAccEntity">
          SELECT 
                MEMBER_ID

@@ -16,6 +16,8 @@ public interface InvtAccHistMapper{
 
     InvtAccHistEntity selectInvtAccHist(InvtAccHistSearch dom);
 
+    InvtAccHistEntity selectInvtAccHistLast(InvtAccHistSearch dom);
+
     Long selectInvtAccHistListTotalCnt(InvtAccHistSearch dom);
 
     List<InvtAccHistEntity> selectInvtAccHistList(InvtAccHistSearch dom);

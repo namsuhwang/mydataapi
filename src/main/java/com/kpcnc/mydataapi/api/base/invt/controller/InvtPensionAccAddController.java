@@ -29,7 +29,8 @@ public class InvtPensionAccAddController {
     public ResponseEntity<ResponseDto<InvtPensionAccAddEntity>> regInvtPensionAccAdd(
         @RequestBody InvtPensionAccAddForm dom
     ){
-        InvtPensionAccAddEntity result = invtPensionAccAddService.regInvtPensionAccAdd(dom);
+        invtPensionAccAddService.regInvtPensionAccAdd(dom);
+        InvtPensionAccAddEntity result = invtPensionAccAddService.getInvtPensionAccAdd(new InvtPensionAccAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InvtPensionAccAddController {
     public ResponseEntity<ResponseDto<InvtPensionAccAddEntity>> modInvtPensionAccAdd(
         @RequestBody InvtPensionAccAddForm dom
     ){
-        InvtPensionAccAddEntity result = invtPensionAccAddService.modInvtPensionAccAdd(dom);
+        invtPensionAccAddService.modInvtPensionAccAdd(dom);
+        InvtPensionAccAddEntity result = invtPensionAccAddService.getInvtPensionAccAdd(new InvtPensionAccAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

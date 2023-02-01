@@ -9,14 +9,16 @@
             MEMBER_ID
             ,ORG_CD
             ,ACCOUNT_NUM
-            ,PROD_TYPE
-            ,PROD_TYPE_DETAIL
-            ,PROD_CODE
-            ,EX_CODE
-            ,PROD_NAME
-            ,POS_TYPE
-            ,CREDIT_TYPE
-            ,IS_TAX_BENEFITS
+            ,ISSUE_DATE
+            ,PAID_IN_AMT
+            ,WITHDRAWAL_AMT
+            ,LAST_PAID_IN_DATE
+            ,RCV_AMT
+            ,PENSION_RCV_START_DATE
+            ,ANNUAL_PAY_AMOUNT
+            ,CURRENCY_CODE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
             ,REG_USER_ID
             ,REG_DT
             ,CHG_USER_ID
@@ -26,14 +28,16 @@
             #{memberId, jdbcType=VARCHAR}
             ,#{orgCd, jdbcType=VARCHAR}
             ,#{accountNum, jdbcType=VARCHAR}
-            ,#{prodType, jdbcType=VARCHAR}
-            ,#{prodTypeDetail, jdbcType=NUMERIC}
-            ,#{prodCode, jdbcType=NUMERIC}
-            ,#{exCode, jdbcType=VARCHAR}
-            ,#{prodName, jdbcType=NUMERIC}
-            ,#{posType, jdbcType=VARCHAR}
-            ,#{creditType, jdbcType=NUMERIC}
-            ,#{isTaxBenefits, jdbcType=VARCHAR}
+            ,#{issueDate, jdbcType=VARCHAR}
+            ,#{paidInAmt, jdbcType=NUMERIC}
+            ,#{withdrawalAmt, jdbcType=NUMERIC}
+            ,#{lastPaidInDate, jdbcType=VARCHAR}
+            ,#{rcvAmt, jdbcType=NUMERIC}
+            ,#{pensionRcvStartDate, jdbcType=VARCHAR}
+            ,#{annualPayAmount, jdbcType=NUMERIC}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
             ,#{regUserId, jdbcType=VARCHAR}
             ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
             ,#{chgUserId, jdbcType=VARCHAR}
@@ -47,14 +51,16 @@
                MEMBER_ID = #{memberId, jdbcType=VARCHAR}
                ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
                ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
-               ,PROD_TYPE = #{prodType, jdbcType=VARCHAR}
-               ,PROD_TYPE_DETAIL = #{prodTypeDetail, jdbcType=NUMERIC}
-               ,PROD_CODE = #{prodCode, jdbcType=NUMERIC}
-               ,EX_CODE = #{exCode, jdbcType=VARCHAR}
-               ,PROD_NAME = #{prodName, jdbcType=NUMERIC}
-               ,POS_TYPE = #{posType, jdbcType=VARCHAR}
-               ,CREDIT_TYPE = #{creditType, jdbcType=NUMERIC}
-               ,IS_TAX_BENEFITS = #{isTaxBenefits, jdbcType=VARCHAR}
+               ,ISSUE_DATE = #{issueDate, jdbcType=VARCHAR}
+               ,PAID_IN_AMT = #{paidInAmt, jdbcType=NUMERIC}
+               ,WITHDRAWAL_AMT = #{withdrawalAmt, jdbcType=NUMERIC}
+               ,LAST_PAID_IN_DATE = #{lastPaidInDate, jdbcType=VARCHAR}
+               ,RCV_AMT = #{rcvAmt, jdbcType=NUMERIC}
+               ,PENSION_RCV_START_DATE = #{pensionRcvStartDate, jdbcType=VARCHAR}
+               ,ANNUAL_PAY_AMOUNT = #{annualPayAmount, jdbcType=NUMERIC}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
                ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
                ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          WHERE 
@@ -76,14 +82,16 @@
                MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
-               ,PROD_TYPE
-               ,PROD_TYPE_DETAIL
-               ,PROD_CODE
-               ,EX_CODE
-               ,PROD_NAME
-               ,POS_TYPE
-               ,CREDIT_TYPE
-               ,IS_TAX_BENEFITS
+               ,ISSUE_DATE
+               ,PAID_IN_AMT
+               ,WITHDRAWAL_AMT
+               ,LAST_PAID_IN_DATE
+               ,RCV_AMT
+               ,PENSION_RCV_START_DATE
+               ,ANNUAL_PAY_AMOUNT
+               ,CURRENCY_CODE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID
@@ -122,14 +130,16 @@
                ,MEMBER_ID
                ,ORG_CD
                ,ACCOUNT_NUM
-               ,PROD_TYPE
-               ,PROD_TYPE_DETAIL
-               ,PROD_CODE
-               ,EX_CODE
-               ,PROD_NAME
-               ,POS_TYPE
-               ,CREDIT_TYPE
-               ,IS_TAX_BENEFITS
+               ,ISSUE_DATE
+               ,PAID_IN_AMT
+               ,WITHDRAWAL_AMT
+               ,LAST_PAID_IN_DATE
+               ,RCV_AMT
+               ,PENSION_RCV_START_DATE
+               ,ANNUAL_PAY_AMOUNT
+               ,CURRENCY_CODE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
                ,REG_USER_ID
                ,REG_DT
                ,CHG_USER_ID

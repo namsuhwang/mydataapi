@@ -23,15 +23,22 @@ public class InvtAccHistServiceImpl implements InvtAccHistService {
     InvtAccHistMapper invtAccHistMapper;
 
     @Override
-    public InvtAccHistEntity regInvtAccHist(InvtAccHistForm dom) {
+    public void regInvtAccHist(InvtAccHistForm dom) {
         invtAccHistMapper.insertInvtAccHist(dom.getEntity());
-        return invtAccHistMapper.selectInvtAccHist(new InvtAccHistSearch(dom));
     }
 
     @Override
-    public InvtAccHistEntity modInvtAccHist(InvtAccHistForm dom) {
+    public void updInvtAccHist(InvtAccHistForm dom) {
         invtAccHistMapper.updateInvtAccHist(dom.getEntity());
-        return invtAccHistMapper.selectInvtAccHist(new InvtAccHistSearch(dom));
+    }
+
+    @Override
+    public void modInvtAccHist(InvtAccHistForm dom) {
+        if(getInvtAccHist(new InvtAccHistSearch(dom)) == null){
+            regInvtAccHist(dom);
+        }else{
+            updInvtAccHist(dom);
+        }
     }
 
     @Override
@@ -42,6 +49,11 @@ public class InvtAccHistServiceImpl implements InvtAccHistService {
 
     @Override
     public InvtAccHistEntity getInvtAccHist(InvtAccHistSearch dom) {
+        return invtAccHistMapper.selectInvtAccHist(dom);
+    }
+
+    @Override
+    public InvtAccHistEntity getInvtAccHistLast(InvtAccHistSearch dom) {
         return invtAccHistMapper.selectInvtAccHist(dom);
     }
 

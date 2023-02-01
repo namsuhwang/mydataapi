@@ -83,6 +83,9 @@
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
            AND TRANS_DTIME = #{transDtime}
+            <if test = 'transNo  != null and transNo != ""'>
+                AND TRANS_NO = #{transNo}
+            </if>
     </update>
 
     <delete id="deleteInvtAccHist" parameterType="InvtAccHistEntity">
@@ -92,6 +95,9 @@
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
            AND TRANS_DTIME = #{transDtime}
+            <if test = 'transNo  != null and transNo != ""'>
+                AND TRANS_NO = #{transNo}
+            </if>
     </delete>
 
     <select id="selectInvtAccHist" parameterType="InvtAccHistSearch"  resultType="InvtAccHistEntity">
@@ -100,9 +106,9 @@
                ,ORG_CD
                ,ACCOUNT_NUM
                ,TRANS_DTIME
+               ,TRANS_NO
                ,PROD_NAME
                ,PROD_CODE
-               ,TRANS_NO
                ,TRANS_TYPE
                ,TRANS_TYPE_DETAIL
                ,TRANS_NUM
@@ -124,6 +130,63 @@
            AND ORG_CD = #{orgCd}
            AND ACCOUNT_NUM = #{accountNum}
            AND TRANS_DTIME = #{transDtime}
+            <if test = 'transNo  != null and transNo != ""'>
+                AND TRANS_NO = #{transNo}
+            </if>
+    </select>
+
+    <select id="selectInvtAccHistLast" parameterType="InvtAccHistSearch"  resultType="InvtAccHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.ACCOUNT_NUM
+               ,H1.TRANS_DTIME
+               ,H1.TRANS_NO
+               ,H1.PROD_NAME
+               ,H1.PROD_CODE
+               ,H1.TRANS_TYPE
+               ,H1.TRANS_TYPE_DETAIL
+               ,H1.TRANS_NUM
+               ,H1.TRANS_UNIT
+               ,H1.BASE_AMT
+               ,H1.TRANS_AMT
+               ,H1.SETTLE_AMT
+               ,H1.BALANCE_AMT
+               ,H1.CURRENCY_CODE
+               ,H1.TRANS_MEMO
+               ,H1.EX_CODE
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM INVT_ACC_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME , TRANS_NO
+                        FROM INVT_ACC_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'transNo  != null and transNo != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, TRANS_DTIME DESC, TRANS_NO DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+               H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.ACCOUNT_NUM = H2.ACCOUNT_NUM
+           AND H1.TRANS_DTIME = H2.TRANS_DTIME
+           AND H1.TRANS_NO = H2.TRANS_NO
     </select>
 
     <select id="selectInvtAccHistListTotalCnt" parameterType="InvtAccHistSearch"  resultType="Long">
@@ -143,6 +206,9 @@
        <if test = 'transDtime  != null and transDtime != ""'>
            AND TRANS_DTIME = #{transDtime}
        </if>
+        <if test = 'transNo  != null and transNo != ""'>
+            AND TRANS_NO = #{transNo}
+        </if>
     </select>
 
     <select id="selectInvtAccHistList" parameterType="InvtAccHistSearch"  resultType="InvtAccHistEntity">
@@ -157,9 +223,9 @@
                ,ORG_CD
                ,ACCOUNT_NUM
                ,TRANS_DTIME
+               ,TRANS_NO
                ,PROD_NAME
                ,PROD_CODE
-               ,TRANS_NO
                ,TRANS_TYPE
                ,TRANS_TYPE_DETAIL
                ,TRANS_NUM

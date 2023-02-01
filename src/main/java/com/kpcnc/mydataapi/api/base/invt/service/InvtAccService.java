@@ -6,11 +6,15 @@ import com.kpcnc.mydataapi.api.base.invt.models.form.InvtAccForm;
 import com.kpcnc.mydataapi.common.models.dto.ResultListDto;
 
 public interface InvtAccService{
-    public InvtAccEntity regInvtAcc(InvtAccForm dom);
+    public void regInvtAcc(InvtAccForm dom);
 
-    public InvtAccEntity modInvtAcc(InvtAccForm dom);
+    public void updInvtAcc(InvtAccForm dom);
 
-    public void  delInvtAcc(InvtAccForm dom);
+    public void modInvtAcc(InvtAccForm dom);
+
+    public void delInvtAcc(InvtAccForm dom);
+
+    public void allDelInvtAcc(InvtAccForm dom);
 
     public InvtAccEntity getInvtAcc(InvtAccSearch dom);
 

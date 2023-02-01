@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kpcnc.mydataapi.api.base.invt.repository.InvtAccProdMapper">
+
+    <insert id="insertInvtAccProd" parameterType="InvtAccProdEntity">
+        INSERT INTO INVT_ACC_PROD
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,PROD_TYPE
+            ,PROD_TYPE_DETAIL
+            ,PROD_CODE
+            ,EX_CODE
+            ,PROD_NAME
+            ,POS_TYPE
+            ,CREDIT_TYPE
+            ,IS_TAX_BENEFITS
+            ,PURCHASE_AMT
+            ,HOLDING_NUM
+            ,TRANS_UNIT
+            ,EVAL_AMT
+            ,IS_EXECUTION
+            ,CURRENCY_CODE
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{prodType, jdbcType=VARCHAR}
+            ,#{prodTypeDetail, jdbcType=VARCHAR}
+            ,#{prodCode, jdbcType=VARCHAR}
+            ,#{exCode, jdbcType=VARCHAR}
+            ,#{prodName, jdbcType=VARCHAR}
+            ,#{posType, jdbcType=VARCHAR}
+            ,#{creditType, jdbcType=VARCHAR}
+            ,#{isTaxBenefits, jdbcType=VARCHAR}
+            ,#{purchaseAmt, jdbcType=NUMERIC}
+            ,#{holdingNum, jdbcType=NUMERIC}
+            ,#{transUnit, jdbcType=VARCHAR}
+            ,#{evalAmt, jdbcType=NUMERIC}
+            ,#{isExecution, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateInvtAccProd" parameterType="InvtAccProdEntity">
+        UPDATE INVT_ACC_PROD
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,PROD_TYPE = #{prodType, jdbcType=VARCHAR}
+               ,PROD_TYPE_DETAIL = #{prodTypeDetail, jdbcType=VARCHAR}
+               ,PROD_CODE = #{prodCode, jdbcType=VARCHAR}
+               ,EX_CODE = #{exCode, jdbcType=VARCHAR}
+               ,PROD_NAME = #{prodName, jdbcType=VARCHAR}
+               ,POS_TYPE = #{posType, jdbcType=VARCHAR}
+               ,CREDIT_TYPE = #{creditType, jdbcType=VARCHAR}
+               ,IS_TAX_BENEFITS = #{isTaxBenefits, jdbcType=VARCHAR}
+               ,PURCHASE_AMT = #{purchaseAmt, jdbcType=NUMERIC}
+               ,HOLDING_NUM = #{holdingNum, jdbcType=NUMERIC}
+               ,TRANS_UNIT = #{transUnit, jdbcType=VARCHAR}
+               ,EVAL_AMT = #{evalAmt, jdbcType=NUMERIC}
+               ,IS_EXECUTION = #{isExecution, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND PROD_TYPE = #{prodType}
+           AND PROD_TYPE_DETAIL = #{prodTypeDetail}
+           AND PROD_CODE = #{prodCode}
+           AND EX_CODE = #{exCode}
+    </update>
+
+    <delete id="deleteInvtAccProd" parameterType="InvtAccProdEntity">
+        DELETE FROM INVT_ACC_PROD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND PROD_TYPE = #{prodType}
+           AND PROD_TYPE_DETAIL = #{prodTypeDetail}
+           AND PROD_CODE = #{prodCode}
+           AND EX_CODE = #{exCode}
+    </delete>
+
+    <delete id="deleteAllInvtAccProd" parameterType="InvtAccProdEntity">
+        DELETE FROM INVT_ACC_PROD
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+    </delete>
+
+    <select id="selectInvtAccProd" parameterType="InvtAccProdSearch"  resultType="InvtAccProdEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,PROD_TYPE
+               ,PROD_TYPE_DETAIL
+               ,PROD_CODE
+               ,EX_CODE
+               ,PROD_NAME
+               ,POS_TYPE
+               ,CREDIT_TYPE
+               ,IS_TAX_BENEFITS
+               ,PURCHASE_AMT
+               ,HOLDING_NUM
+               ,TRANS_UNIT
+               ,EVAL_AMT
+               ,IS_EXECUTION
+               ,CURRENCY_CODE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INVT_ACC_PROD
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND PROD_TYPE = #{prodType}
+           AND PROD_TYPE_DETAIL = #{prodTypeDetail}
+           AND PROD_CODE = #{prodCode}
+           AND EX_CODE = #{exCode}
+    </select>
+
+    <select id="selectInvtAccProdListTotalCnt" parameterType="InvtAccProdSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM INVT_ACC_PROD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'prodType  != null and prodType != ""'>
+           AND PROD_TYPE = #{prodType}
+       </if>
+       <if test = 'prodTypeDetail  != null and prodTypeDetail != ""'>
+           AND PROD_TYPE_DETAIL = #{prodTypeDetail}
+       </if>
+       <if test = 'prodCode  != null and prodCode != ""'>
+           AND PROD_CODE = #{prodCode}
+       </if>
+       <if test = 'exCode  != null and exCode != ""'>
+           AND EX_CODE = #{exCode}
+       </if>
+    </select>
+
+    <select id="selectInvtAccProdList" parameterType="InvtAccProdSearch"  resultType="InvtAccProdEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, PROD_TYPE, PROD_TYPE_DETAIL, PROD_CODE, EX_CODE) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,PROD_TYPE
+               ,PROD_TYPE_DETAIL
+               ,PROD_CODE
+               ,EX_CODE
+               ,PROD_NAME
+               ,POS_TYPE
+               ,CREDIT_TYPE
+               ,IS_TAX_BENEFITS
+               ,PURCHASE_AMT
+               ,HOLDING_NUM
+               ,TRANS_UNIT
+               ,EVAL_AMT
+               ,IS_EXECUTION
+               ,CURRENCY_CODE
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM INVT_ACC_PROD
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'prodType  != null and prodType != ""'>
+           AND PROD_TYPE = #{prodType}
+       </if>
+       <if test = 'prodTypeDetail  != null and prodTypeDetail != ""'>
+           AND PROD_TYPE_DETAIL = #{prodTypeDetail}
+       </if>
+       <if test = 'prodCode  != null and prodCode != ""'>
+           AND PROD_CODE = #{prodCode}
+       </if>
+       <if test = 'exCode  != null and exCode != ""'>
+           AND EX_CODE = #{exCode}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, PROD_TYPE, PROD_TYPE_DETAIL, PROD_CODE, EX_CODE
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

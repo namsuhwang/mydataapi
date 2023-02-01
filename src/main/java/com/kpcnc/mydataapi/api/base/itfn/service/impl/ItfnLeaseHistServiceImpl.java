@@ -23,15 +23,22 @@ public class ItfnLeaseHistServiceImpl implements ItfnLeaseHistService {
     ItfnLeaseHistMapper itfnLeaseHistMapper;
 
     @Override
-    public ItfnLeaseHistEntity regItfnLeaseHist(ItfnLeaseHistForm dom) {
+    public void regItfnLeaseHist(ItfnLeaseHistForm dom) {
         itfnLeaseHistMapper.insertItfnLeaseHist(dom.getEntity());
-        return itfnLeaseHistMapper.selectItfnLeaseHist(new ItfnLeaseHistSearch(dom));
     }
 
     @Override
-    public ItfnLeaseHistEntity modItfnLeaseHist(ItfnLeaseHistForm dom) {
+    public void updItfnLeaseHist(ItfnLeaseHistForm dom) {
         itfnLeaseHistMapper.updateItfnLeaseHist(dom.getEntity());
-        return itfnLeaseHistMapper.selectItfnLeaseHist(new ItfnLeaseHistSearch(dom));
+    }
+
+    @Override
+    public void modItfnLeaseHist(ItfnLeaseHistForm dom) {
+        if(getItfnLeaseHist(new ItfnLeaseHistSearch(dom)) == null){
+            regItfnLeaseHist(dom);
+        }else{
+            updItfnLeaseHist(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class ItfnLeaseHistServiceImpl implements ItfnLeaseHistService {
     @Override
     public ItfnLeaseHistEntity getItfnLeaseHist(ItfnLeaseHistSearch dom) {
         return itfnLeaseHistMapper.selectItfnLeaseHist(dom);
+    }
+
+    @Override
+    public ItfnLeaseHistEntity getItfnLeaseHistLast(ItfnLeaseHistSearch dom) {
+        return itfnLeaseHistMapper.selectItfnLeaseHistLast(dom);
     }
 
     @Override

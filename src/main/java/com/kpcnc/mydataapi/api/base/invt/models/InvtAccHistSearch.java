@@ -13,15 +13,22 @@ import lombok.ToString;
 public class InvtAccHistSearch extends SearchDto {
     private String accountNum;    // 계좌번호
     private String transDtime;    // 거래일시 또는 거래일자
+    private String transNo;    // 거래일련번호
 
     public InvtAccHistSearch(String memberId, String orgCd) {
         super(memberId, orgCd);
     }
 
-    public InvtAccHistSearch(String memberId, String orgCd, String accountNum, String transDtime) {
+    public InvtAccHistSearch(String memberId, String orgCd, String accountNum) {
+        super(memberId, orgCd);
+        this.accountNum = accountNum;
+    }
+
+    public InvtAccHistSearch(String memberId, String orgCd, String accountNum, String transDtime, String transNo) {
         super(memberId, orgCd);
         this.accountNum = accountNum;
         this.transDtime = transDtime;
+        this.transNo = transNo;
     }
 
     public InvtAccHistSearch(InvtAccHistEntity entity) {

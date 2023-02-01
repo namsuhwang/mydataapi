@@ -51,7 +51,6 @@ public class PullIrpServiceImpl implements PullIrpService {
 
     @Async("pullPersonalInfoExecutor")
     public CompletableFuture<List<String>> pullIrpInfoRun(ApiCallReqDto req, FormBase formBase) {
-        req.setRequestApiId("IRP_001");
         List<String> targetList = new ArrayList<>();
 
         CompletableFuture<List<String>> irp001Result = callIrp001(req, formBase);

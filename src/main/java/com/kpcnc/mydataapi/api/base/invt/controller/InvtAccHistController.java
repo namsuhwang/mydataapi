@@ -29,7 +29,8 @@ public class InvtAccHistController {
     public ResponseEntity<ResponseDto<InvtAccHistEntity>> regInvtAccHist(
         @RequestBody InvtAccHistForm dom
     ){
-        InvtAccHistEntity result = invtAccHistService.regInvtAccHist(dom);
+        invtAccHistService.regInvtAccHist(dom);
+        InvtAccHistEntity result = invtAccHistService.getInvtAccHist(new InvtAccHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class InvtAccHistController {
     public ResponseEntity<ResponseDto<InvtAccHistEntity>> modInvtAccHist(
         @RequestBody InvtAccHistForm dom
     ){
-        InvtAccHistEntity result = invtAccHistService.modInvtAccHist(dom);
+        invtAccHistService.modInvtAccHist(dom);
+        InvtAccHistEntity result = invtAccHistService.getInvtAccHist(new InvtAccHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

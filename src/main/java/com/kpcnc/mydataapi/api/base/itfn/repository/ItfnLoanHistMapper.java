@@ -16,6 +16,8 @@ public interface ItfnLoanHistMapper{
 
     ItfnLoanHistEntity selectItfnLoanHist(ItfnLoanHistSearch dom);
 
+    ItfnLoanHistEntity selectItfnLoanHistLast(ItfnLoanHistSearch dom);
+
     Long selectItfnLoanHistListTotalCnt(ItfnLoanHistSearch dom);
 
     List<ItfnLoanHistEntity> selectItfnLoanHistList(ItfnLoanHistSearch dom);

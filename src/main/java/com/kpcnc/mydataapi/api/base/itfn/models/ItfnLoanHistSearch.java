@@ -20,6 +20,12 @@ public class ItfnLoanHistSearch extends SearchDto {
         super(memberId, orgCd);
     }
 
+    public ItfnLoanHistSearch(String memberId, String orgCd, String accountNum, String seqno) {
+        super(memberId, orgCd);
+        this.accountNum = accountNum;
+        this.seqno = seqno;
+    }
+
     public ItfnLoanHistSearch(String memberId, String orgCd, String accountNum, String seqno, String transDtime, String transNo) {
         super(memberId, orgCd);
         this.accountNum = accountNum;

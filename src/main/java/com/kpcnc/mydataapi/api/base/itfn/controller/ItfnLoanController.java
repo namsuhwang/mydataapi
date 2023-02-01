@@ -29,7 +29,8 @@ public class ItfnLoanController {
     public ResponseEntity<ResponseDto<ItfnLoanEntity>> regItfnLoan(
         @RequestBody ItfnLoanForm dom
     ){
-        ItfnLoanEntity result = itfnLoanService.regItfnLoan(dom);
+        itfnLoanService.regItfnLoan(dom);
+        ItfnLoanEntity result = itfnLoanService.getItfnLoan(new ItfnLoanSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ItfnLoanController {
     public ResponseEntity<ResponseDto<ItfnLoanEntity>> modItfnLoan(
         @RequestBody ItfnLoanForm dom
     ){
-        ItfnLoanEntity result = itfnLoanService.modItfnLoan(dom);
+        itfnLoanService.modItfnLoan(dom);
+        ItfnLoanEntity result = itfnLoanService.getItfnLoan(new ItfnLoanSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
