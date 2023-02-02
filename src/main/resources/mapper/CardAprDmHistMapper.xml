@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kpcnc.mydataapi.api.base.card.repository.CardAprDmHistMapper">
+<mapper namespace="com.abcc.mydataapi.api.base.card.repository.CardAprDmHistMapper">
 
     <insert id="insertCardAprDmHist" parameterType="CardAprDmHistEntity">
         INSERT INTO CARD_APR_DM_HIST

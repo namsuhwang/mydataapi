@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kpcnc.mydataapi.api.common.member.repository.MemberMapper">
+<mapper namespace="com.abcc.mydataapi.api.common.member.repository.MemberMapper">
 
     <select id="createMemberId" resultType="String">
         SELECT 'MID' || LPAD(TO_NUMBER(SUBSTR(NVL(MAX(MEMBER_ID), 'MID00000000000000000'), 4, 20)) + TO_NUMBER(1), 17, '0') AS member_id

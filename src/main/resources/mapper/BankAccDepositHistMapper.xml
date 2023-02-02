@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kpcnc.mydataapi.api.base.bank.repository.BankAccDepositHistMapper">
+<mapper namespace="com.abcc.mydataapi.api.base.bank.repository.BankAccDepositHistMapper">
 
     <insert id="insertBankAccDepositHist" parameterType="BankAccDepositHistEntity">
         INSERT INTO BANK_ACC_DEPOSIT_HIST
