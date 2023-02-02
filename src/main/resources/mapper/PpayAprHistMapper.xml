@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.abcc.mydataapi.api.base.ppay.repository.PpayAprHistMapper">
+<mapper namespace="com.albee.mydataapi.api.base.ppay.repository.PpayAprHistMapper">
 
     <insert id="insertPpayAprHist" parameterType="PpayAprHistEntity">
         INSERT INTO PPAY_APR_HIST
