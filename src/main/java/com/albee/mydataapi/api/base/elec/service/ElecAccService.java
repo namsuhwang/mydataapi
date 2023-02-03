@@ -6,11 +6,13 @@ import com.albee.mydataapi.common.models.dto.ResultListDto;
 import com.albee.mydataapi.api.base.elec.models.ElecAccSearch;
 
 public interface ElecAccService{
-    public ElecAccEntity regElecAcc(ElecAccForm dom);
+    public void regElecAcc(ElecAccForm dom);
 
-    public ElecAccEntity modElecAcc(ElecAccForm dom);
+    public void updElecAcc(ElecAccForm dom);
 
-    public void  delElecAcc(ElecAccForm dom);
+    public void modElecAcc(ElecAccForm dom);
+
+    public void delElecAcc(ElecAccForm dom);
 
     public ElecAccEntity getElecAcc(ElecAccSearch dom);
 

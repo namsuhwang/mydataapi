@@ -29,7 +29,8 @@ public class TeleHistController {
     public ResponseEntity<ResponseDto<TeleHistEntity>> regTeleHist(
         @RequestBody TeleHistForm dom
     ){
-        TeleHistEntity result = teleHistService.regTeleHist(dom);
+        teleHistService.regTeleHist(dom);
+        TeleHistEntity result = teleHistService.getTeleHist(new TeleHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class TeleHistController {
     public ResponseEntity<ResponseDto<TeleHistEntity>> modTeleHist(
         @RequestBody TeleHistForm dom
     ){
-        TeleHistEntity result = teleHistService.modTeleHist(dom);
+        teleHistService.modTeleHist(dom);
+        TeleHistEntity result = teleHistService.getTeleHist(new TeleHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -29,7 +29,8 @@ public class GurtInsdController {
     public ResponseEntity<ResponseDto<GurtInsdEntity>> regGurtInsd(
         @RequestBody GurtInsdForm dom
     ){
-        GurtInsdEntity result = gurtInsdService.regGurtInsd(dom);
+        gurtInsdService.regGurtInsd(dom);
+        GurtInsdEntity result = gurtInsdService.getGurtInsd(new GurtInsdSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class GurtInsdController {
     public ResponseEntity<ResponseDto<GurtInsdEntity>> modGurtInsd(
         @RequestBody GurtInsdForm dom
     ){
-        GurtInsdEntity result = gurtInsdService.modGurtInsd(dom);
+        gurtInsdService.modGurtInsd(dom);
+        GurtInsdEntity result = gurtInsdService.getGurtInsd(new GurtInsdSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

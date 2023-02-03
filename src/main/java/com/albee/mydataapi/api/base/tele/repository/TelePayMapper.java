@@ -16,6 +16,8 @@ public interface TelePayMapper{
 
     TelePayEntity selectTelePay(TelePaySearch dom);
 
+    TelePayEntity selectTelePayLast(TelePaySearch dom);
+
     Long selectTelePayListTotalCnt(TelePaySearch dom);
 
     List<TelePayEntity> selectTelePayList(TelePaySearch dom);

@@ -23,20 +23,33 @@ public class ElecPpayServiceImpl implements ElecPpayService {
     ElecPpayMapper elecPpayMapper;
 
     @Override
-    public ElecPpayEntity regElecPpay(ElecPpayForm dom) {
+    public void regElecPpay(ElecPpayForm dom) {
         elecPpayMapper.insertElecPpay(dom.getEntity());
-        return elecPpayMapper.selectElecPpay(new ElecPpaySearch(dom));
     }
 
     @Override
-    public ElecPpayEntity modElecPpay(ElecPpayForm dom) {
+    public void updElecPpay(ElecPpayForm dom) {
         elecPpayMapper.updateElecPpay(dom.getEntity());
-        return elecPpayMapper.selectElecPpay(new ElecPpaySearch(dom));
+    }
+
+    @Override
+    public void modElecPpay(ElecPpayForm dom) {
+        if(getElecPpay(new ElecPpaySearch(dom)) == null){
+            regElecPpay(dom);
+        }else{
+            updElecPpay(dom);
+        }
     }
 
     @Override
     public void delElecPpay(ElecPpayForm dom) {
         elecPpayMapper.deleteElecPpay(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelElecPpay(ElecPpayForm dom) {
+        elecPpayMapper.deleteAllElecPpay(dom.getEntity());
         return;
     }
 

@@ -52,6 +52,7 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND MGMT_ID = #{mgmtId}
+           AND TRANS_MONTH = #{transMonth}
     </update>
 
     <delete id="deleteTeleHist" parameterType="TeleHistEntity">
@@ -60,6 +61,7 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND MGMT_ID = #{mgmtId}
+           AND TRANS_MONTH = #{transMonth}
     </delete>
 
     <select id="selectTeleHist" parameterType="TeleHistSearch"  resultType="TeleHistEntity">
@@ -81,6 +83,47 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND MGMT_ID = #{mgmtId}
+           AND TRANS_MONTH = #{transMonth}
+    </select>
+
+    <select id="selectTeleHistLast" parameterType="TeleHistSearch"  resultType="TeleHistEntity">
+         SELECT
+                T1.MEMBER_ID
+               ,T1.ORG_CD
+               ,T1.MGMT_ID
+               ,T1.TRANS_MONTH
+               ,T1.PAID_AMT
+               ,T1.PAY_METHOD
+               ,T1.API_TRAN_DAY
+               ,T1.API_TRAN_ID
+               ,T1.REG_USER_ID
+               ,T1.REG_DT
+               ,T1.CHG_USER_ID
+               ,T1.CHG_DT
+        FROM TELE_HIST T1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, MGMT_ID, TRANS_MONTH
+                        FROM TELE_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND MGMT_ID = #{mgmtId}
+                            <if test = 'transMonth  != null and transMonth != ""'>
+                                AND TRANS_MONTH = #{transMonth}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID, TRANS_MONTH DESC
+                    )
+                WHERE rownum = 1
+            ) T2
+       WHERE
+             T1.MEMBER_ID = T2.MEMBER_ID
+           AND T1.ORG_CD = T2.ORG_CD
+           AND T1.MGMT_ID = T2.MGMT_ID
+           AND T1.TRANS_MONTH = T2.TRANS_MONTH
     </select>
 
     <select id="selectTeleHistListTotalCnt" parameterType="TeleHistSearch"  resultType="Long">
@@ -97,6 +140,9 @@
        <if test = 'mgmtId  != null and mgmtId != ""'>
            AND MGMT_ID = #{mgmtId}
        </if>
+        <if test = 'transMonth  != null and transMonth != ""'>
+            AND TRANS_MONTH = #{transMonth}
+        </if>
     </select>
 
     <select id="selectTeleHistList" parameterType="TeleHistSearch"  resultType="TeleHistEntity">
@@ -106,7 +152,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, MGMT_ID) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, MGMT_ID, TRANS_MONTH) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,MGMT_ID
@@ -130,7 +176,10 @@
        <if test = 'mgmtId  != null and mgmtId != ""'>
            AND MGMT_ID = #{mgmtId}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID
+        <if test = 'transMonth  != null and transMonth != ""'>
+            AND TRANS_MONTH = #{transMonth}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID, TRANS_MONTH DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

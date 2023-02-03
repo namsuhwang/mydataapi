@@ -20,6 +20,11 @@ public class ElecPayMethodSearch extends SearchDto {
         super(memberId, orgCd);
     }
 
+    public ElecPayMethodSearch(String memberId, String orgCd, String subKey) {
+        super(memberId, orgCd);
+        this.subKey = subKey;
+    }
+
     public ElecPayMethodSearch(String memberId, String orgCd, String subKey, String payOrgCode) {
         super(memberId, orgCd);
         this.subKey = subKey;

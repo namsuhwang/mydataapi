@@ -23,15 +23,22 @@ public class ElecPpayAutoChargeServiceImpl implements ElecPpayAutoChargeService 
     ElecPpayAutoChargeMapper elecPpayAutoChargeMapper;
 
     @Override
-    public ElecPpayAutoChargeEntity regElecPpayAutoCharge(ElecPpayAutoChargeForm dom) {
+    public void regElecPpayAutoCharge(ElecPpayAutoChargeForm dom) {
         elecPpayAutoChargeMapper.insertElecPpayAutoCharge(dom.getEntity());
-        return elecPpayAutoChargeMapper.selectElecPpayAutoCharge(new ElecPpayAutoChargeSearch(dom));
     }
 
     @Override
-    public ElecPpayAutoChargeEntity modElecPpayAutoCharge(ElecPpayAutoChargeForm dom) {
+    public void updElecPpayAutoCharge(ElecPpayAutoChargeForm dom) {
         elecPpayAutoChargeMapper.updateElecPpayAutoCharge(dom.getEntity());
-        return elecPpayAutoChargeMapper.selectElecPpayAutoCharge(new ElecPpayAutoChargeSearch(dom));
+    }
+
+    @Override
+    public void modElecPpayAutoCharge(ElecPpayAutoChargeForm dom) {
+        if(getElecPpayAutoCharge(new ElecPpayAutoChargeSearch(dom)) == null){
+            regElecPpayAutoCharge(dom);
+        }else{
+            updElecPpayAutoCharge(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,19 @@ public class ElecPpayAutoChargeServiceImpl implements ElecPpayAutoChargeService 
     }
 
     @Override
+    public void allDelElecPpayAutoCharge(ElecPpayAutoChargeForm dom) {
+        elecPpayAutoChargeMapper.deleteAllElecPpayAutoCharge(dom.getEntity());
+        return;
+    }
+
+    @Override
     public ElecPpayAutoChargeEntity getElecPpayAutoCharge(ElecPpayAutoChargeSearch dom) {
         return elecPpayAutoChargeMapper.selectElecPpayAutoCharge(dom);
+    }
+
+    @Override
+    public ElecPpayAutoChargeEntity getElecPpayAutoChargeLast(ElecPpayAutoChargeSearch dom) {
+        return elecPpayAutoChargeMapper.selectElecPpayAutoChargeLast(dom);
     }
 
     @Override

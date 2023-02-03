@@ -65,6 +65,14 @@
            AND MGMT_ID = #{mgmtId}
     </delete>
 
+
+    <delete id="deleteAllTeleCont" parameterType="TeleContEntity">
+        DELETE FROM TELE_CONT
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectTeleCont" parameterType="TeleContSearch"  resultType="TeleContEntity">
          SELECT 
                MEMBER_ID

@@ -93,11 +93,56 @@
            AND TRANS_DATE = #{transDate}
     </select>
 
+    <select id="selectGurtHistLast" parameterType="GurtHistSearch"  resultType="GurtHistEntity">
+         SELECT
+                G1.MEMBER_ID
+               ,G1.ORG_CD
+               ,G1.INSU_NUM
+               ,G1.PAID_IN_CNT
+               ,G1.TRANS_DATE
+               ,G1.PAID_AMT
+               ,G1.PAY_METHOD
+               ,G1.API_TRAN_DAY
+               ,G1.API_TRAN_ID
+               ,G1.REG_USER_ID
+               ,G1.REG_DT
+               ,G1.CHG_USER_ID
+               ,G1.CHG_DT
+        FROM GURT_HIST G1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM, TRANS_DTIME, PAID_IN_CNT
+                        FROM GURT_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND INSU_NUM = #{insuNum}
+                            <if test = 'transDate  != null and transDate != ""'>
+                                AND TRANS_DATE = #{transDate}
+                            </if>
+                            <if test = 'paidInCnt  != null and paidInCnt != ""'>
+                                AND PAID_IN_CNT = #{paidInCnt}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, TRANS_DTIME DESC
+                    )
+                WHERE rownum = 1
+            ) G2
+       WHERE
+               G1.MEMBER_ID = G2.MEMBER_ID
+           AND G1.ORG_CD = G2.ORG_CD
+           AND G1.INSU_NUM = G2.INSU_NUM
+           AND G1.PAID_IN_CNT = G2.PAID_IN_CNT
+           AND G1.TRANS_DATE = G2.TRANS_DATE
+    </select>
+
     <select id="selectGurtHistListTotalCnt" parameterType="GurtHistSearch"  resultType="Long">
-         SELECT 
-             COUNT(*) 
+         SELECT
+             COUNT(*)
         FROM GURT_HIST
-       WHERE 1 = 1 
+       WHERE 1 = 1
        <if test = 'memberId  != null and memberId != ""'>
            AND MEMBER_ID = #{memberId}
        </if>
@@ -116,12 +161,12 @@
     </select>
 
     <select id="selectGurtHistList" parameterType="GurtHistSearch"  resultType="GurtHistEntity">
-         SELECT 
-             T.ROW_NUM AS ROW_NUM 
-             ,T.* 
-         FROM 
-         ( 
-         SELECT 
+         SELECT
+             T.ROW_NUM AS ROW_NUM
+             ,T.*
+         FROM
+         (
+         SELECT
              ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, PAID_IN_CNT, TRANS_DATE) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD

@@ -23,15 +23,22 @@ public class ElecPpayBalServiceImpl implements ElecPpayBalService {
     ElecPpayBalMapper elecPpayBalMapper;
 
     @Override
-    public ElecPpayBalEntity regElecPpayBal(ElecPpayBalForm dom) {
+    public void regElecPpayBal(ElecPpayBalForm dom) {
         elecPpayBalMapper.insertElecPpayBal(dom.getEntity());
-        return elecPpayBalMapper.selectElecPpayBal(new ElecPpayBalSearch(dom));
     }
 
     @Override
-    public ElecPpayBalEntity modElecPpayBal(ElecPpayBalForm dom) {
+    public void updElecPpayBal(ElecPpayBalForm dom) {
         elecPpayBalMapper.updateElecPpayBal(dom.getEntity());
-        return elecPpayBalMapper.selectElecPpayBal(new ElecPpayBalSearch(dom));
+    }
+
+    @Override
+    public void modElecPpayBal(ElecPpayBalForm dom) {
+        if(getElecPpayBal(new ElecPpayBalSearch(dom)) == null){
+            regElecPpayBal(dom);
+        }else{
+            updElecPpayBal(dom);
+        }
     }
 
     @Override

@@ -16,6 +16,8 @@ public interface TeleChargeMapper{
 
     TeleChargeEntity selectTeleCharge(TeleChargeSearch dom);
 
+    TeleChargeEntity selectTeleChargeLast(TeleChargeSearch dom);
+
     Long selectTeleChargeListTotalCnt(TeleChargeSearch dom);
 
     List<TeleChargeEntity> selectTeleChargeList(TeleChargeSearch dom);

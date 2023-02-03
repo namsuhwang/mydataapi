@@ -83,6 +83,13 @@
            AND CHARGE_ORG_CODE = #{chargeOrgCode}
     </delete>
 
+    <delete id="deleteAllElecPpayAutoCharge" parameterType="ElecPpayAutoChargeEntity">
+        DELETE FROM ELEC_PPAY_AUTO_CHARGE
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectElecPpayAutoCharge" parameterType="ElecPpayAutoChargeSearch"  resultType="ElecPpayAutoChargeEntity">
          SELECT 
                MEMBER_ID
@@ -110,6 +117,59 @@
            AND ACCOUNT_ID = #{accountId}
            AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
            AND CHARGE_ORG_CODE = #{chargeOrgCode}
+    </select>
+
+    <select id="selectElecPpayAutoChargeLast" parameterType="ElecPpayAutoChargeSearch"  resultType="ElecPpayAutoChargeEntity">
+         SELECT
+                E1.MEMBER_ID
+               ,E1.ORG_CD
+               ,E1.FOB_ID
+               ,E1.ACCOUNT_ID
+               ,E1.AUTO_CHARGE_SEQ
+               ,E1.CHARGE_ORG_CODE
+               ,E1.CHARGE_ACCOUNT_NUM
+               ,E1.CHARGE_OPTION
+               ,E1.CHARGE_DAY
+               ,E1.CHARGE_BASE_AMT
+               ,E1.CHARGE_AMT
+               ,E1.API_TRAN_DAY
+               ,E1.API_TRAN_ID
+               ,E1.REG_USER_ID
+               ,E1.REG_DT
+               ,E1.CHG_USER_ID
+               ,E1.CHG_DT
+        FROM ELEC_PPAY_AUTO_CHARGE E1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, AUTO_CHARGE_SEQ, CHARGE_ORG_CODE
+                        FROM ELEC_PPAY_AUTO_CHARGE
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND FOB_ID = #{fobId}
+                            <if test = 'accountId  != null and accountId != ""'>
+                                AND ACCOUNT_ID = #{accountId}
+                            </if>
+                            <if test = 'autoChargeSeq  != null and autoChargeSeq != ""'>
+                                AND AUTO_CHARGE_SEQ = #{autoChargeSeq}
+                            </if>
+                            <if test = 'chargeOrgCode  != null and chargeOrgCode != ""'>
+                                AND CHARGE_ORG_CODE = #{chargeOrgCode}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, AUTO_CHARGE_SEQ DESC, CHARGE_ORG_CODE DESC
+                    )
+                WHERE rownum = 1
+            ) E2
+       WHERE
+               E1.MEMBER_ID = E2.MEMBER_ID
+           AND E1.ORG_CD = E2.ORG_CD
+           AND E1.FOB_ID = E2.FOB_ID
+           AND E1.ACCOUNT_ID = E2.ACCOUNT_ID
+           AND E1.AUTO_CHARGE_SEQ = E2.AUTO_CHARGE_SEQ
+           AND E1.CHARGE_ORG_CODE = E2.CHARGE_ORG_CODE
     </select>
 
     <select id="selectElecPpayAutoChargeListTotalCnt" parameterType="ElecPpayAutoChargeSearch"  resultType="Long">

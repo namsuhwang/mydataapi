@@ -6,11 +6,15 @@ import com.albee.mydataapi.api.base.elec.models.entity.ElecPpayEntity;
 import com.albee.mydataapi.api.base.elec.models.form.ElecPpayForm;
 
 public interface ElecPpayService{
-    public ElecPpayEntity regElecPpay(ElecPpayForm dom);
+    public void regElecPpay(ElecPpayForm dom);
 
-    public ElecPpayEntity modElecPpay(ElecPpayForm dom);
+    public void updElecPpay(ElecPpayForm dom);
 
-    public void  delElecPpay(ElecPpayForm dom);
+    public void modElecPpay(ElecPpayForm dom);
+
+    public void delElecPpay(ElecPpayForm dom);
+
+    public void allDelElecPpay(ElecPpayForm dom);
 
     public ElecPpayEntity getElecPpay(ElecPpaySearch dom);
 

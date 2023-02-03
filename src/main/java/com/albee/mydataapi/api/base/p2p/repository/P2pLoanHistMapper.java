@@ -16,6 +16,8 @@ public interface P2pLoanHistMapper{
 
     P2pLoanHistEntity selectP2pLoanHist(P2pLoanHistSearch dom);
 
+    P2pLoanHistEntity selectP2pLoanHistLast(P2pLoanHistSearch dom);
+
     Long selectP2pLoanHistListTotalCnt(P2pLoanHistSearch dom);
 
     List<P2pLoanHistEntity> selectP2pLoanHistList(P2pLoanHistSearch dom);

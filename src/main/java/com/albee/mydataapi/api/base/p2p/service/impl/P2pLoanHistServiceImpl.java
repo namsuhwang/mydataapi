@@ -23,15 +23,22 @@ public class P2pLoanHistServiceImpl implements P2pLoanHistService {
     P2pLoanHistMapper p2pLoanHistMapper;
 
     @Override
-    public P2pLoanHistEntity regP2pLoanHist(P2pLoanHistForm dom) {
+    public void regP2pLoanHist(P2pLoanHistForm dom) {
         p2pLoanHistMapper.insertP2pLoanHist(dom.getEntity());
-        return p2pLoanHistMapper.selectP2pLoanHist(new P2pLoanHistSearch(dom));
     }
 
     @Override
-    public P2pLoanHistEntity modP2pLoanHist(P2pLoanHistForm dom) {
+    public void updP2pLoanHist(P2pLoanHistForm dom) {
         p2pLoanHistMapper.updateP2pLoanHist(dom.getEntity());
-        return p2pLoanHistMapper.selectP2pLoanHist(new P2pLoanHistSearch(dom));
+    }
+
+    @Override
+    public void modP2pLoanHist(P2pLoanHistForm dom) {
+        if(getP2pLoanHist(new P2pLoanHistSearch(dom)) == null){
+            regP2pLoanHist(dom);
+        }else{
+            updP2pLoanHist(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class P2pLoanHistServiceImpl implements P2pLoanHistService {
     @Override
     public P2pLoanHistEntity getP2pLoanHist(P2pLoanHistSearch dom) {
         return p2pLoanHistMapper.selectP2pLoanHist(dom);
+    }
+
+    @Override
+    public P2pLoanHistEntity getP2pLoanHistLast(P2pLoanHistSearch dom) {
+        return p2pLoanHistMapper.selectP2pLoanHistLast(dom);
     }
 
     @Override

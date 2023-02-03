@@ -23,15 +23,22 @@ public class ElecPayMethodServiceImpl implements ElecPayMethodService {
     ElecPayMethodMapper elecPayMethodMapper;
 
     @Override
-    public ElecPayMethodEntity regElecPayMethod(ElecPayMethodForm dom) {
+    public void regElecPayMethod(ElecPayMethodForm dom) {
         elecPayMethodMapper.insertElecPayMethod(dom.getEntity());
-        return elecPayMethodMapper.selectElecPayMethod(new ElecPayMethodSearch(dom));
     }
 
     @Override
-    public ElecPayMethodEntity modElecPayMethod(ElecPayMethodForm dom) {
+    public void updElecPayMethod(ElecPayMethodForm dom) {
         elecPayMethodMapper.updateElecPayMethod(dom.getEntity());
-        return elecPayMethodMapper.selectElecPayMethod(new ElecPayMethodSearch(dom));
+    }
+
+    @Override
+    public void modElecPayMethod(ElecPayMethodForm dom) {
+        if(getElecPayMethod(new ElecPayMethodSearch(dom)) == null){
+            regElecPayMethod(dom);
+        }else{
+            updElecPayMethod(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,20 @@ public class ElecPayMethodServiceImpl implements ElecPayMethodService {
     }
 
     @Override
+    public void allDelElecPayMethod(ElecPayMethodForm dom) {
+        elecPayMethodMapper.deleteAllElecPayMethod(dom.getEntity());
+        return;
+    }
+
+
+    @Override
     public ElecPayMethodEntity getElecPayMethod(ElecPayMethodSearch dom) {
         return elecPayMethodMapper.selectElecPayMethod(dom);
+    }
+
+    @Override
+    public ElecPayMethodEntity getElecPayMethodLast(ElecPayMethodSearch dom) {
+        return elecPayMethodMapper.selectElecPayMethodLast(dom);
     }
 
     @Override

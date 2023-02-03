@@ -61,6 +61,8 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND LENDING_ID = #{lendingId}
+           AND TRANS_DTIME = #{transDtime}
+           AND REPAY_CNT = #{repayCnt}
     </update>
 
     <delete id="deleteP2pLoanHist" parameterType="P2pLoanHistEntity">
@@ -69,6 +71,8 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND LENDING_ID = #{lendingId}
+           AND TRANS_DTIME = #{transDtime}
+           AND REPAY_CNT = #{repayCnt}
     </delete>
 
     <select id="selectP2pLoanHist" parameterType="P2pLoanHistSearch"  resultType="P2pLoanHistEntity">
@@ -93,6 +97,55 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND LENDING_ID = #{lendingId}
+           AND TRANS_DTIME = #{transDtime}
+           AND REPAY_CNT = #{repayCnt}
+    </select>
+
+    <select id="selectP2pLoanHistLast" parameterType="P2pLoanHistSearch"  resultType="P2pLoanHistEntity">
+         SELECT
+                P1.MEMBER_ID
+               ,P1.ORG_CD
+               ,P1.LENDING_ID
+               ,P1.TRANS_DTIME
+               ,P1.REPAY_CNT
+               ,P1.REPAY_TYPE
+               ,P1.TRANS_AMT
+               ,P1.PRINCIPAL_AMT
+               ,P1.INT_AMT
+               ,P1.API_TRAN_DAY
+               ,P1.API_TRAN_ID
+               ,P1.REG_USER_ID
+               ,P1.REG_DT
+               ,P1.CHG_USER_ID
+               ,P1.CHG_DT
+        FROM P2P_LOAN_HIST P1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, LENDING_ID, TRANS_DTIME , REPAY_CNT
+                        FROM P2P_LOAN_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND LENDING_ID = #{lendingId}
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'lendingId  != null and lendingId != ""'>
+                                AND REPAY_CNT = #{lendingId}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, LENDING_ID, TRANS_DTIME DESC, REPAY_CNT DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+               P1.MEMBER_ID = #{memberId}
+           AND P1.ORG_CD = #{orgCd}
+           AND P1.LENDING_ID = #{lendingId}
+           AND P1.TRANS_DTIME = #{transDtime}
+           AND P1.REPAY_CNT = #{repayCnt}
     </select>
 
     <select id="selectP2pLoanHistListTotalCnt" parameterType="P2pLoanHistSearch"  resultType="Long">
@@ -109,6 +162,12 @@
        <if test = 'lendingId  != null and lendingId != ""'>
            AND LENDING_ID = #{lendingId}
        </if>
+        <if test = 'transDtime  != null and transDtime != ""'>
+            AND TRANS_DTIME = #{transDtime}
+        </if>
+        <if test = 'lendingId  != null and lendingId != ""'>
+            AND REPAY_CNT = #{lendingId}
+        </if>
     </select>
 
     <select id="selectP2pLoanHistList" parameterType="P2pLoanHistSearch"  resultType="P2pLoanHistEntity">
@@ -118,7 +177,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, LENDING_ID) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, LENDING_ID, TRANS_DTIME, REPAY_CNT) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,LENDING_ID
@@ -145,7 +204,13 @@
        <if test = 'lendingId  != null and lendingId != ""'>
            AND LENDING_ID = #{lendingId}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, LENDING_ID
+        <if test = 'transDtime  != null and transDtime != ""'>
+            AND TRANS_DTIME = #{transDtime}
+        </if>
+        <if test = 'lendingId  != null and lendingId != ""'>
+            AND REPAY_CNT = #{lendingId}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, LENDING_ID, TRANS_DTIME DESC, REPAY_CNT DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

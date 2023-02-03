@@ -23,15 +23,22 @@ public class P2pLoanBaseServiceImpl implements P2pLoanBaseService {
     P2pLoanBaseMapper p2pLoanBaseMapper;
 
     @Override
-    public P2pLoanBaseEntity regP2pLoanBase(P2pLoanBaseForm dom) {
+    public void regP2pLoanBase(P2pLoanBaseForm dom) {
         p2pLoanBaseMapper.insertP2pLoanBase(dom.getEntity());
-        return p2pLoanBaseMapper.selectP2pLoanBase(new P2pLoanBaseSearch(dom));
     }
 
     @Override
-    public P2pLoanBaseEntity modP2pLoanBase(P2pLoanBaseForm dom) {
+    public void updP2pLoanBase(P2pLoanBaseForm dom) {
         p2pLoanBaseMapper.updateP2pLoanBase(dom.getEntity());
-        return p2pLoanBaseMapper.selectP2pLoanBase(new P2pLoanBaseSearch(dom));
+    }
+
+    @Override
+    public void modP2pLoanBase(P2pLoanBaseForm dom) {
+        if(getP2pLoanBase(new P2pLoanBaseSearch(dom)) == null){
+            regP2pLoanBase(dom);
+        }else{
+            updP2pLoanBase(dom);
+        }
     }
 
     @Override

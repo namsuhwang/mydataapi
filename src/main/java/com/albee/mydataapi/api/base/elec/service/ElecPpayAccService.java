@@ -6,11 +6,13 @@ import com.albee.mydataapi.common.models.dto.ResultListDto;
 import com.albee.mydataapi.api.base.elec.models.ElecPpayAccSearch;
 
 public interface ElecPpayAccService{
-    public ElecPpayAccEntity regElecPpayAcc(ElecPpayAccForm dom);
+    public void regElecPpayAcc(ElecPpayAccForm dom);
 
-    public ElecPpayAccEntity modElecPpayAcc(ElecPpayAccForm dom);
+    public void updElecPpayAcc(ElecPpayAccForm dom);
 
-    public void  delElecPpayAcc(ElecPpayAccForm dom);
+    public void modElecPpayAcc(ElecPpayAccForm dom);
+
+    public void delElecPpayAcc(ElecPpayAccForm dom);
 
     public ElecPpayAccEntity getElecPpayAcc(ElecPpayAccSearch dom);
 

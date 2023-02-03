@@ -29,7 +29,8 @@ public class GurtHistController {
     public ResponseEntity<ResponseDto<GurtHistEntity>> regGurtHist(
         @RequestBody GurtHistForm dom
     ){
-        GurtHistEntity result = gurtHistService.regGurtHist(dom);
+        gurtHistService.regGurtHist(dom);
+        GurtHistEntity result = gurtHistService.getGurtHist(new GurtHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class GurtHistController {
     public ResponseEntity<ResponseDto<GurtHistEntity>> modGurtHist(
         @RequestBody GurtHistForm dom
     ){
-        GurtHistEntity result = gurtHistService.modGurtHist(dom);
+        gurtHistService.modGurtHist(dom);
+        GurtHistEntity result = gurtHistService.getGurtHist(new GurtHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

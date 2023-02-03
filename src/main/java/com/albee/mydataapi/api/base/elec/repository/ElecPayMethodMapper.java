@@ -14,7 +14,11 @@ public interface ElecPayMethodMapper{
 
     int deleteElecPayMethod(ElecPayMethodEntity dom);
 
+    int deleteAllElecPayMethod(ElecPayMethodEntity dom);
+
     ElecPayMethodEntity selectElecPayMethod(ElecPayMethodSearch dom);
+
+    ElecPayMethodEntity selectElecPayMethodLast(ElecPayMethodSearch dom);
 
     Long selectElecPayMethodListTotalCnt(ElecPayMethodSearch dom);
 

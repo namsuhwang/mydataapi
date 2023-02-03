@@ -6,11 +6,15 @@ import com.albee.mydataapi.common.models.dto.ResultListDto;
 import com.albee.mydataapi.api.base.tele.models.TeleContSearch;
 
 public interface TeleContService{
-    public TeleContEntity regTeleCont(TeleContForm dom);
+    public void regTeleCont(TeleContForm dom);
 
-    public TeleContEntity modTeleCont(TeleContForm dom);
+    public void updTeleCont(TeleContForm dom);
+
+    public void modTeleCont(TeleContForm dom);
 
     public void  delTeleCont(TeleContForm dom);
+
+    public void  allDelTeleCont(TeleContForm dom);
 
     public TeleContEntity getTeleCont(TeleContSearch dom);
 

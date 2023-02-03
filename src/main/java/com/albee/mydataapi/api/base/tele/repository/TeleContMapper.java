@@ -14,6 +14,8 @@ public interface TeleContMapper{
 
     int deleteTeleCont(TeleContEntity dom);
 
+    int deleteAllTeleCont(TeleContEntity dom);
+
     TeleContEntity selectTeleCont(TeleContSearch dom);
 
     Long selectTeleContListTotalCnt(TeleContSearch dom);

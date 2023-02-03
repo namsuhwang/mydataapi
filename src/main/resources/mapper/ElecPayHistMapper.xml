@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.elec.repository.ElecPayHistMapper">
+
+    <insert id="insertElecPayHist" parameterType="ElecPayHistEntity">
+        INSERT INTO ELEC_PAY_HIST
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,SUB_KEY
+            ,TRANS_DTIME
+            ,TRANS_NO
+            ,TRANS_NUM
+            ,TRANS_TYPE
+            ,CURRENCY_CODE
+            ,TRANS_AMT
+            ,TRANS_ORG_CODE
+            ,PAY_TYPE
+            ,PAY_ID
+            ,APPROVED_NUM
+            ,CARD_NAME
+            ,TOTAL_INSTALL_CNT
+            ,TRANS_MEMO
+            ,MERCHANT_NAME
+            ,MERCHANT_REGNO
+            ,TRANS_TITLE
+            ,TRANS_CATEGORY
+            ,PAY_METHOD
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{subKey, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{transNum, jdbcType=VARCHAR}
+            ,#{transType, jdbcType=VARCHAR}
+            ,#{currencyCode, jdbcType=VARCHAR}
+            ,#{transAmt, jdbcType=NUMERIC}
+            ,#{transOrgCode, jdbcType=VARCHAR}
+            ,#{payType, jdbcType=VARCHAR}
+            ,#{payId, jdbcType=VARCHAR}
+            ,#{approvedNum, jdbcType=VARCHAR}
+            ,#{cardName, jdbcType=VARCHAR}
+            ,#{totalInstallCnt, jdbcType=NUMERIC}
+            ,#{transMemo, jdbcType=VARCHAR}
+            ,#{merchantName, jdbcType=VARCHAR}
+            ,#{merchantRegno, jdbcType=VARCHAR}
+            ,#{transTitle, jdbcType=VARCHAR}
+            ,#{transCategory, jdbcType=VARCHAR}
+            ,#{payMethod, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateElecPayHist" parameterType="ElecPayHistEntity">
+        UPDATE ELEC_PAY_HIST
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,SUB_KEY = #{subKey, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,TRANS_NUM = #{transNum, jdbcType=VARCHAR}
+               ,TRANS_TYPE = #{transType, jdbcType=VARCHAR}
+               ,CURRENCY_CODE = #{currencyCode, jdbcType=VARCHAR}
+               ,TRANS_AMT = #{transAmt, jdbcType=NUMERIC}
+               ,TRANS_ORG_CODE = #{transOrgCode, jdbcType=VARCHAR}
+               ,PAY_TYPE = #{payType, jdbcType=VARCHAR}
+               ,PAY_ID = #{payId, jdbcType=VARCHAR}
+               ,APPROVED_NUM = #{approvedNum, jdbcType=VARCHAR}
+               ,CARD_NAME = #{cardName, jdbcType=VARCHAR}
+               ,TOTAL_INSTALL_CNT = #{totalInstallCnt, jdbcType=NUMERIC}
+               ,TRANS_MEMO = #{transMemo, jdbcType=VARCHAR}
+               ,MERCHANT_NAME = #{merchantName, jdbcType=VARCHAR}
+               ,MERCHANT_REGNO = #{merchantRegno, jdbcType=VARCHAR}
+               ,TRANS_TITLE = #{transTitle, jdbcType=VARCHAR}
+               ,TRANS_CATEGORY = #{transCategory, jdbcType=VARCHAR}
+               ,PAY_METHOD = #{payMethod, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+    </update>
+
+    <delete id="deleteElecPayHist" parameterType="ElecPayHistEntity">
+        DELETE FROM ELEC_PAY_HIST
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+    </delete>
+
+    <select id="selectElecPayHist" parameterType="ElecPayHistSearch"  resultType="ElecPayHistEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,SUB_KEY
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_NUM
+               ,TRANS_TYPE
+               ,CURRENCY_CODE
+               ,TRANS_AMT
+               ,TRANS_ORG_CODE
+               ,PAY_TYPE
+               ,PAY_ID
+               ,APPROVED_NUM
+               ,CARD_NAME
+               ,TOTAL_INSTALL_CNT
+               ,TRANS_MEMO
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,TRANS_TITLE
+               ,TRANS_CATEGORY
+               ,PAY_METHOD
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PAY_HIST
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+    </select>
+
+    <select id="selectElecPayHistLast" parameterType="ElecPayHistSearch"  resultType="ElecPayHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.SUB_KEY
+               ,H1.TRANS_DTIME
+               ,H1.TRANS_NO
+               ,H1.TRANS_NUM
+               ,H1.TRANS_TYPE
+               ,H1.CURRENCY_CODE
+               ,H1.TRANS_AMT
+               ,H1.TRANS_ORG_CODE
+               ,H1.PAY_TYPE
+               ,H1.PAY_ID
+               ,H1.APPROVED_NUM
+               ,H1.CARD_NAME
+               ,H1.TOTAL_INSTALL_CNT
+               ,H1.TRANS_MEMO
+               ,H1.MERCHANT_NAME
+               ,H1.MERCHANT_REGNO
+               ,H1.TRANS_TITLE
+               ,H1.TRANS_CATEGORY
+               ,H1.PAY_METHOD
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM ELEC_PAY_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, SUB_KEY, TRANS_DTIME , TRANS_NO
+                        FROM ELEC_PAY_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND SUB_KEY = #{subKey}
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'transNo  != null and transNo != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, TRANS_DTIME DESC, TRANS_NO DESC
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+               H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.SUB_KEY = H2.SUB_KEY
+           AND H1.TRANS_DTIME = H2.TRANS_DTIME
+           AND H1.TRANS_NO = H2.TRANS_NO
+    </select>
+
+    <select id="selectElecPayHistListTotalCnt" parameterType="ElecPayHistSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ELEC_PAY_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'subKey  != null and subKey != ""'>
+           AND SUB_KEY = #{subKey}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+    </select>
+
+    <select id="selectElecPayHistList" parameterType="ElecPayHistSearch"  resultType="ElecPayHistEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, TRANS_DTIME, TRANS_NO) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,SUB_KEY
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,TRANS_NUM
+               ,TRANS_TYPE
+               ,CURRENCY_CODE
+               ,TRANS_AMT
+               ,TRANS_ORG_CODE
+               ,PAY_TYPE
+               ,PAY_ID
+               ,APPROVED_NUM
+               ,CARD_NAME
+               ,TOTAL_INSTALL_CNT
+               ,TRANS_MEMO
+               ,MERCHANT_NAME
+               ,MERCHANT_REGNO
+               ,TRANS_TITLE
+               ,TRANS_CATEGORY
+               ,PAY_METHOD
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ELEC_PAY_HIST
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'subKey  != null and subKey != ""'>
+           AND SUB_KEY = #{subKey}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, TRANS_DTIME, TRANS_NO
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -23,15 +23,22 @@ public class ElecPpayAccServiceImpl implements ElecPpayAccService {
     ElecPpayAccMapper elecPpayAccMapper;
 
     @Override
-    public ElecPpayAccEntity regElecPpayAcc(ElecPpayAccForm dom) {
+    public void regElecPpayAcc(ElecPpayAccForm dom) {
         elecPpayAccMapper.insertElecPpayAcc(dom.getEntity());
-        return elecPpayAccMapper.selectElecPpayAcc(new ElecPpayAccSearch(dom));
     }
 
     @Override
-    public ElecPpayAccEntity modElecPpayAcc(ElecPpayAccForm dom) {
+    public void updElecPpayAcc(ElecPpayAccForm dom) {
         elecPpayAccMapper.updateElecPpayAcc(dom.getEntity());
-        return elecPpayAccMapper.selectElecPpayAcc(new ElecPpayAccSearch(dom));
+    }
+
+    @Override
+    public void modElecPpayAcc(ElecPpayAccForm dom) {
+        if(getElecPpayAcc(new ElecPpayAccSearch(dom)) == null){
+            regElecPpayAcc(dom);
+        }else{
+            updElecPpayAcc(dom);
+        }
     }
 
     @Override

@@ -23,27 +23,38 @@ public class TeleChargeServiceImpl implements TeleChargeService {
     TeleChargeMapper teleChargeMapper;
 
     @Override
-    public TeleChargeEntity regTeleCharge(TeleChargeForm dom) {
+    public void regTeleCharge(TeleChargeForm dom) {
         teleChargeMapper.insertTeleCharge(dom.getEntity());
-        return teleChargeMapper.selectTeleCharge(new TeleChargeSearch(dom));
     }
 
     @Override
-    public TeleChargeEntity modTeleCharge(TeleChargeForm dom) {
+    public void updTeleCharge(TeleChargeForm dom) {
         teleChargeMapper.updateTeleCharge(dom.getEntity());
-        return teleChargeMapper.selectTeleCharge(new TeleChargeSearch(dom));
+    }
+    @Override
+    public void modTeleCharge(TeleChargeForm dom) {
+        if(getTeleCharge(new TeleChargeSearch(dom)) == null){
+            regTeleCharge(dom);
+        }else{
+            updTeleCharge(dom);
+        }
     }
 
     @Override
     public void delTeleCharge(TeleChargeForm dom) {
         teleChargeMapper.deleteTeleCharge(dom.getEntity());
-        return;
     }
 
     @Override
     public TeleChargeEntity getTeleCharge(TeleChargeSearch dom) {
         return teleChargeMapper.selectTeleCharge(dom);
     }
+
+    @Override
+    public TeleChargeEntity getTeleChargeLast(TeleChargeSearch dom) {
+        return teleChargeMapper.selectTeleChargeLast(dom);
+    }
+
 
     @Override
     public ResultListDto<TeleChargeEntity> getTeleChargeList(TeleChargeSearch dom) {

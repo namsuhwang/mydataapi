@@ -14,7 +14,11 @@ public interface P2pLoanMapper{
 
     int deleteP2pLoan(P2pLoanEntity dom);
 
+    int deleteAllP2pLoan(P2pLoanEntity dom);
+
     P2pLoanEntity selectP2pLoan(P2pLoanSearch dom);
+
+    P2pLoanEntity selectP2pLoanLast(P2pLoanSearch dom);
 
     Long selectP2pLoanListTotalCnt(P2pLoanSearch dom);
 

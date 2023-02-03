@@ -29,7 +29,8 @@ public class ElecPpayHistController {
     public ResponseEntity<ResponseDto<ElecPpayHistEntity>> regElecPpayHist(
         @RequestBody ElecPpayHistForm dom
     ){
-        ElecPpayHistEntity result = elecPpayHistService.regElecPpayHist(dom);
+        elecPpayHistService.regElecPpayHist(dom);
+        ElecPpayHistEntity result = elecPpayHistService.getElecPpayHist(new ElecPpayHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ElecPpayHistController {
     public ResponseEntity<ResponseDto<ElecPpayHistEntity>> modElecPpayHist(
         @RequestBody ElecPpayHistForm dom
     ){
-        ElecPpayHistEntity result = elecPpayHistService.modElecPpayHist(dom);
+        elecPpayHistService.modElecPpayHist(dom);
+        ElecPpayHistEntity result = elecPpayHistService.getElecPpayHist(new ElecPpayHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

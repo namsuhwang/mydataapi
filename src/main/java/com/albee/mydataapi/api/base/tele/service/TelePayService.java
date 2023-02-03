@@ -6,13 +6,17 @@ import com.albee.mydataapi.common.models.dto.ResultListDto;
 import com.albee.mydataapi.api.base.tele.models.TelePaySearch;
 
 public interface TelePayService{
-    public TelePayEntity regTelePay(TelePayForm dom);
+    public void regTelePay(TelePayForm dom);
 
-    public TelePayEntity modTelePay(TelePayForm dom);
+    public void updTelePay(TelePayForm dom);
 
-    public void  delTelePay(TelePayForm dom);
+    public void modTelePay(TelePayForm dom);
+
+    public void delTelePay(TelePayForm dom);
 
     public TelePayEntity getTelePay(TelePaySearch dom);
+
+    public TelePayEntity getTelePayLast(TelePaySearch dom);
 
     public ResultListDto<TelePayEntity> getTelePayList(TelePaySearch dom);
 }

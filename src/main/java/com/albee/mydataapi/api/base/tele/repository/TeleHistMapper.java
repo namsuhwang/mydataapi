@@ -16,6 +16,8 @@ public interface TeleHistMapper{
 
     TeleHistEntity selectTeleHist(TeleHistSearch dom);
 
+    TeleHistEntity selectTeleHistLast(TeleHistSearch dom);
+
     Long selectTeleHistListTotalCnt(TeleHistSearch dom);
 
     List<TeleHistEntity> selectTeleHistList(TeleHistSearch dom);

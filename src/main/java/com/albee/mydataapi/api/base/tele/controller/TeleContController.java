@@ -29,7 +29,8 @@ public class TeleContController {
     public ResponseEntity<ResponseDto<TeleContEntity>> regTeleCont(
         @RequestBody TeleContForm dom
     ){
-        TeleContEntity result = teleContService.regTeleCont(dom);
+        teleContService.regTeleCont(dom);
+        TeleContEntity result = teleContService.getTeleCont(new TeleContSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class TeleContController {
     public ResponseEntity<ResponseDto<TeleContEntity>> modTeleCont(
         @RequestBody TeleContForm dom
     ){
-        TeleContEntity result = teleContService.modTeleCont(dom);
+        teleContService.modTeleCont(dom);
+        TeleContEntity result = teleContService.getTeleCont(new TeleContSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

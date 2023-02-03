@@ -29,7 +29,8 @@ public class GurtBaseController {
     public ResponseEntity<ResponseDto<GurtBaseEntity>> regGurtBase(
         @RequestBody GurtBaseForm dom
     ){
-        GurtBaseEntity result = gurtBaseService.regGurtBase(dom);
+        gurtBaseService.regGurtBase(dom);
+        GurtBaseEntity result = gurtBaseService.getGurtBase(new GurtBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class GurtBaseController {
     public ResponseEntity<ResponseDto<GurtBaseEntity>> modGurtBase(
         @RequestBody GurtBaseForm dom
     ){
-        GurtBaseEntity result = gurtBaseService.modGurtBase(dom);
+        gurtBaseService.modGurtBase(dom);
+        GurtBaseEntity result = gurtBaseService.getGurtBase(new GurtBaseSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

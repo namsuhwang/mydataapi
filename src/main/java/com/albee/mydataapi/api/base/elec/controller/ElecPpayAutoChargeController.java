@@ -29,7 +29,8 @@ public class ElecPpayAutoChargeController {
     public ResponseEntity<ResponseDto<ElecPpayAutoChargeEntity>> regElecPpayAutoCharge(
         @RequestBody ElecPpayAutoChargeForm dom
     ){
-        ElecPpayAutoChargeEntity result = elecPpayAutoChargeService.regElecPpayAutoCharge(dom);
+        elecPpayAutoChargeService.regElecPpayAutoCharge(dom);
+        ElecPpayAutoChargeEntity result = elecPpayAutoChargeService.getElecPpayAutoCharge(new ElecPpayAutoChargeSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ElecPpayAutoChargeController {
     public ResponseEntity<ResponseDto<ElecPpayAutoChargeEntity>> modElecPpayAutoCharge(
         @RequestBody ElecPpayAutoChargeForm dom
     ){
-        ElecPpayAutoChargeEntity result = elecPpayAutoChargeService.modElecPpayAutoCharge(dom);
+        elecPpayAutoChargeService.modElecPpayAutoCharge(dom);
+        ElecPpayAutoChargeEntity result = elecPpayAutoChargeService.getElecPpayAutoCharge(new ElecPpayAutoChargeSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

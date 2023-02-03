@@ -67,6 +67,15 @@
            AND PAY_ORG_CODE = #{payOrgCode}
     </delete>
 
+    <delete id="deleteAllElecPayMethod" parameterType="ElecPayMethodEntity">
+        DELETE FROM ELEC_PAY_METHOD
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND SUB_KEY = #{subKey}
+    </delete>
+
+
     <select id="selectElecPayMethod" parameterType="ElecPayMethodSearch"  resultType="ElecPayMethodEntity">
          SELECT 
                MEMBER_ID
@@ -88,6 +97,48 @@
            AND ORG_CD = #{orgCd}
            AND SUB_KEY = #{subKey}
            AND PAY_ORG_CODE = #{payOrgCode}
+    </select>
+
+
+    <select id="selectElecPayMethodLast" parameterType="ElecPayMethodSearch"  resultType="ElecPayMethodEntity">
+         SELECT
+                E1.MEMBER_ID
+               ,E1.ORG_CD
+               ,E1.SUB_KEY
+               ,E1.PAY_ORG_CODE
+               ,E1.PAY_TYPE
+               ,E1.PAY_ID
+               ,E1.IS_PRIMARY
+               ,E1.API_TRAN_DAY
+               ,E1.API_TRAN_ID
+               ,E1.REG_USER_ID
+               ,E1.REG_DT
+               ,E1.CHG_USER_ID
+               ,E1.CHG_DT
+        FROM ELEC_PAY_METHOD E1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, SUB_KEY, PAY_ORG_CODE
+                        FROM ELEC_PAY_METHOD
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND SUB_KEY = #{subKey}
+                            <if test = 'payOrgCode  != null and payOrgCode != ""'>
+                                AND PAY_ORG_CODE = #{payOrgCode}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, SUB_KEY, PAY_ORG_CODE, CHG_DATE DESC
+                    )
+                WHERE rownum = 1
+            ) E2
+       WHERE
+               E1.MEMBER_ID = E2.MEMBER_ID
+           AND E1.ORG_CD = E2.ORG_CD
+           AND E1.SUB_KEY = E2.SUB_KEY
+           AND E1.PAY_ORG_CODE = E2.PAY_ORG_CODE
     </select>
 
     <select id="selectElecPayMethodListTotalCnt" parameterType="ElecPayMethodSearch"  resultType="Long">

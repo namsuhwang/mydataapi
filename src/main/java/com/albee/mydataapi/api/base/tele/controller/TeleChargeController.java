@@ -29,7 +29,8 @@ public class TeleChargeController {
     public ResponseEntity<ResponseDto<TeleChargeEntity>> regTeleCharge(
         @RequestBody TeleChargeForm dom
     ){
-        TeleChargeEntity result = teleChargeService.regTeleCharge(dom);
+        teleChargeService.regTeleCharge(dom);
+        TeleChargeEntity result = teleChargeService.getTeleCharge(new TeleChargeSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class TeleChargeController {
     public ResponseEntity<ResponseDto<TeleChargeEntity>> modTeleCharge(
         @RequestBody TeleChargeForm dom
     ){
-        TeleChargeEntity result = teleChargeService.modTeleCharge(dom);
+        teleChargeService.modTeleCharge(dom);
+        TeleChargeEntity result = teleChargeService.getTeleCharge(new TeleChargeSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

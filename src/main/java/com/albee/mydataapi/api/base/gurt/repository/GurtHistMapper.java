@@ -16,6 +16,8 @@ public interface GurtHistMapper{
 
     GurtHistEntity selectGurtHist(GurtHistSearch dom);
 
+    GurtHistEntity selectGurtHistLast(GurtHistSearch dom);
+
     Long selectGurtHistListTotalCnt(GurtHistSearch dom);
 
     List<GurtHistEntity> selectGurtHistList(GurtHistSearch dom);

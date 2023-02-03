@@ -23,20 +23,33 @@ public class TeleContServiceImpl implements TeleContService {
     TeleContMapper teleContMapper;
 
     @Override
-    public TeleContEntity regTeleCont(TeleContForm dom) {
+    public void regTeleCont(TeleContForm dom) {
         teleContMapper.insertTeleCont(dom.getEntity());
-        return teleContMapper.selectTeleCont(new TeleContSearch(dom));
     }
 
     @Override
-    public TeleContEntity modTeleCont(TeleContForm dom) {
+    public void updTeleCont(TeleContForm dom) {
         teleContMapper.updateTeleCont(dom.getEntity());
-        return teleContMapper.selectTeleCont(new TeleContSearch(dom));
+    }
+
+    @Override
+    public void modTeleCont(TeleContForm dom) {
+        if(getTeleCont(new TeleContSearch(dom)) == null){
+            regTeleCont(dom);
+        }else{
+            updTeleCont(dom);
+        }
     }
 
     @Override
     public void delTeleCont(TeleContForm dom) {
         teleContMapper.deleteTeleCont(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelTeleCont(TeleContForm dom) {
+        teleContMapper.deleteAllTeleCont(dom.getEntity());
         return;
     }
 

@@ -58,6 +58,14 @@
            AND INSURED_NAME = #{insuredName}
     </delete>
 
+    <delete id="deleteAllGurtInsd" parameterType="GurtInsdEntity">
+        DELETE FROM GURT_INSD
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND INSU_NUM = #{insuNum}
+    </delete>
+
     <select id="selectGurtInsd" parameterType="GurtInsdSearch"  resultType="GurtInsdEntity">
          SELECT 
                MEMBER_ID

@@ -29,7 +29,8 @@ public class P2pLoanHistController {
     public ResponseEntity<ResponseDto<P2pLoanHistEntity>> regP2pLoanHist(
         @RequestBody P2pLoanHistForm dom
     ){
-        P2pLoanHistEntity result = p2pLoanHistService.regP2pLoanHist(dom);
+        p2pLoanHistService.regP2pLoanHist(dom);
+        P2pLoanHistEntity result = p2pLoanHistService.getP2pLoanHist(new P2pLoanHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class P2pLoanHistController {
     public ResponseEntity<ResponseDto<P2pLoanHistEntity>> modP2pLoanHist(
         @RequestBody P2pLoanHistForm dom
     ){
-        P2pLoanHistEntity result = p2pLoanHistService.modP2pLoanHist(dom);
+        p2pLoanHistService.modP2pLoanHist(dom);
+        P2pLoanHistEntity result = p2pLoanHistService.getP2pLoanHist(new P2pLoanHistSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

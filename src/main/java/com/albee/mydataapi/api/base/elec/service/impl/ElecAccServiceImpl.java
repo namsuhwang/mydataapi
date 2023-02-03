@@ -23,15 +23,22 @@ public class ElecAccServiceImpl implements ElecAccService {
     ElecAccMapper elecAccMapper;
 
     @Override
-    public ElecAccEntity regElecAcc(ElecAccForm dom) {
+    public void regElecAcc(ElecAccForm dom) {
         elecAccMapper.insertElecAcc(dom.getEntity());
-        return elecAccMapper.selectElecAcc(new ElecAccSearch(dom));
     }
 
     @Override
-    public ElecAccEntity modElecAcc(ElecAccForm dom) {
+    public void updElecAcc(ElecAccForm dom) {
         elecAccMapper.updateElecAcc(dom.getEntity());
-        return elecAccMapper.selectElecAcc(new ElecAccSearch(dom));
+    }
+
+    @Override
+    public void modElecAcc(ElecAccForm dom) {
+        if(getElecAcc(new ElecAccSearch(dom)) == null){
+            regElecAcc(dom);
+        }else{
+            updElecAcc(dom);
+        }
     }
 
     @Override

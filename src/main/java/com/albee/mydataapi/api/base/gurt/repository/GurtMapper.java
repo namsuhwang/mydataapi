@@ -14,7 +14,11 @@ public interface GurtMapper{
 
     int deleteGurt(GurtEntity dom);
 
+    int deleteAllGurt(GurtEntity dom);
+
     GurtEntity selectGurt(GurtSearch dom);
+
+    GurtEntity selectGurtLast(GurtSearch dom);
 
     Long selectGurtListTotalCnt(GurtSearch dom);
 

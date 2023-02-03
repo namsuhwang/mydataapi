@@ -29,7 +29,8 @@ public class ElecPpayBalController {
     public ResponseEntity<ResponseDto<ElecPpayBalEntity>> regElecPpayBal(
         @RequestBody ElecPpayBalForm dom
     ){
-        ElecPpayBalEntity result = elecPpayBalService.regElecPpayBal(dom);
+        elecPpayBalService.regElecPpayBal(dom);
+        ElecPpayBalEntity result = elecPpayBalService.getElecPpayBal(new ElecPpayBalSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ElecPpayBalController {
     public ResponseEntity<ResponseDto<ElecPpayBalEntity>> modElecPpayBal(
         @RequestBody ElecPpayBalForm dom
     ){
-        ElecPpayBalEntity result = elecPpayBalService.modElecPpayBal(dom);
+        elecPpayBalService.modElecPpayBal(dom);
+        ElecPpayBalEntity result = elecPpayBalService.getElecPpayBal(new ElecPpayBalSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

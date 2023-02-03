@@ -23,6 +23,12 @@ public class ElecPpayHistSearch extends SearchDto {
         super(memberId, orgCd);
     }
 
+    public ElecPpayHistSearch(String memberId, String orgCd, String fobId, String accountId) {
+        super(memberId, orgCd);
+        this.fobId = fobId;
+        this.accountId = accountId;
+    }
+
     public ElecPpayHistSearch(String memberId, String orgCd, String fobId, String accountId, String transDtime, String transNo, String transType) {
         super(memberId, orgCd);
         this.fobId = fobId;

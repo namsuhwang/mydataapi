@@ -14,6 +14,8 @@ public interface ElecPpayMapper{
 
     int deleteElecPpay(ElecPpayEntity dom);
 
+    int deleteAllElecPpay(ElecPpayEntity dom);
+
     ElecPpayEntity selectElecPpay(ElecPpaySearch dom);
 
     Long selectElecPpayListTotalCnt(ElecPpaySearch dom);

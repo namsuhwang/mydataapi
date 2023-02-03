@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class P2pLoanHistForm extends FormBase {
     private String lendingId;    // 대출계약번호
-    private Long transDtime;    // 상환일시
+    private String transDtime;    // 상환일시
     private Integer repayCnt;    // 상환 회차
     private String repayType;    // 상환유형 (코드)
     private Long transAmt;    // 상환금액

@@ -5,10 +5,14 @@ import com.albee.mydataapi.api.base.invt.models.entity.*;
 import com.albee.mydataapi.api.base.invt.models.form.InvtAccProdForm;
 import com.albee.mydataapi.api.base.invt.service.*;
 import com.albee.mydataapi.api.collect.pull.service.PullInvtService;
+import com.albee.mydataapi.api.common.api.models.entity.ApiMstEntity;
+import com.albee.mydataapi.api.common.api.service.ApiMstService;
 import com.albee.mydataapi.api.common.gateway.models.res.invt.*;
 import com.albee.mydataapi.api.common.recv.models.RecvBaselineSearch;
 import com.albee.mydataapi.api.common.recv.models.entity.RecvBaselineEntity;
+import com.albee.mydataapi.api.common.recv.models.form.RecvStatusForm;
 import com.albee.mydataapi.api.common.recv.service.RecvBaselineService;
+import com.albee.mydataapi.api.common.recv.service.RecvStatusService;
 import com.albee.mydataapi.common.CommUtil;
 import com.albee.mydataapi.api.base.invt.models.form.InvtAccForm;
 import com.albee.mydataapi.api.base.invt.models.form.InvtAutoTransForm;
@@ -36,6 +40,10 @@ import java.util.concurrent.CompletableFuture;
 public class PullInvtServiceImpl implements PullInvtService {
 
     @Autowired
+    ApiMstService apiMstService;
+    @Autowired
+    RecvStatusService recvStatusService;
+    @Autowired
     RecvBaselineService recvBaselineService;
     @Autowired CallMyDataGatewayService callMyDataGatewayService;
 
@@ -53,8 +61,19 @@ public class PullInvtServiceImpl implements PullInvtService {
     InvtPensionAccAddService invtPensionAccAddService;
 
     @Async("pullPersonalInfoExecutor")
-    public CompletableFuture<List<String>> pullInvtInfoRun(ApiCallReqDto req, FormBase formBase) {
+    public CompletableFuture<List<String>> pullInvtInfoRun(ApiCallReqDto req, RecvStatusForm recvStatusForm) {
         List<String> targetList = new ArrayList<>();
+
+        FormBase formBase = new FormBase(req.getMemberId(), req.getOrgCd());
+        formBase.setApiTranDay(req.getApiTranDay());
+
+        // 보유자산목록(*.list)을 조회하기 위한 API 정보
+        ApiMstEntity assetListQryApiEntity = apiMstService.getApiListByScope(req.getMemberToken().getScopeLists().get(0)).get(0);
+        req.setRequestApiId(assetListQryApiEntity.getApiId());
+        req.setRequestUrl(assetListQryApiEntity.getApiUrlResource());
+
+        // 수신 상태 업데이트. 기관코드 + API 별로 수신시작/종료 상태 저장.
+        recvStatusService.updRecvStatus(recvStatusForm, 1, req.getOrgCd());
 
         CompletableFuture<List<String[]>> Invt001Result = callInvt001(req, formBase);
         Invt001Result.thenAccept(accList -> {
@@ -70,6 +89,10 @@ public class PullInvtServiceImpl implements PullInvtService {
             }
         });
 
+        // 수신 상태 업데이트. 기관코드 + API 별로 종료 상태 저장.
+        recvStatusForm.setRecvStatus("1");
+        recvStatusForm.setRecvEndDt(CommUtil.getCurrentDateTime14());
+        recvStatusService.updRecvStatus(recvStatusForm);
         return CompletableFuture.completedFuture(targetList);
     }
 

@@ -23,15 +23,22 @@ public class ElecPpayHistServiceImpl implements ElecPpayHistService {
     ElecPpayHistMapper elecPpayHistMapper;
 
     @Override
-    public ElecPpayHistEntity regElecPpayHist(ElecPpayHistForm dom) {
+    public void regElecPpayHist(ElecPpayHistForm dom) {
         elecPpayHistMapper.insertElecPpayHist(dom.getEntity());
-        return elecPpayHistMapper.selectElecPpayHist(new ElecPpayHistSearch(dom));
     }
 
     @Override
-    public ElecPpayHistEntity modElecPpayHist(ElecPpayHistForm dom) {
+    public void updElecPpayHist(ElecPpayHistForm dom) {
         elecPpayHistMapper.updateElecPpayHist(dom.getEntity());
-        return elecPpayHistMapper.selectElecPpayHist(new ElecPpayHistSearch(dom));
+    }
+
+    @Override
+    public void modElecPpayHist(ElecPpayHistForm dom) {
+        if(getElecPpayHist(new ElecPpayHistSearch(dom)) == null){
+            regElecPpayHist(dom);
+        }else{
+            updElecPpayHist(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,12 @@ public class ElecPpayHistServiceImpl implements ElecPpayHistService {
     @Override
     public ElecPpayHistEntity getElecPpayHist(ElecPpayHistSearch dom) {
         return elecPpayHistMapper.selectElecPpayHist(dom);
+    }
+
+
+    @Override
+    public ElecPpayHistEntity getElecPpayHistLast(ElecPpayHistSearch dom) {
+        return elecPpayHistMapper.selectElecPpayHistLast(dom);
     }
 
     @Override

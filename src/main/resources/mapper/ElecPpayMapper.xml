@@ -77,6 +77,13 @@
            AND FOB_ID = #{fobId}
     </delete>
 
+    <delete id="deleteAllElecPpay" parameterType="ElecPpayEntity">
+        DELETE FROM ELEC_PPAY
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectElecPpay" parameterType="ElecPpaySearch"  resultType="ElecPpayEntity">
          SELECT 
                MEMBER_ID

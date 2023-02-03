@@ -58,6 +58,7 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND MGMT_ID = #{mgmtId}
+           AND TRANS_DATE = #{transDate}
     </update>
 
     <delete id="deleteTelePay" parameterType="TelePayEntity">
@@ -66,6 +67,7 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND MGMT_ID = #{mgmtId}
+           AND TRANS_DATE = #{transDate}
     </delete>
 
     <select id="selectTelePay" parameterType="TelePaySearch"  resultType="TelePayEntity">
@@ -89,6 +91,49 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND MGMT_ID = #{mgmtId}
+           AND TRANS_DATE = #{transDate}
+    </select>
+
+    <select id="selectTelePayLast" parameterType="TelePaySearch"  resultType="TelePayEntity">
+         SELECT
+                T1.MEMBER_ID
+               ,T1.ORG_CD
+               ,T1.MGMT_ID
+               ,T1.TRANS_DATE
+               ,T1.TRANS_AMT
+               ,T1.ORG_REGNO
+               ,T1.MERCHANT_NAME
+               ,T1.TRANS_TITLE
+               ,T1.API_TRAN_DAY
+               ,T1.API_TRAN_ID
+               ,T1.REG_USER_ID
+               ,T1.REG_DT
+               ,T1.CHG_USER_ID
+               ,T1.CHG_DT
+        FROM TELE_PAY T1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, MGMT_ID, TRANS_DATE
+                        FROM TELE_PAY
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND MGMT_ID = #{mgmtId}
+                            <if test = 'transDate  != null and transDate != ""'>
+                                AND TRANS_DATE = #{transDate}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID, TRANS_DATE DESC
+                    )
+                WHERE rownum = 1
+            ) T2
+       WHERE
+               T1.MEMBER_ID = T2.MEMBER_ID
+           AND T1.ORG_CD = T2.ORG_CD
+           AND T1.MGMT_ID = T2.MGMT_ID
+           AND T1.TRANS_DATE = T2.TRANS_DATE
     </select>
 
     <select id="selectTelePayListTotalCnt" parameterType="TelePaySearch"  resultType="Long">
@@ -105,6 +150,9 @@
        <if test = 'mgmtId  != null and mgmtId != ""'>
            AND MGMT_ID = #{mgmtId}
        </if>
+        <if test = 'transDate  != null and transDate != ""'>
+            AND TRANS_DATE = #{transDate}
+        </if>
     </select>
 
     <select id="selectTelePayList" parameterType="TelePaySearch"  resultType="TelePayEntity">
@@ -114,7 +162,7 @@
          FROM 
          ( 
          SELECT 
-             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, MGMT_ID) ROW_NUM
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, MGMT_ID, TRANS_DATE) ROW_NUM
                ,MEMBER_ID
                ,ORG_CD
                ,MGMT_ID
@@ -140,7 +188,10 @@
        <if test = 'mgmtId  != null and mgmtId != ""'>
            AND MGMT_ID = #{mgmtId}
        </if>
-        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID
+        <if test = 'transDate  != null and transDate != ""'>
+            AND TRANS_DATE = #{transDate}
+        </if>
+        ORDER BY MEMBER_ID, ORG_CD, MGMT_ID, TRANS_DATE DESC
        ) T 
        <if test = 'startIndex != null and endIndex != null '> 
        WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 

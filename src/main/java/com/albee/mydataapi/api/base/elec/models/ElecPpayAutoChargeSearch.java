@@ -20,6 +20,12 @@ public class ElecPpayAutoChargeSearch extends SearchDto {
         super(memberId, orgCd);
     }
 
+    public ElecPpayAutoChargeSearch(String memberId, String orgCd, String fobId, String accountId) {
+        super(memberId, orgCd);
+        this.fobId = fobId;
+        this.accountId = accountId;
+    }
+
     public ElecPpayAutoChargeSearch(String memberId, String orgCd, String fobId, String accountId, Integer autoChargeSeq, String chargeOrgCode) {
         super(memberId, orgCd);
         this.fobId = fobId;

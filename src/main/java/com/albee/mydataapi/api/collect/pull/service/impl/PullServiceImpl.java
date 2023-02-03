@@ -3,10 +3,7 @@ package com.albee.mydataapi.api.collect.pull.service.impl;
 import com.albee.mydataapi.api.base.bank.service.BankAccService;
 import com.albee.mydataapi.api.base.bank.service.BankCustService;
 import com.albee.mydataapi.api.collect.pull.models.form.PullForm;
-import com.albee.mydataapi.api.collect.pull.service.PullBankService;
-import com.albee.mydataapi.api.collect.pull.service.PullCardService;
-import com.albee.mydataapi.api.collect.pull.service.PullInsuService;
-import com.albee.mydataapi.api.collect.pull.service.PullService;
+import com.albee.mydataapi.api.collect.pull.service.*;
 import com.albee.mydataapi.api.common.api.service.ApiMstService;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.albee.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
@@ -67,6 +64,18 @@ public class PullServiceImpl implements PullService {
     PullCardService pullCardService;
     @Autowired
     PullInsuService pullInsuService;
+    @Autowired
+    PullGurtService pullGurtService;
+    @Autowired
+    PullP2pService pullP2pService;
+    @Autowired
+    PullItfnService pullItfnService;
+    @Autowired
+    PullInvtService pullInvtService;
+    @Autowired
+    PullTeleService pullTeleService;
+    @Autowired
+    PullElecService pullElecService;
 
     /*
         Async로 기관별로 조회 호출.
@@ -126,6 +135,11 @@ public class PullServiceImpl implements PullService {
                     case "BANK": pullBankService.pullBankInfoRun(reqInfo, recvStatusForm); break;
                     case "CARD": pullCardService.pullCardInfoRun(reqInfo, recvStatusForm); break;
                     case "INSU": pullInsuService.pullInsuInfoRun(reqInfo, recvStatusForm); break;
+                    case "GURT": pullGurtService.pullGurtInfoRun(reqInfo, recvStatusForm); break;
+                    case "TELE": pullTeleService.pullTeleInfoRun(reqInfo, recvStatusForm); break;
+                    case "ELEC": pullElecService.pullElecInfoRun(reqInfo, recvStatusForm); break;
+                    case "INVT": pullInvtService.pullInvtInfoRun(reqInfo, recvStatusForm); break;
+                    case "ITFN": pullItfnService.pullItfnInfoRun(reqInfo, recvStatusForm); break;
                 }
                 targetList.add(token.getOrgCd());
             }

@@ -23,15 +23,22 @@ public class GurtBaseServiceImpl implements GurtBaseService {
     GurtBaseMapper gurtBaseMapper;
 
     @Override
-    public GurtBaseEntity regGurtBase(GurtBaseForm dom) {
+    public void regGurtBase(GurtBaseForm dom) {
         gurtBaseMapper.insertGurtBase(dom.getEntity());
-        return gurtBaseMapper.selectGurtBase(new GurtBaseSearch(dom));
     }
 
     @Override
-    public GurtBaseEntity modGurtBase(GurtBaseForm dom) {
+    public void updGurtBase(GurtBaseForm dom) {
         gurtBaseMapper.updateGurtBase(dom.getEntity());
-        return gurtBaseMapper.selectGurtBase(new GurtBaseSearch(dom));
+    }
+
+    @Override
+    public void modGurtBase(GurtBaseForm dom) {
+        if(getGurtBase(new GurtBaseSearch(dom)) == null){
+            regGurtBase(dom);
+        }else{
+            updGurtBase(dom);
+        }
     }
 
     @Override

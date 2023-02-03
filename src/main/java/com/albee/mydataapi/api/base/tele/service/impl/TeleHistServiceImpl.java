@@ -23,15 +23,22 @@ public class TeleHistServiceImpl implements TeleHistService {
     TeleHistMapper teleHistMapper;
 
     @Override
-    public TeleHistEntity regTeleHist(TeleHistForm dom) {
+    public void regTeleHist(TeleHistForm dom) {
         teleHistMapper.insertTeleHist(dom.getEntity());
-        return teleHistMapper.selectTeleHist(new TeleHistSearch(dom));
     }
 
     @Override
-    public TeleHistEntity modTeleHist(TeleHistForm dom) {
+    public void updTeleHist(TeleHistForm dom) {
         teleHistMapper.updateTeleHist(dom.getEntity());
-        return teleHistMapper.selectTeleHist(new TeleHistSearch(dom));
+    }
+
+    @Override
+    public void modTeleHist(TeleHistForm dom) {
+        if(getTeleHist(new TeleHistSearch(dom)) == null){
+            regTeleHist(dom);
+        }else{
+            updTeleHist(dom);
+        }
     }
 
     @Override
@@ -45,6 +52,10 @@ public class TeleHistServiceImpl implements TeleHistService {
         return teleHistMapper.selectTeleHist(dom);
     }
 
+    @Override
+    public TeleHistEntity getTeleHistLast(TeleHistSearch dom) {
+        return teleHistMapper.selectTeleHistLast(dom);
+    }
     @Override
     public ResultListDto<TeleHistEntity> getTeleHistList(TeleHistSearch dom) {
         ResultListDto<TeleHistEntity> result = new ResultListDto<>();

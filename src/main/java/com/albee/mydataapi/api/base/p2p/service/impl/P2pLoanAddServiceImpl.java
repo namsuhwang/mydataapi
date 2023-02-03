@@ -23,15 +23,22 @@ public class P2pLoanAddServiceImpl implements P2pLoanAddService {
     P2pLoanAddMapper p2pLoanAddMapper;
 
     @Override
-    public P2pLoanAddEntity regP2pLoanAdd(P2pLoanAddForm dom) {
+    public void regP2pLoanAdd(P2pLoanAddForm dom) {
         p2pLoanAddMapper.insertP2pLoanAdd(dom.getEntity());
-        return p2pLoanAddMapper.selectP2pLoanAdd(new P2pLoanAddSearch(dom));
     }
 
     @Override
-    public P2pLoanAddEntity modP2pLoanAdd(P2pLoanAddForm dom) {
+    public void updP2pLoanAdd(P2pLoanAddForm dom) {
         p2pLoanAddMapper.updateP2pLoanAdd(dom.getEntity());
-        return p2pLoanAddMapper.selectP2pLoanAdd(new P2pLoanAddSearch(dom));
+    }
+
+    @Override
+    public void modP2pLoanAdd(P2pLoanAddForm dom) {
+        if(getP2pLoanAdd(new P2pLoanAddSearch(dom)) == null){
+            regP2pLoanAdd(dom);
+        }else{
+            updP2pLoanAdd(dom);
+        }
     }
 
     @Override

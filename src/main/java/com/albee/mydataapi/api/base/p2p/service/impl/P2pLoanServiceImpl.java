@@ -23,15 +23,22 @@ public class P2pLoanServiceImpl implements P2pLoanService {
     P2pLoanMapper p2pLoanMapper;
 
     @Override
-    public P2pLoanEntity regP2pLoan(P2pLoanForm dom) {
+    public void regP2pLoan(P2pLoanForm dom) {
         p2pLoanMapper.insertP2pLoan(dom.getEntity());
-        return p2pLoanMapper.selectP2pLoan(new P2pLoanSearch(dom));
     }
 
     @Override
-    public P2pLoanEntity modP2pLoan(P2pLoanForm dom) {
+    public void updP2pLoan(P2pLoanForm dom) {
         p2pLoanMapper.updateP2pLoan(dom.getEntity());
-        return p2pLoanMapper.selectP2pLoan(new P2pLoanSearch(dom));
+    }
+
+    @Override
+    public void modP2pLoan(P2pLoanForm dom) {
+        if(getP2pLoan(new P2pLoanSearch(dom)) == null){
+            regP2pLoan(dom);
+        }else{
+            updP2pLoan(dom);
+        }
     }
 
     @Override
@@ -41,8 +48,18 @@ public class P2pLoanServiceImpl implements P2pLoanService {
     }
 
     @Override
+    public void allDelP2pLoan(P2pLoanForm dom) {
+        p2pLoanMapper.deleteAllP2pLoan(dom.getEntity());
+    }
+
+    @Override
     public P2pLoanEntity getP2pLoan(P2pLoanSearch dom) {
         return p2pLoanMapper.selectP2pLoan(dom);
+    }
+
+    @Override
+    public P2pLoanEntity getP2pLoanLast(P2pLoanSearch dom) {
+        return p2pLoanMapper.selectP2pLoanLast(dom);
     }
 
     @Override

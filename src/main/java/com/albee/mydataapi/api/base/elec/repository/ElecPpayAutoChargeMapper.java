@@ -14,7 +14,11 @@ public interface ElecPpayAutoChargeMapper{
 
     int deleteElecPpayAutoCharge(ElecPpayAutoChargeEntity dom);
 
+    int deleteAllElecPpayAutoCharge(ElecPpayAutoChargeEntity dom);
+
     ElecPpayAutoChargeEntity selectElecPpayAutoCharge(ElecPpayAutoChargeSearch dom);
+
+    ElecPpayAutoChargeEntity selectElecPpayAutoChargeLast(ElecPpayAutoChargeSearch dom);
 
     Long selectElecPpayAutoChargeListTotalCnt(ElecPpayAutoChargeSearch dom);
 

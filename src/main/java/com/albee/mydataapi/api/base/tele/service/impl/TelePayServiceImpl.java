@@ -23,15 +23,22 @@ public class TelePayServiceImpl implements TelePayService {
     TelePayMapper telePayMapper;
 
     @Override
-    public TelePayEntity regTelePay(TelePayForm dom) {
+    public void regTelePay(TelePayForm dom) {
         telePayMapper.insertTelePay(dom.getEntity());
-        return telePayMapper.selectTelePay(new TelePaySearch(dom));
     }
 
     @Override
-    public TelePayEntity modTelePay(TelePayForm dom) {
+    public void updTelePay(TelePayForm dom) {
         telePayMapper.updateTelePay(dom.getEntity());
-        return telePayMapper.selectTelePay(new TelePaySearch(dom));
+    }
+
+    @Override
+    public void modTelePay(TelePayForm dom) {
+        if(getTelePay(new TelePaySearch(dom)) == null){
+            regTelePay(dom);
+        }else{
+            updTelePay(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class TelePayServiceImpl implements TelePayService {
     @Override
     public TelePayEntity getTelePay(TelePaySearch dom) {
         return telePayMapper.selectTelePay(dom);
+    }
+
+    @Override
+    public TelePayEntity getTelePayLast(TelePaySearch dom) {
+        return telePayMapper.selectTelePayLast(dom);
     }
 
     @Override

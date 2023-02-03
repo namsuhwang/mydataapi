@@ -29,7 +29,8 @@ public class ElecPayMethodController {
     public ResponseEntity<ResponseDto<ElecPayMethodEntity>> regElecPayMethod(
         @RequestBody ElecPayMethodForm dom
     ){
-        ElecPayMethodEntity result = elecPayMethodService.regElecPayMethod(dom);
+        elecPayMethodService.regElecPayMethod(dom);
+        ElecPayMethodEntity result = elecPayMethodService.getElecPayMethod(new ElecPayMethodSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ElecPayMethodController {
     public ResponseEntity<ResponseDto<ElecPayMethodEntity>> modElecPayMethod(
         @RequestBody ElecPayMethodForm dom
     ){
-        ElecPayMethodEntity result = elecPayMethodService.modElecPayMethod(dom);
+        elecPayMethodService.modElecPayMethod(dom);
+        ElecPayMethodEntity result = elecPayMethodService.getElecPayMethod(new ElecPayMethodSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

@@ -19,6 +19,11 @@ public class GurtHistSearch extends SearchDto {
         super(memberId, orgCd);
     }
 
+    public GurtHistSearch(String memberId, String orgCd, String insuNum) {
+        super(memberId, orgCd);
+        this.insuNum = insuNum;
+    }
+
     public GurtHistSearch(String memberId, String orgCd, String insuNum, Integer paidInCnt, String transDate) {
         super(memberId, orgCd);
         this.insuNum = insuNum;

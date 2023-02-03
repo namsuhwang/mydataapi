@@ -23,15 +23,22 @@ public class GurtServiceImpl implements GurtService {
     GurtMapper gurtMapper;
 
     @Override
-    public GurtEntity regGurt(GurtForm dom) {
+    public void regGurt(GurtForm dom) {
         gurtMapper.insertGurt(dom.getEntity());
-        return gurtMapper.selectGurt(new GurtSearch(dom));
     }
 
     @Override
-    public GurtEntity modGurt(GurtForm dom) {
+    public void updGurt(GurtForm dom) {
         gurtMapper.updateGurt(dom.getEntity());
-        return gurtMapper.selectGurt(new GurtSearch(dom));
+    }
+
+    @Override
+    public void modGurt(GurtForm dom) {
+        if(getGurt(new GurtSearch(dom)) == null){
+            regGurt(dom);
+        }else{
+            updGurt(dom);
+        }
     }
 
     @Override
@@ -41,9 +48,21 @@ public class GurtServiceImpl implements GurtService {
     }
 
     @Override
+    public void allDelGurt(GurtForm dom) {
+        gurtMapper.deleteAllGurt(dom.getEntity());
+        return;
+    }
+
+    @Override
     public GurtEntity getGurt(GurtSearch dom) {
         return gurtMapper.selectGurt(dom);
     }
+
+    @Override
+    public GurtEntity getGurtLast(GurtSearch dom) {
+        return gurtMapper.selectGurtLast(dom);
+    }
+
 
     @Override
     public ResultListDto<GurtEntity> getGurtList(GurtSearch dom) {

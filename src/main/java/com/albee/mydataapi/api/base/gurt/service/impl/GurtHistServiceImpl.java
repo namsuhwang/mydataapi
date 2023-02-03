@@ -23,15 +23,22 @@ public class GurtHistServiceImpl implements GurtHistService {
     GurtHistMapper gurtHistMapper;
 
     @Override
-    public GurtHistEntity regGurtHist(GurtHistForm dom) {
+    public void regGurtHist(GurtHistForm dom) {
         gurtHistMapper.insertGurtHist(dom.getEntity());
-        return gurtHistMapper.selectGurtHist(new GurtHistSearch(dom));
     }
 
     @Override
-    public GurtHistEntity modGurtHist(GurtHistForm dom) {
+    public void updGurtHist(GurtHistForm dom) {
         gurtHistMapper.updateGurtHist(dom.getEntity());
-        return gurtHistMapper.selectGurtHist(new GurtHistSearch(dom));
+    }
+
+    @Override
+    public void modGurtHist(GurtHistForm dom) {
+        if(getGurtHist(new GurtHistSearch(dom)) == null){
+            regGurtHist(dom);
+        }else{
+            updGurtHist(dom);
+        }
     }
 
     @Override
@@ -43,6 +50,11 @@ public class GurtHistServiceImpl implements GurtHistService {
     @Override
     public GurtHistEntity getGurtHist(GurtHistSearch dom) {
         return gurtHistMapper.selectGurtHist(dom);
+    }
+
+    @Override
+    public GurtHistEntity getGurtHistLast(GurtHistSearch dom) {
+        return gurtHistMapper.selectGurtHistLast(dom);
     }
 
     @Override

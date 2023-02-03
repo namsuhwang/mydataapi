@@ -29,7 +29,8 @@ public class P2pLoanAddController {
     public ResponseEntity<ResponseDto<P2pLoanAddEntity>> regP2pLoanAdd(
         @RequestBody P2pLoanAddForm dom
     ){
-        P2pLoanAddEntity result = p2pLoanAddService.regP2pLoanAdd(dom);
+        p2pLoanAddService.regP2pLoanAdd(dom);
+        P2pLoanAddEntity result = p2pLoanAddService.getP2pLoanAdd(new P2pLoanAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class P2pLoanAddController {
     public ResponseEntity<ResponseDto<P2pLoanAddEntity>> modP2pLoanAdd(
         @RequestBody P2pLoanAddForm dom
     ){
-        P2pLoanAddEntity result = p2pLoanAddService.modP2pLoanAdd(dom);
+        p2pLoanAddService.modP2pLoanAdd(dom);
+        P2pLoanAddEntity result = p2pLoanAddService.getP2pLoanAdd(new P2pLoanAddSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

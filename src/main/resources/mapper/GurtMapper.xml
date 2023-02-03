@@ -65,6 +65,13 @@
            AND INSU_NUM = #{insuNum}
     </delete>
 
+    <delete id="deleteAllGurt" parameterType="GurtEntity">
+        DELETE FROM GURT
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectGurt" parameterType="GurtSearch"  resultType="GurtEntity">
          SELECT 
                MEMBER_ID
@@ -85,6 +92,45 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND INSU_NUM = #{insuNum}
+    </select>
+
+    <select id="selectGurtLast" parameterType="GurtSearch"  resultType="GurtEntity">
+         SELECT
+                G1.MEMBER_ID
+               ,G1.ORG_CD
+               ,G1.INSU_NUM
+               ,G1.IS_CONSENT
+               ,G1.PROD_NAME
+               ,G1.INSU_TYPE
+               ,G1.INSU_STATUS
+               ,G1.API_TRAN_DAY
+               ,G1.API_TRAN_ID
+               ,G1.REG_USER_ID
+               ,G1.REG_DT
+               ,G1.CHG_USER_ID
+               ,G1.CHG_DT
+        FROM GURT G1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, INSU_NUM
+                        FROM GURT
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            <if test = 'insuNum  != null and insuNum != ""'>
+                                AND INSU_NUM = #{insuNum}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, INSU_NUM, CHG_DATE DESC
+                    )
+                WHERE rownum = 1
+            ) G2
+       WHERE
+               G1.MEMBER_ID = G2.MEMBER_ID
+           AND G1.ORG_CD = G2.ORG_CD
+           AND G1.INSU_NUM = G2.INSU_NUM
     </select>
 
     <select id="selectGurtListTotalCnt" parameterType="GurtSearch"  resultType="Long">

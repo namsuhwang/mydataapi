@@ -29,7 +29,8 @@ public class TelePayController {
     public ResponseEntity<ResponseDto<TelePayEntity>> regTelePay(
         @RequestBody TelePayForm dom
     ){
-        TelePayEntity result = telePayService.regTelePay(dom);
+        telePayService.regTelePay(dom);
+        TelePayEntity result = telePayService.getTelePay(new TelePaySearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class TelePayController {
     public ResponseEntity<ResponseDto<TelePayEntity>> modTelePay(
         @RequestBody TelePayForm dom
     ){
-        TelePayEntity result = telePayService.modTelePay(dom);
+        telePayService.modTelePay(dom);
+        TelePayEntity result = telePayService.getTelePay(new TelePaySearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

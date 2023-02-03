@@ -65,6 +65,13 @@
            AND LENDING_ID = #{lendingId}
     </delete>
 
+    <delete id="deleteAllP2pLoan" parameterType="P2pLoanEntity">
+        DELETE FROM P2P_LOAN
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+    </delete>
+
     <select id="selectP2pLoan" parameterType="P2pLoanSearch"  resultType="P2pLoanEntity">
          SELECT 
                MEMBER_ID
@@ -85,6 +92,46 @@
                MEMBER_ID = #{memberId}
            AND ORG_CD = #{orgCd}
            AND LENDING_ID = #{lendingId}
+    </select>
+
+    <select id="selectP2pLoanLast" parameterType="P2pLoanSearch"  resultType="P2pLoanEntity">
+         SELECT
+                P1.MEMBER_ID
+               ,P1.ORG_CD
+               ,P1.LENDING_ID
+               ,P1.IS_CONSENT
+               ,P1.TYPE
+               ,P1.LENDING_AMT
+               ,P1.ISSUE_DATE
+               ,P1.API_TRAN_DAY
+               ,P1.API_TRAN_ID
+               ,P1.REG_USER_ID
+               ,P1.REG_DT
+               ,P1.CHG_USER_ID
+               ,P1.CHG_DT
+        FROM P2P_LOAN P1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, LENDING_ID
+                        FROM P2P_LOAN
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND ACCOUNT_NUM = #{accountNum}
+                            <if test = 'seqno  != null and seqno != ""'>
+                                AND SEQNO = #{seqno}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, LENDING_ID DESC
+                    )
+                WHERE rownum = 1
+            ) P2
+       WHERE
+               P1.MEMBER_ID = P2.MEMBER_ID
+           AND P1.ORG_CD = P2.ORG_CD
+           AND P1.LENDING_ID = P2.LENDING_ID
     </select>
 
     <select id="selectP2pLoanListTotalCnt" parameterType="P2pLoanSearch"  resultType="Long">

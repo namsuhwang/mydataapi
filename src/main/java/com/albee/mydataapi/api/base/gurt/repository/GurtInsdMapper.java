@@ -14,6 +14,8 @@ public interface GurtInsdMapper{
 
     int deleteGurtInsd(GurtInsdEntity dom);
 
+    int deleteAllGurtInsd(GurtInsdEntity dom);
+
     GurtInsdEntity selectGurtInsd(GurtInsdSearch dom);
 
     Long selectGurtInsdListTotalCnt(GurtInsdSearch dom);

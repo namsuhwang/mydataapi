@@ -16,6 +16,8 @@ public interface ElecPpayHistMapper{
 
     ElecPpayHistEntity selectElecPpayHist(ElecPpayHistSearch dom);
 
+    ElecPpayHistEntity selectElecPpayHistLast(ElecPpayHistSearch dom);
+
     Long selectElecPpayHistListTotalCnt(ElecPpayHistSearch dom);
 
     List<ElecPpayHistEntity> selectElecPpayHistList(ElecPpayHistSearch dom);

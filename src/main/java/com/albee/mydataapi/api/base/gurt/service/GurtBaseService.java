@@ -6,11 +6,13 @@ import com.albee.mydataapi.api.base.gurt.models.entity.GurtBaseEntity;
 import com.albee.mydataapi.api.base.gurt.models.form.GurtBaseForm;
 
 public interface GurtBaseService{
-    public GurtBaseEntity regGurtBase(GurtBaseForm dom);
+    public void regGurtBase(GurtBaseForm dom);
 
-    public GurtBaseEntity modGurtBase(GurtBaseForm dom);
+    public void updGurtBase(GurtBaseForm dom);
 
-    public void  delGurtBase(GurtBaseForm dom);
+    public void modGurtBase(GurtBaseForm dom);
+
+    public void delGurtBase(GurtBaseForm dom);
 
     public GurtBaseEntity getGurtBase(GurtBaseSearch dom);
 

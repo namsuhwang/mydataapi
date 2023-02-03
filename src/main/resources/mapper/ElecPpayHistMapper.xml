@@ -147,6 +147,71 @@
            AND TRANS_TYPE = #{transType}
     </select>
 
+    <select id="selectElecPpayHistLast" parameterType="ElecPpayHistSearch"  resultType="ElecPpayHistEntity">
+         SELECT
+                H1.MEMBER_ID
+               ,H1.ORG_CD
+               ,H1.FOB_ID
+               ,H1.ACCOUNT_ID
+               ,H1.TRANS_DTIME
+               ,H1.TRANS_NO
+               ,H1.TRANS_TYPE
+               ,H1.TRANS_AMT
+               ,H1.BALANCE_AMT
+               ,H1.TRANS_ORG_CODE
+               ,H1.TRANS_ID
+               ,H1.TRANS_NUM
+               ,H1.TRANS_MEMO
+               ,H1.MERCHANT_NAME
+               ,H1.MERCHANT_REGNO
+               ,H1.TRANS_TITLE
+               ,H1.TRANS_CATEGORY
+               ,H1.PAY_METHOD
+               ,H1.IS_SCHEDULED
+               ,H1.API_TRAN_DAY
+               ,H1.API_TRAN_ID
+               ,H1.REG_USER_ID
+               ,H1.REG_DT
+               ,H1.CHG_USER_ID
+               ,H1.CHG_DT
+        FROM ELEC_PPAY_HIST H1,
+            (
+                SELECT *
+                FROM
+                    (
+                        SELECT
+                            MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, TRANS_DTIME , TRANS_NO, TRANS_TYPE
+                        FROM ELEC_PPAY_HIST
+                        WHERE
+                            MEMBER_ID = #{memberId}
+                            AND ORG_CD = #{orgCd}
+                            AND FOB_ID = #{fobId}
+                            <if test = 'accountId  != null and accountId != ""'>
+                                AND SEQNO = #{accountId}
+                            </if>
+                            <if test = 'transDtime  != null and transDtime != ""'>
+                                AND TRANS_DTIME = #{transDtime}
+                            </if>
+                            <if test = 'transNo  != null and seqtransNono != ""'>
+                                AND TRANS_NO = #{transNo}
+                            </if>
+                            <if test = 'transType  != null and transType != ""'>
+                                AND TRANS_TYPE = #{transType}
+                            </if>
+                        ORDER BY MEMBER_ID, ORG_CD, FOB_ID, ACCOUNT_ID, TRANS_DTIME DESC, TRANS_NO DESC, TRANS_TYPE
+                    )
+                WHERE rownum = 1
+            ) H2
+       WHERE
+               H1.MEMBER_ID = H2.MEMBER_ID
+           AND H1.ORG_CD = H2.ORG_CD
+           AND H1.FOB_ID = H2.FOB_ID
+           AND H1.ACCOUNT_ID = H2.ACCOUNT_ID
+           AND H1.TRANS_DTIME = H2.TRANS_DTIME
+           AND H1.TRANS_NO = H2.TRANS_NO
+           AND H1.TRANS_TYPE = H2.TRANS_TYPE
+    </select>
+
     <select id="selectElecPpayHistListTotalCnt" parameterType="ElecPpayHistSearch"  resultType="Long">
          SELECT 
              COUNT(*) 

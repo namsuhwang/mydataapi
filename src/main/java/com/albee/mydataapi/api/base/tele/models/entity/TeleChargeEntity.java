@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 public class TeleChargeEntity extends EntityBase {
     private String mgmtId;    // 계약관리번호
     private String chargeMonth;    // 청구년월
-    private BigDecimal chargeAmt;    // 청구금액
+    private Long chargeAmt;    // 청구금액
     private String chargeDate;    // 납부예정일자
 }

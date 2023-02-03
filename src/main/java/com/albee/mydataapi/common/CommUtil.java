@@ -53,6 +53,13 @@ public class CommUtil {
     }
 
 
+    // 현재 월 String 6 자리로 반환
+    public static String getCurrentDate6(){
+        Date date_now = new Date(System.currentTimeMillis()); // 현재시간을 가져와 Date형으로 저장한다.
+        SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMM");
+        return fourteen_format.format(date_now);
+    }
+
     // 현재 일자를 String 8 자리로 반환
     public static String getCurrentDate8(){
         Date date_now = new Date(System.currentTimeMillis()); // 현재시간을 가져와 Date형으로 저장한다.

@@ -23,20 +23,33 @@ public class GurtInsdServiceImpl implements GurtInsdService {
     GurtInsdMapper gurtInsdMapper;
 
     @Override
-    public GurtInsdEntity regGurtInsd(GurtInsdForm dom) {
+    public void regGurtInsd(GurtInsdForm dom) {
         gurtInsdMapper.insertGurtInsd(dom.getEntity());
-        return gurtInsdMapper.selectGurtInsd(new GurtInsdSearch(dom));
     }
 
     @Override
-    public GurtInsdEntity modGurtInsd(GurtInsdForm dom) {
+    public void updGurtInsd(GurtInsdForm dom) {
         gurtInsdMapper.updateGurtInsd(dom.getEntity());
-        return gurtInsdMapper.selectGurtInsd(new GurtInsdSearch(dom));
+    }
+
+    @Override
+    public void modGurtInsd(GurtInsdForm dom) {
+        if(getGurtInsd(new GurtInsdSearch(dom)) == null){
+            regGurtInsd(dom);
+        }else{
+            updGurtInsd(dom);
+        }
     }
 
     @Override
     public void delGurtInsd(GurtInsdForm dom) {
         gurtInsdMapper.deleteGurtInsd(dom.getEntity());
+        return;
+    }
+
+    @Override
+    public void allDelGurtInsd(GurtInsdForm dom) {
+        gurtInsdMapper.deleteAllGurtInsd(dom.getEntity());
         return;
     }
 

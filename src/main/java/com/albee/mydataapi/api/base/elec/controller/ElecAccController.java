@@ -29,7 +29,8 @@ public class ElecAccController {
     public ResponseEntity<ResponseDto<ElecAccEntity>> regElecAcc(
         @RequestBody ElecAccForm dom
     ){
-        ElecAccEntity result = elecAccService.regElecAcc(dom);
+        elecAccService.regElecAcc(dom);
+        ElecAccEntity result = elecAccService.getElecAcc(new ElecAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class ElecAccController {
     public ResponseEntity<ResponseDto<ElecAccEntity>> modElecAcc(
         @RequestBody ElecAccForm dom
     ){
-        ElecAccEntity result = elecAccService.modElecAcc(dom);
+        elecAccService.modElecAcc(dom);
+        ElecAccEntity result = elecAccService.getElecAcc(new ElecAccSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
