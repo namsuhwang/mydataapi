@@ -8,11 +8,19 @@ spring:
     allow-circular-references: true
 
   datasource:
-    jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521:XE
+    ## jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521:XE
+    jdbc-url: jdbc:oracle:thin:@192.168.1.148:49154:XE
     username: mydataadmin
     password: dba001
     driver-class-name: oracle.jdbc.OracleDriver
 
+logging:
+  level:
+    com.albee.mydataapi.common.client: DEBUG
+
+feign:
+  mydatagateway:
+    url: http://localhost:8088/test
 
 ## JWT Custom
 jwt:
