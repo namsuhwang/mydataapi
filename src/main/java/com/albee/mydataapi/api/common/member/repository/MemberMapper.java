@@ -20,7 +20,7 @@ public interface MemberMapper {
 
     List<MemberEntity> selectMemberList(MemberSearch dom);
 
-    MemberEntity selectMember(String memberId);
+    MemberEntity selectMember(MemberSearch dom);
 
 
 }

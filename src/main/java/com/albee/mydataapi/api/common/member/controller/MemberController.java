@@ -59,7 +59,7 @@ public class MemberController {
     ){
         log.info("call : /member");
         log.info("params : " + dom.toString());
-        MemberEntity result = memberService.getMember(dom.getMemberId());
+        MemberEntity result = memberService.getMember(new MemberSearch(dom.getMemberId()));
         log.info("result : " + result.toString());
 
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));

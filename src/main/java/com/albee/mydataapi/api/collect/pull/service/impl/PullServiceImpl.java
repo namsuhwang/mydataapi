@@ -7,6 +7,7 @@ import com.albee.mydataapi.api.collect.pull.service.*;
 import com.albee.mydataapi.api.common.api.service.ApiMstService;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.albee.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
+import com.albee.mydataapi.api.common.member.models.member.MemberSearch;
 import com.albee.mydataapi.api.common.member.models.member.MemberTokenSearch;
 import com.albee.mydataapi.api.common.member.models.member.entity.MemberEntity;
 import com.albee.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
@@ -86,7 +87,7 @@ public class PullServiceImpl implements PullService {
         List<String> targetList = new ArrayList<>();
 
         // 회원 정합성 체크
-        MemberEntity member = memberService.getMember(form.getMemberId());
+        MemberEntity member = memberService.getMember(new MemberSearch(form.getMemberId()));
         if(member == null){
             throw new MyDataApiException(ErrorCode.MYDATA_ERROR_1001, "존재하지 않는 회원입니다.");
         }

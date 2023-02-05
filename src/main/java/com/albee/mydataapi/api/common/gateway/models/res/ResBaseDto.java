@@ -14,7 +14,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ResBaseDto {
-    @JsonProperty("x-api-tran-id")
     private String xApiTranId;
     private String rspCode;
     private String rspMsg;

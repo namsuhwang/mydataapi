@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.common.trans.repository.TransReqMapper">
+
+    <insert id="insertTransReq" parameterType="TransReqEntity">
+        INSERT INTO TRANS_REQ
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,TX_ID
+            ,CA_CODE
+            ,CONSENT_TYPE
+            ,CONSENT_LEN
+            ,CONSENT
+            ,CI
+            ,SEND_REQ_SIGN_LEN
+            ,SEND_REQ_SIGN
+            ,AUTH_TYPE
+            ,PERSON_INFO_SIGN_LEN
+            ,PERSON_INFO_SIGN
+            ,CONSENT_NOUNCE
+            ,UCPID_NOUNCE
+            ,CERT_TX_ID
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{txId, jdbcType=VARCHAR}
+            ,#{caCode, jdbcType=VARCHAR}
+            ,#{consentType, jdbcType=VARCHAR}
+            ,#{consentLen, jdbcType=NUMERIC}
+            ,#{consent, jdbcType=VARCHAR}
+            ,#{ci, jdbcType=VARCHAR}
+            ,#{sendReqSignLen, jdbcType=NUMERIC}
+            ,#{sendReqSign, jdbcType=VARCHAR}
+            ,#{authType, jdbcType=NUMERIC}
+            ,#{personInfoSignLen, jdbcType=NUMERIC}
+            ,#{personInfoSign, jdbcType=VARCHAR}
+            ,#{consentNounce, jdbcType=VARCHAR}
+            ,#{ucpidNounce, jdbcType=VARCHAR}
+            ,#{certTxId, jdbcType=VARCHAR}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateTransReq" parameterType="TransReqEntity">
+        UPDATE TRANS_REQ
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,TX_ID = #{txId, jdbcType=VARCHAR}
+               ,CA_CODE = #{caCode, jdbcType=VARCHAR}
+               ,CONSENT_TYPE = #{consentType, jdbcType=VARCHAR}
+               ,CONSENT_LEN = #{consentLen, jdbcType=NUMERIC}
+               ,CONSENT = #{consent, jdbcType=VARCHAR}
+               ,CI = #{ci, jdbcType=VARCHAR}
+               ,SEND_REQ_SIGN_LEN = #{sendReqSignLen, jdbcType=NUMERIC}
+               ,SEND_REQ_SIGN = #{sendReqSign, jdbcType=VARCHAR}
+               ,AUTH_TYPE = #{authType, jdbcType=NUMERIC}
+               ,PERSON_INFO_SIGN_LEN = #{personInfoSignLen, jdbcType=NUMERIC}
+               ,PERSON_INFO_SIGN = #{personInfoSign, jdbcType=VARCHAR}
+               ,CONSENT_NOUNCE = #{consentNounce, jdbcType=VARCHAR}
+               ,UCPID_NOUNCE = #{ucpidNounce, jdbcType=VARCHAR}
+               ,CERT_TX_ID = #{certTxId, jdbcType=VARCHAR}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND TX_ID = #{txId}
+    </update>
+
+    <delete id="deleteTransReq" parameterType="TransReqEntity">
+        DELETE FROM TRANS_REQ
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND TX_ID = #{txId}
+    </delete>
+
+    <select id="selectTransReq" parameterType="TransReqSearch"  resultType="TransReqEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,TX_ID
+               ,CA_CODE
+               ,CONSENT_TYPE
+               ,CONSENT_LEN
+               ,CONSENT
+               ,CI
+               ,SEND_REQ_SIGN_LEN
+               ,SEND_REQ_SIGN
+               ,AUTH_TYPE
+               ,PERSON_INFO_SIGN_LEN
+               ,PERSON_INFO_SIGN
+               ,CONSENT_NOUNCE
+               ,UCPID_NOUNCE
+               ,CERT_TX_ID
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM TRANS_REQ
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND TX_ID = #{txId}
+    </select>
+
+    <select id="selectTransReqListTotalCnt" parameterType="TransReqSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM TRANS_REQ
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'txId  != null and txId != ""'>
+           AND TX_ID = #{txId}
+       </if>
+    </select>
+
+    <select id="selectTransReqList" parameterType="TransReqSearch"  resultType="TransReqEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, TX_ID, CHG_DT) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,TX_ID
+               ,CA_CODE
+               ,CONSENT_TYPE
+               ,CONSENT_LEN
+               ,CONSENT
+               ,CI
+               ,SEND_REQ_SIGN_LEN
+               ,SEND_REQ_SIGN
+               ,AUTH_TYPE
+               ,PERSON_INFO_SIGN_LEN
+               ,PERSON_INFO_SIGN
+               ,CONSENT_NOUNCE
+               ,UCPID_NOUNCE
+               ,CERT_TX_ID
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM TRANS_REQ
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'txId  != null and txId != ""'>
+           AND TX_ID = #{txId}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, CHG_DT DESC
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

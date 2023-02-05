@@ -14,6 +14,7 @@ import lombok.*;
 public class MemberSearch extends SearchDto {
     private String memberId;
     private String memberName;
+    private String ci;
 
 
     public MemberSearch(String memberId) {

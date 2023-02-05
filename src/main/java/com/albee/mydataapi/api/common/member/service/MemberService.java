@@ -11,7 +11,7 @@ public interface MemberService {
 
     public MemberEntity modMember(MemberForm dom);
 
-    public MemberEntity getMember(String memberId);
+    public MemberEntity getMember(MemberSearch dom);
 
     public ResultListDto<MemberEntity> getMemberList(MemberSearch dom);
 }

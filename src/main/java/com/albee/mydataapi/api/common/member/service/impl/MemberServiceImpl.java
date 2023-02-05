@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
         inputEntity.setMemberId(memberMapper.createMemberId());
         memberMapper.insertMember(inputEntity);
 
-        return memberMapper.selectMember(inputEntity.getMemberId());
+        return memberMapper.selectMember(new MemberSearch(inputEntity.getMemberId()));
     }
 
     @Override
@@ -40,12 +40,12 @@ public class MemberServiceImpl implements MemberService {
         inputEntity.setMemberId(dom.getMemberId());
         memberMapper.updateMember(inputEntity);
 
-        return memberMapper.selectMember(inputEntity.getMemberId());
+        return memberMapper.selectMember(new MemberSearch(inputEntity.getMemberId()));
     }
 
     @Override
-    public MemberEntity getMember(String memberId) {
-        MemberEntity memberEntity = memberMapper.selectMember(memberId);
+    public MemberEntity getMember(MemberSearch dom) {
+        MemberEntity memberEntity = memberMapper.selectMember(dom);
         if(memberEntity == null) {
             throw new MyDataApiException(ErrorCode.MYDATA_ERROR_1001, "Not Exist Member");
         }

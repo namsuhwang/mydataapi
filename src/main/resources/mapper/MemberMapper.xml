@@ -58,7 +58,7 @@
             WHERE MEMBER_ID = #{memberId}
     </update>
 
-    <select id="selectMember" parameterType="String" resultType="MemberEntity">
+    <select id="selectMember" parameterType="MemberSearch" resultType="MemberEntity">
             SELECT
                 MEMBER_ID
                  ,CI
@@ -74,7 +74,13 @@
                  ,CHG_USER_ID
                  ,CHG_DT
             FROM MEMBER
-            WHERE MEMBER_ID = #{memberId}
+            WHERE 1 = 1
+                <if test = 'memberId != null and memberId !=""'>
+                    AND MEMBER_ID = #{memberId}
+                </if>
+                <if test = 'ci != null and ci !=""'>
+                    AND CI = #{ci}
+                </if>
     </select>
 
     <select id="selectMemberListTotalCnt" parameterType="MemberSearch" resultType="Long">
@@ -85,8 +91,8 @@
         <if test = 'memberId != null and memberId !=""'>
             AND MEMBER_ID = #{memberId}
         </if>
-        <if test = 'memberId != null and memberId !=""'>
-            AND MEMBER_Name LIKE CONCAT('%', #{memberName}, '%')
+        <if test = 'memberName != null and memberName !=""'>
+            AND MEMBER_NAME LIKE CONCAT('%', #{memberName}, '%')
         </if>
     </select>
 
@@ -116,8 +122,8 @@
             <if test = 'memberId != null and memberId !=""'>
                 AND M.MEMBER_ID = #{memberId}
             </if>
-            <if test = 'memberId != null and memberId !=""'>
-                AND M.MEMBER_NAME LIKE CONCAT('%', #{memberName}, '%')
+            <if test = 'memberName != null and memberName !=""'>
+                AND MEMBER_NAME LIKE CONCAT('%', #{memberName}, '%')
             </if>
             ORDER BY M.MEMBER_NAME, M.MEMBER_ID
         ) T
