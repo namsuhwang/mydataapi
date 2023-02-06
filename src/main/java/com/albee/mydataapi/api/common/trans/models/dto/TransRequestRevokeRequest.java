@@ -1,6 +1,6 @@
-package com.albee.mydataapi.api.common.gateway.models.res;
+package com.albee.mydataapi.api.common.trans.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ResBaseDto extends ResRootDto{
-    private Long searchTimestamp;
-    private String nextPage;
+public class TransRequestRevokeRequest {
+    private String memberId;
+    private String xApiTranId;
+    private String txId;
+    private String userCi;
+    private Boolean isDelete;   // 정보수신자가 수집한 정보주체의 개인신용정보를 즉시 삭제해야 하는지 여부
 }

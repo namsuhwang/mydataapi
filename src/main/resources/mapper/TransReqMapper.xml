@@ -119,8 +119,10 @@
         FROM TRANS_REQ
        WHERE 
                MEMBER_ID = #{memberId}
-           AND ORG_CD = #{orgCd}
-           AND TX_ID = #{txId}
+                <if test = 'orgCd  != null and orgCd != ""'>
+                    AND ORG_CD = #{orgCd}
+                </if>
+                AND TX_ID = #{txId}
     </select>
 
     <select id="selectTransReqListTotalCnt" parameterType="TransReqSearch"  resultType="Long">

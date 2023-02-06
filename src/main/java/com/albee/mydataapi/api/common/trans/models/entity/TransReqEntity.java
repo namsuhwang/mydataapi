@@ -17,7 +17,7 @@ public class TransReqEntity extends EntityBase {
     private String ci;    // 고객 CI 정보
     private Integer sendReqSignLen;    // 전송요구내역 전자서명 길이
     private String sendReqSign;    // 전송요구내역 전자서명
-    private Integer authType;    // 본인확인 이용 여부
+    private String authType;    // 본인확인 이용 여부
     private Integer personInfoSignLen;    // 본인확인 이용 동의 전자서명 길이
     private String personInfoSign;    // 본인확인 이용 동의 전자서명
     private String consentNounce;    // 재전송공격 방지정보 1(consentNonce)
