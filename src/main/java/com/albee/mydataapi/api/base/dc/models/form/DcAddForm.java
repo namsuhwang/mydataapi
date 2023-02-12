@@ -1,7 +1,7 @@
 package com.albee.mydataapi.api.base.dc.models.form;
 
 import com.albee.mydataapi.api.base.dc.models.entity.DcAddEntity;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import lombok.*;
 
 import java.math.BigDecimal;

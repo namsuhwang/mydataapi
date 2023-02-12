@@ -1,17 +1,13 @@
 package com.albee.mydataapi.api.common.gateway.models.res.elec;
 
 import com.albee.mydataapi.api.base.elec.models.form.ElecAccForm;
-import com.albee.mydataapi.api.base.elec.models.form.ElecPpayForm;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
 
 @Data
 @ToString

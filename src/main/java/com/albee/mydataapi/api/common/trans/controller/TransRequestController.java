@@ -22,14 +22,14 @@ import java.util.HashMap;
 @RestController
 @EnableWebMvc
 @RequiredArgsConstructor
-@RequestMapping(value = "/trans-request", produces="application/json;charset=UTF-8")
+@RequestMapping(value = "/common", produces="application/json;charset=UTF-8")
 public class TransRequestController {
     @Autowired
     TransRequestService transRequestService;
 
     // 전송요구-001
     // 마이데이터회원 가입 여부 응답
-    @PostMapping("/001")
+    @PostMapping("/trans-request-001")
     public ResponseEntity<ResponseDto<HashMap<String, Object>>> transRequest001(
         @RequestBody CustJoinCheck dom
     ){
@@ -39,7 +39,7 @@ public class TransRequestController {
 
     // 전송요구-002
     // 전송요구서 전송
-    @PostMapping("/002")
+    @PostMapping("/trans-request-002")
     public ResponseEntity<ResponseDto> transRequest002(
             @RequestBody TransRequestSpec dom
     ){
@@ -50,7 +50,7 @@ public class TransRequestController {
     /*
     // 전송요구-003
     // 전송요구 또는 철회 결과 전송
-    @PostMapping("/003")
+    @PostMapping("/trans-request-003")
     public ResponseEntity<ResponseDto> transRequest003(
             @RequestBody TransRequestSpec dom
     ){
@@ -61,7 +61,7 @@ public class TransRequestController {
 
     // 전송요구-004
     // 전송요구 철회 요청
-    @PostMapping("/004")
+    @PostMapping("/trans-request-004")
     public ResponseEntity<ResponseDto> transRequest004(
             @RequestBody TransRequestWithdraw dom
     ){

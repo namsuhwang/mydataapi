@@ -1,7 +1,7 @@
 package com.albee.mydataapi.api.common.gateway.models.res.gurt;
 
 import com.albee.mydataapi.api.base.gurt.models.form.GurtInsdForm;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;

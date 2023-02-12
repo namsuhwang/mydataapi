@@ -1,6 +1,6 @@
 package com.albee.mydataapi.api.base.bank.models.entity;
 
-import com.albee.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.albee.mydataapi.common.models.entity.EntityBase;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)

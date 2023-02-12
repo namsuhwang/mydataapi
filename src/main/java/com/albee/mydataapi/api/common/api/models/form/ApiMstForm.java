@@ -1,7 +1,7 @@
 package com.albee.mydataapi.api.common.api.models.form;
 
 import com.albee.mydataapi.api.common.api.models.entity.ApiMstEntity;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)

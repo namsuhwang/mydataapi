@@ -1,5 +1,6 @@
 package com.albee.mydataapi.api.common.member.models.member.form;
 
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +13,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberTokenForm{
-    private String memberId;    // 회원ID
-    private String orgCd;    // 기관코드
+public class MemberTokenForm extends FormBase {
     private Integer sendReqSeq;    // 전송요구 일련번호
     private String idstType;    // 업권 유형
     private String scopeList;    // 권한범위 목록
@@ -47,8 +46,8 @@ public class MemberTokenForm{
 
     public MemberTokenEntity getEntity(){
         MemberTokenEntity entity = new MemberTokenEntity();
-        entity.setMemberId(memberId);
-        entity.setOrgCd(orgCd);
+        entity.setMemberId(getMemberId());
+        entity.setOrgCd(getOrgCd());
         entity.setSendReqSeq(sendReqSeq);
         entity.setScopeList(scopeList);
         entity.setScopeLists(scopeLists);
@@ -72,10 +71,10 @@ public class MemberTokenForm{
         entity.setRefreshTokenDueDt(refreshTokenDueDt);
         entity.setRefreshTokenExpireYn(refreshTokenExpireYn);
         entity.setRefreshTokenExpireDt(refreshTokenExpireDt);
-        entity.setRegUserId(regUserId);
-        entity.setRegDt(regDt);
-        entity.setChgUserId(chgUserId);
-        entity.setChgDt(chgDt);
+        entity.setRegUserId(getRegUserId());
+        entity.setRegDt(getRegDt());
+        entity.setChgUserId(getChgUserId());
+        entity.setChgDt(getChgDt());
         return entity;
     }
 }

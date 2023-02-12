@@ -11,7 +11,7 @@ import com.albee.mydataapi.api.common.api.service.ApiMstService;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.gateway.models.res.p2p.*;
 import com.albee.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
 import com.albee.mydataapi.api.common.recv.models.RecvBaselineSearch;

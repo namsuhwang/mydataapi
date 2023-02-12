@@ -9,7 +9,7 @@ import com.albee.mydataapi.api.collect.pull.service.PullDbService;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.gateway.models.res.db.Db001ResDto;
 import com.albee.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package com.albee.mydataapi.api.common.gateway.models.form;
+package com.albee.mydataapi.common.models.form;
 
 import com.albee.mydataapi.common.CommUtil;
-import com.albee.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.albee.mydataapi.common.models.entity.EntityBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

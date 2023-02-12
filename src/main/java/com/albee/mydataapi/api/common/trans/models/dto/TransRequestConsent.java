@@ -1,10 +1,6 @@
 package com.albee.mydataapi.api.common.trans.models.dto;
 
 
-import com.albee.mydataapi.api.common.member.models.member.entity.MemberEntity;
-import com.albee.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
-import com.albee.mydataapi.api.common.trans.models.form.TransReqForm;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;

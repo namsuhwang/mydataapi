@@ -1,6 +1,6 @@
 package com.albee.mydataapi.api.common.gateway.models.res.invt;
 
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.gateway.models.res.ResBaseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

@@ -1,7 +1,7 @@
 package com.albee.mydataapi.api.base.invt.models.form;
 
 import com.albee.mydataapi.api.base.invt.models.entity.InvtAccBaseEntity;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import lombok.*;
 
 import java.math.BigDecimal;

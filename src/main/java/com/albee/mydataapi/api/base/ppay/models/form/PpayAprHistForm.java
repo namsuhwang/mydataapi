@@ -1,7 +1,7 @@
 package com.albee.mydataapi.api.base.ppay.models.form;
 
 import com.albee.mydataapi.api.base.ppay.models.entity.PpayAprHistEntity;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)

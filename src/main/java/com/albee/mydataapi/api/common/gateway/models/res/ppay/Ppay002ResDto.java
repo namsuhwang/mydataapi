@@ -3,7 +3,7 @@ package com.albee.mydataapi.api.common.gateway.models.res.ppay;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.albee.mydataapi.api.base.ppay.models.form.PpayBalForm;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.gateway.models.res.ResBaseDto;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.albee.mydataapi.api.common.trans.models.dto;
+package com.albee.mydataapi.api.common.auth.models.dto;
 
 
 import com.albee.mydataapi.api.common.gateway.models.res.ResBaseDto;

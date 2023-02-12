@@ -1,6 +1,6 @@
 package com.albee.mydataapi.api.common.trans.models.form;
 
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.trans.models.dto.TransRequestConsent;
 import com.albee.mydataapi.api.common.trans.models.entity.TransReqEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,7 +1,8 @@
 package com.albee.mydataapi.api.common.trans.service.impl;
 
 import com.albee.mydataapi.api.base.common.service.PersonalInfoService;
-import com.albee.mydataapi.api.common.gateway.models.res.ResBaseDto;
+import com.albee.mydataapi.api.common.auth.models.dto.TotalAuthRequest;
+import com.albee.mydataapi.api.common.auth.models.dto.TotalAuthResponse;
 import com.albee.mydataapi.api.common.gateway.models.res.ResRootDto;
 import com.albee.mydataapi.api.common.member.models.member.MemberSearch;
 import com.albee.mydataapi.api.common.member.models.member.MemberTokenSearch;
@@ -28,9 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -165,8 +164,7 @@ public class TransRequestServiceImpl implements TransRequestService {
 
         // 통합인증-002 호출
         TotalAuthRequest totAuthReq = new TotalAuthRequest(spec);
-        // 종합포털에 통합인증-002 전송하여 토큰 정보 받아옴
-        TotalAuthResponse totAuthRes = new TotalAuthResponse(); // 실제로는 응답값을 받아와야 함
+        TotalAuthResponse totAuthRes = mydataapidriverFeignClient.totalAuthRequest(totAuthReq).getBody();; // 실제로는 응답값을 받아와야 함
 
         long expireDtLong = currentDt.getTime() + totAuthRes.getExpiresIn();
         String accessTokenDueDt = df.format(expireDtLong);

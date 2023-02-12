@@ -22,7 +22,7 @@ import com.albee.mydataapi.api.base.ppay.service.PpayService;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

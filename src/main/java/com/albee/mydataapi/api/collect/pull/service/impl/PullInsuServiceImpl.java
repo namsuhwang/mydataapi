@@ -19,7 +19,7 @@ import com.albee.mydataapi.api.collect.pull.models.dto.InsuParamsDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallParamsDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallReqDto;
 import com.albee.mydataapi.api.common.gateway.models.dto.ApiCallResDto;
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.gateway.service.CallMyDataGatewayService;
 import com.albee.mydataapi.api.common.recv.models.form.RecvStatusForm;
 import com.albee.mydataapi.api.common.recv.service.RecvStatusService;

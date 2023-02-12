@@ -1,7 +1,7 @@
 package com.albee.mydataapi.api.base.insu.models.entity;
 
 
-import com.albee.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.albee.mydataapi.common.models.entity.EntityBase;
 import lombok.*;
 
 import java.math.BigDecimal;

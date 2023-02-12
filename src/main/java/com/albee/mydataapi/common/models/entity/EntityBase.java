@@ -1,6 +1,6 @@
-package com.albee.mydataapi.api.common.gateway.models.entity;
+package com.albee.mydataapi.common.models.entity;
 
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;

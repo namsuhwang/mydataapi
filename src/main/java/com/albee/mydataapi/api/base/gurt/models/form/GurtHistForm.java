@@ -1,6 +1,6 @@
 package com.albee.mydataapi.api.base.gurt.models.form;
 
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.base.gurt.models.entity.GurtHistEntity;
 import lombok.*;
 

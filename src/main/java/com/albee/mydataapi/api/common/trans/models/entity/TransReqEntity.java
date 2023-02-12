@@ -1,12 +1,9 @@
 package com.albee.mydataapi.api.common.trans.models.entity;
 
-import com.albee.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.albee.mydataapi.common.models.entity.EntityBase;
 import com.albee.mydataapi.api.common.trans.models.dto.TransRequestConsent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

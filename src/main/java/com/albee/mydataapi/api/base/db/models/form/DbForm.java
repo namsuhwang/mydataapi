@@ -1,6 +1,6 @@
 package com.albee.mydataapi.api.base.db.models.form;
 
-import com.albee.mydataapi.api.common.gateway.models.form.FormBase;
+import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.base.db.models.entity.DbEntity;
 import lombok.*;
 
