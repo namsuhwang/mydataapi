@@ -126,7 +126,7 @@ public class PullServiceImpl implements PullService {
             reqInfo.setMemberToken(token);
             reqInfo.setOrgCd(token.getOrgCd());
             reqInfo.setAccessToken(token.getAccessToken());
-            reqInfo.setRefreshToken(token.getRepreshToken());
+            reqInfo.setRefreshToken(token.getRefreshToken());
             reqInfo.setIdstType(CommUtil.getIdstTypeByScope(token.getScopeList().split(" ")[0]));
 
             // 고객선택자산 정보 요청. sendRequestType = 1.

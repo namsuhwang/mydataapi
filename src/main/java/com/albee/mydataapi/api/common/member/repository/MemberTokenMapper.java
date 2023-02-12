@@ -8,6 +8,9 @@ import java.util.List;
 
 @Component
 public interface MemberTokenMapper{
+
+    int createSendReqSeq(MemberTokenSearch dom);
+
     int insertMemberToken(MemberTokenEntity dom);
 
     int updateMemberToken(MemberTokenEntity dom);

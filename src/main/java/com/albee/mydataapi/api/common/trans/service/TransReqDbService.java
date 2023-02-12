@@ -5,9 +5,7 @@ import com.albee.mydataapi.api.common.trans.models.entity.TransReqEntity;
 import com.albee.mydataapi.api.common.trans.models.form.TransReqForm;
 import com.albee.mydataapi.common.models.dto.ResultListDto;
 
-import java.util.List;
-
-public interface TransReqService{
+public interface TransReqDbService {
     public void regTransReq(TransReqForm dom);
 
     public void updTransReq(TransReqForm dom);

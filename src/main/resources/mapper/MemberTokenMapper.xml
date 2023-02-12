@@ -3,6 +3,15 @@
 
 <mapper namespace="com.albee.mydataapi.api.common.member.repository.MemberTokenMapper">
 
+    <select id="createSendReqSeq" parameterType="MemberTokenSearch"  resultType="Integer">
+        SELECT
+            NVL(MAX(SEND_REQ_SEQ), 0) + 1
+        FROM MEMBER_TOKEN
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </select>
+
     <insert id="insertMemberToken" parameterType="MemberTokenEntity">
         INSERT INTO MEMBER_TOKEN
         (
@@ -17,6 +26,8 @@
             ,FP_SEND_REQ_START_DAY
             ,FP_SEND_REQ_END_DAY
             ,FP_CYCL
+            ,HOLD_END_DAY
+            ,MEMO_TRANS_YN
             ,ACCESS_TOKEN
             ,ACCESS_TOKEN_EXPIRE_IN
             ,ACCESS_TOKEN_ISSUE_DT
@@ -46,6 +57,8 @@
             ,#{fpSendReqStartDay, jdbcType=VARCHAR}
             ,#{fpSendReqEndDay, jdbcType=VARCHAR}
             ,#{fpCycl, jdbcType=VARCHAR}
+            ,#{holdEndDay, jdbcType=VARCHAR}
+            ,#{memoTransYn, jdbcType=VARCHAR}
             ,#{accessToken, jdbcType=VARCHAR}
             ,#{accessTokenExpireIn, jdbcType=NUMERIC}
             ,#{accessTokenIssueDt, jdbcType=VARCHAR}
@@ -79,6 +92,8 @@
           ,FP_SEND_REQ_START_DAY = #{fpSendReqStartDay, jdbcType=VARCHAR}
           ,FP_SEND_REQ_END_DAY = #{fpSendReqEndDay, jdbcType=VARCHAR}
           ,FP_CYCL = #{fpCycl, jdbcType=VARCHAR}
+          ,HOLD_END_DAY = #{holdEndDay, jdbcType=VARCHAR}
+          ,MEMO_TRANS_YN = #{memoTransYn, jdbcType=VARCHAR}
           ,ACCESS_TOKEN = #{accessToken, jdbcType=VARCHAR}
           ,ACCESS_TOKEN_EXPIRE_IN = #{accessTokenExpireIn, jdbcType=NUMERIC}
           ,ACCESS_TOKEN_ISSUE_DT = #{accessTokenIssueDt, jdbcType=VARCHAR}
@@ -120,6 +135,8 @@
              ,FP_SEND_REQ_START_DAY
              ,FP_SEND_REQ_END_DAY
              ,FP_CYCL
+             ,HOLD_END_DAY
+             ,MEMO_TRANS_YN
              ,ACCESS_TOKEN
              ,ACCESS_TOKEN_EXPIRE_IN
              ,ACCESS_TOKEN_ISSUE_DT
@@ -139,8 +156,15 @@
         FROM MEMBER_TOKEN
         WHERE
             MEMBER_ID = #{memberId}
-          AND ORG_CD = #{orgCd}
-          AND SEND_REQ_SEQ = #{sendReqSeq}
+            <if test = 'orgCd  != null and orgCd != ""'>
+                AND ORG_CD = #{orgCd}
+            </if>
+            <if test = 'sendReqSeq  != null and sendReqSeq != ""'>
+                AND SEND_REQ_SEQ = #{sendReqSeq}
+            </if>
+            <if test = 'txId  != null and txId != ""'>
+                AND TX_ID = #{txId}
+            </if>
     </select>
 
     <select id="selectMemberTokenListTotalCnt" parameterType="MemberTokenSearch"  resultType="Long">
@@ -156,6 +180,19 @@
         </if>
         <if test = 'sendReqSeq  != null and sendReqSeq != ""'>
             AND SEND_REQ_SEQ = #{sendReqSeq}
+        </if>
+        <if test = 'txId  != null and txId != ""'>
+            AND TX_ID = #{txId}
+        </if>
+        <if test = 'currentDt  != null and currentDt != ""'>
+            AND ACCESS_TOKEN_DUE_DT <![CDATA[<=]]> #{currentDt}
+        </if>
+        <if test = 'fpSendReqYn  != null and fpSendReqYn != "" and currentDay  != null and currentDay != ""'>
+            AND FP_SEND_REQ_YN = #{fpSendReqYn}
+            AND (
+            FP_SEND_REQ_START_DAY <![CDATA[>=]]> #{currentDay}
+            AND FP_SEND_REQ_END_DAY <![CDATA[<=]]> #{currentDay}
+            )
         </if>
     </select>
 
@@ -178,6 +215,8 @@
             ,FP_SEND_REQ_START_DAY
             ,FP_SEND_REQ_END_DAY
             ,FP_CYCL
+            ,HOLD_END_DAY
+            ,MEMO_TRANS_YN
             ,ACCESS_TOKEN
             ,ACCESS_TOKEN_EXPIRE_IN
             ,ACCESS_TOKEN_ISSUE_DT
@@ -204,6 +243,9 @@
         </if>
         <if test = 'sendReqSeq  != null and sendReqSeq != ""'>
             AND SEND_REQ_SEQ = #{sendReqSeq}
+        </if>
+        <if test = 'txId  != null and txId != ""'>
+            AND TX_ID = #{txId}
         </if>
         <if test = 'currentDt  != null and currentDt != ""'>
             AND ACCESS_TOKEN_DUE_DT <![CDATA[<=]]> #{currentDt}

@@ -25,15 +25,33 @@ public class MemberTokenServiceImpl implements MemberTokenService {
     MemberTokenMapper memberTokenMapper;
 
     @Override
-    public MemberTokenEntity regMemberToken(MemberTokenForm dom) {
-        memberTokenMapper.insertMemberToken(dom.getEntity());
-        return memberTokenMapper.selectMemberToken(new MemberTokenSearch(dom));
+    public int createSendReqSeq(MemberTokenSearch dom)
+    {
+        return memberTokenMapper.createSendReqSeq(dom);
     }
 
     @Override
-    public MemberTokenEntity modMemberToken(MemberTokenForm dom) {
+    public void regMemberToken(MemberTokenForm dom) {
+        memberTokenMapper.insertMemberToken(dom.getEntity());
+    }
+
+    @Override
+    public void updMemberToken(MemberTokenForm dom) {
         memberTokenMapper.updateMemberToken(dom.getEntity());
-        return memberTokenMapper.selectMemberToken(new MemberTokenSearch(dom));
+    }
+
+    @Override
+    public void updMemberToken(MemberTokenEntity dom) {
+        memberTokenMapper.updateMemberToken(dom);
+    }
+
+    @Override
+    public void modMemberToken(MemberTokenForm dom) {
+        if(getMemberToken(new MemberTokenSearch(dom)) == null){
+            regMemberToken(dom);
+        }else{
+            updMemberToken(dom);
+        }
     }
 
     @Override

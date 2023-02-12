@@ -4,7 +4,7 @@ import com.albee.mydataapi.api.common.trans.models.TransReqSearch;
 import com.albee.mydataapi.api.common.trans.models.entity.TransReqEntity;
 import com.albee.mydataapi.api.common.trans.models.form.TransReqForm;
 import com.albee.mydataapi.api.common.trans.repository.TransReqMapper;
-import com.albee.mydataapi.api.common.trans.service.TransReqService;
+import com.albee.mydataapi.api.common.trans.service.TransReqDbService;
 import com.albee.mydataapi.common.models.dto.ResultListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class TransReqServiceImpl implements TransReqService {
+public class TransReqDbServiceImpl implements TransReqDbService {
     @Autowired
     TransReqMapper transReqMapper;
 

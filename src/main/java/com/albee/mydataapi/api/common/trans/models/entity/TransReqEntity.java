@@ -1,7 +1,12 @@
 package com.albee.mydataapi.api.common.trans.models.entity;
 
 import com.albee.mydataapi.api.common.gateway.models.entity.EntityBase;
+import com.albee.mydataapi.api.common.trans.models.dto.TransRequestConsent;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -23,4 +28,10 @@ public class TransReqEntity extends EntityBase {
     private String consentNounce;    // 재전송공격 방지정보 1(consentNonce)
     private String ucpidNounce;    // 재전송공격 방지정보 2(ucpidNonce)
     private String certTxId;    // 인증사업자 트랜잭션 아이디
+
+    public TransRequestConsent getTransRequestConsent(){
+        TransRequestConsent trc = (new ObjectMapper()).convertValue(consent, TransRequestConsent.class);
+        return trc;
+    }
+
 }

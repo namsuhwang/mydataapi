@@ -52,11 +52,13 @@ public class PullBondServiceImpl implements PullBondService {
     public CompletableFuture<List<String>> pullBondInfoRun(ApiCallReqDto req, FormBase formBase) {
         List<String> targetList = new ArrayList<>();
 
-        List<String> bondNumList = (List<String>) callBond001(req, formBase);
-        for (String bondNum : bondNumList) {
-            callBond002(req, formBase, bondNum);
-            callBond003(req, formBase, bondNum);
-        }
+        CompletableFuture<List<String>> bond001Result = callBond001(req, formBase);
+        bond001Result.thenAccept(bondNumList -> {
+            for(String bondNum : bondNumList){
+                callBond002(req, formBase, bondNum);
+                callBond003(req, formBase, bondNum);
+            }
+        });
 
         return CompletableFuture.completedFuture(targetList);
     }

@@ -18,8 +18,20 @@ public class MemberTokenSearch extends SearchDto {
     private Integer sendReqSeq;    // 전송요구 일련번호
     private String currentDt;   // 접근토큰 만료 일시 체크
     private String fpSendReqYn;    // 정기전송 요청 여부
+    private String txId;
 
     private String currentDay;   // 정기전송 기간 유효 체크
+
+    public MemberTokenSearch(String memberId, String orgCd) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+    }
+
+    public MemberTokenSearch(String memberId, String orgCd, String txId) {
+        this.memberId = memberId;
+        this.orgCd = orgCd;
+        this.txId = txId;
+    }
 
     public MemberTokenSearch(String memberId, String orgCd, Integer sendReqSeq) {
         this.memberId = memberId;

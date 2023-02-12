@@ -6,9 +6,16 @@ import com.albee.mydataapi.api.common.member.models.member.form.MemberTokenForm;
 import com.albee.mydataapi.common.models.dto.ResultListDto;
 
 public interface MemberTokenService{
-    public MemberTokenEntity regMemberToken(MemberTokenForm dom);
+    int createSendReqSeq(MemberTokenSearch dom);
 
-    public MemberTokenEntity modMemberToken(MemberTokenForm dom);
+    public void regMemberToken(MemberTokenForm dom);
+
+    public void updMemberToken(MemberTokenForm dom);
+
+
+    public void updMemberToken(MemberTokenEntity dom);
+
+    public void modMemberToken(MemberTokenForm dom);
 
     public void  delMemberToken(MemberTokenForm dom);
 

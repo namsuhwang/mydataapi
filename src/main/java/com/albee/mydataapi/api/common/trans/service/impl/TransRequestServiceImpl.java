@@ -1,23 +1,37 @@
 package com.albee.mydataapi.api.common.trans.service.impl;
 
+import com.albee.mydataapi.api.base.common.service.PersonalInfoService;
 import com.albee.mydataapi.api.common.gateway.models.res.ResBaseDto;
 import com.albee.mydataapi.api.common.gateway.models.res.ResRootDto;
 import com.albee.mydataapi.api.common.member.models.member.MemberSearch;
+import com.albee.mydataapi.api.common.member.models.member.MemberTokenSearch;
 import com.albee.mydataapi.api.common.member.models.member.entity.MemberEntity;
+import com.albee.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
+import com.albee.mydataapi.api.common.member.models.member.form.MemberTokenForm;
 import com.albee.mydataapi.api.common.member.service.MemberService;
+import com.albee.mydataapi.api.common.member.service.MemberTokenService;
 import com.albee.mydataapi.api.common.trans.models.TransReqSearch;
-import com.albee.mydataapi.api.common.trans.models.dto.CustJoinCheck;
-import com.albee.mydataapi.api.common.trans.models.dto.ReplyTransRequestProcResult;
-import com.albee.mydataapi.api.common.trans.models.dto.TransRequestRevokeRequest;
-import com.albee.mydataapi.api.common.trans.models.dto.TransRequestSpec;
+import com.albee.mydataapi.api.common.trans.models.dto.*;
 import com.albee.mydataapi.api.common.trans.models.entity.TransReqEntity;
-import com.albee.mydataapi.api.common.trans.service.TransReqService;
+import com.albee.mydataapi.api.common.trans.service.TransReqDbService;
 import com.albee.mydataapi.api.common.trans.service.TransRequestService;
+import com.albee.mydataapi.common.CommUtil;
+import com.albee.mydataapi.common.client.MydataapidriverFeignClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +42,16 @@ public class TransRequestServiceImpl implements TransRequestService {
     MemberService memberService;
 
     @Autowired
-    TransReqService transReqService;
+    TransReqDbService transReqDbService;
+
+    @Autowired
+    MemberTokenService memberTokenService;
+
+    @Autowired
+    MydataapidriverFeignClient mydataapidriverFeignClient;
+
+    @Autowired
+    PersonalInfoService personalInfoService;
 
     /*
         서비스 가입여부 확인
@@ -63,35 +86,23 @@ public class TransRequestServiceImpl implements TransRequestService {
             1. 먼저 수신했다는 의미로 바로 응답(응답 후 아래 내용을 본격 처리함)
             2. 수신한 전송요구 내용을 테이블(전송요구서)에 저장
             3. 통합인증-002 를 호출하여 해당 전송요구 내용에 대한 접근토큰(정보제공자측에서 발급) 을 발급받음
-            4. 발급 받은 접근토큰/리프레쉬토큰을 전송요구서 테이블에 업데이트함
+            4. 신규 전송요구건이면 회원토큰 테이블에 인서트, 수정건이면 업데이트
             5. 전송요그-003 을 이용하여 종합포털(또는 거점기관)에 전송요구 등록 결과를 통보함
      */
     @Override
     public Boolean transRequest002(TransRequestSpec dom) {
-        transReqService.regTransReq(dom.getTransReqForm());
-        return true;
-    }
 
+        MemberSearch memberSearch = new MemberSearch();
+        memberSearch.setCi(dom.getUsername());
+        MemberEntity member = memberService.getMember(memberSearch);
+        dom.setMember(member);
 
-    /*
-        전송요구 또는 철회 결과 전송
-        API ID : 전송요구-003
-        API 요청자 : 정보수신자
-        API 제공자 : 종합포털, 거점기관
-        API명(URI) : /consents/result
-        설명
-            . 정보수신자가 전송요구(통합인증) 또는 전송요구 철회 완료 후 그 결과를 종합포털에 전송
-        처리내용
-            . 전송요구 등록/수정 및 철회 요청 처리 후에 호출하여 종합포털(거점기관)에 전달함
-     */
-    @Override
-    public Boolean transRequest003(TransReqEntity dom) {
-        ReplyTransRequestProcResult result = new ReplyTransRequestProcResult();
-        result.setType("01");   // ‘01’ : 전송요구 결과 전송. ‘02’ : 전송요구 철회 결과 전송
-        result.setResultCode("00000");
-        result.setResultMsg("성공");
-        result.setTxId(dom.getTxId());
-        result.setUserCi(dom.getCi());
+        if(dom.getSendReqSeq() != null && dom.getSendReqSeq() > 0){
+            MemberTokenEntity token = memberTokenService.getMemberToken(new MemberTokenSearch(member.getMemberId(), dom.getOrgCode(), dom.getSendReqSeq()));
+            dom.setToken(token);
+        }
+
+        transRequestProc(dom);
         return true;
     }
 
@@ -111,23 +122,179 @@ public class TransRequestServiceImpl implements TransRequestService {
             5. 전송요구-003 이용하여 전송요구 철회 결과를 종합포털(또는 거점기관)에 전달함
      */
     @Override
-    public ResRootDto transRequest004(TransRequestRevokeRequest dom) {
-        ResRootDto result = new ResBaseDto();
-        result.setXApiTranId("");
+    public Boolean transRequest004(TransRequestWithdraw dom) {
 
-        // 전송요구 철회대상 조회
-        TransReqEntity transReq = transReqService.getTransReq(new TransReqSearch(dom.getMemberId(), null, dom.getTxId()));
+        TransReqEntity transReq = transReqDbService.getTransReq(new TransReqSearch(dom.getMemberId(), null, dom.getTxId()));
 
-
-        if(transRequest003(transReq)){
-
-            result.setRspCode("00000");
-            result.setRspMsg("SUCCESS");
-        }else{
-            result.setRspCode("99999");
-            result.setRspMsg("FAIL");
+        // 기존 전송요구건이 없으면 에러 처리
+        if(transReq == null){
+            return false;
         }
 
-        return result;
+        MemberTokenEntity token = memberTokenService.getMemberToken(new MemberTokenSearch(dom.getMemberId(), null, dom.getTxId()));
+
+        // 기존 토큰이 없거나 유효하지 않으면 에러 처리
+        if(token == null || token.getAccessTokenExpireYn().equalsIgnoreCase("Y")){
+            return false;
+        }
+
+        transRequestWithdrawProc(dom, transReq, token);
+
+        return true;
     }
+
+
+    /*
+        전송요구-002 의 내용을 처리
+
+            transRequest002 에서는 먼저 정상 응답만 후 async로 transRequestProc 를 호출하여 실제 처리함
+            1. 수신한 전송요구 내용을 테이블(전송요구서)에 저장
+            2. 통합인증-002 를 호출하여 해당 전송요구 내용에 대한 접근토큰(정보제공자측에서 발급) 을 발급받음
+            3. 신규 전송요구건이면 회원토큰 테이블에 인서트, 수정건이면 업데이트
+            4. 전송요그-003 을 이용하여 종합포털(또는 거점기관)에 전송요구 등록 결과를 통보함
+     */
+    @Async("pullPersonalInfoExecutor")
+    public CompletableFuture<ResRootDto> transRequestProc(TransRequestSpec spec) {
+        ResRootDto result = new ResRootDto();
+
+        Date currentDt = new Date(System.currentTimeMillis()); // 현재시간을 가져와 Date형으로 저장한다. 년월일시분초 14자리 포멧
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+        String currentDtString = df.format(currentDt.getTime());
+        TransRequestConsent consent = (new ObjectMapper()).convertValue(spec.getConsent(), TransRequestConsent.class);
+
+
+        // 통합인증-002 호출
+        TotalAuthRequest totAuthReq = new TotalAuthRequest(spec);
+        // 종합포털에 통합인증-002 전송하여 토큰 정보 받아옴
+        TotalAuthResponse totAuthRes = new TotalAuthResponse(); // 실제로는 응답값을 받아와야 함
+
+        long expireDtLong = currentDt.getTime() + totAuthRes.getExpiresIn();
+        String accessTokenDueDt = df.format(expireDtLong);
+
+        long refreshExpireDtLong = currentDt.getTime() + totAuthRes.getExpiresIn();
+        String refreshTokenDutDt = df.format(refreshExpireDtLong);
+
+        List<String> scopeList = CommUtil.getScopeList(spec.getConsent());
+        String scopeString = CommUtil.getStringScopeList(scopeList);
+        String idstType = CommUtil.getIdstTypeByScope(scopeString.split(" ")[0]);
+
+        // 전송요청유형. 0:.list 만 존재. 1: 고객선택자산 요청 포함
+        String sendRequestType = "0";  // .list 가 아닌 scope 가 하나라도 있으면 "1"
+        for(String sc : scopeList){
+            if(!sc.toLowerCase().contains(".list")){
+                sendRequestType = "1";
+                break;
+            }
+        }
+
+        MemberTokenForm tokenForm = new MemberTokenForm();
+        tokenForm.setMemberId(spec.getMember().getMemberId());
+        tokenForm.setOrgCd(spec.getOrgCode());
+
+        // 동일한 전송요구건이 없으면 인서트 존재하면 업데이트
+        if(spec.getSendReqSeq() == null && spec.getToken() == null){
+            transReqDbService.regTransReq(spec.getTransReqForm());
+            int sendReqSeq = memberTokenService.createSendReqSeq(new MemberTokenSearch(spec.getMember().getMemberId(), spec.getOrgCode()));
+            tokenForm.setSendReqSeq(sendReqSeq);
+        }else{
+            transReqDbService.updTransReq(spec.getTransReqForm());
+            MemberTokenEntity token = memberTokenService.getMemberToken(new MemberTokenSearch(spec.getMember().getMemberId(), spec.getOrgCode(), spec.getSendReqSeq()));
+            tokenForm.setSendReqSeq(token.getSendReqSeq());
+        }
+
+        tokenForm.setIdstType(idstType);
+        tokenForm.setScopeList(scopeString);
+        tokenForm.setScopeLists(scopeList);
+        tokenForm.setSendRequestType(sendRequestType);
+        tokenForm.setFpSendReqYn(consent.getIsScheduled() ? "Y" : "N");
+        tokenForm.setFpSendReqDt(currentDtString);
+        tokenForm.setFpSendReqStartDay(currentDtString.substring(0, 8));
+        tokenForm.setFpSendReqEndDay(consent.getEndDate());
+        tokenForm.setFpCycl(consent.getFndCycle());
+        tokenForm.setHoldEndDay(consent.getPeriod());
+        tokenForm.setAccessToken(totAuthRes.getAccessToken());
+        tokenForm.setAccessTokenExpireIn(totAuthRes.getExpiresIn());
+        tokenForm.setAccessTokenDueDt(accessTokenDueDt);
+        tokenForm.setAccessTokenIssueDt(CommUtil.getCurrentDateTime14());
+        tokenForm.setAccessTokenExpireYn("N");
+        tokenForm.setRefreshToken(totAuthRes.getRefreshToken());
+        tokenForm.setRefreshTokenExpireIn(totAuthRes.getRefreshTokenExpiresIn());
+        tokenForm.setRefreshTokenDueDt(refreshTokenDutDt);
+        tokenForm.setRefreshTokenExpireYn("N");
+        tokenForm.setRefreshTokenIssueDt(CommUtil.getCurrentDateTime14());
+        memberTokenService.regMemberToken(tokenForm);
+
+        result.setXApiTranId(spec.getXApiTranId());
+        result.setRspCode("000000");
+        result.setRspMsg("성공");
+
+        // 종합포털에 전송요구 내용 전달
+        TransReqEntity transReq = transReqDbService.getTransReq(new TransReqSearch(spec.getMember().getMemberId(), spec.getOrgCode()));
+        transRequest003(transReq);
+
+        return CompletableFuture.completedFuture(result);
+    }
+
+
+    /*
+        전송요구-003 의 내용을 처리
+
+            1. 개별인증-004 를 이용하여 정보제공자가 접근토큰을 검증 및 폐기하도록 함
+            2. 필요시 개인신용정보 삭제(개인신용정보 삭제 요청 여부가 true 인 경우)
+            3. 토큰 폐기 처리(MEMBER_TOKEN) 상태를 취소 상태로 변경(업데이트)
+            4. 전송요구-003 이용하여 전송요구 철회 결과를 종합포털(또는 거점기관)에 전달함
+     */
+    @Async("pullPersonalInfoExecutor")
+    public CompletableFuture<ResRootDto> transRequestWithdrawProc(TransRequestWithdraw dom, TransReqEntity transReq, MemberTokenEntity token) {
+
+        ResRootDto result = null;
+
+        String expireDt = CommUtil.getCurrentDateTime14();
+
+        result.setXApiTranId(dom.getXApiTranId());
+
+        // 전송요구 철회대상
+        // 전송요구 테이블(TRANS_REQ)은 상태항목이 없으므로 업데이트할게 없음
+        // 토큰 expire 처리token.setAccessTokenExpireYn("Y");
+        token.setAccessTokenExpireDt(expireDt);
+        token.setRefreshTokenExpireYn("Y");
+        token.setRefreshTokenExpireDt(expireDt);
+        memberTokenService.updMemberToken(token);
+
+        // 개인신용정보 삭제 처리
+        if(dom.getIsDelete()){
+            personalInfoService.deleteTable(transReq);
+        }
+
+        result = transRequest003(transReq);
+
+        return CompletableFuture.completedFuture(result);
+    }
+
+
+    /*
+        전송요구 또는 철회 결과 전송
+        API ID : 전송요구-003
+        API 요청자 : 정보수신자
+        API 제공자 : 종합포털, 거점기관
+        API명(URI) : /consents/result
+        설명
+            . 정보수신자가 전송요구(통합인증) 또는 전송요구 철회 완료 후 그 결과를 종합포털에 전송
+        처리내용
+            . 전송요구 등록/수정 및 철회 요청 처리 후에 호출하여 종합포털(거점기관)에 전달함
+     */
+    @Override
+    public ResRootDto transRequest003(TransReqEntity dom) {
+        TransRequestProcResult procResult = new TransRequestProcResult();
+        procResult.setMemberId(dom.getMemberId());
+        procResult.setXApiTranId(dom.getApiTranId());
+        procResult.setType("01");   // ‘01’ : 전송요구 결과 전송. ‘02’ : 전송요구 철회 결과 전송
+        procResult.setResultCode("00000");
+        procResult.setResultMsg("성공");
+        procResult.setTxId(dom.getTxId());
+        procResult.setUserCi(dom.getCi());
+        ResponseEntity<ResRootDto> result = mydataapidriverFeignClient.replyTransRequestProcResult(procResult);
+        return result.getBody();
+    }
+
 }

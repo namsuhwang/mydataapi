@@ -1,11 +1,9 @@
 package com.albee.mydataapi.api.common.trans.controller;
 
-import com.albee.mydataapi.api.common.gateway.models.res.ResBaseDto;
 import com.albee.mydataapi.api.common.gateway.models.res.ResRootDto;
 import com.albee.mydataapi.api.common.trans.models.dto.CustJoinCheck;
-import com.albee.mydataapi.api.common.trans.models.dto.TransRequestRevokeRequest;
 import com.albee.mydataapi.api.common.trans.models.dto.TransRequestSpec;
-import com.albee.mydataapi.api.common.trans.models.entity.TransReqEntity;
+import com.albee.mydataapi.api.common.trans.models.dto.TransRequestWithdraw;
 import com.albee.mydataapi.api.common.trans.service.TransRequestService;
 import com.albee.mydataapi.common.models.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -49,24 +47,26 @@ public class TransRequestController {
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS"));
     }
 
+    /*
     // 전송요구-003
     // 전송요구 또는 철회 결과 전송
     @PostMapping("/003")
     public ResponseEntity<ResponseDto> transRequest003(
             @RequestBody TransRequestSpec dom
     ){
-        Boolean result = transRequestService.transRequest003(dom.getTransReqForm().getEntity());
+        ResRootDto result = transRequestService.transRequest003(dom.getTransReqForm().getEntity());
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS"));
     }
+    */
 
     // 전송요구-004
     // 전송요구 철회 요청
     @PostMapping("/004")
-    public ResponseEntity<ResponseDto<ResRootDto>> transRequest004(
-            @RequestBody TransRequestRevokeRequest dom
+    public ResponseEntity<ResponseDto> transRequest004(
+            @RequestBody TransRequestWithdraw dom
     ){
-        ResRootDto result = transRequestService.transRequest004(dom);
-        return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
+        Boolean result = transRequestService.transRequest004(dom);
+        return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS"));
     }
 
 }

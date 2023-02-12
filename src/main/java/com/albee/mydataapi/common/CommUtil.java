@@ -1,5 +1,8 @@
 package com.albee.mydataapi.common;
 
+import com.albee.mydataapi.api.common.trans.models.dto.TransRequestConsent;
+import com.albee.mydataapi.api.common.trans.models.dto.TransTargetInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.security.KeyFactory;
@@ -10,6 +13,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -146,5 +150,41 @@ public class CommUtil {
         }
 
         return idstType;
+    }
+
+    /*
+        consent(전송요구내역) 에서 scope 목록을 스트링으로 추출
+     */
+    public static String getStringScopeList(List<String> scopeList){
+        String scopeString = "";
+
+        for(String s : scopeList){
+            scopeString = scopeString + " " + s;
+        }
+
+        return scopeString.trim();
+    }
+
+    /*
+        consent(전송요구내역) 에서 scope 목록을 List 로 추출
+     */
+    public static List<String> getScopeList(String consent){
+        List<String> scopeList = new ArrayList<>();
+        TransRequestConsent trc = (new ObjectMapper()).convertValue(consent, TransRequestConsent.class);
+
+        // xxx.list scope 가 가장 먼저 추출되도록 for 2번 실행
+        for(TransTargetInfo tti : trc.getTargetInfo()){
+            if(tti.getScope().toLowerCase().contains(".list")){
+                scopeList.add(tti.getScope());
+            }
+        }
+
+        for(TransTargetInfo tti : trc.getTargetInfo()){
+            if(!tti.getScope().toLowerCase().contains(".list")){
+                scopeList.add(tti.getScope());
+            }
+        }
+
+        return scopeList;
     }
 }
