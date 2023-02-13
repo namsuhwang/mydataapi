@@ -29,7 +29,8 @@ public class MemberTokenController {
     public ResponseEntity<ResponseDto<MemberTokenEntity>> regMemberToken(
         @RequestBody MemberTokenForm dom
     ){
-        MemberTokenEntity result = memberTokenService.regMemberToken(dom);
+        memberTokenService.regMemberToken(dom);
+        MemberTokenEntity result = memberTokenService.getMemberToken(new MemberTokenSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 
@@ -37,7 +38,8 @@ public class MemberTokenController {
     public ResponseEntity<ResponseDto<MemberTokenEntity>> modMemberToken(
         @RequestBody MemberTokenForm dom
     ){
-        MemberTokenEntity result = memberTokenService.modMemberToken(dom);
+        memberTokenService.modMemberToken(dom);
+        MemberTokenEntity result = memberTokenService.getMemberToken(new MemberTokenSearch(dom));
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result));
     }
 

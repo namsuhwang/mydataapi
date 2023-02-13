@@ -4,11 +4,13 @@ import com.albee.mydataapi.api.base.bank.models.entity.BankAutoTransEntity;
 import com.albee.mydataapi.api.base.bank.models.form.BankAutoTransForm;
 import com.albee.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

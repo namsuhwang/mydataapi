@@ -4,9 +4,11 @@ import com.albee.mydataapi.common.models.dto.SearchDto;
 import com.albee.mydataapi.api.base.gurt.models.entity.GurtHistEntity;
 import com.albee.mydataapi.api.base.gurt.models.form.GurtHistForm;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

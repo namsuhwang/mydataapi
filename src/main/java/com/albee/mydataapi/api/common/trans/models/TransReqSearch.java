@@ -4,9 +4,11 @@ import com.albee.mydataapi.api.common.trans.models.entity.TransReqEntity;
 import com.albee.mydataapi.api.common.trans.models.form.TransReqForm;
 import com.albee.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

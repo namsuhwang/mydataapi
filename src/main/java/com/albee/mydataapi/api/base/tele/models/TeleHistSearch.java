@@ -4,9 +4,11 @@ import com.albee.mydataapi.api.base.tele.models.entity.TeleHistEntity;
 import com.albee.mydataapi.api.base.tele.models.form.TeleHistForm;
 import com.albee.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

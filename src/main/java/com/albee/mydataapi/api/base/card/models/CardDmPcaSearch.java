@@ -4,9 +4,11 @@ import com.albee.mydataapi.api.base.card.models.form.CardDmPcaForm;
 import com.albee.mydataapi.common.models.dto.SearchDto;
 import com.albee.mydataapi.api.base.card.models.entity.CardDmPcaEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

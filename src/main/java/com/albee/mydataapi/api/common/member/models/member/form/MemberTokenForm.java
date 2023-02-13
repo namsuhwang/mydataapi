@@ -2,13 +2,11 @@ package com.albee.mydataapi.api.common.member.models.member.form;
 
 import com.albee.mydataapi.common.models.form.FormBase;
 import com.albee.mydataapi.api.common.member.models.member.entity.MemberTokenEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

@@ -4,9 +4,11 @@ import com.albee.mydataapi.api.base.dc.models.entity.DcHistEntity;
 import com.albee.mydataapi.api.base.dc.models.form.DcHistForm;
 import com.albee.mydataapi.common.models.dto.SearchDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor

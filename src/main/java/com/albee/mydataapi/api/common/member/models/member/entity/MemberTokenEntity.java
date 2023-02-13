@@ -1,13 +1,11 @@
 package com.albee.mydataapi.api.common.member.models.member.entity;
 
 import com.albee.mydataapi.common.models.entity.EntityBase;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @NoArgsConstructor
