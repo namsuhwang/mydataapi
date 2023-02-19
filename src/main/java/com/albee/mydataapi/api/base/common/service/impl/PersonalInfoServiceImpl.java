@@ -41,6 +41,9 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     @Autowired
     DeleteInvtMapper deleteInvtMapper;
 
+    @Autowired
+    DeleteInsuMapper deleteInsuMapper;
+
     @Override
     public void deleteTable(TransReqEntity dom) {
         DeleteKeyDto delKey = new DeleteKeyDto(dom.getMemberId(), dom.getOrgCd());
@@ -176,7 +179,6 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
             case "invest.list":
                 deleteCardMapper.deleteCard(delKey);
                 deleteIrpMapper.deleteIrpAcc(delKey);
-                deleteDcMapper.deleteDc(delKey);
                 deleteDbMapper.deleteDb(delKey);
                 break;
             case "invest.account":
@@ -201,36 +203,55 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     private void deleteInsu(DeleteKeyDto delKey, String scope, TransAsset transAsset){
         switch (scope.toLowerCase())
         {
-            case "invt.list":
-                deleteCardMapper.deleteCard(delKey);
-                deletePpayMapper.deletePpay(delKey);
+            case "insu.list":
+                deleteInsuMapper.deleteInsu(delKey);
+                deleteInsuMapper.deleteInsuLoan(delKey);
+                deleteInsuMapper.deleteInsuInsd(delKey);
+                deleteIrpMapper.deleteIrpAcc(delKey);
+                deleteDbMapper.deleteDb(delKey);
                 break;
-            case "invt.card":
-                deleteCardMapper.deleteCardAprDmHist(delKey);
-                deleteCardMapper.deleteCardAprOsHist(delKey);
-                deleteCardMapper.deleteCardDmPca(delKey);
-                deleteCardMapper.deleteCardOsPca(delKey);
-                deleteCardMapper.deleteCardBase(delKey);
+            case "insu.insurance":
+                deleteInsuMapper.deleteInsuBase(delKey);
+                deleteInsuMapper.deleteInsuBaseInsd(delKey);
+                deleteInsuMapper.deleteInsuSccont(delKey);
+                deleteInsuMapper.deleteInsuCar(delKey);
+                deleteInsuMapper.deleteInsuPay(delKey);
+                deleteInsuMapper.deleteInsuHist(delKey);
+                deleteInsuMapper.deleteInsuCarHist(delKey);
+                deleteInsuMapper.deleteInsuGurt(delKey);
+                deleteInsuMapper.deleteInsuMiBase(delKey);
+                deleteInsuMapper.deleteInsuMiBasePp(delKey);
+                deleteInsuMapper.deleteInsuMiPay(delKey);
+                deleteInsuMapper.deleteInsuMiHist(delKey);
+                deleteInsuMapper.deleteInsuMi(delKey);
                 break;
-            case "invt.prepaid":
-                deletePpayMapper.deletePpayAprHist(delKey);
-                deletePpayMapper.deletePpayHist(delKey);
-                deletePpayMapper.deletePpayBal(delKey);
+            case "insu.insured":
+                deleteInsuMapper.deleteInsuInsdSccont(delKey);
+                deleteInsuMapper.deleteInsuInsdBase(delKey);
+                deleteInsuMapper.deleteInsuInsdCar(delKey);
+                deleteInsuMapper.deleteInsuInsdGurt(delKey);
+                deleteInsuMapper.deleteInsuInsdMiBasePp(delKey);
+                deleteInsuMapper.deleteInsuInsdMiBase(delKey);
+                deleteInsuMapper.deleteInsuInsdMiSccont(delKey);
+                deleteInsuMapper.deleteInsuInsdMi(delKey);
                 break;
-            case "invt.point":
-                deleteCardMapper.deleteCardPt(delKey);
+            case "insu.loan":
+                deleteInsuMapper.deleteInsuLoanAdd(delKey);
+                deleteInsuMapper.deleteInsuLoanBase(delKey);
+                deleteInsuMapper.deleteInsuLoanHist(delKey);
                 break;
-            case "card.bill":
-                deleteCardMapper.deleteCardChargeAdd(delKey);
-                deleteCardMapper.deleteCardCharge(delKey);
-                deleteCardMapper.deleteCardPayDetail(delKey);
-                deleteCardMapper.deleteCardPay(delKey);
+            case "insu.irp":
+                deleteIrpMapper.deleteIrpAccAdd(delKey);
+                deleteIrpMapper.deleteIrpAccHist(delKey);
+                deleteIrpMapper.deleteIrpAccBase(delKey);
                 break;
-            case "card.loan":
-                deleteCardMapper.deleteCardLoanLgHist(delKey);
-                deleteCardMapper.deleteCardLoanLg(delKey);
-                deleteCardMapper.deleteCardLoanSt(delKey);
-                deleteCardMapper.deleteCardLoan(delKey);
+            case "insu.db":
+                deleteDbMapper.deleteDb(delKey);
+                break;
+            case "insu.dc":
+                deleteDcMapper.deleteDcAdd(delKey);
+                deleteDcMapper.deleteDcHist(delKey);
+                deleteDcMapper.deleteDcBase(delKey);
                 break;
         }
     }

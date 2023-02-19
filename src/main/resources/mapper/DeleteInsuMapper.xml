@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteInsuMapper">
+
+    <delete id="deleteInsuBaseInsd" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_BASE_INSD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND INSU_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteInsuBase" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuCarHist" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_CAR_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuCar" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_CAR
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuGurt" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_GURT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuHist" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuInsdBase" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuInsdCar" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_CAR
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuInsdGurt" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_GURT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuInsd" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuInsdMiBase" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_MI_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuInsdMiBasePp" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_MI_BASE_PP
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuInsdMi" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_MI
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuInsdMiSccont" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_MI_SCCONT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuInsdSccont" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_INSD_SCCONT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuLoanAdd" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_LOAN_ADD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuLoanBase" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_LOAN_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuLoanHistInt" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_LOAN_HIST_INT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuLoanHist" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_LOAN_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuLoan" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_LOAN
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsu" parameterType="DeleteKeyDto">
+        DELETE FROM INSU
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInsuMiBase" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_MI_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuMiBasePp" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_MI_BASE_PP
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuMiHist" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_MI_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuMi" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_MI
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuMiPay" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_MI_PAY
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuMiSccont" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_MI_SCCONT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuPay" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_PAY
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInsuSccont" parameterType="DeleteKeyDto">
+        DELETE FROM INSU_SCCONT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND INSU_NUM = #{asset}
+        </if>
+    </delete>
+</mapper>
