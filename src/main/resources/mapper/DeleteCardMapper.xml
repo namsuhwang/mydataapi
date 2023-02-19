@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteCardMapper">
+
+    <delete id="deleteCardAprDmHist" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_APR_DM_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardAprOsHist" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_APR_OS_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardBase" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+          <if test = 'asset  != null and asset != ""'>
+              AND CARD_ID = #{asset}
+          </if>
+    </delete>
+
+    <delete id="deleteCardChargeAdd" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_CHARGE_ADD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND CARD_ID = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteCardCharge" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_CHARGE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardDmPca" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_DM_PCA
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND CARD_ID = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteCardLoanLgHist" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_LOAN_LG_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND LOAN_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteCardLoanLg" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_LOAN_LG
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND LOAN_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteCardLoan" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_LOAN
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardLoanSt" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_LOAN_ST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCard" parameterType="DeleteKeyDto">
+        DELETE FROM CARD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND LOAN_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteCardOsPca" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_OS_PCA
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND LOAN_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteCardPayDetail" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_PAY_DETAIL
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardPay" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_PAY
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardPt" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_PT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+    <delete id="deleteCardRv" parameterType="DeleteKeyDto">
+        DELETE FROM CARD_RV
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+    </delete>
+
+</mapper>

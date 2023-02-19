@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteDcMapper">
+
+    <delete id="deleteDc" parameterType="DeleteKeyDto">
+        DELETE FROM DC
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND DC_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteDcBase" parameterType="DeleteKeyDto">
+        DELETE FROM DC_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND DC_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteDcAdd" parameterType="DeleteKeyDto">
+        DELETE FROM DC_ADD
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND DC_NUM = #{dcNum}
+            <if test = 'asset  != null and asset != ""'>
+                AND DC_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteDcHist" parameterType="DeleteKeyDto">
+        DELETE FROM DC_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND DC_NUM = #{asset}
+            </if>
+    </delete>
+
+</mapper>

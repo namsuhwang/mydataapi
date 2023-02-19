@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteInvtMapper">
+
+    <delete id="deleteInvtAccProdBaseDate" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_ACC_PROD_BASE_DATE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND ACCOUNT_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteInvtAccProd" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_ACC_PROD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+
+
+    <delete id="deleteInvtAccHist" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_ACC_HIST
+        WHERE
+        MEMBER_ID = #{memberId}
+        AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+
+    <delete id="deleteInvtAcc" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_ACC
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInvtAccBase" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_ACC_BASE
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInvtAutoTrans" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_AUTO_TRANS
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteInvtPensionAccAdd" parameterType="DeleteKeyDto">
+        DELETE FROM INVT_PENSION_ACC_ADD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+</mapper>

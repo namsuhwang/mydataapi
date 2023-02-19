@@ -24,6 +24,7 @@ public class TransRequestConsent {
     private String endDate;  // "20220804"
     private String purpose;   // "상세정보 전송요구를 위한 가입상품목록 조회"
     private String period;  // "20220804"
+    private Boolean isConsentMerchantNameRegno;  // true
     private Boolean isConsentTransMemo;   // "true"
     private List<TransTargetInfo> targetInfo;
 }

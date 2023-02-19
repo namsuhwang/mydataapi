@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteBankMapper">
+
+
+    <delete id="deleteBankAcc" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+               AND ACCOUNT_NUM = #{asset}
+            </if>
+    </delete>
+
+
+    <delete id="deleteBankAccDepositAdd" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_DEPOSIT_ADD
+        WHERE
+        MEMBER_ID = #{memberId}
+        AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccDepositHist" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_DEPOSIT_HIST
+        WHERE
+        MEMBER_ID = #{memberId}
+        AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccDeposit" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_DEPOSIT
+        WHERE
+        MEMBER_ID = #{memberId}
+        AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccEachProd" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_EACH_PROD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND ACCOUNT_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteBankAccFundAdd" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_FUND_ADD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND ACCOUNT_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteBankAccFundHist" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_FUND_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND ACCOUNT_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteBankAccFund" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_FUND
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND ACCOUNT_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteBankAccLoanAdd" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_LOAN_ADD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccLoanHistInt" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_LOAN_HIST_INT
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccLoanHist" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_LOAN_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccLoan" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_LOAN
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccProdHist" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_PROD_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAccProd" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_ACC_PROD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankAutoTrans" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_AUTO_TRANS
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+        <if test = 'asset  != null and asset != ""'>
+            AND ACCOUNT_NUM = #{asset}
+        </if>
+    </delete>
+
+    <delete id="deleteBankCust" parameterType="DeleteKeyDto">
+        DELETE FROM BANK_CUST
+        WHERE
+        MEMBER_ID = #{memberId}
+        AND ORG_CD = #{orgCd}
+    </delete>
+</mapper>
