@@ -38,6 +38,9 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     @Autowired
     DeletePpayMapper deletePpayMapper;
 
+    @Autowired
+    DeleteInvtMapper deleteInvtMapper;
+
     @Override
     public void deleteTable(TransReqEntity dom) {
         DeleteKeyDto delKey = new DeleteKeyDto(dom.getMemberId(), dom.getOrgCd());
@@ -68,6 +71,8 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
                 {
                     case "BANK": deleteBank(delKey, scope, transAsset); break;
                     case "CARD": deleteCard(delKey, scope, transAsset); break;
+                    case "INVT": deleteInvt(delKey, scope, transAsset); break;
+                    case "INSU": deleteInsu(delKey, scope, transAsset); break;
                 }
             }
         }
@@ -166,6 +171,34 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
 
     // 금융투자
     private void deleteInvt(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "invest.list":
+                deleteCardMapper.deleteCard(delKey);
+                deleteIrpMapper.deleteIrpAcc(delKey);
+                deleteDcMapper.deleteDc(delKey);
+                deleteDbMapper.deleteDb(delKey);
+                break;
+            case "invest.account":
+                deleteInvtMapper.deleteInvtPensionAccAdd(delKey);
+                deleteInvtMapper.deleteInvtAutoTrans(delKey);
+                deleteInvtMapper.deleteInvtAccProd(delKey);
+                deleteInvtMapper.deleteInvtAccProdBaseDate(delKey);
+                deleteInvtMapper.deleteInvtAccBase(delKey);
+                break;
+            case "invest.db":
+                deleteDbMapper.deleteDb(delKey);
+                break;
+            case "invest.dc":
+                deleteDcMapper.deleteDcAdd(delKey);
+                deleteDcMapper.deleteDcHist(delKey);
+                deleteDcMapper.deleteDcBase(delKey);
+                break;
+        }
+    }
+
+    // 보험
+    private void deleteInsu(DeleteKeyDto delKey, String scope, TransAsset transAsset){
         switch (scope.toLowerCase())
         {
             case "invt.list":
