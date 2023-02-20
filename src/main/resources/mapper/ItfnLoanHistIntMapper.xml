@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.albee.mydataapi.api.base.itfn.repository.ItfnLoanHistIntMapper">
+
+    <insert id="insertItfnLoanHistInt" parameterType="ItfnLoanHistIntEntity">
+        INSERT INTO ITFN_LOAN_HIST_INT
+        (
+            MEMBER_ID
+            ,ORG_CD
+            ,ACCOUNT_NUM
+            ,SEQNO
+            ,TRANS_DTIME
+            ,TRANS_NO
+            ,INT_START_DATE
+            ,INT_END_DATE
+            ,INT_RATE
+            ,APPLIED_INT_AMT
+            ,INT_TYPE
+            ,INT_AMT
+            ,API_TRAN_DAY
+            ,API_TRAN_ID
+            ,REG_USER_ID
+            ,REG_DT
+            ,CHG_USER_ID
+            ,CHG_DT
+        ) VALUES 
+        (
+            #{memberId, jdbcType=VARCHAR}
+            ,#{orgCd, jdbcType=VARCHAR}
+            ,#{accountNum, jdbcType=VARCHAR}
+            ,#{seqno, jdbcType=VARCHAR}
+            ,#{transDtime, jdbcType=VARCHAR}
+            ,#{transNo, jdbcType=VARCHAR}
+            ,#{intStartDate, jdbcType=VARCHAR}
+            ,#{intEndDate, jdbcType=VARCHAR}
+            ,#{intRate, jdbcType=NUMERIC}
+            ,#{appliedIntAmt, jdbcType=NUMERIC}
+            ,#{intType, jdbcType=VARCHAR}
+            ,#{intAmt, jdbcType=NUMERIC}
+            ,#{apiTranDay, jdbcType=VARCHAR}
+            ,#{apiTranId, jdbcType=VARCHAR}
+            ,#{regUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+            ,#{chgUserId, jdbcType=VARCHAR}
+            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        ) 
+    </insert>
+
+    <update id="updateItfnLoanHistInt" parameterType="ItfnLoanHistIntEntity">
+        UPDATE ITFN_LOAN_HIST_INT
+           SET 
+               MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+               ,ORG_CD = #{orgCd, jdbcType=VARCHAR}
+               ,ACCOUNT_NUM = #{accountNum, jdbcType=VARCHAR}
+               ,SEQNO = #{seqno, jdbcType=VARCHAR}
+               ,TRANS_DTIME = #{transDtime, jdbcType=VARCHAR}
+               ,TRANS_NO = #{transNo, jdbcType=VARCHAR}
+               ,INT_START_DATE = #{intStartDate, jdbcType=VARCHAR}
+               ,INT_END_DATE = #{intEndDate, jdbcType=VARCHAR}
+               ,INT_RATE = #{intRate, jdbcType=NUMERIC}
+               ,APPLIED_INT_AMT = #{appliedIntAmt, jdbcType=NUMERIC}
+               ,INT_TYPE = #{intType, jdbcType=VARCHAR}
+               ,INT_AMT = #{intAmt, jdbcType=NUMERIC}
+               ,API_TRAN_DAY = #{apiTranDay, jdbcType=VARCHAR}
+               ,API_TRAN_ID = #{apiTranId, jdbcType=VARCHAR}
+               ,CHG_USER_ID = #{chgUserId, jdbcType=VARCHAR}
+               ,CHG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND INT_START_DATE = #{intStartDate}
+           AND INT_RATE = #{intRate}
+           AND INT_TYPE = #{intType}
+           AND INT_AMT = #{intAmt}
+           AND API_TRAN_DAY = #{apiTranDay}
+           AND API_TRAN_ID = #{apiTranId}
+           AND REG_USER_ID = #{regUserId}
+           AND REG_DT = #{regDt}
+           AND CHG_USER_ID = #{chgUserId}
+           AND CHG_DT = #{chgDt}
+    </update>
+
+    <delete id="deleteItfnLoanHistInt" parameterType="ItfnLoanHistIntEntity">
+        DELETE FROM ITFN_LOAN_HIST_INT
+         WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND INT_START_DATE = #{intStartDate}
+           AND INT_RATE = #{intRate}
+           AND INT_TYPE = #{intType}
+           AND INT_AMT = #{intAmt}
+           AND API_TRAN_DAY = #{apiTranDay}
+           AND API_TRAN_ID = #{apiTranId}
+           AND REG_USER_ID = #{regUserId}
+           AND REG_DT = #{regDt}
+           AND CHG_USER_ID = #{chgUserId}
+           AND CHG_DT = #{chgDt}
+    </delete>
+
+    <select id="selectItfnLoanHistInt" parameterType="ItfnLoanHistIntSearch"  resultType="ItfnLoanHistIntEntity">
+         SELECT 
+               MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,INT_START_DATE
+               ,INT_END_DATE
+               ,INT_RATE
+               ,APPLIED_INT_AMT
+               ,INT_TYPE
+               ,INT_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ITFN_LOAN_HIST_INT
+       WHERE 
+               MEMBER_ID = #{memberId}
+           AND ORG_CD = #{orgCd}
+           AND ACCOUNT_NUM = #{accountNum}
+           AND SEQNO = #{seqno}
+           AND TRANS_DTIME = #{transDtime}
+           AND TRANS_NO = #{transNo}
+           AND INT_START_DATE = #{intStartDate}
+           AND INT_RATE = #{intRate}
+           AND INT_TYPE = #{intType}
+           AND INT_AMT = #{intAmt}
+           AND API_TRAN_DAY = #{apiTranDay}
+           AND API_TRAN_ID = #{apiTranId}
+           AND REG_USER_ID = #{regUserId}
+           AND REG_DT = #{regDt}
+           AND CHG_USER_ID = #{chgUserId}
+           AND CHG_DT = #{chgDt}
+    </select>
+
+    <select id="selectItfnLoanHistIntListTotalCnt" parameterType="ItfnLoanHistIntSearch"  resultType="Long">
+         SELECT 
+             COUNT(*) 
+        FROM ITFN_LOAN_HIST_INT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'intStartDate  != null and intStartDate != ""'>
+           AND INT_START_DATE = #{intStartDate}
+       </if>
+       <if test = 'intRate  != null and intRate != ""'>
+           AND INT_RATE = #{intRate}
+       </if>
+       <if test = 'intType  != null and intType != ""'>
+           AND INT_TYPE = #{intType}
+       </if>
+       <if test = 'intAmt  != null and intAmt != ""'>
+           AND INT_AMT = #{intAmt}
+       </if>
+       <if test = 'apiTranDay  != null and apiTranDay != ""'>
+           AND API_TRAN_DAY = #{apiTranDay}
+       </if>
+       <if test = 'apiTranId  != null and apiTranId != ""'>
+           AND API_TRAN_ID = #{apiTranId}
+       </if>
+       <if test = 'regUserId  != null and regUserId != ""'>
+           AND REG_USER_ID = #{regUserId}
+       </if>
+       <if test = 'regDt  != null and regDt != ""'>
+           AND REG_DT = #{regDt}
+       </if>
+       <if test = 'chgUserId  != null and chgUserId != ""'>
+           AND CHG_USER_ID = #{chgUserId}
+       </if>
+       <if test = 'chgDt  != null and chgDt != ""'>
+           AND CHG_DT = #{chgDt}
+       </if>
+    </select>
+
+    <select id="selectItfnLoanHistIntList" parameterType="ItfnLoanHistIntSearch"  resultType="ItfnLoanHistIntEntity">
+         SELECT 
+             T.ROW_NUM AS ROW_NUM 
+             ,T.* 
+         FROM 
+         ( 
+         SELECT 
+             ROW_NUMBER() OVER(ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, INT_START_DATE, INT_RATE, INT_TYPE, INT_AMT, API_TRAN_DAY, API_TRAN_ID, REG_USER_ID, REG_DT, CHG_USER_ID, CHG_DT) ROW_NUM
+               ,MEMBER_ID
+               ,ORG_CD
+               ,ACCOUNT_NUM
+               ,SEQNO
+               ,TRANS_DTIME
+               ,TRANS_NO
+               ,INT_START_DATE
+               ,INT_END_DATE
+               ,INT_RATE
+               ,APPLIED_INT_AMT
+               ,INT_TYPE
+               ,INT_AMT
+               ,API_TRAN_DAY
+               ,API_TRAN_ID
+               ,REG_USER_ID
+               ,REG_DT
+               ,CHG_USER_ID
+               ,CHG_DT
+        FROM ITFN_LOAN_HIST_INT
+       WHERE 1 = 1 
+       <if test = 'memberId  != null and memberId != ""'>
+           AND MEMBER_ID = #{memberId}
+       </if>
+       <if test = 'orgCd  != null and orgCd != ""'>
+           AND ORG_CD = #{orgCd}
+       </if>
+       <if test = 'accountNum  != null and accountNum != ""'>
+           AND ACCOUNT_NUM = #{accountNum}
+       </if>
+       <if test = 'seqno  != null and seqno != ""'>
+           AND SEQNO = #{seqno}
+       </if>
+       <if test = 'transDtime  != null and transDtime != ""'>
+           AND TRANS_DTIME = #{transDtime}
+       </if>
+       <if test = 'transNo  != null and transNo != ""'>
+           AND TRANS_NO = #{transNo}
+       </if>
+       <if test = 'intStartDate  != null and intStartDate != ""'>
+           AND INT_START_DATE = #{intStartDate}
+       </if>
+       <if test = 'intRate  != null and intRate != ""'>
+           AND INT_RATE = #{intRate}
+       </if>
+       <if test = 'intType  != null and intType != ""'>
+           AND INT_TYPE = #{intType}
+       </if>
+       <if test = 'intAmt  != null and intAmt != ""'>
+           AND INT_AMT = #{intAmt}
+       </if>
+       <if test = 'apiTranDay  != null and apiTranDay != ""'>
+           AND API_TRAN_DAY = #{apiTranDay}
+       </if>
+       <if test = 'apiTranId  != null and apiTranId != ""'>
+           AND API_TRAN_ID = #{apiTranId}
+       </if>
+       <if test = 'regUserId  != null and regUserId != ""'>
+           AND REG_USER_ID = #{regUserId}
+       </if>
+       <if test = 'regDt  != null and regDt != ""'>
+           AND REG_DT = #{regDt}
+       </if>
+       <if test = 'chgUserId  != null and chgUserId != ""'>
+           AND CHG_USER_ID = #{chgUserId}
+       </if>
+       <if test = 'chgDt  != null and chgDt != ""'>
+           AND CHG_DT = #{chgDt}
+       </if>
+        ORDER BY MEMBER_ID, ORG_CD, ACCOUNT_NUM, SEQNO, TRANS_DTIME, TRANS_NO, INT_START_DATE, INT_RATE, INT_TYPE, INT_AMT, API_TRAN_DAY, API_TRAN_ID, REG_USER_ID, REG_DT, CHG_USER_ID, CHG_DT
+       ) T 
+       <if test = 'startIndex != null and endIndex != null '> 
+       WHERE T.ROW_NUM BETWEEN #{startIndex} AND #{endIndex} 
+       </if> 
+    </select>
+</mapper>

@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteIrpMapper">
+<mapper namespace="com.albee.mydataapi.api.base.common.repository.DeleteGurtMapper">
 
-    <delete id="deleteIrpAccAdd" parameterType="DeleteKeyDto">
-        DELETE FROM IRP_ACC_ADD
+    <delete id="deleteGurtBase" parameterType="DeleteKeyDto">
+        DELETE FROM GURT_BASE
         WHERE
             MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
             <if test = 'asset  != null and asset != ""'>
-                AND ACCOUNT_NUM = #{asset}
+                AND INSU_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteGurtHist" parameterType="DeleteKeyDto">
+        DELETE FROM GURT_HIST
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND INSU_NUM = #{asset}
+            </if>
+    </delete>
+
+    <delete id="deleteGurtInsd" parameterType="DeleteKeyDto">
+        DELETE FROM GURT_INSD
+        WHERE
+            MEMBER_ID = #{memberId}
+          AND ORG_CD = #{orgCd}
+            <if test = 'asset  != null and asset != ""'>
+                AND INSU_NUM = #{asset}
             </if>
             <if test = 'seqno  != null and seqno != ""'>
-                AND IRP_NO = #{seqno}
+                AND INSURED_NAME = #{seqno}
             </if>
     </delete>
 
-    <delete id="deleteIrpAccBase" parameterType="DeleteKeyDto">
-        DELETE FROM IRP_ACC_BASE
+    <delete id="deleteGurt" parameterType="DeleteKeyDto">
+        DELETE FROM GURT
         WHERE
             MEMBER_ID = #{memberId}
           AND ORG_CD = #{orgCd}
             <if test = 'asset  != null and asset != ""'>
-                AND ACCOUNT_NUM = #{asset}
-            </if>
-    </delete>
-
-    <delete id="deleteIrpAccHist" parameterType="DeleteKeyDto">
-        DELETE FROM IRP_ACC_HIST
-        WHERE
-            MEMBER_ID = #{memberId}
-          AND ORG_CD = #{orgCd}
-            <if test = 'asset  != null and asset != ""'>
-                AND ACCOUNT_NUM = #{asset}
-            </if>
-    </delete>
-
-
-    <delete id="deleteIrpAcc" parameterType="DeleteKeyDto">
-        DELETE FROM IRP_ACC
-        WHERE
-            MEMBER_ID = #{memberId}
-          AND ORG_CD = #{orgCd}
-            <if test = 'asset  != null and asset != ""'>
-                AND ACCOUNT_NUM = #{asset}
+                AND INSU_NUM = #{asset}
             </if>
     </delete>
 </mapper>

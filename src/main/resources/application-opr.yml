@@ -9,8 +9,9 @@ spring:
 
   datasource:
     ## jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521:XE
-    jdbc-url: jdbc:oracle:thin:@58.225.23.7:1521:XE
-    ## jdbc-url: jdbc:oracle:thin:@192.168.1.148:49154:XE
+    ## jdbc-url: jdbc:oracle:thin:@192.168.1.2:49154:XE
+    ## jdbc-url: jdbc:oracle:thin:@58.225.23.7:1521:XE
+    jdbc-url: jdbc:oracle:thin:@namsuhwang.synology.me:1521:XE
     username: mydataadmin
     password: dba001
     driver-class-name: oracle.jdbc.OracleDriver

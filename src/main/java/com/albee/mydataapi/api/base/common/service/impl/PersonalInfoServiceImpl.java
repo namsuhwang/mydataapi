@@ -44,6 +44,24 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     @Autowired
     DeleteInsuMapper deleteInsuMapper;
 
+    @Autowired
+    DeleteElecMapper deleteElecMapper;
+
+    @Autowired
+    DeleteItfnMapper deleteItfnMapper;
+
+    @Autowired
+    DeleteGurtMapper deleteGurtMapper;
+
+    @Autowired
+    DeleteTeleMapper deleteTeleMapper;
+
+    @Autowired
+    DeleteP2pMapper deleteP2pMapper;
+
+    @Autowired
+    DeleteBondMapper deleteBondMapper;
+
     @Override
     public void deleteTable(TransReqEntity dom) {
         DeleteKeyDto delKey = new DeleteKeyDto(dom.getMemberId(), dom.getOrgCd());
@@ -76,6 +94,12 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
                     case "CARD": deleteCard(delKey, scope, transAsset); break;
                     case "INVT": deleteInvt(delKey, scope, transAsset); break;
                     case "INSU": deleteInsu(delKey, scope, transAsset); break;
+                    case "ELEC": deleteElec(delKey, scope, transAsset); break;
+                    case "ITFN": deleteItfn(delKey, scope, transAsset); break;
+                    case "GURT": deleteGurt(delKey, scope, transAsset); break;
+                    case "TELE": deleteTele(delKey, scope, transAsset); break;
+                    case "BOND": deleteBond(delKey, scope, transAsset); break;
+                    case "P2P": deleteTele(delKey, scope, transAsset); break;
                 }
             }
         }
@@ -252,6 +276,107 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
                 deleteDcMapper.deleteDcAdd(delKey);
                 deleteDcMapper.deleteDcHist(delKey);
                 deleteDcMapper.deleteDcBase(delKey);
+                break;
+        }
+    }
+
+
+
+    // 전자금융
+    private void deleteElec(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "efin.list":
+                deleteElecMapper.deleteElecPpayAcc(delKey);
+                deleteElecMapper.deleteElecPpay(delKey);
+                deleteElecMapper.deleteElecAcc(delKey);
+                break;
+            case "efin.prepaid":
+                deleteElecMapper.deleteElecPpayBal(delKey);
+                deleteElecMapper.deleteElecPpayAutoCharge(delKey);
+                deleteElecMapper.deleteElecPpayHist(delKey);
+                break;
+            case "efin.paid":
+                deleteElecMapper.deleteElecPayHist(delKey);
+                deleteElecMapper.deleteElecPayMethod(delKey);
+                break;
+        }
+    }
+
+    // 할부금융
+    private void deleteItfn(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "capital.list":
+                deleteItfnMapper.deleteItfnCust(delKey);
+                deleteItfnMapper.deleteItfnAcc(delKey);
+                break;
+            case "capital.loan":
+                deleteItfnMapper.deleteItfnLoanHistInt(delKey);
+                deleteItfnMapper.deleteItfnLoanHist(delKey);
+                deleteItfnMapper.deleteItfnLoanAdd(delKey);
+                deleteItfnMapper.deleteItfnLeaseHist(delKey);
+                deleteItfnMapper.deleteItfnLease(delKey);
+                break;
+        }
+    }
+
+
+    // 보증보험
+    private void deleteGurt(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "ginsu.list":
+                deleteGurtMapper.deleteGurt(delKey);
+                break;
+            case "ginsu.insurance":
+                deleteGurtMapper.deleteGurtHist(delKey);
+                deleteGurtMapper.deleteGurtInsd(delKey);
+                deleteGurtMapper.deleteGurtBase(delKey);
+                break;
+        }
+    }
+
+    // 통신
+    private void deleteTele(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "telecoms.list":
+                deleteTeleMapper.deleteTeleCont(delKey);
+                break;
+            case "telecoms.mgmt":
+                deleteTeleMapper.deleteTeleHist(delKey);
+                deleteTeleMapper.deleteTeleCharge(delKey);
+                deleteTeleMapper.deleteTelePay(delKey);
+                break;
+        }
+    }
+
+    // p2p
+    private void deleteP2p(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "p2p.list":
+                deleteP2pMapper.deleteP2pLoan(delKey);
+                break;
+            case "p2p.lending":
+                deleteP2pMapper.deleteP2pLoanHist(delKey);
+                deleteP2pMapper.deleteP2pLoanBase(delKey);
+                deleteP2pMapper.deleteP2pLoanAdd(delKey);
+                break;
+        }
+    }
+
+    // 채권
+    private void deleteBond(DeleteKeyDto delKey, String scope, TransAsset transAsset){
+        switch (scope.toLowerCase())
+        {
+            case "bond.list":
+                deleteBondMapper.deleteBond(delKey);
+                break;
+            case "bond.bond":
+                deleteBondMapper.deleteBondBal(delKey);
+                deleteBondMapper.deleteBondHist(delKey);
                 break;
         }
     }
