@@ -44,7 +44,6 @@ public class TransReqDbServiceImpl implements TransReqDbService {
     @Override
     public void delTransReq(TransReqForm dom) {
         transReqMapper.deleteTransReq(dom.getEntity());
-        return;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.albee.mydataapi.api.common.trans.controller;
 
 import com.albee.mydataapi.api.common.gateway.models.res.ResRootDto;
 import com.albee.mydataapi.api.common.trans.models.dto.CustJoinCheck;
+import com.albee.mydataapi.api.common.trans.models.dto.TransRequestRetry;
 import com.albee.mydataapi.api.common.trans.models.dto.TransRequestSpec;
 import com.albee.mydataapi.api.common.trans.models.dto.TransRequestWithdraw;
 import com.albee.mydataapi.api.common.trans.service.TransRequestService;
@@ -34,7 +35,11 @@ public class TransRequestController {
         @RequestBody CustJoinCheck dom
     ){
         CustJoinCheck result = transRequestService.transRequest001(dom);
-        return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS", result.getCustJoinCheckResult()));
+        if(result.getIsJoin()){
+            return ResponseEntity.ok().body(new ResponseDto<>("00000", "SUCCESS", result.getCustJoinCheckResult()));
+        }else{
+            return ResponseEntity.ok().body(new ResponseDto<>("40403", "고객미존재", result.getCustJoinCheckResult()));
+        }
     }
 
     // 전송요구-002
@@ -67,6 +72,16 @@ public class TransRequestController {
     ){
         Boolean result = transRequestService.transRequest004(dom);
         return ResponseEntity.ok().body(new ResponseDto<>("0000", "SUCCESS"));
+    }
+
+    // 전송요구-005
+    // 전송요구 또는 철회 결과 재전송 요청
+    @PostMapping("/trans-request-005")
+    public ResponseEntity<ResponseDto> transRequest005(
+            @RequestBody TransRequestRetry dom
+    ){
+        ResponseDto result = transRequestService.transRequest005(dom);
+        return ResponseEntity.ok().body(result);
     }
 
 }

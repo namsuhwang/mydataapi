@@ -3,6 +3,7 @@ package com.albee.mydataapi.api.common.trans.service.impl;
 import com.albee.mydataapi.api.base.common.service.PersonalInfoService;
 import com.albee.mydataapi.api.common.auth.models.dto.TotalAuthRequest;
 import com.albee.mydataapi.api.common.auth.models.dto.TotalAuthResponse;
+import com.albee.mydataapi.api.common.auth.service.TotalAuthService;
 import com.albee.mydataapi.api.common.gateway.models.res.ResRootDto;
 import com.albee.mydataapi.api.common.member.models.member.MemberSearch;
 import com.albee.mydataapi.api.common.member.models.member.MemberTokenSearch;
@@ -18,6 +19,7 @@ import com.albee.mydataapi.api.common.trans.service.TransReqDbService;
 import com.albee.mydataapi.api.common.trans.service.TransRequestService;
 import com.albee.mydataapi.common.CommUtil;
 import com.albee.mydataapi.common.client.MydataapidriverFeignClient;
+import com.albee.mydataapi.common.models.dto.ResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,9 @@ public class TransRequestServiceImpl implements TransRequestService {
 
     @Autowired
     PersonalInfoService personalInfoService;
+
+    @Autowired
+    TotalAuthService totalAuthService;
 
     /*
         서비스 가입여부 확인
@@ -164,7 +169,7 @@ public class TransRequestServiceImpl implements TransRequestService {
 
         // 통합인증-002 호출
         TotalAuthRequest totAuthReq = new TotalAuthRequest(spec);
-        TotalAuthResponse totAuthRes = mydataapidriverFeignClient.totalAuthRequest(totAuthReq).getBody();; // 실제로는 응답값을 받아와야 함
+        TotalAuthResponse totAuthRes = totalAuthService.totalAuth002(totAuthReq);
 
         long expireDtLong = currentDt.getTime() + totAuthRes.getExpiresIn();
         String accessTokenDueDt = df.format(expireDtLong);
@@ -227,8 +232,8 @@ public class TransRequestServiceImpl implements TransRequestService {
         result.setRspMsg("성공");
 
         // 종합포털에 전송요구 내용 전달
-        TransReqEntity transReq = transReqDbService.getTransReq(new TransReqSearch(spec.getMember().getMemberId(), spec.getOrgCode()));
-        transRequest003(transReq);
+        TransReqEntity transReq = transReqDbService.getTransReq(new TransReqSearch(spec.getMember().getMemberId(), spec.getOrgCode(), spec.getTxId()));
+        transRequest003("01", transReq);
 
         return CompletableFuture.completedFuture(result);
     }
@@ -264,7 +269,7 @@ public class TransRequestServiceImpl implements TransRequestService {
             personalInfoService.deleteTable(transReq);
         }
 
-        result = transRequest003(transReq);
+        result = transRequest003("02", transReq);
 
         return CompletableFuture.completedFuture(result);
     }
@@ -281,12 +286,13 @@ public class TransRequestServiceImpl implements TransRequestService {
         처리내용
             . 전송요구 등록/수정 및 철회 요청 처리 후에 호출하여 종합포털(거점기관)에 전달함
      */
+    // TODO : 2023.02.25 전송요구 등록/철회 결과 전송에 대한 이력을 테이블에 저장하는 것이 좋을 것 같음
     @Override
-    public ResRootDto transRequest003(TransReqEntity dom) {
+    public ResRootDto transRequest003(String transType, TransReqEntity dom) {
         TransRequestProcResult procResult = new TransRequestProcResult();
         procResult.setMemberId(dom.getMemberId());
         procResult.setXApiTranId(dom.getApiTranId());
-        procResult.setType("01");   // ‘01’ : 전송요구 결과 전송. ‘02’ : 전송요구 철회 결과 전송
+        procResult.setType(transType);   // ‘01’ : 전송요구 결과 전송. ‘02’ : 전송요구 철회 결과 전송
         procResult.setResultCode("00000");
         procResult.setResultMsg("성공");
         procResult.setTxId(dom.getTxId());
@@ -295,4 +301,51 @@ public class TransRequestServiceImpl implements TransRequestService {
         return result.getBody();
     }
 
+    /*
+        전송요구 또는 철회 결과 전송
+        API ID : 전송요구-005
+        API 요청자 : 종합포털
+        API 제공자 : 정보수신자, 거점기관
+        API명(URI) : /consents/req-result
+        설명
+            . 정보수신자는 전송요구 또는 철회 시 그 결과를 종합포털에 전송하도록 하고 있으나(전송요구-003),
+              결과 전송이 정상적으로 이루어지지 않았을 경우 종합포털에서 재전송을 요청하기 위한 API
+            • 정보수신자는 본 API 수신 시, 전송요구-003 API를 이용하여 정보를 재전송
+        처리내용
+            . 전송요구 등록 내역 조회하여 전송요구 등록 및 철회 상태 확인 후 전송
+
+     */
+    // TODO : 2023.02.25 transRequest003 에서 전송요구 등록/철회 결과 전송에 대한 이력을 테이블에 저장하게 되면 그 테이블을 조회하여 처리하는 쪽으로 수정
+    @Override
+    public ResponseDto transRequest005(TransRequestRetry dom){
+        ResponseDto responseDto = new ResponseDto();
+
+        MemberSearch memberSearch = new MemberSearch();
+        memberSearch.setCi(dom.getUserCi());
+        MemberEntity member = memberService.getMember(memberSearch);
+
+        TransReqEntity transReq = transReqDbService.getTransReq(new TransReqSearch(member.getMemberId(), dom.getTxId()));
+        MemberTokenEntity token = memberTokenService.getMemberToken(new MemberTokenSearch(member.getMemberId(), transReq.getOrgCd(), dom.getTxId()));
+        if(token == null){
+            responseDto.setRspCode("99999");
+            responseDto.setRspMsg("기등록 전송요구 없음");
+            return responseDto;
+        }
+        if(dom.getType().equals("01") && !token.getAccessTokenExpireYn().equals("Y")){
+            responseDto.setRspCode("99999");
+            responseDto.setRspMsg("유효한 전송요구 등록건 없음");
+            return responseDto;
+        }else if(dom.getType().equals("02") && token.getAccessTokenExpireYn().equals("Y")){
+            responseDto.setRspCode("99999");
+            responseDto.setRspMsg("전송요구 철회된 전송요구 등록건 없음");
+            return responseDto;
+        }
+
+        transRequest003("01", transReq);
+
+
+        responseDto.setRspCode("00000");
+        responseDto.setRspMsg("SUCCESS");
+        return responseDto;
+    }
 }
