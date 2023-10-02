@@ -14,5 +14,8 @@
 - 종합포털을 통한 공통정보, 인등 처리 등의 역할에 대해서는 mydatagwtestdriver 프로젝트로 별도 구현
   단, 테스트상 한계로 더비 API로 개발
  
+# 개발 환경
+- Java + Spring Boot + Oracle 11g XE + Mybatis
+  
 # 기타
 - 금융기관으로 정식 등록하지 못하는 한계로 테스트는 미실시
