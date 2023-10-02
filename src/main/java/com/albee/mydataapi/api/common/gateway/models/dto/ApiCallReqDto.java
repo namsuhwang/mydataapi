@@ -25,7 +25,7 @@ public class ApiCallReqDto {
     private String idstType;   // 업권유형 ( 예 : BANK)
     private String requestApiId;   // 호출 API ID (예 : BANK_001)
     private String requestUrl;   // 호출 API 의 resource url
-    private String recvSeq;   // 수신 일련번호. recvStatus.recvSeq
+    private String recvSeq;      // 수신 일련번호. recvStatus.recvSeq
     private String apiTranDay;
     private String apiTranId;
     private HashMap<String, Object> reqParamMap;

@@ -54,6 +54,8 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
             API 게이트웨이 호출.
             나중에 게이트웨이 솔루션업체와 협의하여 마저 코딩.
          */
+        // TODO : 테스트드라이버 에 수신하는 컨트롤러 작성.
+        //        게이트웨이는 ApiCallReqDto 의 내용에 기재된 apiId를 기준으로 중계기관을 호출하여 응답한다고 가정
 
         /*
         String resJson = "{\n" +
@@ -140,6 +142,8 @@ public class CallMyDataGatewayServiceImpl implements CallMyDataGatewayService {
             API 게이트웨이 호출.
             나중에 게이트웨이 솔루션업체와 협의하여 마저 코딩.
          */
+        // TODO : 테스트드라이버 에 수신하는 컨트롤러 작성.
+        //        게이트웨이는 ApiCallReqDto 의 내용에 기재된 apiId를 기준으로 중계기관을 호출하여 응답한다고 가정
 
         /*
         String resJson = "{\n" +
